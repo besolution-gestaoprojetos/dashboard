@@ -398,6 +398,23 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 .proj-card-warn{font-size:11.5px;color:#d97706;margin-bottom:8px;font-weight:600}
 .proj-card-status-row{line-height:1.9;margin-bottom:10px}
 .proj-card-cta{font-size:12px;font-weight:700;color:var(--primary);text-align:right}
+.status-glow-chip{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:11px; font-weight:700; letter-spacing:.02em; text-transform:uppercase;
+  padding:5px 12px; border-radius:20px;
+  color:var(--chip-color); background:var(--chip-bg); border:1px solid var(--chip-color);
+  box-shadow:0 0 8px 0 var(--chip-glow);
+  animation:status-pulse 2.2s ease-in-out infinite;
+  white-space:nowrap;
+}
+.status-glow-chip::before{
+  content:''; width:7px; height:7px; border-radius:50%; background:var(--chip-color);
+  box-shadow:0 0 6px 1px var(--chip-color); flex-shrink:0;
+}
+@keyframes status-pulse{
+  0%,100%{ box-shadow:0 0 6px 0 var(--chip-glow); }
+  50%{ box-shadow:0 0 16px 3px var(--chip-glow); }
+}
 .tag-pill{display:inline-block;font-size:11px;padding:3px 10px;border-radius:12px;background:var(--surface-alt);color:var(--text);margin:2px;border:1px solid var(--border);cursor:pointer;transition:all .15s}
 .tag-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 .pd-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg,12px);padding:20px 24px;box-shadow:var(--shadow-sm);margin-bottom:16px}
@@ -752,6 +769,25 @@ async function loadData(){
 }
 const ML={"01":"Jan","02":"Fev","03":"Mar","04":"Abr","05":"Mai","06":"Jun","07":"Jul","08":"Ago","09":"Set","10":"Out","11":"Nov","12":"Dez"};
 const SC={'Em Andamento':'chip-fazendo','Sustentação':'chip-fazendo','Pausado':'chip-media','Pré Venda':'chip-nenhuma'};
+const STATUS_ORDER={'Pré Venda':0,'Em Andamento':1,'Pausado':2,'Concluído':3,'Sustentação':4};
+function sortByStatusOrder(list){
+  return [...list].sort((a,b)=>{
+    const oa = STATUS_ORDER.hasOwnProperty(a.st) ? STATUS_ORDER[a.st] : 99;
+    const ob = STATUS_ORDER.hasOwnProperty(b.st) ? STATUS_ORDER[b.st] : 99;
+    return oa-ob;
+  });
+}
+const STATUS_STYLE={
+  'Pré Venda':      {color:'#a855f7', bg:'rgba(168,85,247,.14)', glow:'rgba(168,85,247,.55)'},
+  'Em Andamento':   {color:'#38BDF8', bg:'rgba(56,189,248,.14)', glow:'rgba(56,189,248,.55)'},
+  'Pausado':        {color:'#f59e0b', bg:'rgba(245,158,11,.14)', glow:'rgba(245,158,11,.55)'},
+  'Concluído':      {color:'#22c55e', bg:'rgba(34,197,94,.14)',  glow:'rgba(34,197,94,.55)'},
+  'Sustentação':    {color:'#14b8a6', bg:'rgba(20,184,166,.14)', glow:'rgba(20,184,166,.55)'},
+};
+function statusChipHtml(st){
+  const s=STATUS_STYLE[st]||{color:'#64748b',bg:'rgba(100,116,139,.14)',glow:'rgba(100,116,139,.5)'};
+  return '<span class="status-glow-chip" style="--chip-color:'+s.color+';--chip-bg:'+s.bg+';--chip-glow:'+s.glow+'">'+(st||'—')+'</span>';
+}
 const STATUS_COLOR={'Done':'#22c55e','Backlog':'#64748b','In progress':'#38bdf8','QA':'#f59e0b','Blocked':'#ef4444','Ready for Dev':'#0ea5e9','Approved':'#14b8a6','Desenvolvimento':'#0284c7','Future Milestone':'#8b5cf6','Produção':'#22c55e'};
 let COK=typeof Chart!=='undefined';let ch={};
 
@@ -859,6 +895,7 @@ function renderCliente(){
     return;
   }
   let prj=D.pj.filter(p=>p.cl===cli);if(pj)prj=prj.filter(p=>p.pj===pj);if(st)prj=prj.filter(p=>p.st===st);
+  prj=sortByStatusOrder(prj);
   let tT=0,tC=0,tEst=0,tApo=0,tSemEst=0;
   prj.forEach(p=>{tT+=p.tar_total;tC+=p.tar_conc;tEst+=p.horas_est;tApo+=p.horas_apo;tSemEst+=p.tar_sem_est;});
   document.getElementById('kpi-cli').innerHTML=`
@@ -878,7 +915,7 @@ function renderCliente(){
     h+=`<div class="proj-card" data-idx="${i}" data-pj="${p.pj.replace(/"/g,'&quot;')}">
       <div class="proj-card-top">
         <div class="proj-card-name">${p.pj}</div>
-        <span class="chip ${SC[p.st]||'chip-nenhuma'}">${p.st}</span>
+        ${statusChipHtml(p.st)}
       </div>
       <div class="proj-card-meta">
         <span>👤 <strong>${p.gp||'—'}</strong></span>
@@ -1192,7 +1229,7 @@ function renderProjDetail(pjName){
   const p = D.pj.find(x=>x.pj===pjName);
   if(!p){ document.getElementById('projdetail-content').innerHTML='<div class="empty-state"><p>Projeto não encontrado.</p></div>'; return; }
   document.getElementById('pd-titulo').textContent = p.pj;
-  document.getElementById('pd-subtitulo').textContent = p.cl + ' · ' + p.st;
+  document.getElementById('pd-subtitulo').innerHTML = p.cl + ' &middot; ' + statusChipHtml(p.st);
 
   let tasks = PROJ_TASKS[pjName] || [];
   const allTags = new Set();
@@ -1655,6 +1692,7 @@ function renderLider(){
   }
   let prj=D.pj.filter(p=>p.lider===lider);
   if(st) prj=prj.filter(p=>p.st===st);
+  prj=sortByStatusOrder(prj);
 
   let tT=0,tC=0,tEst=0,tApo=0;
   const clientesSet=new Set(); const equipeSet=new Set();
@@ -1678,7 +1716,7 @@ function renderLider(){
     h+=`<div class="proj-card" data-idx="0" data-pj="${p.pj.replace(/"/g,'&quot;')}">
       <div class="proj-card-top">
         <div class="proj-card-name">${p.pj}</div>
-        <span class="chip ${SC[p.st]||'chip-nenhuma'}">${p.st}</span>
+        ${statusChipHtml(p.st)}
       </div>
       <div class="proj-card-meta">
         <span>🏢 <strong>${p.cl}</strong></span>
