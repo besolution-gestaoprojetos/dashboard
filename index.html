@@ -676,7 +676,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer>v2.6 · Última atualização: 31/07/2026</footer>
+  <footer id="app-footer">v2.7 · Última atualização: —</footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
@@ -726,6 +726,12 @@ function loadDataJSONP(url){
     setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('Timeout aguardando resposta do Apps Script')); } },20000);
   });
 }
+const APP_VERSION='v2.7';
+function updateFooter(dataDateStr){
+  const el=document.getElementById('app-footer');
+  if(!el) return;
+  el.textContent = APP_VERSION + ' · Última atualização: ' + (dataDateStr || 'indisponível');
+}
 async function loadData(){
   const isPlaceholder = !DASHBOARD_API_URL || DASHBOARD_API_URL.indexOf('COLE_AQUI')!==-1;
   if(!isPlaceholder){
@@ -735,11 +741,13 @@ async function loadData(){
       EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PEND=j.PEND;
       PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
       showDataBadge('live');
+      updateFooter(j._ultimaAtualizacaoPlanilha);
       boot(); return;
     }catch(e){ console.warn('Falha ao buscar dados ao vivo, usando snapshot local.',e); }
   }
   loadFallbackData();
   showDataBadge('fallback');
+  updateFooter('snapshot local (sem conexão com a planilha)');
   boot();
 }
 const ML={"01":"Jan","02":"Fev","03":"Mar","04":"Abr","05":"Mai","06":"Jun","07":"Jul","08":"Ago","09":"Set","10":"Out","11":"Nov","12":"Dez"};
