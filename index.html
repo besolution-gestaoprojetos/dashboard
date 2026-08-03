@@ -699,13 +699,25 @@ function showDataBadge(mode){
   if(mode==='live'){ el.textContent='🟢 Dados ao vivo (Google Sheets)'; el.style.background='#0EA5E9'; el.style.color='#fff'; }
   else { el.textContent='⚠️ Snapshot local (sem conexão com a planilha)'; el.style.background='#f59e0b'; el.style.color='#1a1a1a'; }
 }
+function loadDataJSONP(url){
+  return new Promise((resolve,reject)=>{
+    const cbName='__dashCb_'+Date.now()+'_'+Math.floor(Math.random()*1e6);
+    let done=false;
+    const cleanup=()=>{ try{delete window[cbName];}catch(e){} if(script.parentNode) script.parentNode.removeChild(script); };
+    window[cbName]=(data)=>{ done=true; cleanup(); resolve(data); };
+    const script=document.createElement('script');
+    const sep=url.indexOf('?')!==-1?'&':'?';
+    script.src=url+sep+'callback='+cbName;
+    script.onerror=()=>{ if(!done){ cleanup(); reject(new Error('Falha ao carregar script JSONP')); } };
+    document.body.appendChild(script);
+    setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('Timeout aguardando resposta do Apps Script')); } },20000);
+  });
+}
 async function loadData(){
   const isPlaceholder = !DASHBOARD_API_URL || DASHBOARD_API_URL.indexOf('COLE_AQUI')!==-1;
   if(!isPlaceholder){
     try{
-      const res=await fetch(DASHBOARD_API_URL);
-      if(!res.ok) throw new Error('HTTP '+res.status);
-      const j=await res.json();
+      const j=await loadDataJSONP(DASHBOARD_API_URL);
       D=j.D; HM=j.HM; PM=j.PM; CD=j.CD; CTOK=j.CTOK; AREAS=j.AREAS; AREA_CL=j.AREA_CL;
       EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PEND=j.PEND;
       PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
