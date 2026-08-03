@@ -541,6 +541,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <button class="nav-tab" data-page="topexec">Top — Visão Executiva</button>
       <button class="nav-tab" data-page="pend">Pendências de Datas</button>
       <button class="nav-tab" data-page="ociosos">Sem Alocação</button>
+      <button class="nav-tab" data-page="lider">Visão por Líder</button>
       <button class="nav-tab" data-page="futuristic">🚀 Painel Executivo</button>
     </nav>
     <div class="topbar-spacer"></div>
@@ -625,6 +626,18 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="ociosos-content"></div>
     </section>
 
+    <!-- PAGE VISÃO POR LÍDER -->
+    <section class="page" id="page-lider">
+      <div class="page-header"><div><h1>Visão por Líder</h1><p>Projetos, status e equipes por Líder Responsável.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label>Líder Responsável</label><select id="f-lider"></select></div>
+        <div class="filter-field"><label>Status</label><select id="f-lider-st"><option value="">Todos</option><option value="Em Andamento">Em Andamento</option><option value="Sustentação">Sustentação</option><option value="Pausado">Pausado</option><option value="Concluído">Concluído</option><option value="Pré Venda">Pré Venda</option></select></div>
+        <button class="filter-clear" id="f-lider-clear">Limpar filtros</button>
+      </div>
+      <div class="grid grid-kpi" id="kpi-lider"></div>
+      <div id="lider-content"></div>
+    </section>
+
     <!-- PAGE PAINEL EXECUTIVO FUTURISTA -->
     <section class="page" id="page-futuristic">
       <div class="fut-particles" id="fut-particles"></div>
@@ -663,7 +676,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer>v3.0 · Última atualização: 03/08/2026</footer>
+  <footer>v2.6 · Última atualização: 31/07/2026</footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
@@ -1136,7 +1149,13 @@ function renderPend(){
 // === DETALHE DO PROJETO ===
 let PD_TAG_FILTER = '';
 let PD_CURRENT_PJ = '';
+let PD_ORIGIN_PAGE = 'cliente';
 function openProjDetail(pjName){
+  const activePage=document.querySelector('.page.active');
+  if(activePage && activePage.id==='page-lider') PD_ORIGIN_PAGE='lider';
+  else PD_ORIGIN_PAGE='cliente';
+  const backBtn=document.getElementById('proj-voltar');
+  if(backBtn) backBtn.textContent = PD_ORIGIN_PAGE==='lider' ? '← Voltar para Visão por Líder' : '← Voltar para Visão por Cliente';
   goToPage('projdetail');
   PD_TAG_FILTER = '';
   PD_CURRENT_PJ = pjName;
@@ -1144,8 +1163,12 @@ function openProjDetail(pjName){
 }
 document.addEventListener('DOMContentLoaded', ()=>{
   const back = document.getElementById('proj-voltar');
-  if(back) back.onclick = ()=>goToPage('cliente');
+  if(back) back.onclick = ()=>goToPage(PD_ORIGIN_PAGE);
   document.getElementById('cli-cards').addEventListener('click', (e)=>{
+    const card = e.target.closest('.proj-card');
+    if(card) openProjDetail(card.dataset.pj);
+  });
+  document.getElementById('lider-content').addEventListener('click', (e)=>{
     const card = e.target.closest('.proj-card');
     if(card) openProjDetail(card.dataset.pj);
   });
@@ -1604,7 +1627,76 @@ function countUpAll(selector){
   });
 }
 
-function boot(){initTheme();initNav();initCliente();initPessoa();initArea();initPend();renderOciosos();renderTopExec();renderFuturistic();}
+// === VISÃO POR LÍDER ===
+function initLider(){
+  const lideres=[...new Set(D.pj.map(p=>p.lider).filter(Boolean).filter(l=>['#N/T','#N/A'].indexOf(l)===-1))].sort();
+  const sel=document.getElementById('f-lider');
+  sel.innerHTML='<option value="">— Selecione —</option>'+lideres.map(l=>'<option value="'+l.replace(/"/g,'&quot;')+'">'+l+'</option>').join('');
+  sel.onchange=renderLider;
+  document.getElementById('f-lider-st').onchange=renderLider;
+  document.getElementById('f-lider-clear').onclick=()=>{sel.value='';document.getElementById('f-lider-st').value='';renderLider();};
+  renderLider();
+}
+function renderLider(){
+  const lider=document.getElementById('f-lider').value;
+  const st=document.getElementById('f-lider-st').value;
+  if(!lider){
+    document.getElementById('kpi-lider').innerHTML='';
+    document.getElementById('lider-content').innerHTML='<div class="empty-state" style="padding:80px 20px"><p>Selecione um Líder Responsável acima para ver os projetos.</p></div>';
+    return;
+  }
+  let prj=D.pj.filter(p=>p.lider===lider);
+  if(st) prj=prj.filter(p=>p.st===st);
+
+  let tT=0,tC=0,tEst=0,tApo=0;
+  const clientesSet=new Set(); const equipeSet=new Set();
+  prj.forEach(p=>{tT+=p.tar_total;tC+=p.tar_conc;tEst+=p.horas_est;tApo+=p.horas_apo;clientesSet.add(p.cl);(p.eq||[]).forEach(m=>equipeSet.add(m));});
+
+  document.getElementById('kpi-lider').innerHTML=`
+    <div class="kpi"><span class="kpi-label">Projetos</span><span class="kpi-value">${prj.length}</span><span class="kpi-foot">${clientesSet.size} cliente(s)</span></div>
+    <div class="kpi"><span class="kpi-label">Tarefas</span><span class="kpi-value">${fN(tT)}</span><span class="kpi-foot">${fN(tC)} concluídas</span></div>
+    <div class="kpi"><span class="kpi-label">Horas Estimadas</span><span class="kpi-value">${fH(tEst)}</span></div>
+    <div class="kpi"><span class="kpi-label">Horas Executadas</span><span class="kpi-value">${fH(tApo)}</span></div>
+    <div class="kpi"><span class="kpi-label">Pessoas na Equipe</span><span class="kpi-value">${equipeSet.size}</span><span class="kpi-foot">distintas nos projetos</span></div>`;
+
+  let h='<div class="proj-grid">';
+  prj.forEach(p=>{
+    const pct=p.tar_total>0?Math.round(p.tar_conc/p.tar_total*100):0;
+    const at=p.dd&&String(p.dd).toLowerCase().includes('atraso');
+    const pctEst=p.horas_est>0?Math.round(p.horas_apo/p.horas_est*100):null;
+    const stTop=Object.entries(p.tar_status||{}).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const stH=stTop.map(([s,c])=>'<span class="status-pill" style="border-left:3px solid '+(STATUS_COLOR[s]||'#64748b')+'">'+s+' · '+c+'</span>').join('');
+    const equipeH=(p.eq||[]).map(m=>'<span class="status-pill">'+m+'</span>').join(' ');
+    h+=`<div class="proj-card" data-idx="0" data-pj="${p.pj.replace(/"/g,'&quot;')}">
+      <div class="proj-card-top">
+        <div class="proj-card-name">${p.pj}</div>
+        <span class="chip ${SC[p.st]||'chip-nenhuma'}">${p.st}</span>
+      </div>
+      <div class="proj-card-meta">
+        <span>🏢 <strong>${p.cl}</strong></span>
+        <span>👥 <strong>${p.qe}</strong> pessoas</span>
+        ${p.dd?'<span style="color:'+(at?'var(--st-bloqueado)':'var(--text-faint)')+'">'+(at?'⚠':'📅')+' '+p.dd+'</span>':''}
+      </div>
+      <div class="proj-card-progress">
+        <div class="proj-card-progress-label"><span>Conclusão de tarefas</span><span class="proj-card-progress-pct">${pct}%</span></div>
+        <div class="bullet-track"><div class="bullet-fill" style="width:${pct}%;${pct===100?'background:var(--st-feito)':''}"></div></div>
+      </div>
+      <div class="proj-card-hours">
+        <div><span class="proj-card-hours-label">Estimado</span><span class="proj-card-hours-val">${fH(p.horas_est)}</span></div>
+        <div><span class="proj-card-hours-label">Executado</span><span class="proj-card-hours-val" style="color:var(--primary)">${fH(p.horas_apo)}</span></div>
+        ${pctEst!=null?'<div><span class="proj-card-hours-label">% Consumo</span><span class="proj-card-hours-val" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+pctEst+'%</span></div>':''}
+      </div>
+      <div class="proj-card-status-row">${stH}</div>
+      <div style="font-size:11px;color:var(--text-faint);margin:8px 0 4px;text-transform:uppercase;letter-spacing:.03em">Equipe</div>
+      <div style="line-height:1.9;margin-bottom:8px">${equipeH}</div>
+      <div class="proj-card-cta">Ver detalhamento completo →</div>
+    </div>`;
+  });
+  h+='</div>';
+  document.getElementById('lider-content').innerHTML=h;
+}
+
+function boot(){initTheme();initNav();initCliente();initPessoa();initArea();initPend();renderOciosos();renderTopExec();renderFuturistic();initLider();}
 document.addEventListener('DOMContentLoaded',loadData);
 })();
 </script></body></html>
