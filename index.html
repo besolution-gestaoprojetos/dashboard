@@ -827,7 +827,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v3.10 · Última atualização: —</footer>
+  <footer id="app-footer">v3.11 · Última atualização: —</footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
@@ -877,7 +877,7 @@ function loadDataJSONP(url){
     setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('Timeout aguardando resposta do Apps Script')); } },45000);
   });
 }
-const APP_VERSION='v3.10';
+const APP_VERSION='v3.11';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
