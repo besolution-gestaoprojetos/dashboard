@@ -115,7 +115,7 @@ a{color:inherit;}
 .app{min-height:100vh; display:flex; flex-direction:column;}
 
 .topbar{
-  position:sticky; top:0; z-index:50;
+  position:sticky; top:0; z-index:9999;
   display:flex; align-items:center; gap:20px;
   padding:12px 24px;
   background:var(--surface);
@@ -155,7 +155,7 @@ a{color:inherit;}
 .nav-cat.open .nav-cat-caret{transform:rotate(180deg);}
 
 .nav-cat-panel{
-  position:absolute; top:calc(100% + 8px); left:0; min-width:210px; z-index:60;
+  position:absolute; top:calc(100% + 8px); left:0; min-width:210px; z-index:10001;
   background:var(--surface); border:1px solid var(--border); border-radius:12px;
   box-shadow:0 14px 30px -8px rgba(0,0,0,.22); padding:6px;
   display:flex; flex-direction:column; gap:2px;
@@ -196,6 +196,10 @@ a{color:inherit;}
     max-height:0; overflow:hidden; padding:0; transition:max-height .25s ease, padding .25s ease;
   }
   .nav-cat.open .nav-cat-panel{max-height:400px; padding:4px 0 10px 14px;}
+  /* Em telas estreitas, o link Guia vira só o ícone (mesmo padrão de botão),
+     pra não empurrar/estourar os outros itens da barra superior. */
+  .guia-link{padding:6px 9px;}
+  .guia-link .guia-link-text{display:none;}
 }
 
 .topbar-spacer{flex:1;}
@@ -961,6 +965,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
     </nav>
     <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Abrir menu"><span></span></button>
     <div class="topbar-spacer"></div>
+    <a class="viewas-btn guia-link" href="https://besolution-gestaoprojetos.github.io/guias/index.html" target="_blank" rel="noopener noreferrer" title="Abrir guia do sistema (nova aba)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="guia-link-text">Guia</span></a>
     <div class="viewas-wrap" id="viewas-wrap" style="display:none">
       <button class="viewas-btn" id="viewas-btn" title="Visualizar o sistema como outro usuário">👤 Visualizar como</button>
       <div class="viewas-dropdown" id="viewas-dropdown" style="display:none">
@@ -980,6 +985,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
     <button id="viewas-voltar-btn">← Voltar para meu acesso</button>
   </div>
   <main>
+    <button class="filter-clear" id="global-voltar-btn" type="button" style="margin:16px 24px 0;">← Voltar</button>
     <!-- PAGE CLIENTE -->
     <section class="page active" id="page-cliente">
       <div class="page-header"><div><h1>Portfólio</h1><p>Projetos, prazos, horas estimadas x executadas e status por cliente.</p></div></div>
@@ -1182,7 +1188,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v4.4 · Última atualização: —</footer>
+  <footer id="app-footer">v4.6 · Última atualização: —</footer>
 </div>
 <div id="task-modal-overlay" class="task-modal-overlay">
   <div class="task-modal-card">
@@ -1245,7 +1251,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v3.1, v3.2, ...,
 // v3.10, v4.0, v4.1, ...) — nunca v3.11. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v4.4';
+const APP_VERSION='v4.6';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1547,6 +1553,14 @@ function mostrarAcessoNegado(pagina){
   el._timeout=setTimeout(()=>{ el.style.opacity='0'; }, 3500);
 }
 
+// Pilha de navegação simples (equivalente a histórico) — o dashboard é uma SPA
+// sem rotas reais de URL (as páginas são seções mostradas/escondidas via classe
+// CSS, não por navegação de verdade do navegador), então history.back() nativo
+// não teria efeito nenhum aqui. Esta pilha é o "equivalente" pedido: rastreia a
+// sequência de páginas visitadas para o botão global "← Voltar" poder desfazer
+// a navegação passo a passo, com fallback para o Portfólio quando a pilha esvazia.
+let PAGE_NAV_STACK = [];
+let PAGE_NAV_GOING_BACK = false;
 function goToPage(name){
   // GUARDA DE ROTA: mesmo que alguém chame goToPage() diretamente pelo console do
   // navegador (contornando o menu), a página só é exibida se o perfil ativo tiver
@@ -1556,6 +1570,12 @@ function goToPage(name){
     mostrarAcessoNegado(name);
     return;
   }
+  const paginaAtualEl=document.querySelector('.page.active');
+  if(paginaAtualEl && !PAGE_NAV_GOING_BACK){
+    const nomeAtual=paginaAtualEl.id.replace('page-','');
+    if(nomeAtual!==name) PAGE_NAV_STACK.push(nomeAtual);
+  }
+  PAGE_NAV_GOING_BACK=false;
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active', x.dataset.page===name));
   // Destaca a categoria (dropdown) que contém a página ativa, pra ficar visível mesmo com o dropdown fechado
   document.querySelectorAll('.nav-cat').forEach(cat=>{
@@ -1564,7 +1584,24 @@ function goToPage(name){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   const el=document.getElementById('page-'+name);
   if(el) el.classList.add('active');
+  // O botão global de "← Voltar" fica oculto só em "Detalhamento do Projeto",
+  // que já tem seu próprio botão de voltar contextual (#proj-voltar, com rótulo
+  // específico de origem) — evita duplicidade de botões de voltar na mesma tela.
+  const globalBack=document.getElementById('global-voltar-btn');
+  if(globalBack) globalBack.style.display = (name==='projdetail') ? 'none' : '';
   window.scrollTo({top:0,behavior:'smooth'});
+}
+// Equivalente a history.back(): desempilha a última página visitada e navega até
+// ela. Se não houver histórico (pilha vazia), cai no fallback pedido: página
+// principal/Portfólio.
+function voltarPaginaAnterior(){
+  const anterior = PAGE_NAV_STACK.pop();
+  if(anterior && paginasPermitidas().includes(anterior)){
+    PAGE_NAV_GOING_BACK = true;
+    goToPage(anterior);
+  } else {
+    goToPage('cliente'); // fallback: página principal/Portfólio
+  }
 }
 function fecharTodosDropdownsMenu(){
   document.querySelectorAll('.nav-cat.open').forEach(c=>c.classList.remove('open'));
@@ -1585,6 +1622,10 @@ function initNav(){
       fecharMenuMobile();
     });
   });
+  // Botão global "← Voltar" — presente em todas as páginas (ver goToPage()),
+  // desfaz a navegação um passo por vez, com fallback para o Portfólio.
+  const globalBack=document.getElementById('global-voltar-btn');
+  if(globalBack) globalBack.addEventListener('click', voltarPaginaAnterior);
   // Abre/fecha o dropdown de cada categoria ao clicar no gatilho
   document.querySelectorAll('.nav-cat-trigger').forEach(trigger=>{
     trigger.addEventListener('click',(e)=>{
