@@ -907,6 +907,13 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
           <button class="nav-tab" data-page="futuristic">🚀 Central de Comando</button>
         </div>
       </div>
+      <div class="nav-cat" data-cat="gestao">
+        <button class="nav-cat-trigger" type="button">Gestão<svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-cat-panel">
+          <button class="nav-tab" data-page="setorial">Gestão Setorial</button>
+          <button class="nav-tab" data-page="transversal">Gestão Transversal</button>
+        </div>
+      </div>
       <div class="nav-cat" data-cat="projetos">
         <button class="nav-cat-trigger" type="button">Projetos<svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-cat-panel">
@@ -1009,6 +1016,30 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div class="grid grid-kpi" id="kpi-area"></div>
       <div id="area-content"></div>
     </section>
+
+    <!-- PAGE GESTÃO SETORIAL -->
+    <section class="page" id="page-setorial">
+      <div class="page-header"><div><h1>Gestão Setorial</h1><p>Visão do Head: pessoas, capacidade e alocação da área — pré-venda, desenvolvimento de carreira e contratação/demissão ainda não são rastreados no dashboard (ver nota na página).</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label>Área</label><select id="f-setorial"></select></div>
+        <button class="filter-clear" id="f-setorial-clear">Limpar filtros</button>
+      </div>
+      <div class="grid grid-kpi" id="kpi-setorial"></div>
+      <div id="setorial-content"></div>
+    </section>
+
+    <!-- PAGE GESTÃO TRANSVERSAL (PROJETOS & SQUADS) -->
+    <section class="page" id="page-transversal">
+      <div class="page-header"><div><h1>Gestão Transversal</h1><p>Visão de LP/GP/SM: acompanhamento de entrega (atraso, bloqueios, prazo previsto x concluído) e produtividade (horas, ociosidade) por projeto/squad — "atraso causado pelo cliente" ainda não é rastreado no dashboard.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label>Cliente</label><select id="f-transversal-cl"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label>Status</label><select id="f-transversal-st"><option value="">Ativos (Em Andamento/Sustentação)</option><option value="Em Andamento">Em Andamento</option><option value="Sustentação">Sustentação</option><option value="Pausado">Pausado</option><option value="Concluído">Concluído</option><option value="Pré Venda">Pré Venda</option><option value="todos">Todos os status</option></select></div>
+        <button class="filter-clear" id="f-transversal-clear">Limpar filtros</button>
+      </div>
+      <div class="grid grid-kpi" id="kpi-transversal"></div>
+      <div id="transversal-content"></div>
+    </section>
+
 
     <!-- PAGE TOP5 -->
     <!-- PAGE TOP EXECUTIVO -->
@@ -1129,7 +1160,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v4.1 · Última atualização: —</footer>
+  <footer id="app-footer">v4.2 · Última atualização: —</footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
@@ -1183,7 +1214,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v3.1, v3.2, ...,
 // v3.10, v4.0, v4.1, ...) — nunca v3.11. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v4.1';
+const APP_VERSION='v4.2';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1422,15 +1453,17 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail'],
+  'Administrador':  ['cliente','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
-  'Head':           ['cliente','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail'],
+  // Também vê Gestão Setorial (sua área) e Gestão Transversal (apoio ao GP).
+  'Head':           ['cliente','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','transversal'],
   // Tech Lead / PO / SM: veem o(s) projeto(s) onde atuam por completo, junto com a equipe.
-  'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail'],
-  'PO':             ['cliente','pessoa','gerente','pend','projdetail'],
-  'SM':             ['cliente','pessoa','gerente','pend','projdetail'],
+  // Gestão Transversal é a página central desses perfis (LP/GP/SM).
+  'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail','transversal'],
+  'PO':             ['cliente','pessoa','gerente','pend','projdetail','transversal'],
+  'SM':             ['cliente','pessoa','gerente','pend','projdetail','transversal'],
   // Perfis de área: escopo restrito aos próprios dados — só as páginas essenciais.
   'Corporativo':    ['cliente','pessoa','projdetail'],
   'Infra':          ['cliente','pessoa','projdetail'],
@@ -1449,7 +1482,7 @@ const PERM_MENU = {
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Gerência',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto'};
+const PAGE_LABELS = {cliente:'Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Gerência',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 
 function paginasPermitidas(){ return PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido']; }
@@ -3053,7 +3086,167 @@ function renderEquipe(){
   document.getElementById('equipe-content').innerHTML=h;
 }
 
-function boot(){initCliente();initPessoa();initArea();initPend();renderOciosos();initTopExec();renderFuturistic();initLider();initGerente();initEquipe();}
+// ============================================================
+// GESTÃO SETORIAL — visão do Head: pessoas, capacidade e alocação da área.
+// Baseada no esquema "Gestão Setorial (HEAD)": Liderança de Pessoas + Gestão de
+// Recursos. Pré-Venda, Desenvolvimento de Carreira e Contratação/Demissão NÃO são
+// rastreados no dashboard hoje (não existe essa informação nos dados de origem) —
+// isso fica explícito na própria página, em vez de fingir que existe.
+// ============================================================
+function initSetorial(){
+  const areas=Object.keys(AREAS).sort();
+  const sel=document.getElementById('f-setorial');
+  sel.innerHTML=areas.map(a=>'<option value="'+a.replace(/"/g,'&quot;')+'">'+a+'</option>').join('');
+  if(areas.length) sel.value=areas[0]; // se o perfil só vê a própria área (Head), já vem pré-selecionada
+  sel.onchange=renderSetorial;
+  document.getElementById('f-setorial-clear').onclick=()=>{ if(areas.length) sel.value=areas[0]; renderSetorial(); };
+  renderSetorial();
+}
+function renderSetorial(){
+  const area=document.getElementById('f-setorial').value;
+  const kpiEl=document.getElementById('kpi-setorial');
+  const contentEl=document.getElementById('setorial-content');
+  if(!area){ kpiEl.innerHTML=''; contentEl.innerHTML='<div class="empty-state" style="padding:80px 20px"><p>Nenhuma área disponível no seu escopo.</p></div>'; return; }
+
+  const d=AREAS[area]||{ps:0,pj:0,hrs:0,tar:0,head:'—'};
+  const pessoas=D.p.filter(p=>p.area===area).sort((a,b)=>a.a.localeCompare(b.a));
+  const semAloc=SEM_ALOC.filter(o=>(o.area||'')===area);
+  const alocSemApo=ALOC_SEM_APONT.filter(o=>(o.area||'')===area);
+
+  // Ociosidade semanal média da área (mesmo cálculo pessoa-a-pessoa usado em
+  // Desempenho/Minha Equipe, agregado por área)
+  const [monISO,sunISO]=getMondaySundayISO();
+  let somaOcio=0,nOcio=0;
+  pessoas.forEach(p=>{
+    const ek=(p.email||'').toLowerCase();
+    const hPrev=Object.entries(PPREVISTO[ek]||{}).filter(([dt])=>dt>=monISO&&dt<=sunISO).reduce((s,[,v])=>s+v,0);
+    const hExec=Object.entries(PM[ek]||{}).filter(([dt])=>dt>=monISO&&dt<=sunISO&&dt!=='sem-data').reduce((s,[,v])=>s+(v[0]||0),0);
+    if(hPrev>0){ somaOcio+=Math.max(0,Math.round((1-hExec/hPrev)*100)); nOcio++; }
+  });
+  const ocioMediaArea=nOcio>0?Math.round(somaOcio/nOcio):null;
+  const aH=d.ps>0?Math.round(d.hrs/d.ps*10)/10:0;
+
+  kpiEl.innerHTML=`
+    <div class="kpi"><span class="kpi-label">Pessoas na Área</span><span class="kpi-value">${d.ps}</span><span class="kpi-foot">Head: ${d.head||'—'}</span></div>
+    <div class="kpi"><span class="kpi-label">Projetos com Alocação</span><span class="kpi-value">${d.pj}</span></div>
+    <div class="kpi"><span class="kpi-label">Horas (geral)</span><span class="kpi-value">${fH(d.hrs)}</span><span class="kpi-foot">média ${fH(aH)}/pessoa</span></div>
+    <div class="kpi"><span class="kpi-label">Sem Alocação${infoTip('Sem nenhuma alocação registrada — nem em equipe de projeto (Portifolio), nem tarefas/horas (Zoho).')}</span><span class="kpi-value" style="color:${semAloc.length>0?'var(--st-bloqueado)':'var(--text)'}">${semAloc.length}</span></div>
+    <div class="kpi"><span class="kpi-label">Alocados sem Apontamento${infoTip('Estão em equipe de projeto ativo, mas sem nenhuma hora/tarefa lançada no Zoho.')}</span><span class="kpi-value" style="color:${alocSemApo.length>0?'#f59e0b':'var(--text)'}">${alocSemApo.length}</span></div>
+    <div class="kpi"><span class="kpi-label">Ociosidade Média (semana)${infoTip(TIP_OCIOSIDADE_SEMANAL+' Aqui: média entre as pessoas da área que têm tarefa vencendo esta semana.')}</span><span class="kpi-value" style="color:${ocioMediaArea===null?'var(--text)':ocioMediaArea>=50?'var(--st-bloqueado)':ocioMediaArea>=25?'#f59e0b':'var(--text)'}">${ocioMediaArea===null?'—':ocioMediaArea+'%'}</span></div>`;
+
+  let h='';
+  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>⚠️ Fora do escopo atual dos dados</h3></div><div style="padding:4px 0;font-size:13px;color:var(--text-muted);line-height:1.6">'
+    +'Pré-Venda (estimativa de esforço), Desenvolvimento de Carreira (agenda/aceleração) e Contratação &amp; Demissão não têm nenhuma fonte de dado no dashboard hoje — por isso não aparecem aqui. Se quiser passar a acompanhar isso, precisamos definir de onde viria essa informação (ex: uma aba nova na planilha).'
+    +'</div></div>';
+
+  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>👥 Gestão de Pessoas — '+area+'</h3></div><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Cargo</th><th>Nível</th><th>Gestor</th></tr></thead><tbody>';
+  pessoas.forEach(p=>{
+    h+='<tr><td><strong>'+p.a+'</strong></td><td>'+(p.cargo||'—')+'</td><td>'+(p.nv||'—')+'</td><td>'+(p.gestor||'—')+'</td></tr>';
+  });
+  if(pessoas.length===0) h+='<tr><td colspan="4" style="text-align:center;color:var(--text-faint)">Nenhuma pessoa cadastrada nessa área.</td></tr>';
+  h+='</tbody></table></div></div>';
+
+  if(semAloc.length>0){
+    h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>🔴 Sem Alocação ('+semAloc.length+')</h3></div><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Cargo</th></tr></thead><tbody>';
+    semAloc.forEach(o=>{ h+='<tr><td><strong>'+o.a+'</strong></td><td>'+(o.cargo||'—')+'</td></tr>'; });
+    h+='</tbody></table></div></div>';
+  }
+  if(alocSemApo.length>0){
+    h+='<div class="card"><div class="card-title"><h3>⚠️ Alocados, sem Apontamento no Zoho ('+alocSemApo.length+')</h3></div><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Projetos</th></tr></thead><tbody>';
+    alocSemApo.forEach(o=>{ h+='<tr><td><strong>'+o.a+'</strong></td><td>'+(o.projetos||[]).map(pj=>'<span class="status-pill">'+pj+'</span>').join(' ')+'</td></tr>'; });
+    h+='</tbody></table></div></div>';
+  }
+  contentEl.innerHTML=h;
+}
+
+// ============================================================
+// GESTÃO TRANSVERSAL (PROJETOS & SQUADS) — visão de LP/GP/SM.
+// Baseada no esquema: Foco Operacional (GP/SM: atraso, bloqueios, conclusão) +
+// Foco Estratégico (LP: prazo previsto, comparativo de prazos) + Produtividade
+// (horas estimado x executado). "Atraso causado pelo cliente?" NÃO é rastreado
+// no dashboard hoje (não existe esse campo nos dados de origem).
+// ============================================================
+function initTransversal(){
+  const clientes=[...new Set(D.pj.map(p=>p.cl).filter(Boolean))].sort();
+  document.getElementById('f-transversal-cl').innerHTML='<option value="">Todos</option>'+clientes.map(c=>'<option value="'+c.replace(/"/g,'&quot;')+'">'+c+'</option>').join('');
+  document.getElementById('f-transversal-cl').onchange=renderTransversal;
+  document.getElementById('f-transversal-st').onchange=renderTransversal;
+  document.getElementById('f-transversal-clear').onclick=()=>{document.getElementById('f-transversal-cl').value='';document.getElementById('f-transversal-st').value='';renderTransversal();};
+  renderTransversal();
+}
+function renderTransversal(){
+  const cl=document.getElementById('f-transversal-cl').value;
+  const st=document.getElementById('f-transversal-st').value;
+  let prj=D.pj.slice();
+  if(cl) prj=prj.filter(p=>p.cl===cl);
+  if(st==='todos'){ /* sem filtro de status */ }
+  else if(st){ prj=prj.filter(p=>p.st===st); }
+  else { prj=prj.filter(p=>p.st==='Em Andamento'||p.st==='Sustentação'); } // padrão: só ativos
+  prj=sortByStatusOrder(prj);
+
+  let atrasados=0,bloqueados=0,tEst=0,tApo=0;
+  prj.forEach(p=>{
+    if(p.dd&&String(p.dd).toLowerCase().includes('atraso')) atrasados++;
+    if(p.tar_bloq>0) bloqueados++;
+    tEst+=p.horas_est||0; tApo+=p.horas_apo||0;
+  });
+  const pctConsumo=tEst>0?Math.round(tApo/tEst*100):null;
+
+  document.getElementById('kpi-transversal').innerHTML=`
+    <div class="kpi"><span class="kpi-label">Projetos</span><span class="kpi-value">${prj.length}</span></div>
+    <div class="kpi"><span class="kpi-label">Atraso do Projeto${infoTip('Foco Operacional (GP/SM): projeto com indicador de atraso no cronograma.')}</span><span class="kpi-value" style="color:${atrasados>0?'var(--st-bloqueado)':'var(--text)'}">${atrasados}</span></div>
+    <div class="kpi"><span class="kpi-label">Com Impedimentos/Bloqueios${infoTip('Foco Operacional (GP/SM): projetos com pelo menos uma tarefa em status "Blocked".')}</span><span class="kpi-value" style="color:${bloqueados>0?'#f59e0b':'var(--text)'}">${bloqueados}</span></div>
+    <div class="kpi"><span class="kpi-label">Horas — Estimado x Executado${infoTip(TIP_ESTIMADO_EXECUTADO)}</span><span class="kpi-value">${fH(tEst)} → ${fH(tApo)}</span><span class="kpi-foot">${pctConsumo===null?'—':pctConsumo+'% consumido'}</span></div>`;
+
+  let h='<div class="proj-grid">';
+  prj.forEach(p=>{
+    const at=p.dd&&String(p.dd).toLowerCase().includes('atraso');
+    const pctEst=p.horas_est>0?Math.round(p.horas_apo/p.horas_est*100):null;
+    // Comparativo de Prazos: Data de Conclusão x Data Prevista (Foco Estratégico do LP)
+    let compH='';
+    if(p.de && p.pea){
+      const dConc=parseBrDateLocal_(p.de), dPrev=parseBrDateLocal_(p.pea);
+      if(dConc&&dPrev){
+        const diffDias=Math.round((dConc-dPrev)/86400000);
+        compH='<span class="status-pill" style="border-left:3px solid '+(diffDias>0?'var(--st-bloqueado)':'var(--st-feito)')+'" title="Data de Conclusão x Data Prevista">📐 '+(diffDias>0?diffDias+'d após o previsto':diffDias<0?Math.abs(diffDias)+'d antes do previsto':'no prazo previsto')+'</span>';
+      }
+    } else if(p.pea && !p.de){
+      compH='<span class="status-pill" title="Ainda não concluído">📐 Previsto: '+p.pea+'</span>';
+    }
+    const equipeH=(p.eq||[]).map(m=>'<span class="status-pill">'+m+'</span>').join(' ');
+    h+=`<div class="proj-card" data-idx="0" data-pj="${p.pj.replace(/"/g,'&quot;')}">
+      <div class="proj-card-top">
+        <div class="proj-card-name">${p.pj}</div>
+        ${statusChipHtml(p.st)}
+      </div>
+      <div class="proj-card-meta">
+        <span>🏢 <strong>${p.cl}</strong></span>
+        <span>🧑‍💼 LP/Líder: <strong>${p.lider||'—'}</strong></span>
+        <span>⚙️ GP: <strong>${p.gp||'—'}</strong></span>
+        ${p.sm?'<span>🎯 SM: <strong>'+p.sm+'</strong></span>':''}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+        ${p.dd?'<span class="status-pill" style="border-left:3px solid '+(at?'var(--st-bloqueado)':'var(--text-faint)')+';color:'+(at?'var(--st-bloqueado)':'inherit')+'">'+(at?'⚠️ ':'📅 ')+p.dd+'</span>':''}
+        ${p.tar_bloq>0?'<span class="status-pill" style="border-left:3px solid #f59e0b;color:#f59e0b">🚧 '+p.tar_bloq+' bloqueada(s)</span>':''}
+        ${compH}
+      </div>
+      ${ritmoBadgeHtml(p)?'<div style="margin-bottom:10px">'+ritmoBadgeHtml(p)+'</div>':''}
+      <div class="proj-card-hours">
+        <div><span class="proj-card-hours-label">Estimado</span><span class="proj-card-hours-val">${fH(p.horas_est)}</span></div>
+        <div><span class="proj-card-hours-label">Executado</span><span class="proj-card-hours-val" style="color:var(--primary)">${fH(p.horas_apo)}</span></div>
+        ${pctEst!=null?'<div><span class="proj-card-hours-label">% Consumo</span><span class="proj-card-hours-val" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+pctEst+'%</span></div>':''}
+      </div>
+      <div style="font-size:11px;color:var(--text-faint);margin:8px 0 4px;text-transform:uppercase;letter-spacing:.03em">Squad</div>
+      <div style="line-height:1.9;margin-bottom:8px">${equipeH||'<span style="color:var(--text-faint)">— sem equipe registrada —</span>'}</div>
+      <div class="proj-card-cta">Ver detalhamento completo →</div>
+    </div>`;
+  });
+  h+='</div>';
+  if(prj.length===0) h='<div class="empty-state" style="padding:80px 20px"><p>Nenhum projeto encontrado com esses filtros.</p></div>';
+  document.getElementById('transversal-content').innerHTML=h;
+}
+
+function boot(){initCliente();initPessoa();initArea();initPend();renderOciosos();initTopExec();renderFuturistic();initLider();initGerente();initEquipe();initSetorial();initTransversal();}
 document.addEventListener('DOMContentLoaded',()=>{
   const vEl=document.getElementById('login-version-info');
   if(vEl) vEl.innerHTML='Versão '+APP_VERSION+'<br>A data de atualização dos dados aparece após o login';
