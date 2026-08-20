@@ -838,6 +838,19 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 }
 @keyframes login-spin{to{transform:rotate(360deg);}}
 
+/* Indicador flutuante de carregamento pra trocas que acontecem com o dashboard
+   já visível (ex: "Visualizar como") — o spinner do login fica escondido dentro
+   do overlay de login (que já está oculto nesse ponto), então sem isso a pessoa
+   não via nenhum indicativo de que algo estava carregando. */
+.viewas-loading-toast{
+  display:none; position:fixed; top:70px; left:50%; transform:translateX(-50%);
+  z-index:100000; align-items:center; gap:10px;
+  background:var(--surface); border:1px solid var(--border); border-radius:999px;
+  padding:10px 18px; box-shadow:0 10px 30px -6px rgba(0,0,0,.25);
+  font-size:13px; font-weight:600; color:var(--text);
+}
+.viewas-loading-toast.show{display:flex;}
+
 @media (max-width:820px){
   .login-visual{display:none;}
   #login-overlay{padding:16px;}
@@ -1198,7 +1211,11 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v4.7 · Última atualização: —</footer>
+  <footer id="app-footer">v4.10 · Última atualização: —</footer>
+</div>
+<div id="viewas-loading-toast" class="viewas-loading-toast">
+  <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
+  <span>Carregando…</span>
 </div>
 <div id="task-modal-overlay" class="task-modal-overlay">
   <div class="task-modal-card">
@@ -1261,7 +1278,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v3.1, v3.2, ...,
 // v3.10, v4.0, v4.1, ...) — nunca v3.11. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v4.7';
+const APP_VERSION='v4.10';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1313,10 +1330,18 @@ let TODOS_USUARIOS=[];    // lista {email,nome,perfil} — só vem preenchida qu
 async function attemptLoadWithToken(token, viewAsEmail){
   hideLoginError();
   setLoginLoading(true);
+  // Se o overlay de login já está escondido, essa chamada é uma troca pós-login
+  // (Visualizar como / Voltar para meu acesso) — o spinner do login não aparece
+  // nesse caso (fica dentro do overlay oculto), então mostramos este indicador
+  // flutuante equivalente pra pessoa saber que algo está carregando.
+  const loginJaEscondido=document.getElementById('login-overlay').classList.contains('hidden');
+  const toast=document.getElementById('viewas-loading-toast');
+  if(loginJaEscondido && toast) toast.classList.add('show');
   AUTH_TOKEN=token;
   const isPlaceholder=!DASHBOARD_API_URL || DASHBOARD_API_URL.indexOf('COLE_AQUI')!==-1;
   if(isPlaceholder){
     setLoginLoading(false);
+    if(toast) toast.classList.remove('show');
     showLoginError('Configuração pendente: URL do Apps Script não definida.');
     return;
   }
@@ -1325,6 +1350,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
     let urlWithToken=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(token);
     if(viewAsEmail) urlWithToken+='&viewAs='+encodeURIComponent(viewAsEmail);
     const j=await loadDataJSONP(urlWithToken);
+    if(toast) toast.classList.remove('show');
     if(j && j.error){
       setLoginLoading(false);
       if(j.internal){
@@ -1355,18 +1381,24 @@ async function attemptLoadWithToken(token, viewAsEmail){
     addLogoutControl(j._usuarioNome||j._usuario, j._perfil);
     atualizarFaixaVisualizarComo();
     aplicarMenuDinamico();
-    // Se a página ativa no momento não é permitida pro novo perfil efetivo, volta pro Portfólio
+    // Se a página ativa no momento não é permitida pro novo perfil efetivo, volta
+    // pra primeira página permitida dele (não assume mais que "cliente"/Portfólio
+    // está sempre disponível — perfis mais restritos, como Projetos, podem nem
+    // ter essa página no menu).
     const paginaAtivaEl=document.querySelector('.page.active');
-    const nomePaginaAtiva=paginaAtivaEl?paginaAtivaEl.id.replace('page-',''):null;
-    if(nomePaginaAtiva && !paginasPermitidas().includes(nomePaginaAtiva)){
+    let paginaAlvo=paginaAtivaEl?paginaAtivaEl.id.replace('page-',''):'cliente';
+    if(paginaAlvo && !paginasPermitidas().includes(paginaAlvo)){
+      paginaAlvo=paginasPermitidas()[0]||'cliente';
       document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-      document.getElementById('page-cliente').classList.add('active');
-      document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.page==='cliente'));
+      const alvoEl=document.getElementById('page-'+paginaAlvo);
+      if(alvoEl) alvoEl.classList.add('active');
+      document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.page===paginaAlvo));
     }
 
-    boot();
+    boot(paginaAlvo);
   }catch(e){
     setLoginLoading(false);
+    if(toast) toast.classList.remove('show');
     console.warn('Falha ao contatar o Apps Script.',e);
     showLoginError('Não foi possível contatar o servidor. Verifique sua conexão e tente novamente.');
   }
@@ -1521,7 +1553,9 @@ const PERM_MENU = {
   // Perfis de área: escopo restrito aos próprios dados — só as páginas essenciais.
   // 'Projetos' é diferente dos demais: vê o(s) projeto(s) onde atua (não é mais
   // escopo "próprio apenas"), então tem o mesmo menu de Tech Lead/PO/SM.
-  'Projetos':       ['cliente','pessoa','gerente','pend','projdetail','transversal'],
+  // 'Projetos' só deve ver a própria Gerência (com o projeto dele) e o
+  // Detalhamento do Projeto — nenhuma outra página faz sentido pra esse perfil.
+  'Projetos':       ['gerente','projdetail'],
   'Corporativo':    ['cliente','pessoa','projdetail'],
   'Infra':          ['cliente','pessoa','projdetail'],
   'Analytics':      ['cliente','pessoa','projdetail'],
@@ -1609,15 +1643,16 @@ function goToPage(name){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 // Equivalente a history.back(): desempilha a última página visitada e navega até
-// ela. Se não houver histórico (pilha vazia), cai no fallback pedido: página
-// principal/Portfólio.
+// ela. Se não houver histórico (pilha vazia), cai no fallback: primeira página
+// permitida do perfil atual (normalmente Portfólio, mas perfis mais restritos,
+// como Projetos, podem nem ter essa página disponível).
 function voltarPaginaAnterior(){
   const anterior = PAGE_NAV_STACK.pop();
   if(anterior && paginasPermitidas().includes(anterior)){
     PAGE_NAV_GOING_BACK = true;
     goToPage(anterior);
   } else {
-    goToPage('cliente'); // fallback: página principal/Portfólio
+    goToPage(paginasPermitidas()[0]||'cliente');
   }
 }
 function fecharTodosDropdownsMenu(){
@@ -1857,7 +1892,7 @@ function renderCliente(){
       <div class="proj-card-hours">
         <div><span class="proj-card-hours-label">Estimado</span><span class="proj-card-hours-val">${fH(p.horas_est)}</span></div>
         <div><span class="proj-card-hours-label">Executado</span><span class="proj-card-hours-val" style="color:var(--primary)">${fH(p.horas_apo)}</span></div>
-        ${pctEst!=null?'<div><span class="proj-card-hours-label">% Consumo</span><span class="proj-card-hours-val" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+pctEst+'%</span></div>':''}
+        ${pctEst!=null?'<div><span class="proj-card-hours-label">Consumo de Horas</span><span class="proj-card-hours-val" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+pctEst+'%</span></div>':''}
       </div>
       ${p.tar_sem_est>0?'<div class="proj-card-warn">⚠ '+p.tar_sem_est+' tarefa(s) sem estimativa</div>':''}
       <div class="proj-card-status-row">${stH}</div>
@@ -2406,7 +2441,7 @@ function renderProjDetail(pjName){
   h += '<div class="grid grid-kpi" style="margin-bottom:16px">';
   h += '<div class="kpi"><span class="kpi-label">Horas Previstas</span><span class="kpi-value">'+fH(p.horas_est)+'</span></div>';
   h += '<div class="kpi"><span class="kpi-label">Horas Realizadas</span><span class="kpi-value" style="color:var(--primary)">'+fH(p.horas_apo)+'</span></div>';
-  h += '<div class="kpi"><span class="kpi-label">% Consumo</span><span class="kpi-value" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+(pctEst!=null?pctEst+'%':'—')+'</span></div>';
+  h += '<div class="kpi"><span class="kpi-label">Consumo de Horas</span><span class="kpi-value" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+(pctEst!=null?pctEst+'%':'—')+'</span></div>';
   h += '<div class="kpi"><span class="kpi-label">Vencendo Esta Semana</span><span class="kpi-value" style="color:'+(tarefasSemana.length>0?'var(--st-bloqueado)':'var(--primary)')+'">'+tarefasSemana.length+'</span></div>';
   h += '</div>';
 
@@ -3121,7 +3156,7 @@ function renderLider(){
       <div class="proj-card-hours">
         <div><span class="proj-card-hours-label">Estimado</span><span class="proj-card-hours-val">${fH(p.horas_est)}</span></div>
         <div><span class="proj-card-hours-label">Executado</span><span class="proj-card-hours-val" style="color:var(--primary)">${fH(p.horas_apo)}</span></div>
-        ${pctEst!=null?'<div><span class="proj-card-hours-label">% Consumo</span><span class="proj-card-hours-val" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+pctEst+'%</span></div>':''}
+        ${pctEst!=null?'<div><span class="proj-card-hours-label">Consumo de Horas</span><span class="proj-card-hours-val" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+pctEst+'%</span></div>':''}
       </div>
       <div class="proj-card-status-row">${stH}</div>
       <div style="font-size:11px;color:var(--text-faint);margin:8px 0 4px;text-transform:uppercase;letter-spacing:.03em">Equipe</div>
@@ -3193,7 +3228,7 @@ function renderGerente(){
       <div class="proj-card-hours">
         <div><span class="proj-card-hours-label">Estimado</span><span class="proj-card-hours-val">${fH(p.horas_est)}</span></div>
         <div><span class="proj-card-hours-label">Executado</span><span class="proj-card-hours-val" style="color:var(--primary)">${fH(p.horas_apo)}</span></div>
-        ${pctEst!=null?'<div><span class="proj-card-hours-label">% Consumo</span><span class="proj-card-hours-val" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+pctEst+'%</span></div>':''}
+        ${pctEst!=null?'<div><span class="proj-card-hours-label">Consumo de Horas</span><span class="proj-card-hours-val" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+pctEst+'%</span></div>':''}
       </div>
       <div class="proj-card-status-row">${stH}</div>
       <div style="font-size:11px;color:var(--text-faint);margin:8px 0 4px;text-transform:uppercase;letter-spacing:.03em">Equipe</div>
@@ -3549,7 +3584,7 @@ function renderTransversal(){
       <div class="proj-card-hours">
         <div><span class="proj-card-hours-label">Estimado</span><span class="proj-card-hours-val">${fH(p.horas_est)}</span></div>
         <div><span class="proj-card-hours-label">Executado</span><span class="proj-card-hours-val" style="color:var(--primary)">${fH(p.horas_apo)}</span></div>
-        ${pctEst!=null?'<div><span class="proj-card-hours-label">% Consumo</span><span class="proj-card-hours-val" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+pctEst+'%</span></div>':''}
+        ${pctEst!=null?'<div><span class="proj-card-hours-label">Consumo de Horas</span><span class="proj-card-hours-val" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+pctEst+'%</span></div>':''}
       </div>
       <div style="font-size:11px;color:var(--text-faint);margin:8px 0 4px;text-transform:uppercase;letter-spacing:.03em">Squad</div>
       <div style="line-height:1.9;margin-bottom:8px">${equipeH||'<span style="color:var(--text-faint)">— sem equipe registrada —</span>'}</div>
@@ -3561,7 +3596,35 @@ function renderTransversal(){
   document.getElementById('transversal-content').innerHTML=h;
 }
 
-function boot(){initCliente();initPessoa();initArea();initPend();initOciosos();initTopExec();renderFuturistic();initLider();initGerente();initEquipe();initSetorial();initTransversal();}
+// Mapa página -> função de inicialização/render. Usado pra priorizar a
+// renderização da página que a pessoa está vendo (rápido, imediato) e adiar o
+// resto (que ela não está olhando ainda) sem bloquear a thread principal —
+// principalmente relevante ao trocar de perfil em "Visualizar como", quando o
+// dashboard inteiro (12 páginas) recarrega de uma vez.
+const PAGE_INIT_MAP={
+  cliente:initCliente, pessoa:initPessoa, area:initArea, pend:initPend,
+  ociosos:initOciosos, topexec:initTopExec, futuristic:renderFuturistic,
+  lider:initLider, gerente:initGerente, equipe:initEquipe,
+  setorial:initSetorial, transversal:initTransversal
+};
+function boot(paginaPrioritaria){
+  const ordem=Object.keys(PAGE_INIT_MAP);
+  const prioritaria = paginaPrioritaria && ordem.includes(paginaPrioritaria) ? paginaPrioritaria : 'cliente';
+  // Renderiza AGORA, de forma síncrona, só a página que a pessoa está vendo —
+  // é o que ela precisa ver rápido.
+  PAGE_INIT_MAP[prioritaria]();
+  // O resto continua sendo renderizado (ninguém fica com dado desatualizado ao
+  // navegar depois), só que espalhado ao longo de vários "respiros" do
+  // navegador (setTimeout 0) em vez de tudo de uma vez bloqueando a tela.
+  const resto=ordem.filter(p=>p!==prioritaria);
+  function renderProximo(){
+    const nome=resto.shift();
+    if(!nome) return;
+    PAGE_INIT_MAP[nome]();
+    setTimeout(renderProximo, 0);
+  }
+  setTimeout(renderProximo, 0);
+}
 document.addEventListener('DOMContentLoaded',()=>{
   const vEl=document.getElementById('login-version-info');
   if(vEl) vEl.innerHTML='Versão '+APP_VERSION+'<br>A data de atualização dos dados aparece após o login';
