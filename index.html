@@ -775,10 +775,20 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 
 .fut-kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px}
 .fut-kpi{background:rgba(8,20,36,.85);border:1px solid rgba(56,189,248,.2);border-radius:12px;padding:16px 20px;position:relative;overflow:hidden;cursor:help;
+  transition:transform .15s,box-shadow .15s;
   animation:fut-kpi-glow 3.5s ease-in-out infinite; animation-delay:var(--kpi-delay,0s);}
 @keyframes fut-kpi-glow{0%,100%{box-shadow:0 0 0 rgba(56,189,248,0)}50%{box-shadow:0 0 22px -4px var(--kpi-color,rgba(56,189,248,.5))}}
 .fut-kpi:before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--kpi-color,#38BDF8);box-shadow:0 0 10px var(--kpi-color,#38BDF8)}
 .fut-kpi-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:#6ba6c2;font-weight:600;margin-bottom:6px;display:block}
+
+/* Indicação visual de que o item é clicável (abre modal de detalhamento) */
+.fut-clickable{cursor:pointer;}
+.fut-kpi.fut-clickable:hover{transform:translateY(-2px);box-shadow:0 8px 24px -6px rgba(56,189,248,.35);}
+.fut-gauge-card.fut-clickable:hover .fut-gauge-label{color:#7DD3FC;}
+.fut-bar-row.fut-clickable:hover .fut-bar-label{color:#7DD3FC;}
+.fut-alert.fut-clickable:hover{background:rgba(255,20,60,.12);border-color:rgba(255,20,60,.5);}
+.fut-alert.ok.fut-clickable:hover{background:rgba(56,189,248,.14);border-color:rgba(56,189,248,.5);}
+#fut-linechart,#fut-ociosidade-chart{cursor:pointer;}
 .fut-kpi-val{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:700;color:#fff;text-shadow:0 0 12px var(--kpi-color,#38BDF8)}
 .fut-kpi-foot{font-size:11px;color:#4c7690;margin-top:2px}
 
@@ -1282,7 +1292,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v5.2 · Última atualização: —</footer>
+  <footer id="app-footer">v5.3 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1349,7 +1359,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v3.1, v3.2, ...,
 // v3.10, v4.0, v4.1, ...) — nunca v3.11. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v5.2';
+const APP_VERSION='v5.3';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1399,6 +1409,7 @@ function handleCredentialResponse(response){
 let VIEW_AS_STATE=null;   // {email,nome,perfil} quando "Visualizar como" está ativo, senão null
 let CURRENT_USER_NOME=null, CURRENT_USER_EMAIL=null; // identidade de quem preenche (Status Report usa isso pra "Gerente")
 let STATUS_REPORTS=[];
+let FUT_STATE={};
 let TODOS_USUARIOS=[];    // lista {email,nome,perfil} — só vem preenchida quando o usuário REAL é Administrador
 async function attemptLoadWithToken(token, viewAsEmail){
   hideLoginError();
@@ -3011,28 +3022,35 @@ function renderFuturistic(firstLoad){
   const noRitmoCount=ritmosAtivos.filter(r=>r.status==='No ritmo').length;
   const pctPortfolioNoRitmo=ritmosAtivos.length>0?Math.round(noRitmoCount/ritmosAtivos.length*100):0;
 
-  // Ociosidade média do time nesta semana
-  const [fcMon,fcSun]=getMondaySunday(new Date());
-  const ociosidadesTime=D.p.filter(p=>p.a).map(p=>{
-    const ek=(p.email||'').toLowerCase();
-    const hPrev=Object.entries(PPREVISTO[ek]||{}).filter(([d])=>d>=fcMon&&d<=fcSun).reduce((s,[,v])=>s+v,0);
-    const hExec=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&d>=fcMon&&d<=fcSun).reduce((s,[,v])=>s+v[0],0);
-    return hPrev>0?Math.max(0,Math.round((1-hExec/hPrev)*100)):null;
-  }).filter(x=>x!==null);
-  const ociosidadeMediaTime=ociosidadesTime.length>0?Math.round(ociosidadesTime.reduce((s,v)=>s+v,0)/ociosidadesTime.length):0;
+  // Guarda o contexto deste render (mês selecionado + listas já filtradas) pra
+  // os modais de detalhamento (item 15) usarem exatamente os mesmos dados e
+  // filtro de mês já aplicados na tela — sem recalcular nada em separado.
+  FUT_STATE={ mes, mesLabel, ativos, atrasadosCount, bloqueadasCount, allTasks, pessoasAtivas, totalPessoas, ritmosAtivos };
 
-  // GAUGES
+  // KPIs
+  const kpis=[
+    {label:'Projetos Ativos (atual)',val:ativos.length,color:'#38BDF8',foot:clientesSet.size+' clientes',cu:true,tipo:'projetos-ativos'},
+    {label:'Horas Executadas (mês)',val:Math.round(horasMes),color:'#0EA5E9',foot:mesLabel,cu:true,suffix:'h',tipo:'horas-mes'},
+    {label:'Pessoas Alocadas (atual)',val:pessoasAtivas,color:'#7DD3FC',foot:'de '+totalPessoas+' colaboradores',cu:true,tip:'Colaboradores com alguma alocação registrada — exclui quem está em "Disponibilidade Confirmada" (Página Disponibilidade).',tipo:'pessoas-alocadas'},
+    {label:'Projetos Atrasados (atual)',val:atrasadosCount,color: atrasadosCount>0?'#ff2d55':'#38BDF8',foot:'de '+ativos.length+' ativos',cu:true,tip:'Projetos ativos cuja data de entrega prevista já passou, sem terem sido concluídos.',tipo:'projetos-atrasados'},
+    {label:'Tarefas Bloqueadas (atual)',val:bloqueadasCount,color: bloqueadasCount>0?'#ffb300':'#38BDF8',foot:'em toda a carteira',cu:true,tip:'Tarefas com status "Blocked" em qualquer projeto do portfólio, no momento atual.',tipo:'tarefas-bloqueadas'},
+    {label:'Alertas Críticos (atual)',val:(EXECTOP.negativos.cli_risco.length+EXECTOP.negativos.zumbi.length),color:'#ff2d55',foot:'clientes em risco + projetos zumbi',cu:true,tip:'Soma de clientes classificados como "em risco" (múltiplos projetos com problema) e projetos "zumbi" (sem atividade recente, mas ainda ativos).',tipo:'alertas-criticos'},
+  ];
+  document.getElementById('fut-kpis').innerHTML = kpis.map((k,ki)=>
+    '<div class="fut-kpi fut-clickable" data-fut-detail="'+k.tipo+'" style="--kpi-color:'+k.color+';--kpi-delay:'+(ki*0.3)+'s" title="'+(k.tip||'Clique para ver os detalhes').replace(/"/g,'&quot;')+'"><span class="fut-kpi-label">'+k.label+'</span><div class="fut-kpi-val" data-countup="'+k.val+'" data-suffix="'+(k.suffix||'')+'">0</div><div class="fut-kpi-foot">'+k.foot+'</div></div>'
+  ).join('');
+  setTimeout(()=>{ countUpAll('#fut-kpis .fut-kpi-val'); }, 100);
   const gauges=[
-    {label:'Conclusão de Tarefas (mês)',val:pctConclusaoMes,color:'#38BDF8',glow:'rgba(56,189,248,.7)',tip:'Percentual de tarefas concluídas ("Done") entre as tarefas com vencimento no mês selecionado.'},
-    {label:'Entregas no Prazo (atual)',val:pctPrazo,color: pctPrazo>=80?'#38BDF8':pctPrazo>=50?'#ffb300':'#ff2d55',glow:pctPrazo>=80?'rgba(56,189,248,.7)':pctPrazo>=50?'rgba(255,179,0,.7)':'rgba(255,45,85,.7)',tip:'Percentual de projetos ativos que não estão em atraso, em relação ao total de projetos ativos.'},
-    {label:'Consumo de Horas (mês)',val:Math.min(pctConsumoMes,999),color: pctConsumoMes>15?'#0EA5E9':'#0EA5E9',glow:'rgba(14,165,233,.7)',tip:'Horas apontadas no mês selecionado em relação às horas estimadas dos projetos ativos.'},
-    {label:'Ocupação do Time (atual)',val:pctOcupacao,color:'#7DD3FC',glow:'rgba(125,211,252,.7)',tip:'Percentual de colaboradores com alguma alocação registrada (Portifolio ou Zoho), excluindo quem está em "Disponibilidade Confirmada" (sem nenhuma alocação).'},
-    {label:'Portfólio no Ritmo (atual)',val:pctPortfolioNoRitmo,color: pctPortfolioNoRitmo>=60?'#38BDF8':pctPortfolioNoRitmo>=35?'#ffb300':'#ff2d55',glow:pctPortfolioNoRitmo>=60?'rgba(56,189,248,.7)':pctPortfolioNoRitmo>=35?'rgba(255,179,0,.7)':'rgba(255,45,85,.7)',tip:TIP_RITMO_PROJETO+' Aqui: % de projetos ativos classificados como "No ritmo".'},
+    {label:'Conclusão de Tarefas (mês)',val:pctConclusaoMes,color:'#38BDF8',glow:'rgba(56,189,248,.7)',tip:'Percentual de tarefas concluídas ("Done") entre as tarefas com vencimento no mês selecionado.',tipo:'conclusao-mes'},
+    {label:'Entregas no Prazo (atual)',val:pctPrazo,color: pctPrazo>=80?'#38BDF8':pctPrazo>=50?'#ffb300':'#ff2d55',glow:pctPrazo>=80?'rgba(56,189,248,.7)':pctPrazo>=50?'rgba(255,179,0,.7)':'rgba(255,45,85,.7)',tip:'Percentual de projetos ativos que não estão em atraso, em relação ao total de projetos ativos.',tipo:'entregas-prazo'},
+    {label:'Consumo de Horas (mês)',val:Math.min(pctConsumoMes,999),color: pctConsumoMes>15?'#0EA5E9':'#0EA5E9',glow:'rgba(14,165,233,.7)',tip:'Horas apontadas no mês selecionado em relação às horas estimadas dos projetos ativos.',tipo:'horas-mes'},
+    {label:'Ocupação do Time (atual)',val:pctOcupacao,color:'#7DD3FC',glow:'rgba(125,211,252,.7)',tip:'Percentual de colaboradores com alguma alocação registrada (Portifolio ou Zoho), excluindo quem está em "Disponibilidade Confirmada" (sem nenhuma alocação).',tipo:'pessoas-alocadas'},
+    {label:'Portfólio no Ritmo (atual)',val:pctPortfolioNoRitmo,color: pctPortfolioNoRitmo>=60?'#38BDF8':pctPortfolioNoRitmo>=35?'#ffb300':'#ff2d55',glow:pctPortfolioNoRitmo>=60?'rgba(56,189,248,.7)':pctPortfolioNoRitmo>=35?'rgba(255,179,0,.7)':'rgba(255,45,85,.7)',tip:TIP_RITMO_PROJETO+' Aqui: % de projetos ativos classificados como "No ritmo".',tipo:'portfolio-ritmo'},
   ];
   document.getElementById('fut-gauges').innerHTML = gauges.map((g,gi)=>{
     const displayVal = g.label.indexOf('Consumo')===0 ? pctConsumoMes : g.val;
     const ringPct = Math.min(g.val,100);
-    return '<div class="fut-gauge-card"><div class="fut-ring" style="--ring-pct:0;--ring-color:'+g.color+';--ring-glow:'+g.glow+'" data-target="'+ringPct+'"><span class="fut-ring-val" data-countup="'+displayVal+'" data-suffix="%">0%</span></div><div class="fut-gauge-label" title="'+(g.tip||'').replace(/"/g,'&quot;')+'">'+g.label+'</div></div>';
+    return '<div class="fut-gauge-card fut-clickable" data-fut-detail="'+g.tipo+'"><div class="fut-ring" style="--ring-pct:0;--ring-color:'+g.color+';--ring-glow:'+g.glow+'" data-target="'+ringPct+'"><span class="fut-ring-val" data-countup="'+displayVal+'" data-suffix="%">0%</span></div><div class="fut-gauge-label" title="'+(g.tip||'').replace(/"/g,'&quot;')+'">'+g.label+'</div></div>';
   }).join('');
   setTimeout(()=>{
     document.querySelectorAll('#fut-gauges .fut-ring').forEach(el=>{
@@ -3040,21 +3058,6 @@ function renderFuturistic(firstLoad){
     });
     countUpAll('#fut-gauges .fut-ring-val');
   }, 100);
-
-  // KPIs
-  const kpis=[
-    {label:'Projetos Ativos (atual)',val:ativos.length,color:'#38BDF8',foot:clientesSet.size+' clientes',cu:true},
-    {label:'Horas Executadas (mês)',val:Math.round(horasMes),color:'#0EA5E9',foot:mesLabel,cu:true,suffix:'h'},
-    {label:'Pessoas Alocadas (atual)',val:pessoasAtivas,color:'#7DD3FC',foot:'de '+totalPessoas+' colaboradores',cu:true,tip:'Colaboradores com alguma alocação registrada — exclui quem está em "Disponibilidade Confirmada" (Página Disponibilidade).'},
-    {label:'Projetos Atrasados (atual)',val:atrasadosCount,color: atrasadosCount>0?'#ff2d55':'#38BDF8',foot:'de '+ativos.length+' ativos',cu:true,tip:'Projetos ativos cuja data de entrega prevista já passou, sem terem sido concluídos.'},
-    {label:'Tarefas Bloqueadas (atual)',val:bloqueadasCount,color: bloqueadasCount>0?'#ffb300':'#38BDF8',foot:'em toda a carteira',cu:true,tip:'Tarefas com status "Blocked" em qualquer projeto do portfólio, no momento atual.'},
-    {label:'Alertas Críticos (atual)',val:(EXECTOP.negativos.cli_risco.length+EXECTOP.negativos.zumbi.length),color:'#ff2d55',foot:'clientes em risco + projetos zumbi',cu:true,tip:'Soma de clientes classificados como "em risco" (múltiplos projetos com problema) e projetos "zumbi" (sem atividade recente, mas ainda ativos).'},
-    {label:'Ociosidade Média do Time',val:ociosidadeMediaTime,color: ociosidadeMediaTime>=50?'#ff2d55':ociosidadeMediaTime>=25?'#ffb300':'#38BDF8',foot:'previsto x executado, esta semana',cu:true,suffix:'%',tip:TIP_OCIOSIDADE_SEMANAL+' Aqui: média entre todas as pessoas do portfólio.'},
-  ];
-  document.getElementById('fut-kpis').innerHTML = kpis.map((k,ki)=>
-    '<div class="fut-kpi" style="--kpi-color:'+k.color+';--kpi-delay:'+(ki*0.3)+'s" title="'+(k.tip||'').replace(/"/g,'&quot;')+'"><span class="fut-kpi-label">'+k.label+'</span><div class="fut-kpi-val" data-countup="'+k.val+'" data-suffix="'+(k.suffix||'')+'">0</div><div class="fut-kpi-foot">'+k.foot+'</div></div>'
-  ).join('');
-  setTimeout(()=>{ countUpAll('#fut-kpis .fut-kpi-val'); }, 100);
 
   // BARRAS: Horas por área NO MÊS selecionado
   const areaEntries=Object.entries(AREAS).map(([n,d])=>{
@@ -3064,7 +3067,7 @@ function renderFuturistic(firstLoad){
   }).sort((a,b)=>b.h-a.h).slice(0,8);
   const maxH=Math.max(...areaEntries.map(a=>a.h),1);
   document.getElementById('fut-bars').innerHTML = areaEntries.map(a=>
-    '<div class="fut-bar-row"><div class="fut-bar-label">'+a.n+'</div><div class="fut-bar-track"><div class="fut-bar-fill" data-w="'+Math.round(a.h/maxH*100)+'"></div></div><div class="fut-bar-val">'+fH(a.h)+'</div></div>'
+    '<div class="fut-bar-row fut-clickable" data-fut-detail="area-mes" data-fut-area="'+a.n.replace(/"/g,'&quot;')+'"><div class="fut-bar-label">'+a.n+'</div><div class="fut-bar-track"><div class="fut-bar-fill" data-w="'+Math.round(a.h/maxH*100)+'"></div></div><div class="fut-bar-val">'+fH(a.h)+'</div></div>'
   ).join('');
   setTimeout(()=>{
     document.querySelectorAll('#fut-bars .fut-bar-fill').forEach(el=>{ el.style.width=el.dataset.w+'%'; });
@@ -3094,6 +3097,19 @@ function renderFuturistic(firstLoad){
       }]},
       options:{responsive:true,maintainAspectRatio:false,
         animation:{duration:1400,easing:'easeOutQuart'},
+        onClick:(evt,elems)=>{
+          if(!elems.length) return;
+          const mesClicado=monthsSorted[elems[0].index];
+          const totalMes=monthTotals[mesClicado]||0;
+          const linhas=Object.entries(AREAS).map(([n,d])=>{
+            let h=0; Object.entries(d.ad||{}).forEach(([dt,v])=>{ if(dt.slice(0,7)===mesClicado) h+=v[0]; });
+            return {n,h};
+          }).filter(a=>a.h>0).sort((a,b)=>b.h-a.h);
+          document.getElementById('task-modal-title').textContent='Horas Executadas — '+(ML[mesClicado.split('-')[1]]+'/'+mesClicado.split('-')[0]);
+          document.getElementById('task-modal-body').innerHTML='<div style="margin-bottom:10px;font-size:13px;color:var(--text-faint)">Total do mês: <strong>'+fH(totalMes)+'</strong></div>'+
+            (linhas.length===0?'<div class="empty-state" style="padding:20px"><p>Sem detalhamento por área.</p></div>':'<div class="table-wrap"><table><thead><tr><th>Área</th><th>Horas</th></tr></thead><tbody>'+linhas.map(a=>'<tr><td>'+a.n+'</td><td>'+fH(a.h)+'</td></tr>').join('')+'</tbody></table></div>');
+          document.getElementById('task-modal-overlay').classList.add('show');
+        },
         plugins:{legend:{display:false},tooltip:{backgroundColor:'#0a1a2c',borderColor:'#38BDF8',borderWidth:1,titleColor:'#BAE6FD',bodyColor:'#fff',
           callbacks:{label:(ctx)=>fH(ctx.raw)}}},
         scales:{
@@ -3136,6 +3152,22 @@ function renderFuturistic(firstLoad){
       }]},
       options:{responsive:true,maintainAspectRatio:false,
         animation:{duration:1400,easing:'easeOutQuart'},
+        onClick:(evt,elems)=>{
+          if(!elems.length) return;
+          const sem=semanasRef[elems[0].index];
+          const linhas=D.p.filter(p=>p.a).map(p=>{
+            const ek=(p.email||'').toLowerCase();
+            const hPrev=Object.entries(PPREVISTO[ek]||{}).filter(([d])=>d>=sem.mon&&d<=sem.sun).reduce((s,[,v])=>s+v,0);
+            const hExec=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&d>=sem.mon&&d<=sem.sun).reduce((s,[,v])=>s+v[0],0);
+            const pct=hPrev>0?Math.max(0,Math.round((1-hExec/hPrev)*100)):null;
+            return {p,pct,hPrev,hExec};
+          }).filter(x=>x.pct!==null).sort((a,b)=>b.pct-a.pct);
+          document.getElementById('task-modal-title').textContent='Ociosidade da Semana — '+sem.label;
+          document.getElementById('task-modal-body').innerHTML=linhas.length===0?'<div class="empty-state" style="padding:20px"><p>Nenhuma tarefa vencendo nesta semana.</p></div>':
+            '<div class="table-wrap"><table><thead><tr><th>Nome</th><th>% Ociosidade</th><th>Previsto</th><th>Executado</th></tr></thead><tbody>'+
+            linhas.map(x=>'<tr><td>'+personLinkHtml(x.p.a)+'</td><td>'+x.pct+'%</td><td>'+fH(x.hPrev)+'</td><td>'+fH(x.hExec)+'</td></tr>').join('')+'</tbody></table></div>';
+          document.getElementById('task-modal-overlay').classList.add('show');
+        },
         plugins:{legend:{display:false},tooltip:{backgroundColor:'#0a1a2c',borderColor:'#ffb300',borderWidth:1,titleColor:'#BAE6FD',bodyColor:'#fff',
           callbacks:{label:(ctx)=>ctx.raw===null?'sem dados':ctx.raw+'% de ociosidade'}}},
         scales:{
@@ -3148,22 +3180,132 @@ function renderFuturistic(firstLoad){
   // RADAR DE ALERTAS (sempre em tempo real, independente do mês)
   let alertsHtml='';
   EXECTOP.negativos.atrasados.slice(0,3).forEach(x=>{
-    alertsHtml+='<div class="fut-alert"><span class="fut-alert-icon">⏰</span><div class="fut-alert-txt"><b>'+x.pj+'</b> — '+x.dias+' dias de atraso<span>'+x.cl+' · GP: '+personLinkHtml(x.gp)+'</span></div></div>';
+    alertsHtml+='<div class="fut-alert fut-clickable" data-fut-detail="projeto-single" data-fut-pj="'+x.pj.replace(/"/g,'&quot;')+'"><span class="fut-alert-icon">⏰</span><div class="fut-alert-txt"><b>'+x.pj+'</b> — '+x.dias+' dias de atraso<span>'+x.cl+' · GP: '+personLinkHtml(x.gp)+'</span></div></div>';
   });
   EXECTOP.negativos.cli_risco.slice(0,2).forEach(x=>{
-    alertsHtml+='<div class="fut-alert"><span class="fut-alert-icon">⚠️</span><div class="fut-alert-txt"><b>'+x.n+'</b> — cliente em risco<span>'+x.atraso_count+' projeto(s) atrasado(s) · '+x.avg_pct+'% conclusão média</span></div></div>';
+    alertsHtml+='<div class="fut-alert fut-clickable" data-fut-detail="cliente-single" data-fut-cl="'+x.n.replace(/"/g,'&quot;')+'"><span class="fut-alert-icon">⚠️</span><div class="fut-alert-txt"><b>'+x.n+'</b> — cliente em risco<span>'+x.atraso_count+' projeto(s) atrasado(s) · '+x.avg_pct+'% conclusão média</span></div></div>';
   });
   EXECTOP.negativos.zumbi.slice(0,2).forEach(x=>{
-    alertsHtml+='<div class="fut-alert"><span class="fut-alert-icon">🧟</span><div class="fut-alert-txt"><b>'+x.pj+'</b> — projeto zumbi<span>'+(x.nunca?'Nunca apontado':x.dias_sem+' dias sem apontamento')+' · '+x.cl+'</span></div></div>';
+    alertsHtml+='<div class="fut-alert fut-clickable" data-fut-detail="projeto-single" data-fut-pj="'+x.pj.replace(/"/g,'&quot;')+'"><span class="fut-alert-icon">🧟</span><div class="fut-alert-txt"><b>'+x.pj+'</b> — projeto zumbi<span>'+(x.nunca?'Nunca apontado':x.dias_sem+' dias sem apontamento')+' · '+x.cl+'</span></div></div>';
   });
   if(EXECTOP.positivos.saude.length>0){
     const s=EXECTOP.positivos.saude[0];
-    alertsHtml+='<div class="fut-alert ok"><span class="fut-alert-icon">✅</span><div class="fut-alert-txt"><b>'+s.pj+'</b> — melhor saúde de entrega<span>'+s.pct+'% concluído · '+s.cl+'</span></div></div>';
+    alertsHtml+='<div class="fut-alert ok fut-clickable" data-fut-detail="projeto-single" data-fut-pj="'+s.pj.replace(/"/g,'&quot;')+'"><span class="fut-alert-icon">✅</span><div class="fut-alert-txt"><b>'+s.pj+'</b> — melhor saúde de entrega<span>'+s.pct+'% concluído · '+s.cl+'</span></div></div>';
   }
   if(!alertsHtml) alertsHtml='<div class="fut-alert ok"><span class="fut-alert-icon">✅</span><div class="fut-alert-txt"><b>Nenhum alerta crítico</b><span>Portfólio operando dentro do esperado</span></div></div>';
   document.getElementById('fut-alerts').innerHTML=alertsHtml;
   document.querySelectorAll('#fut-alerts .fut-alert').forEach((el,i)=>{ el.style.animationDelay=(i*0.08)+'s'; });
 }
+
+// ============================================================
+// CENTRAL DE COMANDO — detalhamento em modal (item 15). Reaproveita o mesmo
+// modal já usado pro detalhamento de tarefa/Status Report (task-modal-overlay).
+// Todo builder usa FUT_STATE (capturado no último render da própria Central de
+// Comando) — ou seja, sempre reflete o MESMO mês/filtro que está na tela, nunca
+// recalcula com outro contexto. Nenhum dado novo é gerado: são sempre listas
+// dos registros reais já existentes que compõem o indicador clicado.
+// ============================================================
+function buildListaProjetosModal(lista){
+  if(lista.length===0) return '<div class="empty-state" style="padding:30px 10px"><p>Nenhum projeto encontrado.</p></div>';
+  let h='<div class="table-wrap" style="max-height:420px"><table><thead><tr><th>Projeto</th><th>Cliente</th><th>GP</th><th>Status</th><th>Ritmo</th></tr></thead><tbody>';
+  lista.forEach(p=>{
+    h+='<tr><td><strong>'+p.pj+'</strong></td><td>'+p.cl+'</td><td>'+personLinkHtml(p.gp)+'</td><td>'+statusChipHtml(p.st)+'</td><td>'+(ritmoBadgeHtml(p)||'—')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  return h;
+}
+function buildListaTarefasModal(lista){
+  if(lista.length===0) return '<div class="empty-state" style="padding:30px 10px"><p>Nenhuma tarefa encontrada.</p></div>';
+  let h='<div class="table-wrap" style="max-height:420px"><table><thead><tr><th>Tarefa</th><th>Projeto</th><th>Status</th><th>Responsável</th><th>Vencimento</th></tr></thead><tbody>';
+  lista.forEach(t=>{
+    const idx=(PROJ_TASKS[t.pj]||[]).indexOf(t);
+    h+='<tr><td>'+taskLinkHtml(t.pj,idx,t.tarefa)+'</td><td>'+t.pj+'</td><td><span class="status-pill">'+(t.status||'—')+'</span></td><td>'+personLinkHtml(t.resp)+'</td><td>'+(t.dt_venc||'—')+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  return h;
+}
+function abrirDetalheFuturista(tipo, el){
+  let titulo='Detalhamento', corpo='';
+  const S=FUT_STATE;
+  if(tipo==='conclusao-mes'){
+    titulo='Tarefas com Vencimento em '+S.mesLabel;
+    const lista=S.allTasks.filter(t=>t.dt_venc_iso && t.dt_venc_iso.slice(0,7)===S.mes);
+    corpo=buildListaTarefasModal(lista);
+  }else if(tipo==='entregas-prazo'){
+    titulo='Projetos Ativos — Entregas no Prazo';
+    corpo=buildListaProjetosModal(S.ativos);
+  }else if(tipo==='horas-mes'){
+    titulo='Horas Executadas por Área — '+S.mesLabel;
+    const linhas=Object.entries(AREAS).map(([n,d])=>{
+      let h=0; Object.entries(d.ad||{}).forEach(([dt,v])=>{ if(dt.slice(0,7)===S.mes) h+=v[0]; });
+      return {n,h};
+    }).filter(a=>a.h>0).sort((a,b)=>b.h-a.h);
+    corpo=linhas.length===0?'<div class="empty-state" style="padding:30px 10px"><p>Nenhuma hora registrada neste mês.</p></div>':
+      '<div class="table-wrap"><table><thead><tr><th>Área</th><th>Horas</th></tr></thead><tbody>'+linhas.map(a=>'<tr><td>'+a.n+'</td><td>'+fH(a.h)+'</td></tr>').join('')+'</tbody></table></div>';
+  }else if(tipo==='pessoas-alocadas'){
+    titulo='Pessoas Alocadas x Sem Alocação (atual)';
+    const semAlocSet=new Set(SEM_ALOC.map(o=>o.a));
+    const alocadas=D.p.filter(p=>p.a && !semAlocSet.has(p.a));
+    corpo='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'+
+      '<div><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--st-feito)">✓ Alocadas ('+alocadas.length+')</div><div class="table-wrap" style="max-height:380px"><table><thead><tr><th>Nome</th><th>Área</th></tr></thead><tbody>'+alocadas.map(p=>'<tr><td>'+personLinkHtml(p.a)+'</td><td>'+(p.area||'—')+'</td></tr>').join('')+'</tbody></table></div></div>'+
+      '<div><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--st-bloqueado)">✗ Sem Alocação ('+SEM_ALOC.length+')</div><div class="table-wrap" style="max-height:380px"><table><thead><tr><th>Nome</th><th>Área</th></tr></thead><tbody>'+SEM_ALOC.map(o=>'<tr><td>'+personLinkHtml(o.a)+'</td><td>'+(o.area||'—')+'</td></tr>').join('')+'</tbody></table></div></div>'+
+    '</div>';
+  }else if(tipo==='portfolio-ritmo'){
+    titulo='Ritmo dos Projetos Ativos';
+    corpo=buildListaProjetosModal(S.ativos);
+  }else if(tipo==='projetos-ativos'){
+    titulo='Projetos Ativos (atual)';
+    corpo=buildListaProjetosModal(S.ativos);
+  }else if(tipo==='projetos-atrasados'){
+    titulo='Projetos Atrasados (atual)';
+    const lista=S.ativos.filter(p=>p.dd && String(p.dd).toLowerCase().includes('atraso'));
+    corpo=buildListaProjetosModal(lista);
+  }else if(tipo==='tarefas-bloqueadas'){
+    titulo='Tarefas Bloqueadas (toda a carteira)';
+    const lista=S.allTasks.filter(t=>(t.status||'').toLowerCase().includes('block'));
+    corpo=buildListaTarefasModal(lista);
+  }else if(tipo==='alertas-criticos'){
+    titulo='Alertas Críticos — Clientes em Risco e Projetos Zumbi';
+    let h='';
+    if(EXECTOP.negativos.cli_risco.length>0){
+      h+='<div style="font-weight:700;font-size:13px;margin-bottom:8px">⚠️ Clientes em Risco</div><div class="table-wrap" style="margin-bottom:16px"><table><thead><tr><th>Cliente</th><th>Projetos Atrasados</th><th>Conclusão Média</th></tr></thead><tbody>'+
+        EXECTOP.negativos.cli_risco.map(x=>'<tr><td>'+x.n+'</td><td>'+x.atraso_count+'</td><td>'+x.avg_pct+'%</td></tr>').join('')+'</tbody></table></div>';
+    }
+    if(EXECTOP.negativos.zumbi.length>0){
+      h+='<div style="font-weight:700;font-size:13px;margin-bottom:8px">🧟 Projetos Zumbi</div><div class="table-wrap"><table><thead><tr><th>Projeto</th><th>Cliente</th><th>Situação</th></tr></thead><tbody>'+
+        EXECTOP.negativos.zumbi.map(x=>'<tr><td>'+x.pj+'</td><td>'+x.cl+'</td><td>'+(x.nunca?'Nunca apontado':x.dias_sem+' dias sem apontamento')+'</td></tr>').join('')+'</tbody></table></div>';
+    }
+    corpo=h||'<div class="empty-state" style="padding:30px 10px"><p>Nenhum alerta crítico no momento.</p></div>';
+  }else if(tipo==='area-mes'){
+    const area=el.dataset.futArea;
+    titulo='Área: '+area+' — '+S.mesLabel;
+    const pessoasArea=D.p.filter(p=>p.area===area && p.a);
+    const linhas=pessoasArea.map(p=>{
+      const ek=(p.email||'').toLowerCase();
+      let h=0; Object.entries(HM[ek]||{}).forEach(([d,v])=>{ if(d.slice(0,7)===S.mes) h+=v; });
+      return {p,h};
+    }).filter(x=>x.h>0).sort((a,b)=>b.h-a.h);
+    corpo=linhas.length===0?'<div class="empty-state" style="padding:30px 10px"><p>Nenhuma hora registrada nesta área neste mês.</p></div>':
+      '<div class="table-wrap"><table><thead><tr><th>Nome</th><th>Horas no mês</th></tr></thead><tbody>'+linhas.map(x=>'<tr><td>'+personLinkHtml(x.p.a)+'</td><td>'+fH(x.h)+'</td></tr>').join('')+'</tbody></table></div>';
+  }else if(tipo==='projeto-single'){
+    const pj=el.dataset.futPj;
+    const p=D.pj.find(x=>x.pj===pj);
+    titulo='Projeto: '+pj;
+    corpo=p?buildListaProjetosModal([p]):'<div class="empty-state" style="padding:30px 10px"><p>Projeto não encontrado.</p></div>';
+  }else if(tipo==='cliente-single'){
+    const cl=el.dataset.futCl;
+    titulo='Cliente: '+cl+' — Projetos';
+    const lista=D.pj.filter(p=>p.cl===cl);
+    corpo=buildListaProjetosModal(lista);
+  }
+  document.getElementById('task-modal-title').textContent=titulo;
+  document.getElementById('task-modal-body').innerHTML=corpo;
+  document.getElementById('task-modal-overlay').classList.add('show');
+}
+document.addEventListener('click',(e)=>{
+  const el=e.target.closest('[data-fut-detail]');
+  if(el) abrirDetalheFuturista(el.dataset.futDetail, el);
+});
 
 function spawnFutParticles(){
   const box=document.getElementById('fut-particles');
