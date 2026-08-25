@@ -329,7 +329,9 @@ main{flex:1; padding:22px 24px 60px; max-width:1520px; width:100%; margin:0 auto
 .sr-ativ-remove{background:transparent; border:1px solid var(--border); color:var(--text-faint); border-radius:7px; width:30px; height:30px; cursor:pointer; font-size:14px;}
 .sr-ativ-remove:hover{background:var(--surface-alt); color:var(--st-bloqueado);}
 .sr-ativ-add{margin-top:4px; font-size:12.5px; font-weight:700; color:var(--primary); background:none; border:1px dashed var(--primary); border-radius:8px; padding:7px 14px; cursor:pointer;}
-@media (max-width:820px){.sr-ativ-row{grid-template-columns:1fr;}}
+.sr-grid-3{display:grid; grid-template-columns:1fr 1fr 1.4fr; gap:16px;}
+.sr-grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+@media (max-width:820px){.sr-ativ-row{grid-template-columns:1fr;} .sr-grid-3,.sr-grid-2{grid-template-columns:1fr;}}
 
 .seg-control{display:inline-flex; gap:2px; background:var(--surface-alt); padding:3px; border-radius:9px; border:1px solid var(--border);}
 .seg-btn{
@@ -976,6 +978,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
           <button class="nav-tab" data-page="setorial">Gestão Setorial</button>
           <button class="nav-tab" data-page="transversal">Gestão Transversal</button>
           <button class="nav-tab" data-page="statusreport">Status Report</button>
+          <button class="nav-tab" data-page="statusreportpainel">Painel de Status Reports</button>
         </div>
       </div>
       <div class="nav-cat" data-cat="projetos">
@@ -1123,6 +1126,20 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="sr-content"></div>
     </section>
 
+    <!-- PAGE PAINEL DE STATUS REPORTS (Administrador) -->
+    <section class="page" id="page-statusreportpainel">
+      <div class="page-header"><div><h1>Painel de Status Reports</h1><p>Visão consolidada de todos os projetos — exclusivo do perfil Administrador.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label>Projeto</label><select id="f-srp-projeto"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label>Gerente de Projeto</label><select id="f-srp-gerente"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label>Status</label><select id="f-srp-status"><option value="">Todos</option><option value="Finalizado">Finalizado</option><option value="Rascunho">Rascunho</option></select></div>
+        <div class="filter-field"><label>Semana a partir de</label><input type="date" id="f-srp-de"></div>
+        <button class="filter-clear" id="f-srp-clear">Limpar filtros</button>
+      </div>
+      <div class="grid grid-kpi" id="kpi-srp"></div>
+      <div id="srp-content"></div>
+    </section>
+
 
     <!-- PAGE TOP5 -->
     <!-- PAGE TOP EXECUTIVO -->
@@ -1247,6 +1264,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div class="page-header">
         <div>
           <button class="filter-clear" id="proj-voltar" style="margin-bottom:10px;">← Voltar para Portfólio</button>
+          <button class="filter-clear" id="pd-historico-sr-btn" style="margin-bottom:10px;margin-left:8px;">📜 Histórico de Status Reports</button>
           <h1 id="pd-titulo">Projeto</h1>
           <p id="pd-subtitulo">—</p>
         </div>
@@ -1254,7 +1272,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v5.0 · Última atualização: —</footer>
+  <footer id="app-footer">v5.1 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1321,7 +1339,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v3.1, v3.2, ...,
 // v3.10, v4.0, v4.1, ...) — nunca v3.11. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v5.0';
+const APP_VERSION='v5.1';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1586,7 +1604,7 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport'],
+  'Administrador':  ['cliente','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
@@ -1620,7 +1638,7 @@ const PERM_MENU = {
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Gerência',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report'};
+const PAGE_LABELS = {cliente:'Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Gerência',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Reports'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 
 function paginasPermitidas(){ return PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido']; }
@@ -2318,6 +2336,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       renderProjDetail(PD_CURRENT_PJ);
     }
   });
+  document.getElementById('pd-historico-sr-btn').onclick=()=>{ if(PD_CURRENT_PJ) abrirHistoricoStatusReportModal(PD_CURRENT_PJ); };
 });
 
 function getMondaySundayISO(){ return getMondaySunday(new Date()); }
@@ -2357,6 +2376,8 @@ document.addEventListener('click', (e)=>{
     if(card && card.dataset.emailKey!==undefined){ abrirListaTarefasPorStatus(card.dataset.emailKey, card.dataset.nomePessoa, tl.dataset.statusRow); }
     return;
   }
+  const srVer = e.target.closest('.sr-ver-btn-view');
+  if(srVer && srVer.dataset.reportId){ abrirVisualizacaoStatusReport(srVer.dataset.reportId); return; }
   if(e.target.closest('#task-modal-close') || e.target.id==='task-modal-overlay'){ fecharDetalheTarefa(); }
 });
 // Retorna o nome da tarefa como link clicável para o modal de detalhamento. idx é
@@ -3730,18 +3751,18 @@ function renderStatusReport(){
   }
 
   const fd=existente||{};
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Status do Projeto</h3></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'+
+  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Status do Projeto</h3></div><div class="sr-grid-3">'+
     '<div class="sr-field"><label>Status/Fase do Projeto<span class="sr-required">*</span></label><select id="sr-status-projeto" '+(podeEditar?'':'disabled')+'>'+SR_STATUS_PROJETO_OPCOES.map(s=>'<option value="'+s+'"'+(fd.status_projeto===s?' selected':'')+'>'+s+'</option>').join('')+'</select></div>'+
     '<div class="sr-field"><label>Nível de Risco<span class="sr-required">*</span></label><select id="sr-nivel-risco" '+(podeEditar?'':'disabled')+'>'+SR_NIVEL_RISCO_OPCOES.map(s=>'<option value="'+s+'"'+(fd.nivel_risco===s?' selected':'')+'>'+s+'</option>').join('')+'</select></div>'+
+    '<div class="sr-field"><label>Previsão / Próxima Fase</label><input type="text" id="sr-previsao" placeholder="Ex: Sprint Final (fim: 18/08)..." value="'+(fd.previsao_proxima_fase||'').replace(/"/g,'&quot;')+'" '+(podeEditar?'':'disabled')+'></div>'+
   '</div></div>';
 
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Resumo Executivo / Andamento da Semana</h3></div><div class="sr-field"><textarea id="sr-resumo" placeholder="O que aconteceu de mais relevante nesta semana..." '+(podeEditar?'':'disabled')+'>'+(fd.resumo_executivo||'')+'</textarea></div></div>';
+  h+='<div class="card" style="margin-bottom:16px"><div class="sr-grid-2">'+
+    '<div class="sr-field" style="margin-bottom:0"><label>Resumo Executivo / Andamento da Semana<span class="sr-required">*</span></label><textarea id="sr-resumo" placeholder="O que aconteceu de mais relevante nesta semana..." '+(podeEditar?'':'disabled')+'>'+(fd.resumo_executivo||'')+'</textarea></div>'+
+    '<div class="sr-field" style="margin-bottom:0"><label>Decisões e Pontos Importantes</label><textarea id="sr-decisoes" placeholder="Decisões estratégicas/técnicas tomadas, alinhamentos importantes..." '+(podeEditar?'':'disabled')+'>'+(fd.decisoes_pontos_atencao||'')+'</textarea></div>'+
+  '</div></div>';
 
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Decisões e Pontos Importantes</h3></div><div class="sr-field"><textarea id="sr-decisoes" placeholder="Decisões estratégicas/técnicas tomadas, alinhamentos importantes..." '+(podeEditar?'':'disabled')+'>'+(fd.decisoes_pontos_atencao||'')+'</textarea></div></div>';
-
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Riscos e Bloqueios</h3></div><div class="sr-field"><textarea id="sr-riscos" placeholder="Riscos, impedimentos e bloqueios identificados..." '+(podeEditar?'':'disabled')+'>'+(fd.riscos_bloqueios||'')+'</textarea></div></div>';
-
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Previsão / Próxima Fase</h3></div><div class="sr-field"><input type="text" id="sr-previsao" placeholder="Ex: Sprint Final (fim: 18/08), Homologação, Go-live..." value="'+(fd.previsao_proxima_fase||'').replace(/"/g,'&quot;')+'" '+(podeEditar?'':'disabled')+'></div></div>';
+  h+='<div class="card" style="margin-bottom:16px"><div class="sr-field" style="margin-bottom:0"><label>Riscos e Bloqueios</label><textarea id="sr-riscos" placeholder="Riscos, impedimentos e bloqueios identificados..." '+(podeEditar?'':'disabled')+'>'+(fd.riscos_bloqueios||'')+'</textarea></div></div>';
 
   let atividadesIniciais=[];
   try{ atividadesIniciais=fd.atividades_json?JSON.parse(fd.atividades_json):[]; }catch(e){ atividadesIniciais=[]; }
@@ -3758,23 +3779,9 @@ function renderStatusReport(){
     '</div>';
   }
 
-  // Histórico
-  const historico=STATUS_REPORTS.filter(r=>r.projeto===projeto).sort((a,b)=>b.semana_inicio.localeCompare(a.semana_inicio));
-  h+='<div class="card" style="margin-top:24px"><div class="card-title"><h3>📜 Histórico de Status Reports — '+projeto+'</h3></div>';
-  if(historico.length===0){
-    h+='<div class="empty-state" style="padding:30px 10px"><p>Nenhum Status Report registrado ainda para este projeto.</p></div>';
-  }else{
-    h+='<div class="table-wrap"><table><thead><tr><th>Semana</th><th>Status</th><th>Atualizado em</th><th>Responsável</th><th></th></tr></thead><tbody>';
-    historico.forEach(r=>{
-      h+='<tr><td>'+srFmtBr(r.semana_inicio)+' – '+srFmtBr(r.semana_fim)+'</td>'+
-        '<td><span class="status-pill" style="border-left:3px solid '+(r.status_preenchimento==='Finalizado'?'var(--st-feito)':'#f59e0b')+'">'+r.status_preenchimento+'</span></td>'+
-        '<td>'+(r.data_atualizacao?srFmtBr((r.data_atualizacao+'').slice(0,10)):'—')+'</td>'+
-        '<td>'+personLinkHtml(r.gerente_nome)+'</td>'+
-        '<td><button type="button" class="filter-clear sr-ver-btn" data-semana="'+r.semana_inicio+'" style="padding:5px 12px">Ver'+(r.status_preenchimento!=='Finalizado'?'/Editar':'')+'</button></td></tr>';
-    });
-    h+='</tbody></table></div>';
-  }
-  h+='</div>';
+  // Histórico (função reutilizada também no botão "Histórico de Status Reports"
+  // do Detalhamento do Projeto e no Painel de Status Reports do Administrador)
+  h+='<div style="margin-top:24px">'+buildHistoricoStatusReportHtml(projeto)+'</div>';
 
   document.getElementById('sr-content').innerHTML=h;
 
@@ -3789,7 +3796,11 @@ function renderStatusReport(){
     const rm=e.target.closest('.sr-ativ-remove');
     if(rm){ const rows=document.querySelectorAll('#sr-ativ-body .sr-ativ-row'); if(rows.length>1) rm.closest('.sr-ativ-row').remove(); }
   });
-  document.querySelectorAll('.sr-ver-btn').forEach(btn=>{
+  // "Ver/Editar" na própria página Status Report pula pra semana daquele report
+  // dentro do formulário (fica escopado a #sr-content pra não conflitar com o
+  // mesmo tipo de botão usado em modais de histórico — ver Detalhamento do
+  // Projeto e Painel de Status Reports, que usam sr-ver-btn-view em vez disso).
+  document.getElementById('sr-content').querySelectorAll('.sr-ver-btn-edit').forEach(btn=>{
     btn.onclick=()=>{
       const semana=btn.dataset.semana;
       const hoje=new Date(); const [monAtualISO]=getMondaySunday(hoje);
@@ -3798,6 +3809,70 @@ function renderStatusReport(){
       window.scrollTo({top:0,behavior:'smooth'});
     };
   });
+}
+// Monta a tabela de histórico de Status Reports de um projeto — reutilizada na
+// própria página Status Report, no botão "Histórico de Status Reports" do
+// Detalhamento do Projeto, e no Painel de Status Reports (Administrador).
+// modoView=true renderiza botões "Ver" que abrem o report em modal somente-
+// leitura (usado fora da página Status Report); modoView=false (padrão) usa o
+// botão "Ver/Editar" que pula pra semana no formulário editável.
+function buildHistoricoStatusReportHtml(projeto, modoView){
+  const historico=STATUS_REPORTS.filter(r=>r.projeto===projeto).sort((a,b)=>b.semana_inicio.localeCompare(a.semana_inicio));
+  let h='<div class="card"><div class="card-title"><h3>📜 Histórico de Status Reports — '+projeto+'</h3></div>';
+  if(historico.length===0){
+    h+='<div class="empty-state" style="padding:30px 10px"><p>Nenhum Status Report registrado ainda para este projeto.</p></div>';
+  }else{
+    h+='<div class="table-wrap"><table><thead><tr><th>Semana</th><th>Status</th><th>Atualizado em</th><th>Responsável</th><th></th></tr></thead><tbody>';
+    historico.forEach(r=>{
+      const btnCls=modoView?'sr-ver-btn-view':'sr-ver-btn-edit';
+      const btnLabel=modoView?'Ver':('Ver'+(r.status_preenchimento!=='Finalizado'?'/Editar':''));
+      h+='<tr><td>'+srFmtBr(r.semana_inicio)+' – '+srFmtBr(r.semana_fim)+'</td>'+
+        '<td><span class="status-pill" style="border-left:3px solid '+(r.status_preenchimento==='Finalizado'?'var(--st-feito)':'#f59e0b')+'">'+r.status_preenchimento+'</span></td>'+
+        '<td>'+(r.data_atualizacao?srFmtBr((r.data_atualizacao+'').slice(0,10)):'—')+'</td>'+
+        '<td>'+personLinkHtml(r.gerente_nome)+'</td>'+
+        '<td><button type="button" class="filter-clear '+btnCls+'" data-semana="'+r.semana_inicio+'" data-report-id="'+r.id+'" style="padding:5px 12px">'+btnLabel+'</button></td></tr>';
+    });
+    h+='</tbody></table></div>';
+  }
+  h+='</div>';
+  return h;
+}
+// Visualização somente-leitura de um Status Report específico — reaproveita o
+// mesmo modal já usado pro detalhamento de tarefa (task-modal-overlay), só que
+// com o conteúdo de um Status Report inteiro.
+function abrirVisualizacaoStatusReport(reportId){
+  const r=STATUS_REPORTS.find(x=>x.id===reportId);
+  if(!r) return;
+  let atividades=[];
+  try{ atividades=r.atividades_json?JSON.parse(r.atividades_json):[]; }catch(e){ atividades=[]; }
+  const campo=(label,val)=> (val!==null && val!==undefined && val!=='') ? '<div class="task-modal-field task-modal-field-full"><span class="task-modal-label">'+label+'</span><span class="task-modal-value" style="white-space:pre-wrap;text-align:left">'+val+'</span></div>' : '';
+  let h='';
+  h+='<div class="task-modal-field"><span class="task-modal-label">Projeto</span><span class="task-modal-value">'+r.projeto+'</span></div>';
+  h+='<div class="task-modal-field"><span class="task-modal-label">Cliente</span><span class="task-modal-value">'+(r.cliente||'—')+'</span></div>';
+  h+='<div class="task-modal-field"><span class="task-modal-label">Semana</span><span class="task-modal-value">'+srFmtBr(r.semana_inicio)+' – '+srFmtBr(r.semana_fim)+'</span></div>';
+  h+='<div class="task-modal-field"><span class="task-modal-label">Gerente</span><span class="task-modal-value">'+(r.gerente_nome||'—')+'</span></div>';
+  h+='<div class="task-modal-field"><span class="task-modal-label">Status do Report</span><span class="task-modal-value">'+r.status_preenchimento+'</span></div>';
+  h+='<div class="task-modal-field"><span class="task-modal-label">Status/Fase do Projeto</span><span class="task-modal-value">'+(r.status_projeto||'—')+'</span></div>';
+  h+='<div class="task-modal-field"><span class="task-modal-label">Nível de Risco</span><span class="task-modal-value">'+(r.nivel_risco||'—')+'</span></div>';
+  h+=campo('Previsão / Próxima Fase', r.previsao_proxima_fase);
+  h+=campo('Resumo Executivo', r.resumo_executivo);
+  h+=campo('Decisões e Pontos Importantes', r.decisoes_pontos_atencao);
+  h+=campo('Riscos e Bloqueios', r.riscos_bloqueios);
+  if(atividades.length>0){
+    h+='<div class="task-modal-field task-modal-field-full"><span class="task-modal-label">Plano de Ação</span><div class="table-wrap" style="margin-top:6px"><table><thead><tr><th>Atividade</th><th>Responsável</th><th>Descrição</th><th>Status</th></tr></thead><tbody>'+
+      atividades.map(a=>'<tr><td>'+(a.atividade||'—')+'</td><td>'+(a.responsavel||'—')+'</td><td>'+(a.descricao||'—')+'</td><td>'+(a.status||'—')+'</td></tr>').join('')+
+    '</tbody></table></div></div>';
+  }
+  document.getElementById('task-modal-title').textContent='Status Report — '+srFmtBr(r.semana_inicio)+' a '+srFmtBr(r.semana_fim);
+  document.getElementById('task-modal-body').innerHTML=h;
+  document.getElementById('task-modal-overlay').classList.add('show');
+}
+// Abre o histórico completo de Status Reports de um projeto em modal — usado
+// pelo botão "Histórico de Status Reports" no Detalhamento do Projeto.
+function abrirHistoricoStatusReportModal(projeto){
+  document.getElementById('task-modal-title').textContent='Histórico de Status Reports';
+  document.getElementById('task-modal-body').innerHTML=buildHistoricoStatusReportHtml(projeto, true);
+  document.getElementById('task-modal-overlay').classList.add('show');
 }
 async function srSalvar(finalizar){
   const projeto=document.getElementById('f-sr-projeto').value;
@@ -3845,6 +3920,84 @@ async function srSalvar(finalizar){
   srSetBotoesDisabled(false);
 }
 
+// ============================================================
+// PAINEL DE STATUS REPORTS — visão consolidada, exclusiva do Administrador
+// (garantido tanto pelo menu quanto pelo guard de rota em goToPage(), que já
+// bloqueia acesso direto por URL pra quem não tem essa página no PERM_MENU).
+// Como STATUS_REPORTS já vem sem nenhum corte pro Administrador (mesma
+// arquitetura de restrição usada em todo o resto do dashboard), essa página só
+// precisa agregar o que já chegou — não duplica nenhuma lógica de permissão.
+// ============================================================
+function initStatusReportPainel(){
+  const projetos=[...new Set(D.pj.map(p=>p.pj))].sort();
+  const gerentes=[...new Set(STATUS_REPORTS.map(r=>r.gerente_nome).filter(Boolean))].sort();
+  document.getElementById('f-srp-projeto').innerHTML='<option value="">Todos</option>'+projetos.map(p=>'<option value="'+p.replace(/"/g,'&quot;')+'">'+p+'</option>').join('');
+  document.getElementById('f-srp-gerente').innerHTML='<option value="">Todos</option>'+gerentes.map(g=>'<option value="'+g.replace(/"/g,'&quot;')+'">'+g+'</option>').join('');
+  ['f-srp-projeto','f-srp-gerente','f-srp-status','f-srp-de'].forEach(id=>{ document.getElementById(id).onchange=renderStatusReportPainel; });
+  document.getElementById('f-srp-clear').onclick=()=>{
+    document.getElementById('f-srp-projeto').value='';
+    document.getElementById('f-srp-gerente').value='';
+    document.getElementById('f-srp-status').value='';
+    document.getElementById('f-srp-de').value='';
+    renderStatusReportPainel();
+  };
+  renderStatusReportPainel();
+}
+function renderStatusReportPainel(){
+  const fProj=document.getElementById('f-srp-projeto').value;
+  const fGer=document.getElementById('f-srp-gerente').value;
+  const fStatus=document.getElementById('f-srp-status').value;
+  const fDe=document.getElementById('f-srp-de').value;
+
+  let reports=STATUS_REPORTS.slice();
+  if(fProj) reports=reports.filter(r=>r.projeto===fProj);
+  if(fGer) reports=reports.filter(r=>r.gerente_nome===fGer);
+  if(fStatus) reports=reports.filter(r=>r.status_preenchimento===fStatus);
+  if(fDe) reports=reports.filter(r=>r.semana_inicio>=fDe);
+
+  // Uma linha por PROJETO, com o report mais recente (dentro do filtro aplicado)
+  const porProjeto={};
+  reports.forEach(r=>{
+    if(!porProjeto[r.projeto] || r.semana_inicio>porProjeto[r.projeto].semana_inicio) porProjeto[r.projeto]=r;
+  });
+  const linhas=Object.values(porProjeto).sort((a,b)=>b.semana_inicio.localeCompare(a.semana_inicio));
+
+  const totalProjetosComReport=Object.keys(porProjeto).length;
+  const finalizados=reports.filter(r=>r.status_preenchimento==='Finalizado').length;
+  const pendentes=reports.filter(r=>r.status_preenchimento==='Rascunho').length;
+  const totalProjetos=[...new Set(D.pj.map(p=>p.pj))].length;
+
+  document.getElementById('kpi-srp').innerHTML=`
+    <div class="kpi"><span class="kpi-label">Projetos com Status Report</span><span class="kpi-value">${totalProjetosComReport}</span><span class="kpi-foot">de ${totalProjetos} projeto(s) no portfólio</span></div>
+    <div class="kpi"><span class="kpi-label">Reports Finalizados</span><span class="kpi-value" style="color:var(--st-feito)">${finalizados}</span></div>
+    <div class="kpi"><span class="kpi-label">Reports em Rascunho</span><span class="kpi-value" style="color:#f59e0b">${pendentes}</span></div>
+    <div class="kpi"><span class="kpi-label">Sem Nenhum Report</span><span class="kpi-value" style="color:${totalProjetos-totalProjetosComReport>0?'var(--st-bloqueado)':'var(--text)'}">${totalProjetos-totalProjetosComReport}</span></div>`;
+
+  let h='<div class="card"><div class="card-title"><h3>Último Status Report por Projeto</h3></div>';
+  if(linhas.length===0){
+    h+='<div class="empty-state" style="padding:40px 20px"><p>Nenhum Status Report encontrado com esses filtros.</p></div>';
+  }else{
+    h+='<div class="table-wrap"><table><thead><tr><th>Projeto</th><th>Status do Projeto</th><th>Última Semana</th><th>Status do Report</th><th>Gerente</th><th>Atualizado em</th><th></th></tr></thead><tbody>';
+    linhas.forEach(r=>{
+      h+='<tr><td><strong>'+r.projeto+'</strong></td>'+
+        '<td>'+(r.status_projeto||'—')+'</td>'+
+        '<td>'+srFmtBr(r.semana_inicio)+' – '+srFmtBr(r.semana_fim)+'</td>'+
+        '<td><span class="status-pill" style="border-left:3px solid '+(r.status_preenchimento==='Finalizado'?'var(--st-feito)':'#f59e0b')+'">'+r.status_preenchimento+'</span></td>'+
+        '<td>'+personLinkHtml(r.gerente_nome)+'</td>'+
+        '<td>'+(r.data_atualizacao?srFmtBr((r.data_atualizacao+'').slice(0,10)):'—')+'</td>'+
+        '<td style="display:flex;gap:6px"><button type="button" class="filter-clear sr-ver-btn-view" data-report-id="'+r.id+'" style="padding:5px 10px">Ver</button>'+
+        '<button type="button" class="filter-clear srp-hist-btn" data-projeto="'+r.projeto.replace(/"/g,'&quot;')+'" style="padding:5px 10px">Histórico</button></td></tr>';
+    });
+    h+='</tbody></table></div>';
+  }
+  h+='</div>';
+  document.getElementById('srp-content').innerHTML=h;
+
+  document.querySelectorAll('.srp-hist-btn').forEach(btn=>{
+    btn.onclick=()=>abrirHistoricoStatusReportModal(btn.dataset.projeto);
+  });
+}
+
 // Mapa página -> função de inicialização/render. Usado pra priorizar a
 // renderização da página que a pessoa está vendo (rápido, imediato) e adiar o
 // resto (que ela não está olhando ainda) sem bloquear a thread principal —
@@ -3854,7 +4007,8 @@ const PAGE_INIT_MAP={
   cliente:initCliente, pessoa:initPessoa, area:initArea, pend:initPend,
   ociosos:initOciosos, topexec:initTopExec, futuristic:renderFuturistic,
   lider:initLider, gerente:initGerente, equipe:initEquipe,
-  setorial:initSetorial, transversal:initTransversal, statusreport:initStatusReport
+  setorial:initSetorial, transversal:initTransversal, statusreport:initStatusReport,
+  statusreportpainel:initStatusReportPainel
 };
 function boot(paginaPrioritaria){
   const ordem=Object.keys(PAGE_INIT_MAP);
