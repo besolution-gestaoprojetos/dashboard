@@ -343,7 +343,7 @@ main{flex:1; padding:22px 24px 60px; max-width:1520px; width:100%; margin:0 auto
 }
 .sr-crit-help-btn:hover{background:var(--primary); color:#fff; border-color:var(--primary);}
 .sr-crit-popover{
-  display:none; position:absolute; top:calc(100% + 8px); right:0; z-index:200; width:320px;
+  display:none; position:fixed; z-index:10001; width:320px;
   background:var(--surface); border:1px solid var(--border); border-radius:12px;
   box-shadow:0 12px 30px -8px rgba(0,0,0,.3); padding:12px; max-height:360px; overflow-y:auto;
 }
@@ -353,7 +353,7 @@ main{flex:1; padding:22px 24px 60px; max-width:1520px; width:100%; margin:0 auto
 .sr-crit-popover-close:hover{background:var(--surface-alt); color:var(--text);}
 .sr-crit-legenda-item{padding:8px 10px; font-size:12px; line-height:1.5; color:var(--text-muted); background:var(--surface-alt); border-radius:0 6px 6px 0; margin-bottom:8px;}
 .sr-crit-legenda-item:last-child{margin-bottom:0;}
-@media (max-width:560px){.sr-crit-popover{width:260px; right:-40px;}}
+@media (max-width:560px){.sr-crit-popover{width:calc(100vw - 32px); max-width:320px;}}
 
 .seg-control{display:inline-flex; gap:2px; background:var(--surface-alt); padding:3px; border-radius:9px; border:1px solid var(--border);}
 .seg-btn{
@@ -1320,7 +1320,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v5.7 · Última atualização: —</footer>
+  <footer id="app-footer">v5.8 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1387,7 +1387,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v3.1, v3.2, ...,
 // v3.10, v4.0, v4.1, ...) — nunca v3.11. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v5.7';
+const APP_VERSION='v5.8';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -4069,7 +4069,24 @@ function renderStatusReport(){
   const critHelpBtn=document.getElementById('sr-crit-help-btn');
   const critPopover=document.getElementById('sr-crit-popover');
   if(critHelpBtn && critPopover){
-    critHelpBtn.onclick=(e)=>{ e.stopPropagation(); critPopover.classList.toggle('show'); };
+    critHelpBtn.onclick=(e)=>{
+      e.stopPropagation();
+      const abrir=!critPopover.classList.contains('show');
+      if(abrir){
+        // position:fixed é calculado aqui, na hora de abrir, com base na posição
+        // real do botão na tela — assim o balão sempre "escapa" corretamente de
+        // qualquer contêiner com overflow:hidden (ex: os cards do formulário),
+        // em vez de ficar preso/cortado dentro do card.
+        const rect=critHelpBtn.getBoundingClientRect();
+        const largura=Math.min(320, window.innerWidth-32);
+        let left=rect.left;
+        if(left+largura>window.innerWidth-16) left=window.innerWidth-largura-16;
+        if(left<16) left=16;
+        critPopover.style.top=(rect.bottom+8)+'px';
+        critPopover.style.left=left+'px';
+      }
+      critPopover.classList.toggle('show',abrir);
+    };
     const critCloseBtn=document.getElementById('sr-crit-popover-close');
     if(critCloseBtn) critCloseBtn.onclick=()=>critPopover.classList.remove('show');
   }
