@@ -1322,7 +1322,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v5.11 · Última atualização: —</footer>
+  <footer id="app-footer">v5.13 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1372,7 +1372,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v3.1, v3.2, ...,
 // v3.10, v4.0, v4.1, ...) — nunca v3.11. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v5.11';
+const APP_VERSION='v5.13';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2330,6 +2330,10 @@ function renderPend(){
 // === DETALHE DO PROJETO ===
 let PD_TAG_FILTER = '';
 let PD_INCOMPLETO_STATUS_FILTER = '';
+let PD_GANTT_STATUS_FILTER = '';
+let PD_GANTT_DE = '';
+let PD_GANTT_ATE = '';
+let PD_GANTT_BASE_TASKS = [];
 let PD_CURRENT_PJ = '';
 let PD_ORIGIN_PAGE = 'cliente';
 function openProjDetail(pjName){
@@ -2344,6 +2348,9 @@ function openProjDetail(pjName){
   goToPage('projdetail');
   PD_TAG_FILTER = '';
   PD_INCOMPLETO_STATUS_FILTER = '';
+  PD_GANTT_STATUS_FILTER = '';
+  PD_GANTT_DE = '';
+  PD_GANTT_ATE = '';
   PD_CURRENT_PJ = pjName;
   renderProjDetail(pjName);
 }
@@ -2385,6 +2392,27 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(e.target && e.target.id==='pd-incompleto-status'){
       PD_INCOMPLETO_STATUS_FILTER = e.target.value || '';
       renderProjDetail(PD_CURRENT_PJ);
+    }
+    if(e.target && e.target.id==='pd-gantt-status'){
+      PD_GANTT_STATUS_FILTER = e.target.value || '';
+      renderGanttChart(PD_GANTT_BASE_TASKS);
+    }
+    if(e.target && e.target.id==='pd-gantt-de'){
+      PD_GANTT_DE = e.target.value || '';
+      renderGanttChart(PD_GANTT_BASE_TASKS);
+    }
+    if(e.target && e.target.id==='pd-gantt-ate'){
+      PD_GANTT_ATE = e.target.value || '';
+      renderGanttChart(PD_GANTT_BASE_TASKS);
+    }
+  });
+  document.getElementById('projdetail-content').addEventListener('click', (e)=>{
+    if(e.target && e.target.id==='pd-gantt-clear'){
+      PD_GANTT_STATUS_FILTER=''; PD_GANTT_DE=''; PD_GANTT_ATE='';
+      const selS=document.getElementById('pd-gantt-status'); if(selS) selS.value='';
+      const inDe=document.getElementById('pd-gantt-de'); if(inDe) inDe.value='';
+      const inAte=document.getElementById('pd-gantt-ate'); if(inAte) inAte.value='';
+      renderGanttChart(PD_GANTT_BASE_TASKS);
     }
   });
   document.getElementById('pd-historico-sr-btn').onclick=()=>{ if(PD_CURRENT_PJ) abrirHistoricoStatusReportModal(PD_CURRENT_PJ); };
@@ -2626,16 +2654,25 @@ function renderGanttChart(tasks){
   if(!wrap) return;
   if(ch.gantt){ try{ch.gantt.destroy();}catch(e){} }
 
-  const comDatas = tasks.map(t=>{
+  let comDatas = tasks.map(t=>{
     const ini=parseBrDateLocal_(t.dt_inicio), fim=parseBrDateLocal_(t.dt_venc);
     return {t, ini, fim};
   }).filter(x=>x.ini && x.fim && x.fim>=x.ini);
+  const totalComDatas = comDatas.length;
+
+  if(PD_GANTT_STATUS_FILTER) comDatas = comDatas.filter(x=>x.t.status===PD_GANTT_STATUS_FILTER);
+  if(PD_GANTT_DE){ const de=new Date(PD_GANTT_DE+'T00:00:00'); comDatas = comDatas.filter(x=>x.fim>=de); }
+  if(PD_GANTT_ATE){ const ate=new Date(PD_GANTT_ATE+'T23:59:59'); comDatas = comDatas.filter(x=>x.ini<=ate); }
+
   comDatas.sort((a,b)=>a.ini-b.ini);
-  const semData = tasks.length - comDatas.length;
-  sub.textContent = comDatas.length+' tarefa(s) no cronograma'+(semData>0?' · '+semData+' tarefa(s) sem data de início e/ou vencimento não entram no gráfico':'');
+  const semData = tasks.length - totalComDatas;
+  const filtrado = totalComDatas - comDatas.length;
+  sub.textContent = comDatas.length+' tarefa(s) no cronograma'
+    +(filtrado>0?' ('+filtrado+' oculta(s) pelos filtros de Status/Período)':'')
+    +(semData>0?' · '+semData+' tarefa(s) sem data de início e/ou vencimento não entram no gráfico':'');
 
   if(!COK || comDatas.length===0){
-    wrap.innerHTML = '<div class="empty-state" style="padding:30px 10px"><p>Nenhuma tarefa com data de início e vencimento preenchidas pra montar o cronograma.</p></div>';
+    wrap.innerHTML = '<div class="empty-state" style="padding:30px 10px"><p>'+(totalComDatas===0?'Nenhuma tarefa com data de início e vencimento preenchidas pra montar o cronograma.':'Nenhuma tarefa encontrada com os filtros de Status/Período selecionados.')+'</p></div>';
     return;
   }
 
@@ -2733,11 +2770,6 @@ function renderProjDetail(pjName){
   h += '<div class="kpi"><span class="kpi-label">Equipe</span><span class="kpi-value">'+p.qe+'</span><span class="kpi-foot">pessoas</span></div>';
   h += '</div>';
 
-  // Cronograma (Gantt) — barras de início a vencimento de cada tarefa, na
-  // ordem cronológica. Só entram tarefas com AS DUAS datas preenchidas (início
-  // e vencimento) — sem inventar data pra quem não tem.
-  h += '<div class="pd-section" style="margin-bottom:16px"><h3>📅 Cronograma (Gantt)</h3><span class="sub" id="pd-gantt-sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px"></span><div id="pd-gantt-wrap" style="overflow-y:auto;max-height:520px"></div></div>';
-
   h += '<div class="grid grid-kpi" style="margin-bottom:16px">';
   h += '<div class="kpi"><span class="kpi-label">Horas Previstas</span><span class="kpi-value">'+fH(p.horas_est)+'</span></div>';
   h += '<div class="kpi"><span class="kpi-label">Horas Realizadas</span><span class="kpi-value" style="color:var(--primary)">'+fH(p.horas_apo)+'</span></div>';
@@ -2819,7 +2851,27 @@ function renderProjDetail(pjName){
   } else { h += '<div class="empty-state"><p>'+(PD_INCOMPLETO_STATUS_FILTER?'Nenhuma tarefa incompleta com esse status.':'Todas as tarefas têm os dados preenchidos.')+'</p></div>'; }
   h += '</div></div>';
 
+  // Cronograma (Gantt) — barras de início a vencimento de cada tarefa, na
+  // ordem cronológica. Só entram tarefas com AS DUAS datas preenchidas (início
+  // e vencimento) — sem inventar data pra quem não tem. Fica por último na
+  // página, com filtro próprio de Status e Período.
+  const statusesGantt = [...new Set(tasks.filter(t=>t.dt_inicio&&t.dt_venc).map(t=>t.status).filter(Boolean))].sort();
+  h += '<div class="pd-section" style="margin-bottom:16px"><h3>📅 Cronograma (Gantt)</h3>';
+  h += '<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:10px">';
+  if(statusesGantt.length>0){
+    h += '<div><label style="font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.03em;display:block;margin-bottom:4px">Status</label><select id="pd-gantt-status" style="font-size:13px;padding:5px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text)">';
+    h += '<option value=""'+(PD_GANTT_STATUS_FILTER===''?' selected':'')+'>Todos os status</option>';
+    statusesGantt.forEach(s=>{ h += '<option value="'+s.replace(/"/g,'&quot;')+'"'+(PD_GANTT_STATUS_FILTER===s?' selected':'')+'>'+s+'</option>'; });
+    h += '</select></div>';
+  }
+  h += '<div><label style="font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.03em;display:block;margin-bottom:4px">Período de</label><input type="date" id="pd-gantt-de" value="'+PD_GANTT_DE+'" style="font-size:13px;padding:5px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text)"></div>';
+  h += '<div><label style="font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.03em;display:block;margin-bottom:4px">até</label><input type="date" id="pd-gantt-ate" value="'+PD_GANTT_ATE+'" style="font-size:13px;padding:5px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text)"></div>';
+  h += '<button type="button" id="pd-gantt-clear" class="filter-clear" style="padding:6px 12px">Limpar filtros do cronograma</button>';
+  h += '</div>';
+  h += '<span class="sub" id="pd-gantt-sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px"></span><div id="pd-gantt-wrap" style="overflow-y:auto;max-height:520px"></div></div>';
+
   document.getElementById('projdetail-content').innerHTML = h;
+  PD_GANTT_BASE_TASKS = tasks;
   renderGanttChart(tasks);
 }
 
