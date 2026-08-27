@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<script>
+// ============================================================
+// ⚠️ ATUALIZE AQUI A CADA NOVO DEPLOY DO APPS SCRIPT ⚠️
+// No editor do Apps Script: Implantar → Gerenciar implantações → ✏️ (editar)
+// → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
+// lugar da URL atual (mantenha as aspas).
+// ============================================================
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyNZ7GlxbnDzJQlEKQ4B_Ams4mhFRNFjNGxLBkdAwHQMPS8be6FvejGWCXRpVFRSQGTuw/exec';
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portfólio Be Solution — Dashboard</title>
@@ -1322,7 +1331,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v5.14 · Última atualização: —</footer>
+  <footer id="app-footer">v5.16 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1343,7 +1352,9 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 <script>
 (function(){
 let D,HM,PM,PM_PROJ,CD,AREAS,TOP5,PSTAT,PHEST,PHAP,PVENC,PPREVISTO,PEND,PROJ_TASKS,SEM_ALOC,ALOC_SEM_APONT,CTOK,AREA_CL,EXECTOP;
-const DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyNZ7GlxbnDzJQlEKQ4B_Ams4mhFRNFjNGxLBkdAwHQMPS8be6FvejGWCXRpVFRSQGTuw/exec';
+// DASHBOARD_API_URL agora é declarada uma única vez, no topo do arquivo (dentro
+// do <head>), pra ficar fácil de achar e atualizar a cada novo deploy do Apps
+// Script — aqui ela é só usada, via escopo global.
 function showDataBadge(mode){
   let el=document.getElementById('data-source-badge');
   if(!el){
@@ -1372,7 +1383,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v3.1, v3.2, ...,
 // v3.10, v4.0, v4.1, ...) — nunca v3.11. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v5.14';
+const APP_VERSION='v5.16';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -3685,7 +3696,18 @@ function initGerente(){
   sel.innerHTML='<option value="">— Selecione —</option>'+gerentes.map(g=>'<option value="'+g.replace(/"/g,'&quot;')+'">'+g+'</option>').join('');
   sel.onchange=renderGerente;
   document.getElementById('f-gerente-st').onchange=renderGerente;
-  document.getElementById('f-gerente-clear').onclick=()=>{sel.value='';document.getElementById('f-gerente-st').value='';renderGerente();};
+  document.getElementById('f-gerente-clear').onclick=()=>{
+    const nomeEfetivoClear = VIEW_AS_STATE ? VIEW_AS_STATE.nome : CURRENT_USER_NOME;
+    sel.value = (nomeEfetivoClear && gerentes.includes(nomeEfetivoClear)) ? nomeEfetivoClear : '';
+    document.getElementById('f-gerente-st').value='';
+    renderGerente();
+  };
+  // Pré-seleciona automaticamente a própria pessoa (usuário real, ou quem está
+  // sendo visualizado via "Visualizar como") quando ela aparece na lista de
+  // Gerente/SM — assim quem só tem escopo do próprio projeto (perfil SM, por
+  // exemplo) já vê os projetos dela direto, sem precisar escolher manualmente.
+  const nomeEfetivo = VIEW_AS_STATE ? VIEW_AS_STATE.nome : CURRENT_USER_NOME;
+  if(nomeEfetivo && gerentes.includes(nomeEfetivo)) sel.value=nomeEfetivo;
   renderGerente();
 }
 function renderGerente(){
