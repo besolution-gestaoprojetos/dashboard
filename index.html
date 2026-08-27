@@ -1322,7 +1322,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v5.13 · Última atualização: —</footer>
+  <footer id="app-footer">v5.14 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1372,7 +1372,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v3.1, v3.2, ...,
 // v3.10, v4.0, v4.1, ...) — nunca v3.11. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v5.13';
+const APP_VERSION='v5.14';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1665,7 +1665,10 @@ const PERM_MENU = {
   // Gestão Transversal é a página central desses perfis (LP/GP/SM).
   'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail','transversal','statusreport'],
   'PO':             ['cliente','pessoa','gerente','pend','projdetail','transversal','statusreport'],
-  'SM':             ['cliente','pessoa','gerente','pend','projdetail','transversal','statusreport'],
+  // 'SM' deve ver somente a página Gerência (mais o Detalhamento do Projeto, que
+  // não é uma aba de menu — é aberto ao clicar num card de projeto dentro da
+  // própria Gerência).
+  'SM':             ['gerente','projdetail'],
   // Perfis de área: escopo restrito aos próprios dados — só as páginas essenciais.
   // 'Projetos' é diferente dos demais: vê o(s) projeto(s) onde atua (não é mais
   // escopo "próprio apenas"), então tem o mesmo menu de Tech Lead/PO/SM.
