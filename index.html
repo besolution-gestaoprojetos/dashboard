@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycby5a4pS81ZXIUFBVLnIcxo1xWf6ndaAYD80GFw7BEZBit0EjVNLQMGWTSOe9hxIF7fOXw/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyFRq0yVv2C0JZGgRh-SDIUcAyjIM42RUo8lUqFGih_18yMYIYxH8UgBwyhwOGBi7W0Qw/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1332,7 +1332,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v5.18 · Última atualização: —</footer>
+  <footer id="app-footer">v6.0 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1380,11 +1380,11 @@ function loadDataJSONP(url){
     setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('Timeout aguardando resposta do Apps Script')); } },70000);
   });
 }
-// REGRA DE VERSIONAMENTO: versão menor vai de .1 até .10; depois de .10, a
-// PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v3.1, v3.2, ...,
-// v3.10, v4.0, v4.1, ...) — nunca v3.11. Precisa ficar sincronizada com
+// REGRA DE VERSIONAMENTO: versão menor vai de .1 até .9; depois de .9, a
+// PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
+// v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v5.18';
+const APP_VERSION='v6.0';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2145,6 +2145,21 @@ function renderPessoa(){
   }else{
     hEst=PHEST[emailKey]||0; hApo=PHAP[emailKey]||0;
   }
+  // % Ociosidade do card "Estimado x Executado" — capacidade de 40h/semana,
+  // proporcional ao número de dias do PERÍODO SELECIONADO (1 semana=40h, 2
+  // semanas=80h etc.). Só é possível calcular com um período de datas fechado
+  // (De E Até preenchidos) — sem isso, não há um número de dias definido pra
+  // calcular a capacidade proporcional, então o indicador fica oculto (não é
+  // a mesma coisa que a "Ociosidade Esta Semana" que já existe no topo da
+  // página, que compara Previsto x Executado, não Capacidade x Executado).
+  let capacidadeHoras=null, ociosidadeCapacidadePct=null;
+  if(de && ate){
+    const diasPeriodo=Math.round((new Date(ate+'T00:00:00')-new Date(de+'T00:00:00'))/86400000)+1;
+    if(diasPeriodo>0){
+      capacidadeHoras=Math.round((diasPeriodo/7)*40*10)/10;
+      ociosidadeCapacidadePct=capacidadeHoras>0?Math.max(0,Math.round((1-hApo/capacidadeHoras)*100)):null;
+    }
+  }
   const statusRows=Object.entries(statusData).sort((a,b)=>b[1]-a[1]);
 
   const [monISO,sunISO]=getMondaySunday(new Date());
@@ -2172,9 +2187,13 @@ function renderPessoa(){
   <div class="grid grid-2b" style="margin-bottom:16px">
     <div class="card"><div class="card-title"><h3>Tarefas por Status</h3></div><div class="table-wrap" style="max-height:260px"><table><thead><tr><th>Status</th><th>Qtd</th></tr></thead><tbody>${statusRows.map(([s,c])=>'<tr class="task-link" data-status-row="'+s.replace(/"/g,'&quot;')+'" style="cursor:pointer"><td><span class="status-pill" style="border-left:3px solid '+(STATUS_COLOR[s]||'#64748b')+'">'+s+'</span></td><td><strong>'+c+'</strong></td></tr>').join('')||'<tr><td colspan="2" style="color:var(--text-faint)">Sem tarefas</td></tr>'}</tbody></table></div></div>
     <div class="card"><div class="card-title"><h3>Estimado x Executado${infoTip(TIP_ESTIMADO_EXECUTADO)}<span class="sub">${periodoAtivoPes?' (no período)':' (geral)'}</span></h3></div><div style="padding:10px 0">
-      <div style="margin-bottom:14px"><span style="font-size:11px;color:var(--text-faint)">Horas Estimadas</span><div style="font-size:22px;font-weight:700;color:var(--text)">${fH(hEst)}</div></div>
-      <div style="margin-bottom:14px"><span style="font-size:11px;color:var(--text-faint)">Horas Executadas</span><div style="font-size:22px;font-weight:700;color:var(--primary)">${fH(hApo)}</div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:14px">
+        ${ociosidadeCapacidadePct!==null?'<div><span style="font-size:11px;color:var(--text-faint)">% Ociosidade'+infoTip('Percentual da capacidade de 40h/semana (proporcional ao período selecionado: '+fH(capacidadeHoras)+' no total) que NÃO foi executado. Capacidade - Executado, em relação à capacidade.')+'</span><div style="font-size:22px;font-weight:700;color:'+(ociosidadeCapacidadePct>=50?'var(--st-bloqueado)':ociosidadeCapacidadePct>=25?'#f59e0b':'var(--st-feito)')+'">'+ociosidadeCapacidadePct+'%</div></div>':''}
+        <div><span style="font-size:11px;color:var(--text-faint)">Horas Estimadas</span><div style="font-size:22px;font-weight:700;color:var(--text)">${fH(hEst)}</div></div>
+        <div><span style="font-size:11px;color:var(--text-faint)">Horas Executadas</span><div style="font-size:22px;font-weight:700;color:var(--primary)">${fH(hApo)}</div></div>
+      </div>
       ${hEst>0?'<div class="bullet-row" style="grid-template-columns:1fr 42px"><div class="bullet-track"><div class="bullet-fill" style="width:'+Math.min(Math.round(hApo/hEst*100),100)+'%;'+(hApo>hEst?'background:var(--st-bloqueado)':'')+'"></div></div><div class="bullet-pct">'+Math.round(hApo/hEst*100)+'%</div></div>':'<div style="color:var(--text-faint);font-size:12px">Sem horas estimadas vinculadas.</div>'}
+      ${capacidadeHoras===null?'<div style="color:var(--text-faint);font-size:11.5px;margin-top:10px;font-style:italic">Selecione um período com data De e Até pra ver a % de ociosidade (capacidade de 40h/semana proporcional ao período).</div>':'<div style="color:var(--text-faint);font-size:11.5px;margin-top:10px">Capacidade do período (40h/semana): '+fH(capacidadeHoras)+'</div>'}
     </div></div>
   </div>
 
@@ -3233,7 +3252,14 @@ let FUT_ALL_TASKS=null;
 function getFutAllTasks(){
   if(FUT_ALL_TASKS) return FUT_ALL_TASKS;
   FUT_ALL_TASKS=[];
-  Object.values(PROJ_TASKS).forEach(list=>{ list.forEach(t=>FUT_ALL_TASKS.push(t)); });
+  // IMPORTANTE: os objetos de tarefa dentro de PROJ_TASKS[projeto] não têm um
+  // campo próprio com o nome do projeto (ele só existe como CHAVE externa do
+  // objeto) — por isso é preciso "carimbar" t.pj aqui ao achatar tudo numa
+  // lista única, senão qualquer lugar que use essa lista (ex: modais da
+  // Central de Comando) perde a associação com o projeto.
+  Object.entries(PROJ_TASKS).forEach(([pjNome,list])=>{
+    list.forEach(t=>{ if(!t.pj) t.pj=pjNome; FUT_ALL_TASKS.push(t); });
+  });
   return FUT_ALL_TASKS;
 }
 function brToIso(br){
