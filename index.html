@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyNZ7GlxbnDzJQlEKQ4B_Ams4mhFRNFjNGxLBkdAwHQMPS8be6FvejGWCXRpVFRSQGTuw/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycby5a4pS81ZXIUFBVLnIcxo1xWf6ndaAYD80GFw7BEZBit0EjVNLQMGWTSOe9hxIF7fOXw/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1222,6 +1222,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div class="page-header"><div><h1>Pendências</h1><p>Tarefas sem data de início e/ou vencimento preenchida, por Gerente de Projeto.</p></div></div>
       <div class="filter-bar">
         <div class="filter-field"><label>Gerente</label><select id="f-pend-ger"></select></div>
+        <div class="filter-field"><label>Status</label><select id="f-pend-status"></select></div>
         <button class="filter-clear" id="f-pend-clear">Limpar filtros</button>
       </div>
       <div class="grid grid-kpi" id="kpi-pend"></div>
@@ -1331,7 +1332,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v5.16 · Última atualização: —</footer>
+  <footer id="app-footer">v5.18 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1383,7 +1384,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v3.1, v3.2, ...,
 // v3.10, v4.0, v4.1, ...) — nunca v3.11. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v5.16';
+const APP_VERSION='v5.18';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2078,7 +2079,9 @@ function renderPessoa(){
     const tarefasPorProjeto={};
     Object.entries(PROJ_TASKS).forEach(([proj,tasks])=>{
       tasks.forEach(t=>{
-        if(t.resp===nome && t.dt_venc_iso && inRange(t.dt_venc_iso,de,ate)) tarefasPorProjeto[proj]=(tarefasPorProjeto[proj]||0)+1;
+        const responsaveis=t.responsaveis||[];
+        const ehDaPessoa = responsaveis.length>0 ? responsaveis.some(r=>r.nome===nome) : (t.resp===nome);
+        if(ehDaPessoa && t.dt_venc_iso && inRange(t.dt_venc_iso,de,ate)) tarefasPorProjeto[proj]=(tarefasPorProjeto[proj]||0)+1;
       });
     });
     const projSetPes=new Set([...Object.keys(horasPorProjeto),...Object.keys(tarefasPorProjeto)]);
@@ -2091,6 +2094,18 @@ function renderPessoa(){
     const tpe=D.tpe[emailKey]||{};const tHA=Object.values(tpe).reduce((s,v)=>s+v[0],0);
     pL=Object.entries(tpe).map(([k,v])=>({n:k,h:v[0],t:v[1],pct:tHA>0?Math.round(v[0]/tHA*100):0})).sort((a,b)=>b.h-a.h);
   }
+  // Inclui também os projetos onde a pessoa está alocada na equipe (Portifolio),
+  // mesmo sem NENHUMA hora/tarefa lançada ainda — sem isso, quem acabou de
+  // entrar num projeto (ou não aponta no Zoho) não aparecia em lugar nenhum
+  // aqui, mesmo estando oficialmente alocado. Não duplica projeto que já
+  // apareceu acima com dados reais — só completa o que faltava.
+  const projetosComDados=new Set(pL.map(x=>x.n));
+  D.pj.forEach(p=>{
+    if(p.eq && p.eq.includes(nome) && !projetosComDados.has(p.pj)){
+      pL.push({n:p.pj, h:0, t:0, pct:0, semApontamento:true});
+      projetosComDados.add(p.pj);
+    }
+  });
   const ger=new Set();D.pj.forEach(p=>{if(p.eq&&p.eq.includes(nome)&&p.gp)ger.add(p.gp);});
   const cdD=CD[(info.email||'').toLowerCase()]||{};let clMin=0,clD=0;
   if(de||ate){for(const[d,mins] of Object.entries(cdD)){if(!inRange(d,de,ate))continue;clMin+=mins;clD++;}}
@@ -2163,7 +2178,7 @@ function renderPessoa(){
     </div></div>
   </div>
 
-  <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Detalhamento por Projeto<span class="sub">${periodoAtivoPes?' (no período)':' (geral)'}</span></h3><span class="sub">${pL.length}</span></div><div class="table-wrap"><table><thead><tr><th>Projeto</th><th>Tarefas</th><th>Horas</th><th>%</th></tr></thead><tbody>${pL.map(p=>'<tr><td>'+(p.n.length>35?p.n.slice(0,35)+'…':p.n)+'</td><td><strong>'+p.t+'</strong></td><td>'+fH(p.h)+'</td><td><div class="bullet-row" style="grid-template-columns:1fr 36px"><div class="bullet-track"><div class="bullet-fill" style="width:'+p.pct+'%"></div></div><div class="bullet-pct">'+p.pct+'%</div></div></td></tr>').join('')||'<tr><td colspan="4" style="color:var(--text-faint);text-align:center;padding:20px">Nenhuma atividade nesse período.</td></tr>'}</tbody></table></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Detalhamento por Projeto<span class="sub">${periodoAtivoPes?' (no período)':' (geral)'}</span></h3><span class="sub">${pL.length}</span></div><div class="table-wrap"><table><thead><tr><th>Projeto</th><th>Tarefas</th><th>Horas</th><th>%</th></tr></thead><tbody>${pL.map(p=>'<tr'+(p.semApontamento?' style="opacity:.75"':'')+'><td>'+projetoLinkHtml(p.n,p.n.length>35?p.n.slice(0,35)+'…':p.n)+'</td><td><strong>'+p.t+'</strong></td><td>'+fH(p.h)+'</td><td>'+(p.semApontamento?'<span class="status-pill" title="Alocado na equipe do projeto, mas sem nenhuma hora ou tarefa registrada ainda">Sem apontamento</span>':'<div class="bullet-row" style="grid-template-columns:1fr 36px"><div class="bullet-track"><div class="bullet-fill" style="width:'+p.pct+'%"></div></div><div class="bullet-pct">'+p.pct+'%</div></div>')+'</td></tr>').join('')||'<tr><td colspan="4" style="color:var(--text-faint);text-align:center;padding:20px">Nenhuma atividade nesse período.</td></tr>'}</tbody></table></div></div>
 
   <div class="card"><div class="card-title"><h3>Horas Trabalhadas por Mês</h3><span class="sub">comparativo mensal · fonte: Data de Apontamento</span></div><div style="height:280px">${monthsSorted.length>0?'<canvas id="chPM"></canvas>':'<div class="empty-state"><p>Sem dados no período selecionado.</p></div>'}</div></div>`;
 
@@ -2309,13 +2324,19 @@ function renderArea(){
 function initPend(){
   const gerentes=['', ...new Set(PEND.map(t=>t.gerente))].sort();
   document.getElementById('f-pend-ger').innerHTML=gerentes.map(g=>'<option value="'+g+'">'+(g||'Todos os gerentes')+'</option>').join('');
+  const statuses=['', ...new Set(PEND.map(t=>t.status).filter(Boolean))].sort();
+  document.getElementById('f-pend-status').innerHTML=statuses.map(s=>'<option value="'+s.replace(/"/g,'&quot;')+'">'+(s||'Todos os status')+'</option>').join('');
   document.getElementById('f-pend-ger').onchange=renderPend;
-  document.getElementById('f-pend-clear').onclick=()=>{document.getElementById('f-pend-ger').value='';renderPend();};
+  document.getElementById('f-pend-status').onchange=renderPend;
+  document.getElementById('f-pend-clear').onclick=()=>{document.getElementById('f-pend-ger').value='';document.getElementById('f-pend-status').value='';renderPend();};
   renderPend();
 }
 function renderPend(){
   const ger=document.getElementById('f-pend-ger').value;
-  let list=PEND;if(ger)list=list.filter(t=>t.gerente===ger);
+  const statusFiltro=document.getElementById('f-pend-status').value;
+  let list=PEND;
+  if(ger)list=list.filter(t=>t.gerente===ger);
+  if(statusFiltro)list=list.filter(t=>t.status===statusFiltro);
   const both=list.filter(t=>t.falta_inicio&&t.falta_venc).length;
   const onlyInicio=list.filter(t=>t.falta_inicio&&!t.falta_venc).length;
   const onlyVenc=list.filter(t=>!t.falta_inicio&&t.falta_venc).length;
@@ -2606,12 +2627,24 @@ function abrirDetalheTarefa(pjName, idx){
 }
 // Coleta todas as tarefas de uma pessoa (por e-mail, com fallback por nome),
 // cruzando os projetos em que ela aparece (D.tpe) com PROJ_TASKS de cada um.
+// Cruza os projetos de uma pessoa (D.tpe) com PROJ_TASKS pra achar as tarefas
+// dela. IMPORTANTE: desde que PROJ_TASKS passou a agrupar tarefas com múltiplos
+// responsáveis num único registro (evitando duplicidade nas listas — ver
+// tarefaChaveUnica_ no backend), os campos t.email/t.resp guardam só o
+// PRIMEIRO responsável. Por isso aqui é preciso checar TODOS os responsáveis
+// (t.responsaveis) — senão o 2º/3º responsável de uma tarefa nunca seria
+// encontrado aqui, mesmo contando certo em PSTAT (que conta por linha bruta,
+// não por tarefa única) — exatamente o bug de "contagem diz 1, mas a lista
+// mostra 0" quando a pessoa é uma responsável secundária da tarefa.
 function coletarTarefasDaPessoa(emailKey, nomePessoa){
   const projetos=Object.keys(D.tpe[emailKey]||{});
   const out=[];
   projetos.forEach(pj=>{
     (PROJ_TASKS[pj]||[]).forEach((t,idx)=>{
-      const bate = t.email ? t.email===emailKey : (t.resp===nomePessoa);
+      const responsaveis=t.responsaveis||[];
+      const bate = responsaveis.length>0
+        ? responsaveis.some(r=>(r.email && r.email===emailKey) || (r.nome && r.nome===nomePessoa))
+        : (t.email ? t.email===emailKey : (t.resp===nomePessoa));
       if(bate) out.push({pj,idx,t});
     });
   });
