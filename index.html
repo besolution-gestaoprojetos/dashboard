@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwA3c3ILeO6haDfohf4qbMxR-lsbtjSE5lmbnNldo8nU1t_r3aqI3PQAqiWwV6blBJ0Wg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbw8aaZxIc2tY9RhrnOFJNRuftr0P8kfTUNODm0AjbevdhO_GgvEBNzFR-MePpPYO1KDSw/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -592,6 +592,15 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
    visual atual, só adiciona sublinhado pontilhado + cursor, sem mudar cor/peso. */
 .person-link,.task-link{cursor:pointer; text-decoration:underline dotted; text-decoration-color:var(--text-faint); text-underline-offset:2px; text-decoration-thickness:1px;}
 .task-resp-mais{cursor:pointer; font-size:11px; font-weight:700; color:var(--primary); background:var(--primary-100); padding:2px 7px; border-radius:999px; white-space:nowrap; margin-left:2px;}
+
+/* Alocações — mini-card por projeto vinculado, com Complexidade/Prioridade
+   sempre visíveis e rotuladas (não escondidas atrás de hover) */
+.aloc-proj-item{border:1px solid var(--border); border-radius:8px; padding:7px 10px; margin-bottom:6px; background:var(--surface-alt);}
+.aloc-proj-item:last-child{margin-bottom:0;}
+.aloc-proj-nome{font-weight:700; font-size:12.5px; margin-bottom:4px;}
+.aloc-proj-meta{display:flex; gap:12px; flex-wrap:wrap;}
+.aloc-proj-tag{font-size:11px; color:var(--text-muted);}
+.aloc-proj-tag strong{color:var(--text);}
 .task-resp-mais:hover{background:var(--primary); color:#fff;}
 .person-link:hover,.task-link:hover{color:var(--primary); text-decoration-color:var(--primary);}
 
@@ -1028,6 +1037,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
         <div class="nav-cat-panel">
           <button class="nav-tab active" data-page="cliente">Portfólio</button>
           <button class="nav-tab" data-page="alocacoes">Alocações</button>
+          <button class="nav-tab" data-page="portfolioedit">Edição do Portfólio</button>
           <button class="nav-tab" data-page="futuristic">🚀 Central de Comando</button>
         </div>
       </div>
@@ -1102,13 +1112,25 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="cli-cards"></div>
     </section>
 
+    <!-- PAGE EDIÇÃO DO PORTFÓLIO -->
+    <section class="page" id="page-portfolioedit">
+      <div class="page-header"><div><h1>Edição do Portfólio</h1><p>Editar os dados de um projeto diretamente na fonte oficial (aba Portifolio) — mesmos campos já existentes na planilha.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field" style="min-width:280px"><label>Projeto</label><select id="f-pe-projeto"><option value="">— Selecione —</option></select></div>
+      </div>
+      <div id="pe-feedback" style="display:none;margin-bottom:14px;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600"></div>
+      <div id="pe-content"></div>
+    </section>
+
     <!-- PAGE ALOCAÇÕES -->
     <section class="page" id="page-alocacoes">
       <div class="page-header"><div><h1>Alocações</h1><p>Visão consolidada de pessoas, projetos, tarefas e horas — a partir dos dados já existentes no dashboard (equipe dos projetos, tarefas e apontamentos).</p></div></div>
       <div class="filter-bar">
         <div class="filter-field"><label>Pessoa</label><select id="f-aloc-pessoa"><option value="">Todas</option></select></div>
-        <div class="filter-field"><label>Qtd. de Projetos</label><select id="f-aloc-qtdproj"><option value="">Qualquer quantidade</option><option value="1">1 ou mais</option><option value="2">2 ou mais</option><option value="3">3 ou mais</option><option value="0">Sem nenhum projeto</option></select></div>
+        <div class="filter-field"><label>Qtd. de Projetos</label><select id="f-aloc-qtdproj"><option value="">Qualquer quantidade</option></select></div>
         <div class="filter-field"><label>Status da Tarefa</label><select id="f-aloc-status"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label>Complexidade</label><select id="f-aloc-complexidade"><option value="">Todas</option></select></div>
+        <div class="filter-field"><label>Prioridade</label><select id="f-aloc-prioridade"><option value="">Todas</option></select></div>
         <button class="filter-clear" id="f-aloc-clear">Limpar filtros</button>
       </div>
       <div class="grid grid-kpi" id="kpi-alocacoes"></div>
@@ -1353,7 +1375,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v6.2 · Última atualização: —</footer>
+  <footer id="app-footer">v6.4 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1405,7 +1427,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v6.2';
+const APP_VERSION='v6.4';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1688,7 +1710,7 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','alocacoes','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel'],
+  'Administrador':  ['cliente','alocacoes','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
@@ -1725,7 +1747,7 @@ const PERM_MENU = {
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio',alocacoes:'Alocações',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Gerência',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Reports'};
+const PAGE_LABELS = {cliente:'Portfólio',alocacoes:'Alocações',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Gerência',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Reports'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 
 function paginasPermitidas(){ return PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido']; }
@@ -1971,11 +1993,28 @@ function initAlocacoes(){
   const statuses=[...statusesSet].sort();
   document.getElementById('f-aloc-status').innerHTML='<option value="">Todos</option>'+statuses.map(s=>'<option value="'+s.replace(/"/g,'&quot;')+'">'+s+'</option>').join('');
 
-  ['f-aloc-pessoa','f-aloc-qtdproj','f-aloc-status'].forEach(id=>{ document.getElementById(id).onchange=renderAlocacoes; });
+  // Qtd. de Projetos: só quantidade EXATA (sem "ou mais") — as opções refletem os
+  // valores que realmente ocorrem nos dados atuais (0 até o máximo observado).
+  const qtdsPorPessoa=pessoas.map(nome=>D.pj.filter(proj=>proj.eq&&proj.eq.includes(nome)).length);
+  const maxQtd=qtdsPorPessoa.length>0?Math.max(...qtdsPorPessoa):0;
+  let opcoesQtdHtml='<option value="">Qualquer quantidade</option>';
+  for(let i=0;i<=maxQtd;i++) opcoesQtdHtml+='<option value="'+i+'">'+i+'</option>';
+  document.getElementById('f-aloc-qtdproj').innerHTML=opcoesQtdHtml;
+
+  // Complexidade/Prioridade: valores reais existentes em D.pj (mesmos campos já
+  // usados na exibição de "Projetos Vinculados").
+  const complexidades=[...new Set(D.pj.map(p=>p.cx).filter(Boolean))].sort();
+  const prioridades=[...new Set(D.pj.map(p=>p.pr).filter(Boolean))].sort();
+  document.getElementById('f-aloc-complexidade').innerHTML='<option value="">Todas</option>'+complexidades.map(c=>'<option value="'+c.replace(/"/g,'&quot;')+'">'+c+'</option>').join('');
+  document.getElementById('f-aloc-prioridade').innerHTML='<option value="">Todas</option>'+prioridades.map(p=>'<option value="'+p.replace(/"/g,'&quot;')+'">'+p+'</option>').join('');
+
+  ['f-aloc-pessoa','f-aloc-qtdproj','f-aloc-status','f-aloc-complexidade','f-aloc-prioridade'].forEach(id=>{ document.getElementById(id).onchange=renderAlocacoes; });
   document.getElementById('f-aloc-clear').onclick=()=>{
     document.getElementById('f-aloc-pessoa').value='';
     document.getElementById('f-aloc-qtdproj').value='';
     document.getElementById('f-aloc-status').value='';
+    document.getElementById('f-aloc-complexidade').value='';
+    document.getElementById('f-aloc-prioridade').value='';
     renderAlocacoes();
   };
   renderAlocacoes();
@@ -1984,6 +2023,8 @@ function renderAlocacoes(){
   const fPessoa=document.getElementById('f-aloc-pessoa').value;
   const fQtdProj=document.getElementById('f-aloc-qtdproj').value;
   const fStatus=document.getElementById('f-aloc-status').value;
+  const fComplexidade=document.getElementById('f-aloc-complexidade').value;
+  const fPrioridade=document.getElementById('f-aloc-prioridade').value;
 
   let pessoas=D.p.filter(p=>p.a);
   if(fPessoa) pessoas=pessoas.filter(p=>p.a===fPessoa);
@@ -2001,9 +2042,11 @@ function renderAlocacoes(){
     return {p,projetosVinculados,qtdTarefas,horasPrevistas,horasApontadas,statusesDaPessoa};
   });
 
-  if(fQtdProj==='0') linhas=linhas.filter(l=>l.projetosVinculados.length===0);
-  else if(fQtdProj) linhas=linhas.filter(l=>l.projetosVinculados.length>=parseInt(fQtdProj));
+  // Qtd. de Projetos agora é sempre quantidade EXATA (sem "ou mais")
+  if(fQtdProj!=='') linhas=linhas.filter(l=>l.projetosVinculados.length===parseInt(fQtdProj));
   if(fStatus) linhas=linhas.filter(l=>l.statusesDaPessoa.has(fStatus));
+  if(fComplexidade) linhas=linhas.filter(l=>l.projetosVinculados.some(proj=>proj.cx===fComplexidade));
+  if(fPrioridade) linhas=linhas.filter(l=>l.projetosVinculados.some(proj=>proj.pr===fPrioridade));
 
   linhas.sort((a,b)=>b.projetosVinculados.length-a.projetosVinculados.length || a.p.a.localeCompare(b.p.a,'pt-BR'));
 
@@ -2018,13 +2061,132 @@ function renderAlocacoes(){
 
   let h='<div class="card"><div class="card-title"><h3>Alocações por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:600px"><table><thead><tr><th>Pessoa</th><th>Qtd. Projetos</th><th>Projetos Vinculados</th><th>Qtd. Tarefas</th><th>Gestor</th><th>Horas Previstas</th><th>Horas Apontadas</th></tr></thead><tbody>';
   linhas.forEach(l=>{
+    // Cada projeto vinculado vira um "mini-card" com Nome/Complexidade/Prioridade
+    // sempre visíveis e rotulados — evita que Complexidade/Prioridade fiquem
+    // escondidas atrás de um hover ou se percam junto ao nome do projeto.
     const projetosHtml=l.projetosVinculados.length===0?'<span style="color:var(--text-faint)">—</span>':
-      l.projetosVinculados.map(proj=>'<div style="margin-bottom:4px">'+projetoLinkHtml(proj.pj)+' <span class="status-pill" title="Complexidade">'+(proj.cx||'—')+'</span> <span class="status-pill" title="Prioridade">'+(proj.pr||'—')+'</span></div>').join('');
+      l.projetosVinculados.map(proj=>
+        '<div class="aloc-proj-item">'+
+          '<div class="aloc-proj-nome">'+projetoLinkHtml(proj.pj)+'</div>'+
+          '<div class="aloc-proj-meta">'+
+            '<span class="aloc-proj-tag">Complexidade: <strong>'+(proj.cx||'—')+'</strong></span>'+
+            '<span class="aloc-proj-tag">Prioridade: <strong>'+(proj.pr||'—')+'</strong></span>'+
+          '</div>'+
+        '</div>'
+      ).join('');
     h+='<tr><td><strong>'+personLinkHtml(l.p.a)+'</strong></td><td>'+l.projetosVinculados.length+'</td><td>'+projetosHtml+'</td><td>'+l.qtdTarefas+'</td><td>'+personLinkHtml(l.p.gestor)+'</td><td>'+fH(l.horasPrevistas)+'</td><td>'+fH(l.horasApontadas)+'</td></tr>';
   });
   if(linhas.length===0) h+='<tr><td colspan="7" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
   h+='</tbody></table></div></div>';
   document.getElementById('alocacoes-content').innerHTML=h;
+}
+
+// ============================================================
+// EDIÇÃO DO PORTFÓLIO — segunda funcionalidade do dashboard que GRAVA dados
+// (a primeira foi o Status Report). Edita a aba Portifolio diretamente, sem
+// aba nova. O formulário é montado DINAMICAMENTE a partir dos campos que o
+// backend devolve (que por sua vez lê o cabeçalho real da planilha) — não há
+// nomes de campo fixos aqui, então se colunas mudarem, a tela se adapta.
+// O dropdown de projeto usa D.pj, que já vem filtrado por escopo do backend —
+// então a pessoa nunca vê/edita projeto fora da própria permissão.
+// ============================================================
+let PE_ULTIMA_LEITURA=null; // guarda {rowIndex, campos} do projeto carregado, pra montar o payload de salvar
+function initPortfolioEdit(){
+  const projetos=[...new Set(D.pj.map(p=>p.pj))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const sel=document.getElementById('f-pe-projeto');
+  sel.innerHTML='<option value="">— Selecione —</option>'+projetos.map(p=>'<option value="'+p.replace(/"/g,'&quot;')+'">'+p+'</option>').join('');
+  sel.onchange=()=>carregarProjetoParaEdicao(sel.value);
+  document.getElementById('pe-content').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Selecione um projeto acima para editar.</p></div>';
+}
+function peFeedback(msg,ok){
+  const el=document.getElementById('pe-feedback');
+  el.textContent=msg;
+  el.style.background=ok?'rgba(22,163,74,.12)':'rgba(220,38,38,.12)';
+  el.style.color=ok?'var(--st-feito)':'var(--st-bloqueado)';
+  el.style.display='block';
+  clearTimeout(window.__peFeedbackTimeout);
+  window.__peFeedbackTimeout=setTimeout(()=>{ el.style.display='none'; },5000);
+}
+function peNormalizarHeader(h){ return (h||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
+async function carregarProjetoParaEdicao(nomeProjeto){
+  const contentEl=document.getElementById('pe-content');
+  if(!nomeProjeto){ contentEl.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Selecione um projeto acima para editar.</p></div>'; return; }
+  contentEl.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Carregando…</p></div>';
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=getPortfolioProjeto&projeto='+encodeURIComponent(nomeProjeto);
+    const r=await loadDataJSONP(url);
+    if(!r || !r.ok){
+      contentEl.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((r&&r.message)||'Não foi possível carregar este projeto.')+'</p></div>';
+      return;
+    }
+    PE_ULTIMA_LEITURA={ projeto: nomeProjeto, rowIndex: r.rowIndex, campos: r.campos };
+    renderFormularioPortfolioEdit(nomeProjeto, r.campos);
+  }catch(e){
+    contentEl.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Falha ao contatar o servidor. Tente novamente.</p></div>';
+  }
+}
+function renderFormularioPortfolioEdit(nomeProjeto, campos){
+  // Campos com opções conhecidas (mesmos valores já usados no resto do
+  // dashboard) viram dropdown; os demais usam o tipo detectado pelo backend
+  // (texto/número/data/checkbox) a partir do valor real já gravado na planilha.
+  const opcoesConhecidas={
+    status: [...new Set(D.pj.map(p=>p.st).filter(Boolean))].sort(),
+    complexidade: [...new Set(D.pj.map(p=>p.cx).filter(Boolean))].sort(),
+    prioridade: [...new Set(D.pj.map(p=>p.pr).filter(Boolean))].sort()
+  };
+  let h='<div class="card"><div class="card-title"><h3>'+nomeProjeto+'</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">';
+  campos.forEach((c,i)=>{
+    const headerNorm=peNormalizarHeader(c.header);
+    const valorEscapado=(c.valor===null||c.valor===undefined?'':String(c.valor)).replace(/"/g,'&quot;');
+    let inputHtml;
+    if(opcoesConhecidas[headerNorm]){
+      const opcoes=opcoesConhecidas[headerNorm];
+      inputHtml='<select data-pe-idx="'+i+'" class="pe-campo"><option value="">— Selecione —</option>'+
+        opcoes.map(o=>'<option value="'+o.replace(/"/g,'&quot;')+'"'+(c.valor===o?' selected':'')+'>'+o+'</option>').join('')+
+        (c.valor && opcoes.indexOf(c.valor)===-1?'<option value="'+valorEscapado+'" selected>'+c.valor+'</option>':'')+
+        '</select>';
+    }else if(c.tipo==='data'){
+      inputHtml='<input type="date" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'">';
+    }else if(c.tipo==='numero'){
+      inputHtml='<input type="number" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'" step="any">';
+    }else if(c.tipo==='checkbox'){
+      inputHtml='<input type="checkbox" data-pe-idx="'+i+'" class="pe-campo" '+(c.valor?'checked':'')+' style="width:18px;height:18px">';
+    }else{
+      inputHtml='<input type="text" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'">';
+    }
+    h+='<div class="sr-field"><label>'+c.header+'</label>'+inputHtml+'</div>';
+  });
+  h+='</div><div class="sr-actions"><button type="button" class="sr-btn sr-btn-primary" id="pe-btn-salvar">💾 Salvar Alterações</button></div></div>';
+  document.getElementById('pe-content').innerHTML=h;
+  document.getElementById('pe-btn-salvar').onclick=salvarEdicaoPortfolio;
+}
+async function salvarEdicaoPortfolio(){
+  if(!PE_ULTIMA_LEITURA) return;
+  const campos=document.querySelectorAll('#pe-content .pe-campo');
+  const valores=PE_ULTIMA_LEITURA.campos.map(c=>c.valor); // parte do valor original, sobrescreve só o que tem input
+  campos.forEach(el=>{
+    const idx=parseInt(el.dataset.peIdx);
+    if(el.type==='checkbox') valores[idx]=el.checked;
+    else valores[idx]=el.value;
+  });
+  const btn=document.getElementById('pe-btn-salvar');
+  btn.disabled=true;
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const payload={ rowIndex: PE_ULTIMA_LEITURA.rowIndex, valores: valores };
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=savePortfolioProjeto&projeto='+encodeURIComponent(PE_ULTIMA_LEITURA.projeto)+'&payload='+encodeURIComponent(JSON.stringify(payload));
+    const r=await loadDataJSONP(url);
+    if(r && r.ok){
+      peFeedback('Projeto salvo com sucesso.',true);
+      carregarProjetoParaEdicao(PE_ULTIMA_LEITURA.projeto); // recarrega pra refletir o que foi salvo de verdade
+    }else{
+      peFeedback((r&&r.message)||'Não foi possível salvar as alterações.',false);
+    }
+  }catch(e){
+    peFeedback('Falha ao contatar o servidor. Tente novamente.',false);
+  }
+  btn.disabled=false;
 }
 
 function initCliente(){
@@ -4714,7 +4876,7 @@ function renderStatusReportPainel(){
 // principalmente relevante ao trocar de perfil em "Visualizar como", quando o
 // dashboard inteiro (12 páginas) recarrega de uma vez.
 const PAGE_INIT_MAP={
-  cliente:initCliente, alocacoes:initAlocacoes, pessoa:initPessoa, area:initArea, pend:initPend,
+  cliente:initCliente, alocacoes:initAlocacoes, portfolioedit:initPortfolioEdit, pessoa:initPessoa, area:initArea, pend:initPend,
   ociosos:initOciosos, topexec:initTopExec, futuristic:renderFuturistic,
   lider:initLider, gerente:initGerente, equipe:initEquipe,
   setorial:initSetorial, transversal:initTransversal, statusreport:initStatusReport,
