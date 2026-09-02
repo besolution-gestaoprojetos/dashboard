@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyFRq0yVv2C0JZGgRh-SDIUcAyjIM42RUo8lUqFGih_18yMYIYxH8UgBwyhwOGBi7W0Qw/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwA3c3ILeO6haDfohf4qbMxR-lsbtjSE5lmbnNldo8nU1t_r3aqI3PQAqiWwV6blBJ0Wg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1027,6 +1027,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
         <button class="nav-cat-trigger" type="button">Visão Geral<svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-cat-panel">
           <button class="nav-tab active" data-page="cliente">Portfólio</button>
+          <button class="nav-tab" data-page="alocacoes">Alocações</button>
           <button class="nav-tab" data-page="futuristic">🚀 Central de Comando</button>
         </div>
       </div>
@@ -1099,6 +1100,19 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div class="grid grid-kpi" id="kpi-cli"></div>
       <div id="ritmo-resumo-cli" style="margin-bottom:16px"></div>
       <div id="cli-cards"></div>
+    </section>
+
+    <!-- PAGE ALOCAÇÕES -->
+    <section class="page" id="page-alocacoes">
+      <div class="page-header"><div><h1>Alocações</h1><p>Visão consolidada de pessoas, projetos, tarefas e horas — a partir dos dados já existentes no dashboard (equipe dos projetos, tarefas e apontamentos).</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label>Pessoa</label><select id="f-aloc-pessoa"><option value="">Todas</option></select></div>
+        <div class="filter-field"><label>Qtd. de Projetos</label><select id="f-aloc-qtdproj"><option value="">Qualquer quantidade</option><option value="1">1 ou mais</option><option value="2">2 ou mais</option><option value="3">3 ou mais</option><option value="0">Sem nenhum projeto</option></select></div>
+        <div class="filter-field"><label>Status da Tarefa</label><select id="f-aloc-status"><option value="">Todos</option></select></div>
+        <button class="filter-clear" id="f-aloc-clear">Limpar filtros</button>
+      </div>
+      <div class="grid grid-kpi" id="kpi-alocacoes"></div>
+      <div id="alocacoes-content"></div>
     </section>
 
     <!-- PAGE PESSOA -->
@@ -1278,6 +1292,13 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
         <div class="filter-field"><label>Head</label><select id="f-equipe"><option value="">— Todos —</option></select></div>
         <div class="filter-field"><label>Gestor</label><select id="f-equipe-gestor"><option value="">— Todos —</option></select></div>
         <div class="filter-field" id="f-equipe-pessoa-wrap" style="display:none"><label>Pessoa</label><select id="f-equipe-pessoa"><option value="">— Todos —</option></select></div>
+        <div class="filter-field"><label>Selecione o Período</label>
+          <div class="seg-control" id="equipe-periodo-seg">
+            <button type="button" class="seg-btn active" data-val="todos">Todos</button><button type="button" class="seg-btn" data-val="hoje">Hoje</button><button type="button" class="seg-btn" data-val="semana">Esta semana</button><button type="button" class="seg-btn" data-val="mes">Este mês</button><button type="button" class="seg-btn" data-val="mes_passado">Mês passado</button>
+          </div>
+        </div>
+        <div class="filter-field"><label>De</label><input type="date" id="f-equipe-de"></div>
+        <div class="filter-field"><label>Até</label><input type="date" id="f-equipe-ate"></div>
         <div class="filter-field" style="justify-content:flex-end;">
           <label style="visibility:hidden;">.</label>
           <label class="claude-toggle" for="f-equipe-problema">
@@ -1332,7 +1353,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v6.0 · Última atualização: —</footer>
+  <footer id="app-footer">v6.2 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1384,7 +1405,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v6.0';
+const APP_VERSION='v6.2';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1667,12 +1688,12 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel'],
+  'Administrador':  ['cliente','alocacoes','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
   // Também vê Gestão Setorial (sua área) e Gestão Transversal (apoio ao GP).
-  'Head':           ['cliente','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','transversal','statusreport'],
+  'Head':           ['cliente','alocacoes','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','transversal','statusreport'],
   // Tech Lead / PO / SM: veem o(s) projeto(s) onde atuam por completo, junto com a equipe.
   // Gestão Transversal é a página central desses perfis (LP/GP/SM).
   'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail','transversal','statusreport'],
@@ -1704,7 +1725,7 @@ const PERM_MENU = {
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Gerência',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Reports'};
+const PAGE_LABELS = {cliente:'Portfólio',alocacoes:'Alocações',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Gerência',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Reports'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 
 function paginasPermitidas(){ return PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido']; }
@@ -1932,6 +1953,80 @@ function valueLabelPlugin(fmt,horiz){
 const noTooltip={enabled:false};
 
 // === CLIENTE ===
+// ============================================================
+// ALOCAÇÕES — visão consolidada de pessoas x projetos x tarefas x horas.
+// Não cria nenhuma estrutura de dados nova: usa exatamente o que já existe —
+// D.pj[].eq (equipe/relacionamento de alocação, a MESMA fonte usada pro
+// controle de acesso e por "Detalhamento por Projeto" em Desempenho — inclui
+// quem está alocado mesmo sem hora/tarefa lançada ainda), PSTAT/PHEST/PHAP
+// (contagens e horas por pessoa, já deduplicadas por e-mail), D.pj[].cx/pr
+// (Complexidade/Prioridade do projeto) e PROJ_TASKS (lista de status reais).
+// ============================================================
+function initAlocacoes(){
+  const pessoas=[...new Set(D.p.filter(p=>p.a).map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  document.getElementById('f-aloc-pessoa').innerHTML='<option value="">Todas</option>'+pessoas.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">'+n+'</option>').join('');
+
+  const statusesSet=new Set();
+  Object.values(PROJ_TASKS).forEach(list=>list.forEach(t=>{ if(t.status) statusesSet.add(t.status); }));
+  const statuses=[...statusesSet].sort();
+  document.getElementById('f-aloc-status').innerHTML='<option value="">Todos</option>'+statuses.map(s=>'<option value="'+s.replace(/"/g,'&quot;')+'">'+s+'</option>').join('');
+
+  ['f-aloc-pessoa','f-aloc-qtdproj','f-aloc-status'].forEach(id=>{ document.getElementById(id).onchange=renderAlocacoes; });
+  document.getElementById('f-aloc-clear').onclick=()=>{
+    document.getElementById('f-aloc-pessoa').value='';
+    document.getElementById('f-aloc-qtdproj').value='';
+    document.getElementById('f-aloc-status').value='';
+    renderAlocacoes();
+  };
+  renderAlocacoes();
+}
+function renderAlocacoes(){
+  const fPessoa=document.getElementById('f-aloc-pessoa').value;
+  const fQtdProj=document.getElementById('f-aloc-qtdproj').value;
+  const fStatus=document.getElementById('f-aloc-status').value;
+
+  let pessoas=D.p.filter(p=>p.a);
+  if(fPessoa) pessoas=pessoas.filter(p=>p.a===fPessoa);
+
+  let linhas=pessoas.map(p=>{
+    const ek=(p.email||'').toLowerCase();
+    // Projetos vinculados = relacionamento de EQUIPE (D.pj[].eq contém o nome da
+    // pessoa) — já deduplicado por projeto no backend, então cada projeto entra
+    // uma única vez aqui mesmo que a pessoa acumule mais de uma função nele.
+    const projetosVinculados=D.pj.filter(proj=>proj.eq && proj.eq.includes(p.a));
+    const qtdTarefas=Object.values(PSTAT[ek]||{}).reduce((s,v)=>s+v,0);
+    const horasPrevistas=PHEST[ek]||0;
+    const horasApontadas=PHAP[ek]||0;
+    const statusesDaPessoa=new Set(Object.keys(PSTAT[ek]||{}));
+    return {p,projetosVinculados,qtdTarefas,horasPrevistas,horasApontadas,statusesDaPessoa};
+  });
+
+  if(fQtdProj==='0') linhas=linhas.filter(l=>l.projetosVinculados.length===0);
+  else if(fQtdProj) linhas=linhas.filter(l=>l.projetosVinculados.length>=parseInt(fQtdProj));
+  if(fStatus) linhas=linhas.filter(l=>l.statusesDaPessoa.has(fStatus));
+
+  linhas.sort((a,b)=>b.projetosVinculados.length-a.projetosVinculados.length || a.p.a.localeCompare(b.p.a,'pt-BR'));
+
+  const semProjeto=linhas.filter(l=>l.projetosVinculados.length===0).length;
+  const totalHorasPrevistas=linhas.reduce((s,l)=>s+l.horasPrevistas,0);
+  const totalHorasApontadas=linhas.reduce((s,l)=>s+l.horasApontadas,0);
+  document.getElementById('kpi-alocacoes').innerHTML=`
+    <div class="kpi"><span class="kpi-label">Pessoas (com os filtros)</span><span class="kpi-value">${linhas.length}</span></div>
+    <div class="kpi"><span class="kpi-label">Sem Nenhum Projeto</span><span class="kpi-value" style="color:${semProjeto>0?'var(--st-bloqueado)':'var(--text)'}">${semProjeto}</span></div>
+    <div class="kpi"><span class="kpi-label">Horas Previstas (total)</span><span class="kpi-value">${fH(totalHorasPrevistas)}</span></div>
+    <div class="kpi"><span class="kpi-label">Horas Apontadas (total)</span><span class="kpi-value">${fH(totalHorasApontadas)}</span></div>`;
+
+  let h='<div class="card"><div class="card-title"><h3>Alocações por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:600px"><table><thead><tr><th>Pessoa</th><th>Qtd. Projetos</th><th>Projetos Vinculados</th><th>Qtd. Tarefas</th><th>Gestor</th><th>Horas Previstas</th><th>Horas Apontadas</th></tr></thead><tbody>';
+  linhas.forEach(l=>{
+    const projetosHtml=l.projetosVinculados.length===0?'<span style="color:var(--text-faint)">—</span>':
+      l.projetosVinculados.map(proj=>'<div style="margin-bottom:4px">'+projetoLinkHtml(proj.pj)+' <span class="status-pill" title="Complexidade">'+(proj.cx||'—')+'</span> <span class="status-pill" title="Prioridade">'+(proj.pr||'—')+'</span></div>').join('');
+    h+='<tr><td><strong>'+personLinkHtml(l.p.a)+'</strong></td><td>'+l.projetosVinculados.length+'</td><td>'+projetosHtml+'</td><td>'+l.qtdTarefas+'</td><td>'+personLinkHtml(l.p.gestor)+'</td><td>'+fH(l.horasPrevistas)+'</td><td>'+fH(l.horasApontadas)+'</td></tr>';
+  });
+  if(linhas.length===0) h+='<tr><td colspan="7" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
+  h+='</tbody></table></div></div>';
+  document.getElementById('alocacoes-content').innerHTML=h;
+}
+
 function initCliente(){
   const clis=['', ...new Set(D.pj.map(p=>p.cl))].sort();
   document.getElementById('f-cli').innerHTML=clis.map(c=>'<option value="'+c+'">'+(c||'Todos')+'</option>').join('');
@@ -3861,9 +3956,10 @@ function initEquipe(){
   document.getElementById('f-equipe-gestor').onchange=()=>{ document.getElementById('f-equipe-pessoa').value=''; populateEquipePessoaFilter(); renderEquipe(); };
   document.getElementById('f-equipe-pessoa').onchange=renderEquipe;
   document.getElementById('f-equipe-problema').onchange=renderEquipe;
-  document.getElementById('f-equipe-clear').onclick=()=>{selHead.value='';document.getElementById('f-equipe-gestor').value='';document.getElementById('f-equipe-pessoa').value='';document.getElementById('f-equipe-problema').checked=false;populateEquipeGestorFilter();populateEquipePessoaFilter();renderEquipe();};
+  document.getElementById('f-equipe-clear').onclick=()=>{selHead.value='';document.getElementById('f-equipe-gestor').value='';document.getElementById('f-equipe-pessoa').value='';document.getElementById('f-equipe-problema').checked=false;document.getElementById('f-equipe-de').value='';document.getElementById('f-equipe-ate').value='';document.querySelectorAll('#equipe-periodo-seg .seg-btn').forEach(b=>b.classList.toggle('active',b.dataset.val==='todos'));populateEquipeGestorFilter();populateEquipePessoaFilter();renderEquipe();};
   populateEquipeGestorFilter();
   populateEquipePessoaFilter();
+  initPeriodSeg('equipe-periodo-seg','f-equipe-de','f-equipe-ate',renderEquipe);
   renderEquipe();
 }
 // Gestor é um filtro independente do Head — lista todos os gestores por padrão.
@@ -3909,11 +4005,21 @@ function renderEquipe(){
   let time=D.p.filter(p=>(!head||p.head===head)&&(!gestor||p.gestor===gestor)&&p.a);
   if(pessoaFiltro) time=time.filter(p=>p.a===pessoaFiltro);
 
-  // Percentil de horas/tarefas vs todo o portfólio (mesma base do restante do dashboard)
+  const [de,ate]=getDateRange('f-equipe-de','f-equipe-ate');
+  const periodoAtivo=!!(de||ate);
+
+  // Percentil de horas/tarefas vs todo o portfólio (mesma base do restante do dashboard,
+  // já respeitando o período quando selecionado)
   const allHorasArr=[], allTarefasArr=[];
   D.p.filter(pp=>pp.a).forEach(pp=>{
     const ek=(pp.email||'').toLowerCase();
-    const h=PHAP[ek]||0; const t=Object.values(PSTAT[ek]||{}).reduce((s,v)=>s+v,0);
+    let h,t;
+    if(periodoAtivo){
+      h=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&inRange(d,de,ate)).reduce((s,[,v])=>s+v[0],0);
+      t=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&inRange(d,de,ate)).reduce((s,[,v])=>s+v[1],0);
+    }else{
+      h=PHAP[ek]||0; t=Object.values(PSTAT[ek]||{}).reduce((s,v)=>s+v,0);
+    }
     if(h>0||t>0){ allHorasArr.push(h); allTarefasArr.push(t); }
   });
 
@@ -3924,9 +4030,16 @@ function renderEquipe(){
   let sobrecarregados=0, ociosos=0, usamClaude=0, ociososSemana=0;
   const rows=time.map(p=>{
     const ek=(p.email||'').toLowerCase();
-    const horas=PHAP[ek]||0;
-    const hEst=PHEST[ek]||0;
-    const tarefas=Object.values(PSTAT[ek]||{}).reduce((s,v)=>s+v,0);
+    let horas,hEst,tarefas;
+    if(periodoAtivo){
+      horas=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&inRange(d,de,ate)).reduce((s,[,v])=>s+v[0],0);
+      tarefas=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&inRange(d,de,ate)).reduce((s,[,v])=>s+v[1],0);
+      hEst=Object.entries(PPREVISTO[ek]||{}).filter(([d])=>inRange(d,de,ate)).reduce((s,[,v])=>s+v,0);
+    }else{
+      horas=PHAP[ek]||0;
+      hEst=PHEST[ek]||0;
+      tarefas=Object.values(PSTAT[ek]||{}).reduce((s,v)=>s+v,0);
+    }
     const projetos=Object.keys(D.tpe[ek]||{}).length;
     const pctHoras=percentileRank(horas, allHorasArr);
     const isOcioso=semAlocNames.has(p.a)||alocSemApontNames.has(p.a);
@@ -3996,7 +4109,7 @@ function renderEquipe(){
       </div>
 
       <div>
-        <span class="team-section-title">Horas — Estimado x Executado${infoTip(TIP_ESTIMADO_EXECUTADO)}</span>
+        <span class="team-section-title">Horas — Estimado x Executado${infoTip(TIP_ESTIMADO_EXECUTADO)}<span class="sub">${periodoAtivo?' (no período)':' (geral)'}</span></span>
         <div class="team-hours-row">
           <div class="team-hours-col"><span class="team-hours-col-label">Estimado</span><span class="team-hours-col-val">${fH(r.hEst)}</span></div>
           <div class="team-hours-divider"></div>
@@ -4601,7 +4714,7 @@ function renderStatusReportPainel(){
 // principalmente relevante ao trocar de perfil em "Visualizar como", quando o
 // dashboard inteiro (12 páginas) recarrega de uma vez.
 const PAGE_INIT_MAP={
-  cliente:initCliente, pessoa:initPessoa, area:initArea, pend:initPend,
+  cliente:initCliente, alocacoes:initAlocacoes, pessoa:initPessoa, area:initArea, pend:initPend,
   ociosos:initOciosos, topexec:initTopExec, futuristic:renderFuturistic,
   lider:initLider, gerente:initGerente, equipe:initEquipe,
   setorial:initSetorial, transversal:initTransversal, statusreport:initStatusReport,
