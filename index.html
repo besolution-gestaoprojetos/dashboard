@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwurZxZjjjWcjP_QiuB3_UBtyNSyMxSqZZrjGnH_r9kJYGUaZalwocwuETsHteCV3Dz_A/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwpgWtBmvrXc2ZhUOfdPTYU3Uw5b0lioaeGpPPueN67VTdIIoWN_J7OBYp0Ps18C9ATXw/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1114,12 +1114,10 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 
     <!-- PAGE EDIÇÃO DO PORTFÓLIO -->
     <section class="page" id="page-portfolioedit">
-      <div class="page-header"><div><h1>Edição do Portfólio</h1><p>Editar os dados de um projeto diretamente na fonte oficial (aba Portifolio) — mesmos campos já existentes na planilha.</p></div></div>
-      <div class="filter-bar">
-        <div class="filter-field" style="min-width:280px"><label>Projeto</label><select id="f-pe-projeto"><option value="">— Selecione —</option></select></div>
-      </div>
+      <div class="page-header"><div><h1>Edição do Portfólio</h1><p>Criar, editar, excluir e consultar projetos — mesmos dados já existentes na aba Portifolio.</p></div></div>
       <div id="pe-feedback" style="display:none;margin-bottom:14px;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600"></div>
-      <div id="pe-content"></div>
+      <div id="pe-lista-view"></div>
+      <div id="pe-form-view" style="display:none"></div>
     </section>
 
     <!-- PAGE ALOCAÇÕES -->
@@ -1375,7 +1373,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v6.4 · Última atualização: —</footer>
+  <footer id="app-footer">v6.6 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1427,7 +1425,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v6.4';
+const APP_VERSION='v6.6';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2084,19 +2082,21 @@ function renderAlocacoes(){
 // ============================================================
 // EDIÇÃO DO PORTFÓLIO — segunda funcionalidade do dashboard que GRAVA dados
 // (a primeira foi o Status Report). Edita a aba Portifolio diretamente, sem
-// aba nova. O formulário é montado DINAMICAMENTE a partir dos campos que o
-// backend devolve (que por sua vez lê o cabeçalho real da planilha) — não há
+// aba nova (ver justificativa dada ao usuário: recriar a estrutura de dados
+// tocaria no controle de acesso do dashboard inteiro, que depende das mesmas
+// colunas de equipe). O formulário é montado DINAMICAMENTE a partir dos
+// campos que o backend devolve (que lê o cabeçalho real da planilha) — não há
 // nomes de campo fixos aqui, então se colunas mudarem, a tela se adapta.
-// O dropdown de projeto usa D.pj, que já vem filtrado por escopo do backend —
-// então a pessoa nunca vê/edita projeto fora da própria permissão.
+// Fluxo: lista com busca → clicar num projeto abre o formulário → Salvar/
+// Excluir/Voltar. "+ Novo Projeto" abre o mesmo formulário em branco.
 // ============================================================
-let PE_ULTIMA_LEITURA=null; // guarda {rowIndex, campos} do projeto carregado, pra montar o payload de salvar
+let PE_LISTA_CACHE=[]; // lista leve (projeto/cliente/status/gp) pra busca local, sem ir ao servidor a cada tecla
+let PE_ULTIMA_LEITURA=null; // guarda {rowIndex, campos, projeto} do projeto carregado, pra montar o payload de salvar/excluir
+let PE_MODO='lista'; // 'lista' | 'form'
+
 function initPortfolioEdit(){
-  const projetos=[...new Set(D.pj.map(p=>p.pj))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
-  const sel=document.getElementById('f-pe-projeto');
-  sel.innerHTML='<option value="">— Selecione —</option>'+projetos.map(p=>'<option value="'+p.replace(/"/g,'&quot;')+'">'+p+'</option>').join('');
-  sel.onchange=()=>carregarProjetoParaEdicao(sel.value);
-  document.getElementById('pe-content').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Selecione um projeto acima para editar.</p></div>';
+  PE_MODO='lista';
+  carregarListaPortfolio();
 }
 function peFeedback(msg,ok){
   const el=document.getElementById('pe-feedback');
@@ -2108,23 +2108,126 @@ function peFeedback(msg,ok){
   window.__peFeedbackTimeout=setTimeout(()=>{ el.style.display='none'; },5000);
 }
 function peNormalizarHeader(h){ return (h||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(); }
+function peMostrarView(modo){
+  PE_MODO=modo;
+  document.getElementById('pe-lista-view').style.display=modo==='lista'?'':'none';
+  document.getElementById('pe-form-view').style.display=modo==='form'?'':'none';
+}
+
+// ---------- LISTA / BUSCA ----------
+async function carregarListaPortfolio(){
+  document.getElementById('pe-lista-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Carregando lista de projetos…</p></div>';
+  peMostrarView('lista');
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=listarPortfolio';
+    const r=await loadDataJSONP(url);
+    if(!r || !r.ok){
+      document.getElementById('pe-lista-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((r&&r.message)||'Não foi possível carregar a lista de projetos.')+'</p></div>';
+      return;
+    }
+    PE_LISTA_CACHE=r.projetos;
+    renderListaPortfolio('');
+  }catch(e){
+    document.getElementById('pe-lista-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Falha ao contatar o servidor. Tente novamente.</p></div>';
+  }
+}
+function renderListaPortfolio(termoBusca){
+  const termo=peNormalizarHeader(termoBusca);
+  const filtrados=!termo?PE_LISTA_CACHE:PE_LISTA_CACHE.filter(p=>
+    peNormalizarHeader(p.projeto).includes(termo) || peNormalizarHeader(p.cliente).includes(termo) ||
+    peNormalizarHeader(p.status).includes(termo) || peNormalizarHeader(p.gp).includes(termo)
+  );
+  let h='<div class="card"><div class="card-title"><h3>Projetos ('+PE_LISTA_CACHE.length+')</h3>'+
+    '<button type="button" class="sr-btn sr-btn-primary" id="pe-novo-btn" style="padding:7px 16px">+ Novo Projeto</button></div>'+
+    '<input type="text" id="pe-busca" placeholder="Buscar por nome, cliente, status ou GP…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13.5px;margin-bottom:14px;box-sizing:border-box">'+
+    '<div class="table-wrap" style="max-height:560px"><table><thead><tr><th>Projeto</th><th>Cliente</th><th>Status</th><th>Gerente do Projeto</th><th></th></tr></thead><tbody>';
+  if(filtrados.length===0){
+    h+='<tr><td colspan="5" style="text-align:center;color:var(--text-faint);padding:30px">Nenhum projeto encontrado'+(termo?' com esse termo de busca':'')+'.</td></tr>';
+  }else{
+    filtrados.forEach(p=>{
+      h+='<tr style="cursor:pointer" class="pe-lista-row" data-pe-projeto="'+p.projeto.replace(/"/g,'&quot;')+'">'+
+        '<td><strong>'+p.projeto+'</strong></td><td>'+(p.cliente||'—')+'</td>'+
+        '<td>'+(p.status?'<span class="status-pill">'+p.status+'</span>':'—')+'</td><td>'+(p.gp||'—')+'</td>'+
+        '<td><button type="button" class="filter-clear" style="padding:5px 12px">Abrir</button></td></tr>';
+    });
+  }
+  h+='</tbody></table></div></div>';
+  document.getElementById('pe-lista-view').innerHTML=h;
+  document.getElementById('pe-novo-btn').onclick=()=>abrirFormularioNovoProjeto();
+  const buscaEl=document.getElementById('pe-busca');
+  buscaEl.oninput=()=>renderListaPortfolio(buscaEl.value);
+  buscaEl.focus();
+  buscaEl.setSelectionRange(buscaEl.value.length,buscaEl.value.length);
+  document.querySelectorAll('.pe-lista-row').forEach(row=>{
+    row.addEventListener('click',()=>carregarProjetoParaEdicao(row.dataset.peProjeto));
+  });
+}
+
+// ---------- CRIAR ----------
+async function abrirFormularioNovoProjeto(){
+  const nome=prompt('Nome do novo projeto (esse será o identificador único dele no dashboard):');
+  if(!nome || !nome.trim()) return;
+  peFeedback('Criando projeto…',true);
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=criarPortfolioProjeto&projeto='+encodeURIComponent(nome.trim());
+    const r=await loadDataJSONP(url);
+    if(r && r.ok){
+      peFeedback('Projeto criado com sucesso. Preencha os demais dados abaixo.',true);
+      carregarProjetoParaEdicao(nome.trim());
+    }else{
+      peFeedback((r&&r.message)||'Não foi possível criar o projeto.',false);
+    }
+  }catch(e){
+    peFeedback('Falha ao contatar o servidor. Tente novamente.',false);
+  }
+}
+
+// ---------- LER / EDITAR ----------
 async function carregarProjetoParaEdicao(nomeProjeto){
-  const contentEl=document.getElementById('pe-content');
-  if(!nomeProjeto){ contentEl.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Selecione um projeto acima para editar.</p></div>'; return; }
-  contentEl.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Carregando…</p></div>';
+  document.getElementById('pe-form-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Carregando…</p></div>';
+  peMostrarView('form');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=getPortfolioProjeto&projeto='+encodeURIComponent(nomeProjeto);
     const r=await loadDataJSONP(url);
     if(!r || !r.ok){
-      contentEl.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((r&&r.message)||'Não foi possível carregar este projeto.')+'</p></div>';
+      document.getElementById('pe-form-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((r&&r.message)||'Não foi possível carregar este projeto.')+'</p><button type="button" class="filter-clear" id="pe-voltar-erro" style="margin-top:12px">← Voltar para a lista</button></div>';
+      document.getElementById('pe-voltar-erro').onclick=carregarListaPortfolio;
       return;
     }
     PE_ULTIMA_LEITURA={ projeto: nomeProjeto, rowIndex: r.rowIndex, campos: r.campos };
     renderFormularioPortfolioEdit(nomeProjeto, r.campos);
   }catch(e){
-    contentEl.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Falha ao contatar o servidor. Tente novamente.</p></div>';
+    document.getElementById('pe-form-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Falha ao contatar o servidor. Tente novamente.</p></div>';
   }
+}
+// Classifica cada campo numa seção — pelas colunas de equipe (mesmo intervalo
+// usado no backend pra montar D.pj[].eq) e, pros demais campos, por palavras-
+// chave no próprio nome da coluna. Campo que não bate com nada cai em "Outras
+// Informações" — nenhum campo existente fica de fora do formulário.
+function peClassificarSecao(headerNorm, idx){
+  if(idx>=13 && idx<=36) return 'Equipe';
+  if(headerNorm==='cliente'||headerNorm==='projeto'||headerNorm.indexOf('sow')!==-1||headerNorm.indexOf('fat')!==-1||headerNorm.indexOf('tipo')!==-1) return 'Identificação';
+  if(headerNorm==='status'||headerNorm.indexOf('complexidade')!==-1||headerNorm.indexOf('prioridade')!==-1) return 'Status e Classificação';
+  if(headerNorm.indexOf('data')!==-1||headerNorm.indexOf('prev')!==-1||headerNorm.indexOf('entrega')!==-1||headerNorm.indexOf('dias')!==-1||headerNorm.indexOf('zoho')!==-1) return 'Cronograma';
+  return 'Outras Informações';
+}
+function peConstruirInputHtml(c,i,opcoesConhecidas){
+  const headerNorm=peNormalizarHeader(c.header);
+  const valorEscapado=(c.valor===null||c.valor===undefined?'':String(c.valor)).replace(/"/g,'&quot;');
+  if(opcoesConhecidas[headerNorm]){
+    const opcoes=opcoesConhecidas[headerNorm];
+    return '<select data-pe-idx="'+i+'" class="pe-campo"><option value="">— Selecione —</option>'+
+      opcoes.map(o=>'<option value="'+o.replace(/"/g,'&quot;')+'"'+(c.valor===o?' selected':'')+'>'+o+'</option>').join('')+
+      (c.valor && opcoes.indexOf(c.valor)===-1?'<option value="'+valorEscapado+'" selected>'+c.valor+'</option>':'')+
+      '</select>';
+  }
+  if(c.tipo==='data') return '<input type="date" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'">';
+  if(c.tipo==='numero') return '<input type="number" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'" step="any">';
+  if(c.tipo==='checkbox') return '<input type="checkbox" data-pe-idx="'+i+'" class="pe-campo" '+(c.valor?'checked':'')+' style="width:18px;height:18px">';
+  return '<input type="text" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'">';
 }
 function renderFormularioPortfolioEdit(nomeProjeto, campos){
   // Campos com opções conhecidas (mesmos valores já usados no resto do
@@ -2135,35 +2238,59 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos){
     complexidade: [...new Set(D.pj.map(p=>p.cx).filter(Boolean))].sort(),
     prioridade: [...new Set(D.pj.map(p=>p.pr).filter(Boolean))].sort()
   };
-  let h='<div class="card"><div class="card-title"><h3>'+nomeProjeto+'</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">';
-  campos.forEach((c,i)=>{
-    const headerNorm=peNormalizarHeader(c.header);
-    const valorEscapado=(c.valor===null||c.valor===undefined?'':String(c.valor)).replace(/"/g,'&quot;');
-    let inputHtml;
-    if(opcoesConhecidas[headerNorm]){
-      const opcoes=opcoesConhecidas[headerNorm];
-      inputHtml='<select data-pe-idx="'+i+'" class="pe-campo"><option value="">— Selecione —</option>'+
-        opcoes.map(o=>'<option value="'+o.replace(/"/g,'&quot;')+'"'+(c.valor===o?' selected':'')+'>'+o+'</option>').join('')+
-        (c.valor && opcoes.indexOf(c.valor)===-1?'<option value="'+valorEscapado+'" selected>'+c.valor+'</option>':'')+
-        '</select>';
-    }else if(c.tipo==='data'){
-      inputHtml='<input type="date" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'">';
-    }else if(c.tipo==='numero'){
-      inputHtml='<input type="number" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'" step="any">';
-    }else if(c.tipo==='checkbox'){
-      inputHtml='<input type="checkbox" data-pe-idx="'+i+'" class="pe-campo" '+(c.valor?'checked':'')+' style="width:18px;height:18px">';
+  // Agrupa os campos por seção, preservando a ordem original dentro de cada uma
+  const secoes={ 'Identificação':[], 'Status e Classificação':[], 'Cronograma':[], 'Equipe':[], 'Outras Informações':[] };
+  campos.forEach((c,i)=>{ secoes[peClassificarSecao(peNormalizarHeader(c.header),i)].push({c,i}); });
+
+  let h='<button type="button" class="filter-clear" id="pe-voltar-btn" style="margin-bottom:14px">← Voltar para a lista</button>';
+  h+='<div class="page-header" style="padding:0 0 16px"><h2 style="font-size:20px;font-weight:800">'+nomeProjeto+'</h2></div>';
+
+  Object.entries(secoes).forEach(([nomeSecao,itens])=>{
+    if(itens.length===0) return;
+    if(nomeSecao==='Equipe'){
+      // Equipe: separa quem já está preenchido (sempre visível) de quem está
+      // vazio (fica atrás de "mostrar mais", pra não poluir a tela com 15+
+      // campos em branco de cara).
+      const preenchidos=itens.filter(({c})=>c.valor);
+      const vazios=itens.filter(({c})=>!c.valor);
+      h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Equipe</h3></div>';
+      h+='<div style="display:flex;flex-direction:column;gap:10px" id="pe-equipe-preenchidos">';
+      preenchidos.forEach(({c,i})=>{ h+='<div class="sr-field" style="margin-bottom:0"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
+      h+='</div>';
+      if(vazios.length>0){
+        h+='<button type="button" class="sr-ativ-add" id="pe-equipe-mostrar-mais" style="margin-top:10px">+ Mostrar mais '+vazios.length+' campo(s) vazio(s) da equipe</button>';
+        h+='<div style="display:none;flex-direction:column;gap:10px;margin-top:10px" id="pe-equipe-vazios">';
+        vazios.forEach(({c,i})=>{ h+='<div class="sr-field" style="margin-bottom:0"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
+        h+='</div>';
+      }
+      h+='</div>';
     }else{
-      inputHtml='<input type="text" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'">';
+      h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>'+nomeSecao+'</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">';
+      itens.forEach(({c,i})=>{ h+='<div class="sr-field"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
+      h+='</div></div>';
     }
-    h+='<div class="sr-field"><label>'+c.header+'</label>'+inputHtml+'</div>';
   });
-  h+='</div><div class="sr-actions"><button type="button" class="sr-btn sr-btn-primary" id="pe-btn-salvar">💾 Salvar Alterações</button></div></div>';
-  document.getElementById('pe-content').innerHTML=h;
+
+  h+='<div class="sr-actions">'+
+    '<button type="button" class="sr-btn sr-btn-primary" id="pe-btn-salvar">💾 Salvar Alterações</button>'+
+    '<button type="button" class="sr-btn" id="pe-btn-excluir" style="border-color:var(--st-bloqueado);color:var(--st-bloqueado)">🗑️ Excluir Projeto</button>'+
+    '</div>';
+
+  document.getElementById('pe-form-view').innerHTML=h;
+  document.getElementById('pe-voltar-btn').onclick=carregarListaPortfolio;
   document.getElementById('pe-btn-salvar').onclick=salvarEdicaoPortfolio;
+  document.getElementById('pe-btn-excluir').onclick=excluirProjetoAtual;
+  const mostrarMaisBtn=document.getElementById('pe-equipe-mostrar-mais');
+  if(mostrarMaisBtn) mostrarMaisBtn.onclick=()=>{
+    document.getElementById('pe-equipe-vazios').style.display='flex';
+    mostrarMaisBtn.style.display='none';
+  };
 }
+
+// ---------- SALVAR ----------
 async function salvarEdicaoPortfolio(){
   if(!PE_ULTIMA_LEITURA) return;
-  const campos=document.querySelectorAll('#pe-content .pe-campo');
+  const campos=document.querySelectorAll('#pe-form-view .pe-campo');
   const valores=PE_ULTIMA_LEITURA.campos.map(c=>c.valor); // parte do valor original, sobrescreve só o que tem input
   campos.forEach(el=>{
     const idx=parseInt(el.dataset.peIdx);
@@ -2187,6 +2314,37 @@ async function salvarEdicaoPortfolio(){
     peFeedback('Falha ao contatar o servidor. Tente novamente.',false);
   }
   btn.disabled=false;
+}
+
+// ---------- EXCLUIR ----------
+async function excluirProjetoAtual(){
+  if(!PE_ULTIMA_LEITURA) return;
+  // Exclusão é irreversível — exige digitar o nome exato do projeto como confirmação,
+  // não só um "OK" genérico, dado o risco de apagar o projeto errado.
+  const digitado=prompt('Esta ação é IRREVERSÍVEL. Digite o nome exato do projeto pra confirmar a exclusão:\n\n'+PE_ULTIMA_LEITURA.projeto);
+  if(digitado===null) return;
+  if(digitado.trim()!==PE_ULTIMA_LEITURA.projeto){
+    peFeedback('Nome digitado não confere. Exclusão cancelada.',false);
+    return;
+  }
+  const btn=document.getElementById('pe-btn-excluir');
+  btn.disabled=true;
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=excluirPortfolioProjeto&projeto='+encodeURIComponent(PE_ULTIMA_LEITURA.projeto)+'&rowIndex='+PE_ULTIMA_LEITURA.rowIndex;
+    const r=await loadDataJSONP(url);
+    if(r && r.ok){
+      peFeedback('Projeto excluído com sucesso.',true);
+      PE_ULTIMA_LEITURA=null;
+      carregarListaPortfolio();
+    }else{
+      peFeedback((r&&r.message)||'Não foi possível excluir o projeto.',false);
+      btn.disabled=false;
+    }
+  }catch(e){
+    peFeedback('Falha ao contatar o servidor. Tente novamente.',false);
+    btn.disabled=false;
+  }
 }
 
 function initCliente(){
