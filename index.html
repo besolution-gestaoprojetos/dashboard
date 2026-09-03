@@ -1391,7 +1391,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v6.7 · Última atualização: —</footer>
+  <footer id="app-footer">v6.8 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1444,7 +1444,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v6.7';
+const APP_VERSION='v6.8';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2001,8 +2001,22 @@ const noTooltip={enabled:false};
 // (contagens e horas por pessoa, já deduplicadas por e-mail), D.pj[].cx/pr
 // (Complexidade/Prioridade do projeto) e PROJ_TASKS (lista de status reais).
 // ============================================================
+// Projetos vinculados a uma pessoa = UNIÃO de duas fontes (mesma lógica usada
+// em Desempenho, pra nunca divergir entre páginas):
+//  (a) projetos onde ela tem hora/tarefa lançada no Zoho (D.tpe);
+//  (b) projetos onde está na equipe oficial do Portifolio (eq).
+// Extraído como função única, reaproveitada tanto pra montar as opções do
+// filtro quanto pra calcular as linhas da tabela — evita duas implementações
+// da "mesma" conta desalinharem uma da outra (foi exatamente isso que causou
+// a divergência de números entre Alocações e Desempenho reportada).
+function alocProjetosDaPessoa(pessoa){
+  const ek=(pessoa.email||'').toLowerCase();
+  const projetosPorAtividade=Object.keys(D.tpe[ek]||{});
+  return D.pj.filter(proj=>projetosPorAtividade.includes(proj.pj) || (proj.eq && proj.eq.includes(pessoa.a)));
+}
 function initAlocacoes(){
-  const pessoas=[...new Set(D.p.filter(p=>p.a).map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const pessoasObjs=D.p.filter(p=>p.a);
+  const pessoas=[...new Set(pessoasObjs.map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
   document.getElementById('f-aloc-pessoa').innerHTML='<option value="">Todas</option>'+pessoas.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">'+n+'</option>').join('');
 
   const statusesSet=new Set();
@@ -2012,7 +2026,7 @@ function initAlocacoes(){
 
   // Qtd. de Projetos: só quantidade EXATA (sem "ou mais") — as opções refletem os
   // valores que realmente ocorrem nos dados atuais (0 até o máximo observado).
-  const qtdsPorPessoa=pessoas.map(nome=>D.pj.filter(proj=>proj.eq&&proj.eq.includes(nome)).length);
+  const qtdsPorPessoa=pessoasObjs.map(p=>alocProjetosDaPessoa(p).length);
   const maxQtd=qtdsPorPessoa.length>0?Math.max(...qtdsPorPessoa):0;
   let opcoesQtdHtml='<option value="">Qualquer quantidade</option>';
   for(let i=0;i<=maxQtd;i++) opcoesQtdHtml+='<option value="'+i+'">'+i+'</option>';
@@ -2048,10 +2062,7 @@ function renderAlocacoes(){
 
   let linhas=pessoas.map(p=>{
     const ek=(p.email||'').toLowerCase();
-    // Projetos vinculados = relacionamento de EQUIPE (D.pj[].eq contém o nome da
-    // pessoa) — já deduplicado por projeto no backend, então cada projeto entra
-    // uma única vez aqui mesmo que a pessoa acumule mais de uma função nele.
-    const projetosVinculados=D.pj.filter(proj=>proj.eq && proj.eq.includes(p.a));
+    const projetosVinculados=alocProjetosDaPessoa(p);
     const qtdTarefas=Object.values(PSTAT[ek]||{}).reduce((s,v)=>s+v,0);
     const horasPrevistas=PHEST[ek]||0;
     const horasApontadas=PHAP[ek]||0;
