@@ -601,6 +601,24 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 .aloc-proj-meta{display:flex; gap:12px; flex-wrap:wrap;}
 .aloc-proj-tag{font-size:11px; color:var(--text-muted);}
 .aloc-proj-tag strong{color:var(--text);}
+
+/* Timeline dos 4 marcos de data do projeto (Detalhamento do Projeto) */
+.pd-timeline-datas{display:flex; align-items:flex-start; gap:0; overflow-x:auto; padding:8px 0;}
+.pd-timeline-step{display:flex; flex-direction:column; align-items:center; text-align:center; min-width:130px; flex-shrink:0;}
+.pd-timeline-marker{width:38px; height:38px; border-radius:50%; background:var(--surface-alt); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:16px; margin-bottom:8px;}
+.pd-timeline-step.preenchido .pd-timeline-marker{border-color:var(--primary); background:var(--primary-100);}
+.pd-timeline-label{font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.03em; margin-bottom:4px;}
+.pd-timeline-valor{font-size:13px; font-weight:600; color:var(--text);}
+.pd-timeline-vazio{color:var(--text-faint); font-weight:400; font-style:italic; font-size:12px;}
+.pd-timeline-linha{flex:1; height:2px; background:var(--border); margin-top:19px; min-width:24px;}
+.pd-timeline-linha.preenchida{background:var(--primary);}
+
+/* Combobox pesquisável de pessoa (Edição do Portfólio) */
+.pe-pessoa-wrap{position:relative;}
+.pe-pessoa-busca{width:100%; border:1px solid var(--border); border-radius:8px; padding:9px 12px; font-size:13.5px; background:var(--surface); color:var(--text); box-sizing:border-box;}
+.pe-pessoa-opcao{padding:7px 10px; font-size:13px; border-radius:6px; cursor:pointer;}
+.pe-pessoa-opcao:hover{background:var(--primary-100); color:var(--primary);}
+@media (max-width:700px){.pd-timeline-datas{flex-direction:column; align-items:stretch;} .pd-timeline-step{flex-direction:row; text-align:left; min-width:0; gap:10px;} .pd-timeline-marker{margin-bottom:0;} .pd-timeline-linha{width:2px; height:16px; margin:0 0 0 18px;}}
 .task-resp-mais:hover{background:var(--primary); color:#fff;}
 .person-link:hover,.task-link:hover{color:var(--primary); text-decoration-color:var(--primary);}
 
@@ -1373,7 +1391,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v6.6 · Última atualização: —</footer>
+  <footer id="app-footer">v6.7 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1389,6 +1407,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
   </div>
 </div>
 <div id="task-resp-popover" class="sr-crit-popover"></div>
+<div id="pe-pessoa-popover" class="sr-crit-popover" style="max-height:280px;overflow-y:auto;padding:6px"></div>
 <div id="info-popover" class="sr-crit-popover"></div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
@@ -1425,7 +1444,7 @@ function loadDataJSONP(url){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v6.6';
+const APP_VERSION='v6.7';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2214,9 +2233,33 @@ function peClassificarSecao(headerNorm, idx){
   if(headerNorm.indexOf('data')!==-1||headerNorm.indexOf('prev')!==-1||headerNorm.indexOf('entrega')!==-1||headerNorm.indexOf('dias')!==-1||headerNorm.indexOf('zoho')!==-1) return 'Cronograma';
   return 'Outras Informações';
 }
+// Identifica se a COLUNA é de data pelo nome do cabeçalho — não só pelo tipo
+// do valor atual. Isso é necessário porque uma célula vazia nunca "parece"
+// uma Date pro backend (não tem como saber o tipo de uma célula em branco),
+// então sem isso o campo virava texto solto quando estava vazio, sem
+// calendário — exatamente o bug reportado. "Dias" e "Zoho" ficam de fora de
+// propósito (são número/referência, não data, mesmo estando no mesmo grupo
+// "Cronograma" da seção).
+function peEhCampoData(headerNorm){
+  return (headerNorm.indexOf('data')!==-1 || headerNorm.indexOf('entrega')!==-1) && headerNorm.indexOf('dias')===-1;
+}
+// Campos de pessoa = mesmo intervalo de colunas já usado pra classificar a
+// seção "Equipe" (Gerente, SM, Líder, PO + especialistas) — são exatamente os
+// campos que representam responsáveis/pessoas no Portifolio.
+function peEhCampoPessoa(idx){ return idx>=13 && idx<=36; }
 function peConstruirInputHtml(c,i,opcoesConhecidas){
   const headerNorm=peNormalizarHeader(c.header);
   const valorEscapado=(c.valor===null||c.valor===undefined?'':String(c.valor)).replace(/"/g,'&quot;');
+  if(peEhCampoPessoa(i)){
+    // Campo de pessoa: combobox pesquisável, preenchido com os nomes reais de
+    // Pessoas_Area (D.p, já carregado) — não permite mais digitar um nome que
+    // não exista. O valor de verdade fica no input oculto (mesma classe/atributo
+    // "pe-campo" usados em todos os outros tipos de campo, pra salvar continuar
+    // funcionando sem mudança); o nome continua sendo só a representação visual,
+    // sem alterar o relacionamento/formato já usado no Portifolio.
+    return '<div class="pe-pessoa-wrap"><input type="text" class="pe-pessoa-busca" autocomplete="off" placeholder="Buscar pessoa…" value="'+valorEscapado+'">'+
+      '<input type="hidden" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'"></div>';
+  }
   if(opcoesConhecidas[headerNorm]){
     const opcoes=opcoesConhecidas[headerNorm];
     return '<select data-pe-idx="'+i+'" class="pe-campo"><option value="">— Selecione —</option>'+
@@ -2224,11 +2267,69 @@ function peConstruirInputHtml(c,i,opcoesConhecidas){
       (c.valor && opcoes.indexOf(c.valor)===-1?'<option value="'+valorEscapado+'" selected>'+c.valor+'</option>':'')+
       '</select>';
   }
-  if(c.tipo==='data') return '<input type="date" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'">';
+  if(c.tipo==='data' || peEhCampoData(headerNorm)) return '<input type="date" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'">';
   if(c.tipo==='numero') return '<input type="number" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'" step="any">';
   if(c.tipo==='checkbox') return '<input type="checkbox" data-pe-idx="'+i+'" class="pe-campo" '+(c.valor?'checked':'')+' style="width:18px;height:18px">';
   return '<input type="text" data-pe-idx="'+i+'" class="pe-campo" value="'+valorEscapado+'">';
 }
+// ---------- Combobox de pessoa: popover compartilhado (mesmo padrão já usado
+// pra Criticidade e "+Mais" — escapa do overflow:hidden dos cards via
+// position:fixed calculado por JS) ----------
+let PE_PESSOA_ATIVO=null;
+function peNomesPessoasArea(){ return [...new Set(D.p.filter(p=>p.a).map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR')); }
+function peAbrirComboPessoa(inputVisivel, inputOculto){
+  PE_PESSOA_ATIVO={inputVisivel, inputOculto};
+  const rect=inputVisivel.getBoundingClientRect();
+  const pop=document.getElementById('pe-pessoa-popover');
+  pop.style.top=(rect.bottom+4)+'px';
+  pop.style.left=rect.left+'px';
+  pop.style.width=Math.max(rect.width,220)+'px';
+  pop.classList.add('show');
+  peFiltrarComboPessoa(inputVisivel.value);
+}
+function peFiltrarComboPessoa(termo){
+  const termoNorm=peNormalizarHeader(termo);
+  const nomes=peNomesPessoasArea();
+  const filtrados=termoNorm?nomes.filter(n=>peNormalizarHeader(n).indexOf(termoNorm)!==-1):nomes;
+  const pop=document.getElementById('pe-pessoa-popover');
+  if(filtrados.length===0){
+    pop.innerHTML='<div style="padding:8px 10px;color:var(--text-faint);font-size:12.5px">Nenhuma pessoa encontrada.</div>';
+    return;
+  }
+  pop.innerHTML='<div style="padding:2px 6px 4px;font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.03em">Pessoas_Area'+(filtrados.length>80?' — mostrando 80 de '+filtrados.length:'')+'</div>'+
+    filtrados.slice(0,80).map(n=>'<div class="pe-pessoa-opcao" data-nome="'+n.replace(/"/g,'&quot;')+'">'+n+'</div>').join('');
+}
+function peSelecionarPessoa(nome){
+  if(!PE_PESSOA_ATIVO) return;
+  PE_PESSOA_ATIVO.inputVisivel.value=nome;
+  PE_PESSOA_ATIVO.inputOculto.value=nome;
+  document.getElementById('pe-pessoa-popover').classList.remove('show');
+  PE_PESSOA_ATIVO=null;
+}
+function peFecharComboSemSelecao(){
+  // Perdeu o foco sem clicar numa opção: só aceita o texto se bater EXATAMENTE
+  // com uma pessoa existente em Pessoas_Area; senão reverte pro último valor
+  // válido — é isso que impede digitar um nome inválido/com erro de digitação.
+  if(!PE_PESSOA_ATIVO) return;
+  const {inputVisivel, inputOculto}=PE_PESSOA_ATIVO;
+  const digitado=inputVisivel.value.trim();
+  const nomesValidos=new Set(peNomesPessoasArea());
+  if(digitado===''){ inputOculto.value=''; }
+  else if(nomesValidos.has(digitado)){ inputOculto.value=digitado; }
+  else { inputVisivel.value=inputOculto.value; }
+  document.getElementById('pe-pessoa-popover').classList.remove('show');
+  PE_PESSOA_ATIVO=null;
+}
+function peInicializarCombosPessoa(){
+  document.querySelectorAll('#pe-form-view .pe-pessoa-wrap').forEach(wrap=>{
+    const inputVisivel=wrap.querySelector('.pe-pessoa-busca');
+    const inputOculto=wrap.querySelector('input[type=hidden]');
+    inputVisivel.addEventListener('focus',()=>peAbrirComboPessoa(inputVisivel,inputOculto));
+    inputVisivel.addEventListener('input',()=>peFiltrarComboPessoa(inputVisivel.value));
+    inputVisivel.addEventListener('blur',()=>setTimeout(peFecharComboSemSelecao,150));
+  });
+}
+
 function renderFormularioPortfolioEdit(nomeProjeto, campos){
   // Campos com opções conhecidas (mesmos valores já usados no resto do
   // dashboard) viram dropdown; os demais usam o tipo detectado pelo backend
@@ -2285,6 +2386,7 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos){
     document.getElementById('pe-equipe-vazios').style.display='flex';
     mostrarMaisBtn.style.display='none';
   };
+  peInicializarCombosPessoa();
 }
 
 // ---------- SALVAR ----------
@@ -2965,6 +3067,8 @@ document.addEventListener('click', (e)=>{
   const infoBtn = e.target.closest('.info-tip');
   if(infoBtn && infoBtn.dataset.infoText!==undefined){ abrirInfoPopover(infoBtn); return; }
   if(e.target.id==='info-popover-close'){ document.getElementById('info-popover').classList.remove('show'); return; }
+  const pessoaOpcao=e.target.closest('.pe-pessoa-opcao');
+  if(pessoaOpcao && pessoaOpcao.dataset.nome!==undefined){ peSelecionarPessoa(pessoaOpcao.dataset.nome); return; }
   const infoPop=document.getElementById('info-popover');
   if(infoPop && infoPop.classList.contains('show') && !e.target.closest('#info-popover') && !e.target.closest('.info-tip')){
     infoPop.classList.remove('show');
@@ -3243,13 +3347,37 @@ function renderProjDetail(pjName){
   if(faltando.length>0) h += (faltando.length)+' tarefa(s) com dados incompletos.';
   h += '</p></div></div>';
 
-  // KPIs principais
+  // KPIs principais (sem mais o "Início → Fim Previsto" compacto — virou a
+  // timeline de 4 marcos logo abaixo, mais clara)
   h += '<div class="grid grid-kpi" style="margin-bottom:16px">';
-  h += '<div class="kpi"><span class="kpi-label">Início → Fim Previsto</span><span class="kpi-value" style="font-size:16px">'+(p.di||'—')+' → '+(p.pei||'—')+'</span><span class="kpi-foot">'+(p.dias_planejados!=null?p.dias_planejados+' dias planejados':'')+'</span></div>';
-  h += '<div class="kpi"><span class="kpi-label">Prazo</span><span class="kpi-value" style="color:'+(at?'var(--st-bloqueado)':'var(--primary)')+'">'+(p.dd||'—')+'</span></div>';
+  h += '<div class="kpi"><span class="kpi-label">Prazo</span><span class="kpi-value" style="color:'+(at?'var(--st-bloqueado)':'var(--primary)')+'">'+(p.dd||'—')+'</span><span class="kpi-foot">'+(p.dias_planejados!=null?p.dias_planejados+' dias planejados':'')+'</span></div>';
   h += '<div class="kpi"><span class="kpi-label">Gerente</span><span class="kpi-value" style="font-size:16px">'+personLinkHtml(p.gp)+'</span></div>';
   h += '<div class="kpi"><span class="kpi-label">Equipe</span><span class="kpi-value">'+p.qe+'</span><span class="kpi-foot">pessoas</span></div>';
   h += '</div>';
+
+  // Timeline dos 4 marcos de data do projeto (item pedido) — usa só os dados
+  // já existentes (p.di/p.pei/p.pea/p.de); datas vazias mostram "Não
+  // informado" em vez de inventar valor.
+  h += (function(){
+    const marcos=[
+      {label:'Data de Início', valor:p.di, icone:'🏁'},
+      {label:'Prev. Entrega Inicial', valor:p.pei, icone:'🎯'},
+      {label:'Prev. Entrega Atual', valor:p.pea, icone:'🔄'},
+      {label:'Data Entrega', valor:p.de, icone:'✅'}
+    ];
+    let th='<div class="pd-section" style="margin-bottom:16px"><h3>📅 Linha do Tempo do Projeto</h3><div class="pd-timeline-datas">';
+    marcos.forEach((m,i)=>{
+      const preenchido=!!m.valor;
+      th+='<div class="pd-timeline-step'+(preenchido?' preenchido':'')+'">'+
+        '<div class="pd-timeline-marker">'+m.icone+'</div>'+
+        '<div class="pd-timeline-label">'+m.label+'</div>'+
+        '<div class="pd-timeline-valor">'+(preenchido?m.valor:'<span class="pd-timeline-vazio">Não informado</span>')+'</div>'+
+      '</div>';
+      if(i<marcos.length-1) th+='<div class="pd-timeline-linha'+(preenchido?' preenchida':'')+'"></div>';
+    });
+    th+='</div></div>';
+    return th;
+  })();
 
   h += '<div class="grid grid-kpi" style="margin-bottom:16px">';
   h += '<div class="kpi"><span class="kpi-label">Horas Previstas</span><span class="kpi-value">'+fH(p.horas_est)+'</span></div>';
