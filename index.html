@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbz4y-hzPtWIsAfHCp32ATWxr6vHbiF2C8U_ywqRw9DQiT8gqDiivtiJX-DoLOEqsdRKQQ/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxnmaLxQKmrRDmx_mN8qdWtKBdB5_aigyZAQlHQpJJv_d6FZL54yBfm59ajiFQsif6p3A/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -963,6 +963,33 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 }
 .viewas-loading-toast.show{display:flex;}
 
+/* ============================================================
+   LOADING GLOBAL — componente único reutilizado em todo o dashboard (login
+   em 2 fases, Edição do Portfólio, Status Report, Visualizar Como). Fica
+   fixo no topo, abaixo da topbar, com spinner + barra indeterminada +
+   mensagem contextual. O mesmo componente também serve pra estado de erro
+   (troca o spinner por um ícone de alerta e mostra "Tentar novamente").
+   ============================================================ */
+#loading-global{
+  display:none; position:fixed; top:60px; left:0; right:0; z-index:99999;
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:10px 20px; box-shadow:0 4px 16px -4px rgba(0,0,0,.12);
+}
+#loading-global.show{display:block;}
+.loading-global-row{display:flex; align-items:center; gap:12px; max-width:1200px; margin:0 auto;}
+.loading-global-msg{font-size:13px; font-weight:600; color:var(--text); flex-shrink:0;}
+.loading-global-bar-track{flex:1; height:4px; border-radius:999px; background:var(--surface-alt); overflow:hidden; position:relative;}
+.loading-global-bar-fill{position:absolute; top:0; left:0; height:100%; width:35%; border-radius:999px; background:var(--primary); animation:loading-global-indeterminado 1.3s ease-in-out infinite;}
+@keyframes loading-global-indeterminado{0%{left:-35%;} 100%{left:100%;}}
+#loading-global.error .loading-global-msg{color:var(--st-bloqueado);}
+#loading-global.error .loading-global-bar-track{display:none;}
+.loading-global-retry{flex-shrink:0; font-size:12.5px; font-weight:700; color:var(--primary); background:var(--primary-100); border:none; border-radius:8px; padding:6px 14px; cursor:pointer;}
+.loading-global-retry:hover{background:var(--primary); color:#fff;}
+@media (max-width:700px){#loading-global{top:56px;} .loading-global-msg{font-size:12px;}}
+#main-shell.aguardando-dados > .page{display:none !important;}
+#main-shell.aguardando-dados #shell-loading-placeholder{display:block !important;}
+#main-shell.aguardando-dados #global-voltar-btn{display:none !important;}
+
 @media (max-width:820px){
   .login-visual{display:none;}
   #login-overlay{padding:16px;}
@@ -1113,7 +1140,12 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
     <span>👤 <b>Modo de visualização:</b> você está vendo o sistema como <b id="viewas-banner-nome"></b> — <span id="viewas-banner-perfil"></span></span>
     <button id="viewas-voltar-btn">← Voltar para meu acesso</button>
   </div>
-  <main>
+  <main id="main-shell">
+    <div id="shell-loading-placeholder" style="display:none; padding:100px 20px; text-align:center;">
+      <div class="login-spinner" style="width:34px;height:34px;border-width:3px;margin:0 auto 18px;"></div>
+      <p style="font-size:15px;font-weight:600;color:var(--text)">Carregando o dashboard…</p>
+      <p style="font-size:13px;color:var(--text-faint);margin-top:6px">Isso deve levar só alguns instantes.</p>
+    </div>
     <button class="filter-clear" id="global-voltar-btn" type="button" style="margin:16px 24px 0;">← Voltar</button>
     <!-- PAGE CLIENTE -->
     <section class="page active" id="page-cliente">
@@ -1391,11 +1423,19 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v6.8 · Última atualização: —</footer>
+  <footer id="app-footer">v7.0 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
   <span>Carregando…</span>
+</div>
+<div id="loading-global">
+  <div class="loading-global-row">
+    <div class="login-spinner" id="loading-global-spinner" style="width:16px;height:16px;border-width:2px;"></div>
+    <span class="loading-global-msg" id="loading-global-msg">Carregando…</span>
+    <div class="loading-global-bar-track"><div class="loading-global-bar-fill"></div></div>
+    <button type="button" class="loading-global-retry" id="loading-global-retry" style="display:none">Tentar novamente</button>
+  </div>
 </div>
 <div id="task-modal-overlay" class="task-modal-overlay">
   <div class="task-modal-card">
@@ -1440,11 +1480,50 @@ function loadDataJSONP(url){
     setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('Timeout aguardando resposta do Apps Script')); } },70000);
   });
 }
+// ============================================================
+// LOADING GLOBAL — um único componente reutilizado em todo o dashboard.
+// Nunca mostra porcentagem inventada: a barra é sempre indeterminada (só
+// anima), já que o Apps Script não expõe progresso real de execução.
+// ============================================================
+function mostrarLoadingGlobal(mensagem){
+  const el=document.getElementById('loading-global');
+  el.classList.remove('error');
+  document.getElementById('loading-global-spinner').style.display='';
+  document.getElementById('loading-global-retry').style.display='none';
+  document.getElementById('loading-global-msg').textContent=mensagem;
+  el.classList.add('show');
+}
+function atualizarLoadingGlobal(mensagem){ document.getElementById('loading-global-msg').textContent=mensagem; }
+function esconderLoadingGlobal(){ document.getElementById('loading-global').classList.remove('show'); }
+function mostrarErroLoadingGlobal(mensagem, onRetry){
+  const el=document.getElementById('loading-global');
+  el.classList.add('show','error');
+  document.getElementById('loading-global-spinner').style.display='none';
+  document.getElementById('loading-global-msg').textContent=mensagem;
+  const btn=document.getElementById('loading-global-retry');
+  btn.style.display='';
+  btn.onclick=onRetry;
+}
+
+// Repete uma chamada JSONP até "tentativas" vezes (padrão: 1 nova tentativa,
+// ou seja, 2 tentativas no total) antes de desistir — nunca infinito. Só
+// tenta de novo em falha de REDE/timeout (a própria loadDataJSONP rejeita
+// nesses casos); uma resposta que CHEGOU mas indica erro de permissão/dados
+// não é reenviada, já que repetir não mudaria o resultado.
+async function loadDataJSONPComRetry(url, tentativas=1){
+  let ultimoErro;
+  for(let i=0;i<=tentativas;i++){
+    try{ return await loadDataJSONP(url); }
+    catch(e){ ultimoErro=e; if(i<tentativas) await new Promise(r=>setTimeout(r,800*(i+1))); }
+  }
+  throw ultimoErro;
+}
+
 // REGRA DE VERSIONAMENTO: versão menor vai de .1 até .9; depois de .9, a
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v6.8';
+const APP_VERSION='v7.0';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1498,22 +1577,116 @@ let FUT_STATE={};
 let TODOS_USUARIOS=[];    // lista {email,nome,perfil} — só vem preenchida quando o usuário REAL é Administrador
 async function attemptLoadWithToken(token, viewAsEmail){
   hideLoginError();
-  setLoginLoading(true);
-  // Se o overlay de login já está escondido, essa chamada é uma troca pós-login
-  // (Visualizar como / Voltar para meu acesso) — o spinner do login não aparece
-  // nesse caso (fica dentro do overlay oculto), então mostramos este indicador
-  // flutuante equivalente pra pessoa saber que algo está carregando.
-  const loginJaEscondido=document.getElementById('login-overlay').classList.contains('hidden');
-  const toast=document.getElementById('viewas-loading-toast');
-  if(loginJaEscondido && toast) toast.classList.add('show');
   AUTH_TOKEN=token;
   const isPlaceholder=!DASHBOARD_API_URL || DASHBOARD_API_URL.indexOf('COLE_AQUI')!==-1;
   if(isPlaceholder){
-    setLoginLoading(false);
-    if(toast) toast.classList.remove('show');
     showLoginError('Configuração pendente: URL do Apps Script não definida.');
     return;
   }
+  // "Visualizar como" / "Voltar para meu acesso" continuam no fluxo único de
+  // sempre — ação administrativa rara, feita só por Administrador, com o
+  // dashboard já aberto; a complexidade das 2 fases abaixo não se justifica
+  // aqui (o toast flutuante já avisa visualmente que está trocando).
+  // "Voltar" chama esta função SEM viewAsEmail (igual o login novo) — por
+  // isso o sinal real de "já estou com o dashboard aberto" é o overlay de
+  // login já estar escondido, não só a presença de viewAsEmail.
+  const dashboardJaAberto=document.getElementById('login-overlay').classList.contains('hidden');
+  if(viewAsEmail!==undefined || dashboardJaAberto) return attemptLoadWithTokenClassico(token, viewAsEmail);
+
+  // ---------- LOGIN NORMAL: fluxo em 2 fases ----------
+  // Fase 1 (rápida, action=auth): só confirma identidade/perfil, sem montar o
+  // dataset completo — libera a navegação quase imediatamente.
+  // Fase 2 (em segundo plano): carrega os dados de verdade; até ela terminar,
+  // o shell do dashboard já está visível com um indicador de carregamento
+  // global, em vez de deixar a pessoa presa na tela de login.
+  setLoginLoading(true);
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const urlAuth=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(token)+'&action=auth';
+    const authResp=await loadDataJSONPComRetry(urlAuth,1);
+    if(!authResp || !authResp.ok){
+      setLoginLoading(false);
+      if(authResp && authResp.internal){
+        showLoginError(authResp.message||'Erro interno ao verificar credenciais. Tente novamente em instantes.');
+      }else{
+        sessionStorage.removeItem('dash_id_token');
+        showLoginError('Acesso negado: '+((authResp&&authResp.message)||'conta não autorizada.')+' Use uma conta @'+ALLOWED_DOMAIN+'.');
+      }
+      return;
+    }
+    // Fase 1 OK — libera a navegação já com o perfil/menu corretos, mesmo sem
+    // os dados ainda.
+    CURRENT_USER_NOME=authResp.nome; CURRENT_USER_EMAIL=authResp.email;
+    EFFECTIVE_PERFIL=authResp.perfil; VIEW_AS_STATE=null; TODOS_USUARIOS=[];
+    const viewasWrapFase1=document.getElementById('viewas-wrap');
+    if(viewasWrapFase1) viewasWrapFase1.style.display = (authResp.perfil==='Administrador') ? '' : 'none';
+    addLogoutControl(authResp.nome, authResp.perfil);
+    aplicarMenuDinamico();
+    setLoginLoading(false);
+    hideLoginOverlay();
+    document.getElementById('main-shell').classList.add('aguardando-dados');
+    mostrarLoadingGlobal('Carregando dados do dashboard…');
+    carregarDadosCompletos(token);
+  }catch(e){
+    setLoginLoading(false);
+    console.warn('Falha ao verificar credenciais.',e);
+    showLoginError('Não foi possível contatar o servidor. Verifique sua conexão e tente novamente.');
+  }
+}
+
+// Fase 2 do login normal: busca o dataset completo em segundo plano (chamada
+// também pelo botão "Tentar novamente" do loading global, se essa fase
+// falhar). Só reprocessa a partir daqui — a identidade da fase 1 continua válida.
+async function carregarDadosCompletos(token){
+  mostrarLoadingGlobal('Carregando dados do dashboard…');
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(token);
+    const j=await loadDataJSONPComRetry(url,1);
+    if(j && j.error){
+      mostrarErroLoadingGlobal(j.message||'Erro ao carregar os dados. Tente novamente.', ()=>carregarDadosCompletos(token));
+      return;
+    }
+    D=j.D; HM=j.HM; PM=j.PM; PM_PROJ=j.PM_PROJ||{}; CD=j.CD; CTOK=j.CTOK; AREAS=j.AREAS; AREA_CL=j.AREA_CL;
+    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PEND=j.PEND;
+    PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
+    STATUS_REPORTS=j.STATUS_REPORTS||[];
+    CURRENT_USER_NOME=j._usuarioNome||j._usuario; CURRENT_USER_EMAIL=j._usuario;
+    showDataBadge('live');
+    updateFooter(j._ultimaAtualizacaoPlanilha, j._backendVersion);
+    VIEW_AS_STATE = j._viewingAs || null;
+    TODOS_USUARIOS = j._todosUsuarios || [];
+    EFFECTIVE_PERFIL = VIEW_AS_STATE ? VIEW_AS_STATE.perfil : j._perfil;
+    const viewasWrap=document.getElementById('viewas-wrap');
+    if(viewasWrap) viewasWrap.style.display = (j._perfil==='Administrador') ? '' : 'none';
+    addLogoutControl(j._usuarioNome||j._usuario, j._perfil);
+    atualizarFaixaVisualizarComo();
+    aplicarMenuDinamico();
+    esconderLoadingGlobal();
+    document.getElementById('main-shell').classList.remove('aguardando-dados');
+    const paginaAtivaEl=document.querySelector('.page.active');
+    let paginaAlvo=paginaAtivaEl?paginaAtivaEl.id.replace('page-',''):'cliente';
+    if(paginaAlvo && !paginasPermitidas().includes(paginaAlvo)){
+      paginaAlvo=paginasPermitidas()[0]||'cliente';
+      document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+      const alvoEl=document.getElementById('page-'+paginaAlvo);
+      if(alvoEl) alvoEl.classList.add('active');
+      document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.page===paginaAlvo));
+    }
+    boot(paginaAlvo);
+  }catch(e){
+    console.warn('Falha ao carregar dados completos.',e);
+    mostrarErroLoadingGlobal('Não foi possível carregar os dados. Verifique sua conexão.', ()=>carregarDadosCompletos(token));
+  }
+}
+
+// Fluxo ORIGINAL, preservado exatamente como era (uma única chamada,
+// bloqueante) — usado só por "Visualizar como" / "Voltar para meu acesso".
+async function attemptLoadWithTokenClassico(token, viewAsEmail){
+  setLoginLoading(true);
+  const loginJaEscondido=document.getElementById('login-overlay').classList.contains('hidden');
+  const toast=document.getElementById('viewas-loading-toast');
+  if(loginJaEscondido && toast) toast.classList.add('show');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     let urlWithToken=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(token);
@@ -1523,8 +1696,6 @@ async function attemptLoadWithToken(token, viewAsEmail){
     if(j && j.error){
       setLoginLoading(false);
       if(j.internal){
-        // Erro interno do servidor (não relacionado à conta) — não desloga o usuário,
-        // já que o token continua válido; só informa e deixa tentar de novo.
         showLoginError(j.message||'Erro interno ao carregar o dashboard. Tente novamente em instantes.');
       }else{
         if(!viewAsEmail) sessionStorage.removeItem('dash_id_token');
@@ -2079,13 +2250,9 @@ function renderAlocacoes(){
   linhas.sort((a,b)=>b.projetosVinculados.length-a.projetosVinculados.length || a.p.a.localeCompare(b.p.a,'pt-BR'));
 
   const semProjeto=linhas.filter(l=>l.projetosVinculados.length===0).length;
-  const totalHorasPrevistas=linhas.reduce((s,l)=>s+l.horasPrevistas,0);
-  const totalHorasApontadas=linhas.reduce((s,l)=>s+l.horasApontadas,0);
   document.getElementById('kpi-alocacoes').innerHTML=`
     <div class="kpi"><span class="kpi-label">Pessoas (com os filtros)</span><span class="kpi-value">${linhas.length}</span></div>
-    <div class="kpi"><span class="kpi-label">Sem Nenhum Projeto</span><span class="kpi-value" style="color:${semProjeto>0?'var(--st-bloqueado)':'var(--text)'}">${semProjeto}</span></div>
-    <div class="kpi"><span class="kpi-label">Horas Previstas (total)</span><span class="kpi-value">${fH(totalHorasPrevistas)}</span></div>
-    <div class="kpi"><span class="kpi-label">Horas Apontadas (total)</span><span class="kpi-value">${fH(totalHorasApontadas)}</span></div>`;
+    <div class="kpi"><span class="kpi-label">Sem Nenhum Projeto</span><span class="kpi-value" style="color:${semProjeto>0?'var(--st-bloqueado)':'var(--text)'}">${semProjeto}</span></div>`;
 
   let h='<div class="card"><div class="card-title"><h3>Alocações por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:600px"><table><thead><tr><th>Pessoa</th><th>Qtd. Projetos</th><th>Projetos Vinculados</th><th>Qtd. Tarefas</th><th>Gestor</th><th>Horas Previstas</th><th>Horas Apontadas</th></tr></thead><tbody>';
   linhas.forEach(l=>{
@@ -2151,15 +2318,17 @@ async function carregarListaPortfolio(){
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=listarPortfolio';
-    const r=await loadDataJSONP(url);
+    const r=await loadDataJSONPComRetry(url,1);
     if(!r || !r.ok){
-      document.getElementById('pe-lista-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((r&&r.message)||'Não foi possível carregar a lista de projetos.')+'</p></div>';
+      document.getElementById('pe-lista-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((r&&r.message)||'Não foi possível carregar a lista de projetos.')+'</p><button type="button" class="filter-clear" id="pe-lista-retry" style="margin-top:12px">Tentar novamente</button></div>';
+      document.getElementById('pe-lista-retry').onclick=carregarListaPortfolio;
       return;
     }
     PE_LISTA_CACHE=r.projetos;
     renderListaPortfolio('');
   }catch(e){
-    document.getElementById('pe-lista-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Falha ao contatar o servidor. Tente novamente.</p></div>';
+    document.getElementById('pe-lista-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Falha ao contatar o servidor. Verifique sua conexão.</p><button type="button" class="filter-clear" id="pe-lista-retry" style="margin-top:12px">Tentar novamente</button></div>';
+    document.getElementById('pe-lista-retry').onclick=carregarListaPortfolio;
   }
 }
 function renderListaPortfolio(termoBusca){
@@ -2202,7 +2371,7 @@ async function abrirFormularioNovoProjeto(){
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=criarPortfolioProjeto&projeto='+encodeURIComponent(nome.trim());
-    const r=await loadDataJSONP(url);
+    const r=await loadDataJSONPComRetry(url,1);
     if(r && r.ok){
       peFeedback('Projeto criado com sucesso. Preencha os demais dados abaixo.',true);
       carregarProjetoParaEdicao(nome.trim());
@@ -2215,22 +2384,37 @@ async function abrirFormularioNovoProjeto(){
 }
 
 // ---------- LER / EDITAR ----------
+// Contador de sequência: cada chamada de carregarProjetoParaEdicao pega o
+// próximo número; se a resposta chegar depois de uma seleção MAIS NOVA já
+// ter sido feita, ela é descartada — evita que uma resposta lenta de um
+// projeto "atropele" a tela depois que o usuário já trocou pra outro.
+let PE_CARREGAMENTO_SEQ=0;
+let PE_PROJETO_EM_CARREGAMENTO=null; // evita disparar outra requisição igual se a pessoa clicar 2x no mesmo projeto rapidamente
 async function carregarProjetoParaEdicao(nomeProjeto){
+  if(PE_PROJETO_EM_CARREGAMENTO===nomeProjeto) return; // já está carregando este mesmo projeto — ignora o clique repetido
+  PE_PROJETO_EM_CARREGAMENTO=nomeProjeto;
+  const minhaSeq=++PE_CARREGAMENTO_SEQ;
   document.getElementById('pe-form-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Carregando…</p></div>';
   peMostrarView('form');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=getPortfolioProjeto&projeto='+encodeURIComponent(nomeProjeto);
-    const r=await loadDataJSONP(url);
+    const r=await loadDataJSONPComRetry(url,1);
+    if(PE_PROJETO_EM_CARREGAMENTO===nomeProjeto) PE_PROJETO_EM_CARREGAMENTO=null;
+    if(minhaSeq!==PE_CARREGAMENTO_SEQ) return; // uma seleção mais nova já substituiu essa — ignora
     if(!r || !r.ok){
-      document.getElementById('pe-form-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((r&&r.message)||'Não foi possível carregar este projeto.')+'</p><button type="button" class="filter-clear" id="pe-voltar-erro" style="margin-top:12px">← Voltar para a lista</button></div>';
+      document.getElementById('pe-form-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((r&&r.message)||'Não foi possível carregar este projeto.')+'</p><button type="button" class="filter-clear" id="pe-form-retry" style="margin-top:12px;margin-right:8px">Tentar novamente</button><button type="button" class="filter-clear" id="pe-voltar-erro">← Voltar para a lista</button></div>';
+      document.getElementById('pe-form-retry').onclick=()=>carregarProjetoParaEdicao(nomeProjeto);
       document.getElementById('pe-voltar-erro').onclick=carregarListaPortfolio;
       return;
     }
     PE_ULTIMA_LEITURA={ projeto: nomeProjeto, rowIndex: r.rowIndex, campos: r.campos };
     renderFormularioPortfolioEdit(nomeProjeto, r.campos);
   }catch(e){
-    document.getElementById('pe-form-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Falha ao contatar o servidor. Tente novamente.</p></div>';
+    if(PE_PROJETO_EM_CARREGAMENTO===nomeProjeto) PE_PROJETO_EM_CARREGAMENTO=null;
+    if(minhaSeq!==PE_CARREGAMENTO_SEQ) return;
+    document.getElementById('pe-form-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Falha ao contatar o servidor. Verifique sua conexão.</p><button type="button" class="filter-clear" id="pe-form-retry" style="margin-top:12px">Tentar novamente</button></div>';
+    document.getElementById('pe-form-retry').onclick=()=>carregarProjetoParaEdicao(nomeProjeto);
   }
 }
 // Classifica cada campo numa seção — pelas colunas de equipe (mesmo intervalo
@@ -2412,11 +2596,12 @@ async function salvarEdicaoPortfolio(){
   });
   const btn=document.getElementById('pe-btn-salvar');
   btn.disabled=true;
+  mostrarLoadingGlobal('Salvando alterações…');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const payload={ rowIndex: PE_ULTIMA_LEITURA.rowIndex, valores: valores };
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=savePortfolioProjeto&projeto='+encodeURIComponent(PE_ULTIMA_LEITURA.projeto)+'&payload='+encodeURIComponent(JSON.stringify(payload));
-    const r=await loadDataJSONP(url);
+    const r=await loadDataJSONPComRetry(url,1);
     if(r && r.ok){
       peFeedback('Projeto salvo com sucesso.',true);
       carregarProjetoParaEdicao(PE_ULTIMA_LEITURA.projeto); // recarrega pra refletir o que foi salvo de verdade
@@ -2426,6 +2611,7 @@ async function salvarEdicaoPortfolio(){
   }catch(e){
     peFeedback('Falha ao contatar o servidor. Tente novamente.',false);
   }
+  esconderLoadingGlobal();
   btn.disabled=false;
 }
 
@@ -2442,10 +2628,12 @@ async function excluirProjetoAtual(){
   }
   const btn=document.getElementById('pe-btn-excluir');
   btn.disabled=true;
+  mostrarLoadingGlobal('Excluindo projeto…');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=excluirPortfolioProjeto&projeto='+encodeURIComponent(PE_ULTIMA_LEITURA.projeto)+'&rowIndex='+PE_ULTIMA_LEITURA.rowIndex;
-    const r=await loadDataJSONP(url);
+    const r=await loadDataJSONPComRetry(url,1);
+    esconderLoadingGlobal();
     if(r && r.ok){
       peFeedback('Projeto excluído com sucesso.',true);
       PE_ULTIMA_LEITURA=null;
@@ -2455,6 +2643,7 @@ async function excluirProjetoAtual(){
       btn.disabled=false;
     }
   }catch(e){
+    esconderLoadingGlobal();
     peFeedback('Falha ao contatar o servidor. Tente novamente.',false);
     btn.disabled=false;
   }
@@ -5066,10 +5255,11 @@ async function srSalvar(finalizar){
     if(!confirmar) return;
   }
   srSetBotoesDisabled(true);
+  mostrarLoadingGlobal(finalizar?'Finalizando Status Report…':'Salvando rascunho…');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=saveStatusReport&payload='+encodeURIComponent(JSON.stringify(dados));
-    const r=await loadDataJSONP(url);
+    const r=await loadDataJSONPComRetry(url,1);
     if(r && r.ok){
       const idx=STATUS_REPORTS.findIndex(x=>x.id===r.record.id);
       if(idx!==-1) STATUS_REPORTS[idx]=r.record; else STATUS_REPORTS.push(r.record);
@@ -5081,6 +5271,7 @@ async function srSalvar(finalizar){
   }catch(e){
     srFeedback('Falha ao contatar o servidor. Verifique sua conexão e tente novamente.',false);
   }
+  esconderLoadingGlobal();
   srSetBotoesDisabled(false);
 }
 
