@@ -1456,7 +1456,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v7.5 · Última atualização: —</footer>
+  <footer id="app-footer">v7.6 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1565,7 +1565,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v7.5';
+const APP_VERSION='v7.6';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2435,16 +2435,19 @@ let IA_ANALISES_CACHE=null; // recalculado a cada render (dados já estão em me
 // Identifica quem é Head de QUALQUER área, pela fonte oficial já usada em
 // todo o resto do dashboard (AREAS[area].head) — nunca por nome/área
 // específica hardcoded. Restrito só a esta página: não altera D.p nem
-// nenhuma outra tela.
+// nenhuma outra tela. Compara nomes NORMALIZADOS (sem acento, minúsculo) —
+// comparação exata falhava silenciosamente quando o nome em AREAS tinha uma
+// pequena diferença de grafia (acento, espaço, maiúscula) em relação ao
+// nome da pessoa em D.p, deixando esse Head específico escapar da exclusão.
 function iaNomesHeads_(){
-  return new Set(Object.values(AREAS).map(a=>a.head).filter(Boolean));
+  return new Set(Object.values(AREAS).map(a=>peNormalizarHeader(a.head)).filter(Boolean));
 }
 function iaCalcularTodasAnalises_(){
   const heads=iaNomesHeads_();
   // Exclusão feita AQUI, na fonte da lista — assim tabela, KPIs, rankings,
   // filtros (que leem as opções a partir dessas análises) e modal de
   // detalhamento nunca veem uma pessoa Head, em nenhum lugar da página.
-  const pessoas=D.p.filter(p=>p.a && !heads.has(p.a));
+  const pessoas=D.p.filter(p=>p.a && !heads.has(peNormalizarHeader(p.a)));
   const mapaComplexidade=iaConstruirMapaNiveis_(D.pj.map(p=>p.cx));
   const mapaPrioridade=iaConstruirMapaNiveis_(D.pj.map(p=>p.pr));
   const qtdsPorPessoa=pessoas.map(p=>alocProjetosDaPessoa(p).length);
@@ -2553,7 +2556,7 @@ function initInteligenciaAlocacao(){
   // valer também aqui, senão o filtro de Pessoa ainda ofereceria o nome de um
   // Head como opção (mesmo que selecioná-lo não trouxesse nenhum resultado).
   const heads=iaNomesHeads_();
-  const pessoasSemHead=D.p.filter(p=>p.a && !heads.has(p.a));
+  const pessoasSemHead=D.p.filter(p=>p.a && !heads.has(peNormalizarHeader(p.a)));
   const pessoas=[...new Set(pessoasSemHead.map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
   document.getElementById('f-ia-pessoa').innerHTML='<option value="">Todas</option>'+pessoas.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">'+n+'</option>').join('');
 
