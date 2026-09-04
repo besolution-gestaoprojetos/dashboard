@@ -602,6 +602,13 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 .aloc-proj-tag{font-size:11px; color:var(--text-muted);}
 .aloc-proj-tag strong{color:var(--text);}
 
+/* Inteligência de Alocação */
+.ia-score-bar-track{display:inline-block; width:60px; height:6px; border-radius:999px; background:var(--surface-alt); overflow:hidden; vertical-align:middle; margin-right:6px;}
+.ia-score-bar-fill{height:100%; border-radius:999px;}
+.ia-badge-situacao{display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:700; white-space:nowrap;}
+.ia-th-sort{user-select:none;}
+.ia-th-sort:hover{color:var(--primary);}
+
 /* Timeline dos 4 marcos de data do projeto (Detalhamento do Projeto) */
 .pd-timeline-datas{display:flex; align-items:flex-start; gap:0; overflow-x:auto; padding:8px 0;}
 .pd-timeline-step{display:flex; flex-direction:column; align-items:center; text-align:center; min-width:130px; flex-shrink:0;}
@@ -1082,6 +1089,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
         <div class="nav-cat-panel">
           <button class="nav-tab active" data-page="cliente">Portfólio</button>
           <button class="nav-tab" data-page="alocacoes">Alocações</button>
+          <button class="nav-tab" data-page="inteligencia">🧠 Inteligência de Alocação</button>
           <button class="nav-tab" data-page="portfolioedit">Edição do Portfólio</button>
           <button class="nav-tab" data-page="futuristic">🚀 Central de Comando</button>
         </div>
@@ -1183,6 +1191,23 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       </div>
       <div class="grid grid-kpi" id="kpi-alocacoes"></div>
       <div id="alocacoes-content"></div>
+    </section>
+
+    <!-- PAGE INTELIGÊNCIA DE ALOCAÇÃO -->
+    <section class="page" id="page-inteligencia">
+      <div class="page-header"><div><h1>🧠 Inteligência de Alocação</h1><p>Indicador de carga/risco por pessoa, combinando quantidade de projetos, complexidade, prioridade e proximidade de prazos — a partir dos mesmos dados de Alocações. É um apoio à decisão, não uma afirmação automática.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label>Pessoa</label><select id="f-ia-pessoa"><option value="">Todas</option></select></div>
+        <div class="filter-field"><label>Gestor</label><select id="f-ia-gestor"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label>Qtd. de Projetos</label><select id="f-ia-qtdproj"><option value="">Qualquer quantidade</option></select></div>
+        <div class="filter-field"><label>Situação</label><select id="f-ia-situacao"><option value="">Todas</option></select></div>
+        <div class="filter-field"><label>Complexidade</label><select id="f-ia-complexidade"><option value="">Todas</option></select></div>
+        <div class="filter-field"><label>Prioridade</label><select id="f-ia-prioridade"><option value="">Todas</option></select></div>
+        <div class="filter-field"><label>Status da Tarefa</label><select id="f-ia-status"><option value="">Todos</option></select></div>
+        <button class="filter-clear" id="f-ia-clear">Limpar filtros</button>
+      </div>
+      <div class="grid grid-kpi" id="kpi-inteligencia"></div>
+      <div id="inteligencia-content"></div>
     </section>
 
     <!-- PAGE PESSOA -->
@@ -1423,7 +1448,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v7.0 · Última atualização: —</footer>
+  <footer id="app-footer">v7.1 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1444,6 +1469,15 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <button id="task-modal-close" type="button" aria-label="Fechar">✕</button>
     </div>
     <div id="task-modal-body" class="task-modal-body"></div>
+  </div>
+</div>
+<div id="ia-modal-overlay" class="task-modal-overlay">
+  <div class="task-modal-card">
+    <div class="task-modal-header">
+      <h3 id="ia-modal-title">🧠 Análise de Alocação</h3>
+      <button id="ia-modal-close" type="button" aria-label="Fechar">✕</button>
+    </div>
+    <div id="ia-modal-body" class="task-modal-body"></div>
   </div>
 </div>
 <div id="task-resp-popover" class="sr-crit-popover"></div>
@@ -1523,7 +1557,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v7.0';
+const APP_VERSION='v7.1';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1898,12 +1932,12 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','alocacoes','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel'],
+  'Administrador':  ['cliente','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
   // Também vê Gestão Setorial (sua área) e Gestão Transversal (apoio ao GP).
-  'Head':           ['cliente','alocacoes','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','transversal','statusreport'],
+  'Head':           ['cliente','alocacoes','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','transversal','statusreport'],
   // Tech Lead / PO / SM: veem o(s) projeto(s) onde atuam por completo, junto com a equipe.
   // Gestão Transversal é a página central desses perfis (LP/GP/SM).
   'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail','transversal','statusreport'],
@@ -1935,7 +1969,7 @@ const PERM_MENU = {
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio',alocacoes:'Alocações',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Gerência',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Reports'};
+const PAGE_LABELS = {cliente:'Portfólio',alocacoes:'Alocações',inteligencia:'Inteligência de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Gerência',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Reports'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 
 function paginasPermitidas(){ return PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido']; }
@@ -2185,6 +2219,220 @@ function alocProjetosDaPessoa(pessoa){
   const projetosPorAtividade=Object.keys(D.tpe[ek]||{});
   return D.pj.filter(proj=>projetosPorAtividade.includes(proj.pj) || (proj.eq && proj.eq.includes(pessoa.a)));
 }
+
+// ============================================================
+// 🧠 INTELIGÊNCIA DE ALOCAÇÃO — motor de cálculo determinístico (sem IA
+// generativa nesta versão, mas isolado o suficiente pra uma camada de IA
+// futura poder consumir os mesmos dados/estrutura sem refazer nada disso).
+//
+// NÃO cria nenhuma fonte de dados nova: reaproveita exatamente D.p, D.pj
+// (que já exclui "Da Venda ao Faturamento" na origem — nenhum tratamento
+// extra necessário aqui), PROJ_TASKS (já deduplicado por ID único de tarefa),
+// PSTAT/PHEST/PHAP (já corretos por pessoa) e alocProjetosDaPessoa (a mesma
+// função que a página Alocações usa).
+// ============================================================
+
+// Pesos do score — somam 100%, ajustáveis aqui sem precisar mexer na lógica.
+const IA_PESOS = { qtdProjetos: 0.30, complexidade: 0.25, prioridade: 0.20, prazo: 0.25 };
+
+// Faixas de classificação final (score 0–100) — ajustáveis.
+const IA_FAIXAS_SCORE = [
+  { min:80, max:100, emoji:'🔴', label:'Sobrecarga', texto:'Indicador de possível sobrecarga' },
+  { min:60, max:79,  emoji:'🟠', label:'Alto Risco', texto:'Necessita de atenção' },
+  { min:40, max:59,  emoji:'🟡', label:'Atenção',    texto:'Necessita de atenção' },
+  { min:0,  max:39,  emoji:'🟢', label:'Saudável',   texto:'Alocação saudável' }
+];
+
+// Faixas de risco por proximidade de prazo (dias até a data mais relevante do
+// projeto) — ajustáveis. "score" é o quanto essa faixa pesa (0 a 1) dentro do
+// fator Prazo.
+const IA_FAIXAS_PRAZO = [
+  { maxDias:0,        score:1.00, label:'Vencido' },
+  { maxDias:7,         score:0.90, label:'Crítico (0–7 dias)' },
+  { maxDias:15,        score:0.70, label:'Alto (8–15 dias)' },
+  { maxDias:30,        score:0.40, label:'Atenção (16–30 dias)' },
+  { maxDias:Infinity,  score:0.10, label:'Baixo (>30 dias)' }
+];
+
+// Vocabulário de intensidade conhecido, usado só pra ORDENAR os valores reais
+// de Complexidade/Prioridade que existem na base (não inventa nem substitui
+// nenhum valor — só ajuda a decidir a ordem quando o termo é reconhecido;
+// termo desconhecido cai no fim, ordenado alfabeticamente entre si).
+const IA_VOCABULARIO_INTENSIDADE = {
+  'baixa':1,'baixo':1,'normal':1,'leve':1,'minima':1,'mínima':1,
+  'media':2,'média':2,'moderada':2,'moderado':2,'intermediaria':2,'intermediária':2,'medio':2,'médio':2,
+  'alta':3,'alto':3,'elevada':3,'elevado':3,
+  'muito alta':4,'muito alto':4,'critica':4,'crítica':4,'critico':4,'crítico':4,'urgente':4,'maxima':4,'máxima':4
+};
+
+// Constrói um mapa "valor real -> score 0..1" pra um campo (Complexidade ou
+// Prioridade), usando SÓ os valores que realmente existem em D.pj — nunca um
+// conjunto fixo hardcoded. Ordena pelo vocabulário conhecido quando possível,
+// e por ordem alfabética quando o termo não é reconhecido.
+function iaConstruirMapaNiveis_(valores){
+  const distintos=[...new Set(valores.filter(Boolean))];
+  if(distintos.length===0) return {};
+  if(distintos.length===1) return { [distintos[0]]: 0.5 }; // só 1 valor na base inteira = nada pra comparar, fica neutro
+  distintos.sort((a,b)=>{
+    const na=peNormalizarHeader(a), nb=peNormalizarHeader(b);
+    const ra=IA_VOCABULARIO_INTENSIDADE[na], rb=IA_VOCABULARIO_INTENSIDADE[nb];
+    if(ra!==undefined && rb!==undefined) return ra-rb;
+    if(ra!==undefined) return -1; // conhecido vem antes de desconhecido
+    if(rb!==undefined) return 1;
+    return a.localeCompare(b,'pt-BR');
+  });
+  const mapa={};
+  distintos.forEach((v,i)=>{ mapa[v]=i/(distintos.length-1); });
+  return mapa;
+}
+
+// Determina a data mais relevante de um projeto pra risco de prazo, e o score
+// (0..1) correspondente. Projeto CONCLUÍDO (Data Entrega preenchida) nunca
+// aumenta o risco atual — mesmo que a entrega tenha sido "apertada" no
+// passado, isso não é mais uma pressão de prazo ativa hoje.
+function iaPrazoInfoProjeto_(proj){
+  if(proj.de) return { data:proj.de, diasRestantes:null, score:0, concluido:true, origem:'Data Entrega' };
+  const dataStr = proj.pea || proj.pei;
+  if(!dataStr) return { data:null, diasRestantes:null, score:0, concluido:false, origem:null };
+  const dataObj=parseBrDateLocal_(dataStr);
+  if(!dataObj) return { data:dataStr, diasRestantes:null, score:0, concluido:false, origem: proj.pea?'Prev. Entrega Atual':'Prev. Entrega Inicial' };
+  const hoje=new Date(); hoje.setHours(0,0,0,0);
+  const diasRestantes=Math.round((dataObj-hoje)/86400000);
+  const faixa=IA_FAIXAS_PRAZO.find(f=>diasRestantes<=f.maxDias) || IA_FAIXAS_PRAZO[IA_FAIXAS_PRAZO.length-1];
+  return { data:dataStr, diasRestantes, score:faixa.score, faixaLabel:faixa.label, concluido:false, origem: proj.pea?'Prev. Entrega Atual':'Prev. Entrega Inicial' };
+}
+
+function iaClassificarScore_(score){
+  return IA_FAIXAS_SCORE.find(f=>score>=f.min && score<=f.max) || IA_FAIXAS_SCORE[IA_FAIXAS_SCORE.length-1];
+}
+
+// Calcula a análise completa de UMA pessoa. mapaComplexidade/mapaPrioridade
+// já vêm prontos (calculados uma vez só pra todo mundo, não por pessoa).
+function iaCalcularAnalisePessoa_(pessoa, mapaComplexidade, mapaPrioridade, maxProjetosObservado){
+  const ek=(pessoa.email||'').toLowerCase();
+  // Mesma fonte de "projetos vinculados" já usada em Alocações — evita
+  // qualquer duplicidade ou divergência entre as duas páginas.
+  const projetos=alocProjetosDaPessoa(pessoa);
+  const projetosInfo=projetos.map(proj=>{
+    const prazo=iaPrazoInfoProjeto_(proj);
+    return {
+      proj, prazo,
+      complexidadeScore: proj.cx!=null && mapaComplexidade[proj.cx]!==undefined ? mapaComplexidade[proj.cx] : null,
+      prioridadeScore: proj.pr!=null && mapaPrioridade[proj.pr]!==undefined ? mapaPrioridade[proj.pr] : null
+    };
+  });
+
+  // Quantidade de Projetos: normalizado pela maior quantidade observada em
+  // TODA a base atual (não um limite fixo arbitrário) — projeto único por
+  // pessoa, sem duplicar por múltiplas tarefas/responsáveis (alocProjetosDaPessoa já garante isso).
+  const qtdProjetos=projetos.length;
+  const qtdProjetosScore=maxProjetosObservado>0?Math.min(1,qtdProjetos/maxProjetosObservado):0;
+
+  // Complexidade/Prioridade: usa o PIOR (maior) nível entre os projetos ATIVOS
+  // da pessoa — ter um único projeto muito complexo/crítico já é o que
+  // realmente pesa no risco, não a média (que diluiria esse sinal).
+  const projetosAtivos=projetosInfo.filter(pi=>!pi.prazo.concluido);
+  const complexidadeScore=projetosAtivos.length>0?Math.max(0,...projetosAtivos.map(pi=>pi.complexidadeScore||0)):0;
+  const prioridadeScore=projetosAtivos.length>0?Math.max(0,...projetosAtivos.map(pi=>pi.prioridadeScore||0)):0;
+
+  // Prazo: pior (mais próxima/vencida) previsão entre os projetos ATIVOS.
+  const prazoScore=projetosAtivos.length>0?Math.max(0,...projetosAtivos.map(pi=>pi.prazo.score)):0;
+
+  const scoreBruto = qtdProjetosScore*IA_PESOS.qtdProjetos + complexidadeScore*IA_PESOS.complexidade +
+                      prioridadeScore*IA_PESOS.prioridade + prazoScore*IA_PESOS.prazo;
+  const score=Math.round(scoreBruto*100);
+  const faixa=iaClassificarScore_(score);
+
+  // Tarefas — informação complementar (não entra na conta do score), já
+  // deduplicada e com a mesma regra de "Blocked não é Atrasada" do resto do
+  // dashboard (PSTAT já reflete os status reais das tarefas, um por tarefa única).
+  const statusPessoa=PSTAT[ek]||{};
+  const qtdTarefasTotal=Object.values(statusPessoa).reduce((s,v)=>s+v,0);
+  const qtdBloqueadas=Object.entries(statusPessoa).filter(([s])=>s.toLowerCase()==='blocked').reduce((s,[,v])=>s+v,0);
+  const qtdEmAndamento=Object.entries(statusPessoa).filter(([s])=>{ const sl=s.toLowerCase(); return sl!=='done' && sl!=='blocked' && sl!=='cancelado' && sl!=='backlog'; }).reduce((s,[,v])=>s+v,0);
+  // Atrasadas: cruza PROJ_TASKS dos projetos da pessoa, mesma regra do
+  // Detalhamento do Projeto (Blocked/Done nunca contam como atrasada).
+  const hojeISO=new Date().toISOString().slice(0,10);
+  let qtdAtrasadas=0;
+  projetos.forEach(proj=>{
+    (PROJ_TASKS[proj.pj]||[]).forEach(t=>{
+      const respondeisPorMim=(t.responsaveis||[]).some(r=>r.email===ek) || (t.email===ek);
+      if(!respondeisPorMim) return;
+      const st=(t.status||'').toLowerCase();
+      if(t.dt_venc_iso && t.dt_venc_iso<hojeISO && !t.dt_conc && st!=='done' && st!=='blocked') qtdAtrasadas++;
+    });
+  });
+
+  const horasPrevistas=PHEST[ek]||0;
+  const horasApontadas=PHAP[ek]||0;
+  const percentualExecucao=horasPrevistas>0?Math.round(horasApontadas/horasPrevistas*100):null;
+
+  // Próxima entrega (pra exibir na tabela) — a mais próxima entre os projetos ativos.
+  const proximaEntrega=projetosAtivos.filter(pi=>pi.prazo.data).sort((a,b)=>(a.prazo.diasRestantes??999999)-(b.prazo.diasRestantes??999999))[0];
+
+  return {
+    pessoa, projetos, projetosInfo, qtdProjetos,
+    complexidadeMax: projetosAtivos.length>0?(projetosAtivos.slice().sort((a,b)=>(b.complexidadeScore||0)-(a.complexidadeScore||0))[0].proj.cx||'—'):'—',
+    prioridadeMax: projetosAtivos.length>0?(projetosAtivos.slice().sort((a,b)=>(b.prioridadeScore||0)-(a.prioridadeScore||0))[0].proj.pr||'—'):'—',
+    proximaEntrega: proximaEntrega?proximaEntrega.prazo:null,
+    qtdTarefasTotal, qtdEmAndamento, qtdBloqueadas, qtdAtrasadas,
+    horasPrevistas, horasApontadas, percentualExecucao,
+    composicao: {
+      qtdProjetos: Math.round(qtdProjetosScore*IA_PESOS.qtdProjetos*100),
+      complexidade: Math.round(complexidadeScore*IA_PESOS.complexidade*100),
+      prioridade: Math.round(prioridadeScore*IA_PESOS.prioridade*100),
+      prazo: Math.round(prazoScore*IA_PESOS.prazo*100)
+    },
+    score, faixa
+  };
+}
+
+// Gera a explicação textual a partir dos FATORES REAIS calculados — nunca um
+// texto fixo desconectado dos dados desta pessoa especificamente.
+function iaGerarExplicacao_(analise){
+  const fatores=[];
+  if(analise.qtdProjetos>0) fatores.push(analise.qtdProjetos+' projeto(s) simultâneo(s)');
+  const projetosAtivos=analise.projetosInfo.filter(pi=>!pi.prazo.concluido);
+  const complexosAltos=projetosAtivos.filter(pi=>(pi.complexidadeScore||0)>=0.66).length;
+  if(complexosAltos>0) fatores.push(complexosAltos+' projeto(s) de complexidade elevada');
+  const prioridadeAlta=projetosAtivos.filter(pi=>(pi.prioridadeScore||0)>=0.66).length;
+  if(prioridadeAlta>0) fatores.push(prioridadeAlta+' projeto(s) com prioridade elevada');
+  const entregasProximas=projetosAtivos.filter(pi=>pi.prazo.diasRestantes!=null && pi.prazo.diasRestantes<=15).length;
+  if(entregasProximas>0) fatores.push(entregasProximas+' entrega(s) prevista(s) para os próximos 15 dias');
+  if(analise.qtdAtrasadas>0) fatores.push(analise.qtdAtrasadas+' tarefa(s) atrasada(s)');
+  if(analise.qtdBloqueadas>0) fatores.push(analise.qtdBloqueadas+' tarefa(s) bloqueada(s)');
+  if(fatores.length===0) return 'Nenhum fator de atenção relevante identificado no momento.';
+  return 'Principais fatores:<br>'+fatores.map(f=>'• '+f).join('<br>');
+}
+
+// Recomendação baseada em regras (sem IA generativa nesta versão) — usa só
+// os fatores realmente presentes na análise desta pessoa.
+function iaGerarRecomendacao_(analise){
+  const projetosAtivos=analise.projetosInfo.filter(pi=>!pi.prazo.concluido);
+  const entregasProximas=projetosAtivos.filter(pi=>pi.prazo.diasRestantes!=null && pi.prazo.diasRestantes<=15);
+  if(analise.score>=80){
+    if(entregasProximas.length>=2) return 'Alta concentração de projetos com entregas próximas e carga elevada. Avaliar redistribuição de tarefas ou priorização junto ao(s) gestor(es).';
+    return 'Carga elevada mesmo sem múltiplas entregas próximas — vale revisar a combinação de complexidade e prioridade dos projetos desta pessoa.';
+  }
+  if(analise.score>=60){
+    if(entregasProximas.length>0) return 'Priorizar acompanhamento de '+(entregasProximas[0].proj.pj)+' devido à combinação de prioridade e prazo próximo.';
+    return 'Nível de risco moderado — acompanhar de perto a evolução dos projetos de maior complexidade/prioridade desta pessoa.';
+  }
+  if(analise.score>=40) return 'Situação de atenção — sem ação urgente necessária, mas vale monitorar a evolução dos prazos.';
+  if(analise.qtdProjetos>=3) return 'Apesar da quantidade de projetos, a maioria possui baixa complexidade e/ou prazo confortável.';
+  return 'Alocação saudável no momento.';
+}
+
+let IA_ANALISES_CACHE=null; // recalculado a cada render (dados já estão em memória, custo desprezível)
+function iaCalcularTodasAnalises_(){
+  const pessoas=D.p.filter(p=>p.a);
+  const mapaComplexidade=iaConstruirMapaNiveis_(D.pj.map(p=>p.cx));
+  const mapaPrioridade=iaConstruirMapaNiveis_(D.pj.map(p=>p.pr));
+  const qtdsPorPessoa=pessoas.map(p=>alocProjetosDaPessoa(p).length);
+  const maxProjetosObservado=qtdsPorPessoa.length>0?Math.max(...qtdsPorPessoa):0;
+  return pessoas.map(p=>iaCalcularAnalisePessoa_(p, mapaComplexidade, mapaPrioridade, maxProjetosObservado));
+}
+
 function initAlocacoes(){
   const pessoasObjs=D.p.filter(p=>p.a);
   const pessoas=[...new Set(pessoasObjs.map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
@@ -2277,6 +2525,181 @@ function renderAlocacoes(){
 }
 
 // ============================================================
+// 🧠 INTELIGÊNCIA DE ALOCAÇÃO — página. Filtros próprios, mas reaproveita
+// exatamente os mesmos dados/estrutura de Alocações (nenhuma consulta nova
+// ao servidor — tudo já está em memória desde o login).
+// ============================================================
+function initInteligenciaAlocacao(){
+  const pessoas=[...new Set(D.p.filter(p=>p.a).map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  document.getElementById('f-ia-pessoa').innerHTML='<option value="">Todas</option>'+pessoas.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">'+n+'</option>').join('');
+
+  const gestores=[...new Set(D.p.map(p=>p.gestor).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  document.getElementById('f-ia-gestor').innerHTML='<option value="">Todos</option>'+gestores.map(g=>'<option value="'+g.replace(/"/g,'&quot;')+'">'+g+'</option>').join('');
+
+  const statusesSet=new Set();
+  Object.values(PROJ_TASKS).forEach(list=>list.forEach(t=>{ if(t.status) statusesSet.add(t.status); }));
+  document.getElementById('f-ia-status').innerHTML='<option value="">Todos</option>'+[...statusesSet].sort().map(s=>'<option value="'+s.replace(/"/g,'&quot;')+'">'+s+'</option>').join('');
+
+  const complexidades=[...new Set(D.pj.map(p=>p.cx).filter(Boolean))].sort();
+  const prioridades=[...new Set(D.pj.map(p=>p.pr).filter(Boolean))].sort();
+  document.getElementById('f-ia-complexidade').innerHTML='<option value="">Todas</option>'+complexidades.map(c=>'<option value="'+c.replace(/"/g,'&quot;')+'">'+c+'</option>').join('');
+  document.getElementById('f-ia-prioridade').innerHTML='<option value="">Todas</option>'+prioridades.map(p=>'<option value="'+p.replace(/"/g,'&quot;')+'">'+p+'</option>').join('');
+
+  document.getElementById('f-ia-situacao').innerHTML='<option value="">Todas</option>'+IA_FAIXAS_SCORE.map(f=>'<option value="'+f.label+'">'+f.emoji+' '+f.label+'</option>').join('');
+
+  const qtdsPorPessoa=D.p.filter(p=>p.a).map(p=>alocProjetosDaPessoa(p).length);
+  const maxQtd=qtdsPorPessoa.length>0?Math.max(...qtdsPorPessoa):0;
+  let opcoesQtdHtml='<option value="">Qualquer quantidade</option>';
+  for(let i=0;i<=maxQtd;i++) opcoesQtdHtml+='<option value="'+i+'">'+i+'</option>';
+  document.getElementById('f-ia-qtdproj').innerHTML=opcoesQtdHtml;
+
+  ['f-ia-pessoa','f-ia-gestor','f-ia-qtdproj','f-ia-situacao','f-ia-complexidade','f-ia-prioridade','f-ia-status'].forEach(id=>{ document.getElementById(id).onchange=renderInteligenciaAlocacao; });
+  document.getElementById('f-ia-clear').onclick=()=>{
+    ['f-ia-pessoa','f-ia-gestor','f-ia-qtdproj','f-ia-situacao','f-ia-complexidade','f-ia-prioridade','f-ia-status'].forEach(id=>{ document.getElementById(id).value=''; });
+    renderInteligenciaAlocacao();
+  };
+  IA_SORT_STATE={col:'score',dir:'desc'};
+  renderInteligenciaAlocacao();
+}
+
+let IA_SORT_STATE={col:'score',dir:'desc'};
+function renderInteligenciaAlocacao(){
+  const fPessoa=document.getElementById('f-ia-pessoa').value;
+  const fGestor=document.getElementById('f-ia-gestor').value;
+  const fQtdProj=document.getElementById('f-ia-qtdproj').value;
+  const fSituacao=document.getElementById('f-ia-situacao').value;
+  const fComplexidade=document.getElementById('f-ia-complexidade').value;
+  const fPrioridade=document.getElementById('f-ia-prioridade').value;
+  const fStatus=document.getElementById('f-ia-status').value;
+
+  IA_ANALISES_CACHE=iaCalcularTodasAnalises_();
+  let linhas=IA_ANALISES_CACHE;
+
+  if(fPessoa) linhas=linhas.filter(l=>l.pessoa.a===fPessoa);
+  if(fGestor) linhas=linhas.filter(l=>l.pessoa.gestor===fGestor);
+  if(fQtdProj!=='') linhas=linhas.filter(l=>l.qtdProjetos===parseInt(fQtdProj));
+  if(fSituacao) linhas=linhas.filter(l=>l.faixa.label===fSituacao);
+  if(fComplexidade) linhas=linhas.filter(l=>l.projetos.some(p=>p.cx===fComplexidade));
+  if(fPrioridade) linhas=linhas.filter(l=>l.projetos.some(p=>p.pr===fPrioridade));
+  if(fStatus){
+    const eksComStatus=new Set(D.p.filter(p=>Object.keys(PSTAT[(p.email||'').toLowerCase()]||{}).includes(fStatus)).map(p=>p.a));
+    linhas=linhas.filter(l=>eksComStatus.has(l.pessoa.a));
+  }
+
+  const sorters={
+    pessoa:(l)=>l.pessoa.a, projetos:(l)=>l.qtdProjetos, tarefas:(l)=>l.qtdTarefasTotal,
+    horasPrevistas:(l)=>l.horasPrevistas, horasApontadas:(l)=>l.horasApontadas, score:(l)=>l.score,
+    entrega:(l)=>l.proximaEntrega?l.proximaEntrega.diasRestantes??999999:999999
+  };
+  const sortFn=sorters[IA_SORT_STATE.col]||sorters.score;
+  linhas=[...linhas].sort((a,b)=>{
+    const va=sortFn(a), vb=sortFn(b);
+    const cmp=typeof va==='string'?va.localeCompare(vb,'pt-BR'):va-vb;
+    return IA_SORT_STATE.dir==='asc'?cmp:-cmp;
+  });
+
+  const contagemFaixas={}; IA_FAIXAS_SCORE.forEach(f=>contagemFaixas[f.label]=0);
+  IA_ANALISES_CACHE.forEach(l=>{ contagemFaixas[l.faixa.label]++; });
+  document.getElementById('kpi-inteligencia').innerHTML=`
+    <div class="kpi"><span class="kpi-label">Pessoas Analisadas</span><span class="kpi-value">${IA_ANALISES_CACHE.length}</span></div>
+    ${IA_FAIXAS_SCORE.map(f=>'<div class="kpi"><span class="kpi-label">'+f.emoji+' '+f.label+'</span><span class="kpi-value">'+contagemFaixas[f.label]+'</span></div>').join('')}`;
+
+  const setaCol=(col)=>IA_SORT_STATE.col===col?(IA_SORT_STATE.dir==='asc'?' ▲':' ▼'):'';
+  let h='<div class="card"><div class="card-title"><h3>Análise por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:620px"><table><thead><tr>'+
+    '<th class="ia-th-sort" data-col="pessoa">Pessoa'+setaCol('pessoa')+'</th>'+
+    '<th class="ia-th-sort" data-col="projetos">Projetos'+setaCol('projetos')+'</th>'+
+    '<th>Complexidade</th><th>Prioridade</th>'+
+    '<th class="ia-th-sort" data-col="entrega">Próxima Entrega'+setaCol('entrega')+'</th>'+
+    '<th class="ia-th-sort" data-col="tarefas">Tarefas'+setaCol('tarefas')+'</th>'+
+    '<th class="ia-th-sort" data-col="horasPrevistas">H. Previstas'+setaCol('horasPrevistas')+'</th>'+
+    '<th class="ia-th-sort" data-col="horasApontadas">H. Apontadas'+setaCol('horasApontadas')+'</th>'+
+    '<th class="ia-th-sort" data-col="score">Score'+setaCol('score')+'</th><th>Situação</th></tr></thead><tbody>';
+  if(linhas.length===0){
+    h+='<tr><td colspan="10" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
+  }else{
+    linhas.forEach(l=>{
+      const entregaTxt=l.proximaEntrega?(l.proximaEntrega.data+(l.proximaEntrega.diasRestantes!=null?' ('+(l.proximaEntrega.diasRestantes<0?'vencido':l.proximaEntrega.diasRestantes+'d'):'')+')'):'—';
+      h+='<tr class="ia-row" data-ia-pessoa="'+l.pessoa.a.replace(/"/g,'&quot;')+'" style="cursor:pointer">'+
+        '<td><strong>'+personLinkHtml(l.pessoa.a)+'</strong></td>'+
+        '<td>'+l.qtdProjetos+'</td>'+
+        '<td>'+(l.complexidadeMax!=='—'?'<span class="status-pill">'+l.complexidadeMax+'</span>':'—')+'</td>'+
+        '<td>'+(l.prioridadeMax!=='—'?'<span class="status-pill">'+l.prioridadeMax+'</span>':'—')+'</td>'+
+        '<td>'+entregaTxt+'</td>'+
+        '<td>'+l.qtdTarefasTotal+'</td>'+
+        '<td>'+fH(l.horasPrevistas)+'</td>'+
+        '<td>'+fH(l.horasApontadas)+'</td>'+
+        '<td><div class="ia-score-bar-track"><div class="ia-score-bar-fill" style="width:'+l.score+'%;background:'+iaCorFaixa_(l.faixa)+'"></div></div><span style="font-weight:700;font-size:12px">'+l.score+'</span></td>'+
+        '<td><span class="ia-badge-situacao" style="background:'+iaCorFaixaBg_(l.faixa)+';color:'+iaCorFaixa_(l.faixa)+'">'+l.faixa.emoji+' '+l.faixa.label+'</span></td>'+
+      '</tr>';
+    });
+  }
+  h+='</tbody></table></div></div>';
+  document.getElementById('inteligencia-content').innerHTML=h;
+
+  document.querySelectorAll('#inteligencia-content .ia-th-sort').forEach(th=>{
+    th.style.cursor='pointer';
+    th.onclick=()=>{
+      const col=th.dataset.col;
+      if(IA_SORT_STATE.col===col) IA_SORT_STATE.dir=IA_SORT_STATE.dir==='asc'?'desc':'asc';
+      else IA_SORT_STATE={col,dir: col==='score'?'desc':'asc'};
+      renderInteligenciaAlocacao();
+    };
+  });
+  document.querySelectorAll('#inteligencia-content .ia-row').forEach(row=>{
+    row.addEventListener('click',(e)=>{ if(e.target.closest('.person-link')) return; iaAbrirModalDetalhe(row.dataset.iaPessoa); });
+  });
+}
+function iaCorFaixa_(faixa){ return faixa.label==='Sobrecarga'?'#dc2626':faixa.label==='Alto Risco'?'#ea580c':faixa.label==='Atenção'?'#ca8a04':'#16a34a'; }
+function iaCorFaixaBg_(faixa){ return faixa.label==='Sobrecarga'?'rgba(220,38,38,.12)':faixa.label==='Alto Risco'?'rgba(234,88,12,.12)':faixa.label==='Atenção'?'rgba(202,138,4,.12)':'rgba(22,163,74,.12)'; }
+
+function iaAbrirModalDetalhe(nomePessoa){
+  const analise=(IA_ANALISES_CACHE||[]).find(l=>l.pessoa.a===nomePessoa);
+  if(!analise) return;
+  document.getElementById('ia-modal-title').textContent='🧠 '+analise.pessoa.a;
+  const projetosHtml=analise.projetosInfo.length===0?'<p style="color:var(--text-faint);font-size:13px">Nenhum projeto vinculado no momento.</p>':
+    analise.projetosInfo.map(pi=>{
+      const entregaTxt=pi.prazo.concluido?'Entregue ('+pi.prazo.data+')':pi.prazo.data?(pi.prazo.origem+': '+pi.prazo.data+(pi.prazo.diasRestantes!=null?' — '+(pi.prazo.diasRestantes<0?'vencido há '+Math.abs(pi.prazo.diasRestantes)+'d':pi.prazo.diasRestantes+' dia(s)'):'')):'Sem data prevista';
+      return '<div class="aloc-proj-item"><div class="aloc-proj-nome">'+projetoLinkHtml(pi.proj.pj)+'</div><div class="aloc-proj-meta">'+
+        '<span class="aloc-proj-tag">Complexidade: <strong>'+(pi.proj.cx||'—')+'</strong></span>'+
+        '<span class="aloc-proj-tag">Prioridade: <strong>'+(pi.proj.pr||'—')+'</strong></span>'+
+        '<span class="aloc-proj-tag">'+entregaTxt+'</span></div></div>';
+    }).join('');
+  const h=`
+    <div style="text-align:center;margin-bottom:18px">
+      <div style="font-size:34px;font-weight:800;color:${iaCorFaixa_(analise.faixa)}">${analise.score}<span style="font-size:16px;color:var(--text-faint)">/100</span></div>
+      <span class="ia-badge-situacao" style="background:${iaCorFaixaBg_(analise.faixa)};color:${iaCorFaixa_(analise.faixa)}">${analise.faixa.emoji} ${analise.faixa.label}</span>
+      <p style="font-size:11.5px;color:var(--text-faint);margin-top:6px">${analise.faixa.texto} — indicador de apoio à decisão, não uma afirmação automática.</p>
+    </div>
+    <div class="task-modal-section-title">Projetos (${analise.projetos.length})</div>
+    ${projetosHtml}
+    <div class="task-modal-section-title" style="margin-top:16px">Composição do Score</div>
+    <div style="font-size:12.5px;line-height:2">
+      Quantidade de Projetos: <strong>${analise.composicao.qtdProjetos}/${Math.round(IA_PESOS.qtdProjetos*100)}</strong><br>
+      Complexidade: <strong>${analise.composicao.complexidade}/${Math.round(IA_PESOS.complexidade*100)}</strong><br>
+      Prioridade: <strong>${analise.composicao.prioridade}/${Math.round(IA_PESOS.prioridade*100)}</strong><br>
+      Prazo: <strong>${analise.composicao.prazo}/${Math.round(IA_PESOS.prazo*100)}</strong><br>
+      <span style="border-top:1px solid var(--border);display:block;margin-top:6px;padding-top:6px">Score final: <strong>${analise.score}/100</strong></span>
+    </div>
+    <div class="task-modal-section-title" style="margin-top:16px">Tarefas</div>
+    <div style="font-size:12.5px;line-height:1.9">
+      Total: <strong>${analise.qtdTarefasTotal}</strong> · Em andamento: <strong>${analise.qtdEmAndamento}</strong> ·
+      Bloqueadas: <strong>${analise.qtdBloqueadas}</strong> · Atrasadas: <strong>${analise.qtdAtrasadas}</strong>
+    </div>
+    <div class="task-modal-section-title" style="margin-top:16px">Horas</div>
+    <div style="font-size:12.5px;line-height:1.9">
+      Previstas: <strong>${fH(analise.horasPrevistas)}</strong> · Apontadas: <strong>${fH(analise.horasApontadas)}</strong> ·
+      Diferença: <strong>${fH(Math.abs(analise.horasPrevistas-analise.horasApontadas))}</strong>${analise.percentualExecucao!=null?' · Execução: <strong>'+analise.percentualExecucao+'%</strong>':''}
+    </div>
+    <div class="task-modal-section-title" style="margin-top:16px">Explicação</div>
+    <div style="font-size:12.5px;line-height:1.7;color:var(--text-muted)">${iaGerarExplicacao_(analise)}</div>
+    <div class="task-modal-section-title" style="margin-top:16px">💡 Recomendação</div>
+    <div style="font-size:12.5px;line-height:1.7;color:var(--text-muted);background:var(--surface-alt);border-radius:8px;padding:10px 12px">${iaGerarRecomendacao_(analise)}</div>
+  `;
+  document.getElementById('ia-modal-body').innerHTML=h;
+  document.getElementById('ia-modal-overlay').classList.add('show');
+}
+
+
 // EDIÇÃO DO PORTFÓLIO — segunda funcionalidade do dashboard que GRAVA dados
 // (a primeira foi o Status Report). Edita a aba Portifolio diretamente, sem
 // aba nova (ver justificativa dada ao usuário: recriar a estrutura de dados
@@ -3283,6 +3706,7 @@ document.addEventListener('click', (e)=>{
   const srVer = e.target.closest('.sr-ver-btn-view');
   if(srVer && srVer.dataset.reportId){ abrirVisualizacaoStatusReport(srVer.dataset.reportId); return; }
   if(e.target.closest('#task-modal-close') || e.target.id==='task-modal-overlay'){ fecharDetalheTarefa(); }
+  if(e.target.closest('#ia-modal-close') || e.target.id==='ia-modal-overlay'){ document.getElementById('ia-modal-overlay').classList.remove('show'); }
 });
 // Retorna o nome da tarefa como link clicável para o modal de detalhamento. idx é
 // a posição da tarefa no array PROJ_TASKS[pjName] (identificador estável dentro
@@ -5364,7 +5788,7 @@ function renderStatusReportPainel(){
 // principalmente relevante ao trocar de perfil em "Visualizar como", quando o
 // dashboard inteiro (12 páginas) recarrega de uma vez.
 const PAGE_INIT_MAP={
-  cliente:initCliente, alocacoes:initAlocacoes, portfolioedit:initPortfolioEdit, pessoa:initPessoa, area:initArea, pend:initPend,
+  cliente:initCliente, alocacoes:initAlocacoes, inteligencia:initInteligenciaAlocacao, portfolioedit:initPortfolioEdit, pessoa:initPessoa, area:initArea, pend:initPend,
   ociosos:initOciosos, topexec:initTopExec, futuristic:renderFuturistic,
   lider:initLider, gerente:initGerente, equipe:initEquipe,
   setorial:initSetorial, transversal:initTransversal, statusreport:initStatusReport,
