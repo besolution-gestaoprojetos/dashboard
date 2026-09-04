@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwLZOI21YD9uy3rtRM3XWLB_PS7N7bJYvPhLWDhZmPhCjncy7ZWymEU9AvnAu8kATrV2A/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxC-4hWL26srQzj_fh86HG3ieN-jzYVgZ6i02QCBsk88cQ4XOxQg27PK9-mHv82JAmK/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -625,6 +625,14 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 .pe-pessoa-busca{width:100%; border:1px solid var(--border); border-radius:8px; padding:9px 12px; font-size:13.5px; background:var(--surface); color:var(--text); box-sizing:border-box;}
 .pe-pessoa-opcao{padding:7px 10px; font-size:13px; border-radius:6px; cursor:pointer;}
 .pe-pessoa-opcao:hover{background:var(--primary-100); color:var(--primary);}
+
+/* Edição do Portfólio — blocos de equipe compactos: os blocos (cards) ficam
+   lado a lado quando cabe, e os campos dentro de cada bloco também se
+   organizam lado a lado (grid responsivo), em vez de empilhar tudo numa
+   coluna única — reduz bastante a rolagem vertical na seção de Equipe. */
+.pe-equipe-grupo-wrap{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:16px; align-items:start;}
+.pe-equipe-card{margin-bottom:0;}
+.pe-equipe-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px;}
 @media (max-width:700px){.pd-timeline-datas{flex-direction:column; align-items:stretch;} .pd-timeline-step{flex-direction:row; text-align:left; min-width:0; gap:10px;} .pd-timeline-marker{margin-bottom:0;} .pd-timeline-linha{width:2px; height:16px; margin:0 0 0 18px;}}
 .task-resp-mais:hover{background:var(--primary); color:#fff;}
 .person-link:hover,.task-link:hover{color:var(--primary); text-decoration-color:var(--primary);}
@@ -1448,7 +1456,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v7.3 · Última atualização: —</footer>
+  <footer id="app-footer">v7.5 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1557,7 +1565,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v7.3';
+const APP_VERSION='v7.5';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2424,8 +2432,19 @@ function iaGerarRecomendacao_(analise){
 }
 
 let IA_ANALISES_CACHE=null; // recalculado a cada render (dados já estão em memória, custo desprezível)
+// Identifica quem é Head de QUALQUER área, pela fonte oficial já usada em
+// todo o resto do dashboard (AREAS[area].head) — nunca por nome/área
+// específica hardcoded. Restrito só a esta página: não altera D.p nem
+// nenhuma outra tela.
+function iaNomesHeads_(){
+  return new Set(Object.values(AREAS).map(a=>a.head).filter(Boolean));
+}
 function iaCalcularTodasAnalises_(){
-  const pessoas=D.p.filter(p=>p.a);
+  const heads=iaNomesHeads_();
+  // Exclusão feita AQUI, na fonte da lista — assim tabela, KPIs, rankings,
+  // filtros (que leem as opções a partir dessas análises) e modal de
+  // detalhamento nunca veem uma pessoa Head, em nenhum lugar da página.
+  const pessoas=D.p.filter(p=>p.a && !heads.has(p.a));
   const mapaComplexidade=iaConstruirMapaNiveis_(D.pj.map(p=>p.cx));
   const mapaPrioridade=iaConstruirMapaNiveis_(D.pj.map(p=>p.pr));
   const qtdsPorPessoa=pessoas.map(p=>alocProjetosDaPessoa(p).length);
@@ -2530,7 +2549,12 @@ function renderAlocacoes(){
 // ao servidor — tudo já está em memória desde o login).
 // ============================================================
 function initInteligenciaAlocacao(){
-  const pessoas=[...new Set(D.p.filter(p=>p.a).map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  // Mesma exclusão de Heads aplicada em iaCalcularTodasAnalises_ — precisa
+  // valer também aqui, senão o filtro de Pessoa ainda ofereceria o nome de um
+  // Head como opção (mesmo que selecioná-lo não trouxesse nenhum resultado).
+  const heads=iaNomesHeads_();
+  const pessoasSemHead=D.p.filter(p=>p.a && !heads.has(p.a));
+  const pessoas=[...new Set(pessoasSemHead.map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
   document.getElementById('f-ia-pessoa').innerHTML='<option value="">Todas</option>'+pessoas.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">'+n+'</option>').join('');
 
   const gestores=[...new Set(D.p.map(p=>p.gestor).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
@@ -2547,7 +2571,7 @@ function initInteligenciaAlocacao(){
 
   document.getElementById('f-ia-situacao').innerHTML='<option value="">Todas</option>'+IA_FAIXAS_SCORE.map(f=>'<option value="'+f.label+'">'+f.emoji+' '+f.label+'</option>').join('');
 
-  const qtdsPorPessoa=D.p.filter(p=>p.a).map(p=>alocProjetosDaPessoa(p).length);
+  const qtdsPorPessoa=pessoasSemHead.map(p=>alocProjetosDaPessoa(p).length);
   const maxQtd=qtdsPorPessoa.length>0?Math.max(...qtdsPorPessoa):0;
   let opcoesQtdHtml='<option value="">Qualquer quantidade</option>';
   for(let i=0;i<=maxQtd;i++) opcoesQtdHtml+='<option value="'+i+'">'+i+'</option>';
@@ -2865,6 +2889,32 @@ function peEhCampoData(headerNorm){
 // seção "Equipe" (Gerente, SM, Líder, PO + especialistas) — são exatamente os
 // campos que representam responsáveis/pessoas no Portifolio.
 function peEhCampoPessoa(idx){ return idx>=13 && idx<=36; }
+
+// Normaliza um nome de papel/cabeçalho pra uma chave "canônica" (só letras e
+// números), removendo espaço/hífen/pontuação — assim "Analista de Negócios - 1",
+// "Analista de Negócios-1" e "Analista de Negócios 1" todas viram a mesma
+// chave, e o agrupamento por bloco funciona independente de como o cabeçalho
+// real está pontuado na planilha.
+function peChaveCanonicaPapel_(texto){ return peNormalizarHeader(texto).replace(/[^a-z0-9]/g,''); }
+
+// Blocos de equipe pedidos — o agrupamento é feito pelo NOME do cabeçalho
+// (não pela posição da coluna), então funciona mesmo que a ordem real das
+// colunas na planilha seja um pouco diferente do que está listado aqui. Campo
+// cujo cabeçalho não bate com nenhum papel conhecido (ex: Gerente do Projeto,
+// SM, Líder, ou qualquer outro não mapeado) cai em "Outros Papéis da Equipe"
+// — nunca é perdido, só não entra num bloco nomeado.
+const PE_BLOCOS_EQUIPE=[
+  { titulo:'Negócios e Requisitos', papeis:['po','analistadenegocios1','analistadenegocios2','analistadenegocios3'] },
+  { titulo:'Produto e Experiência', papeis:['ux1','ux2','qa1','qa2'] },
+  { titulo:'Engenharia de Dados', papeis:['dados1','dados2'] },
+  { titulo:'Ciência de Dados', papeis:['engdeia1','engdeia2','engdeia3','engdeia4'] },
+  { titulo:'Eng. de Software / Arquitetura e Infra', papeis:['techlead','arquitetocloud','devfullstack1','devfullstack2','devback1','devback2','devfront1','devfront2','devfront3'] }
+];
+function peBlocoDoPapel_(header){
+  const chave=peChaveCanonicaPapel_(header);
+  for(const bloco of PE_BLOCOS_EQUIPE){ if(bloco.papeis.includes(chave)) return bloco.titulo; }
+  return 'Outros Papéis da Equipe';
+}
 function peConstruirInputHtml(c,i,opcoesConhecidas){
   const headerNorm=peNormalizarHeader(c.header);
   const valorEscapado=(c.valor===null||c.valor===undefined?'':String(c.valor)).replace(/"/g,'&quot;');
@@ -2967,21 +3017,34 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos){
   Object.entries(secoes).forEach(([nomeSecao,itens])=>{
     if(itens.length===0) return;
     if(nomeSecao==='Equipe'){
-      // Equipe: separa quem já está preenchido (sempre visível) de quem está
-      // vazio (fica atrás de "mostrar mais", pra não poluir a tela com 15+
-      // campos em branco de cara).
-      const preenchidos=itens.filter(({c})=>c.valor);
-      const vazios=itens.filter(({c})=>!c.valor);
-      h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Equipe</h3></div>';
-      h+='<div style="display:flex;flex-direction:column;gap:10px" id="pe-equipe-preenchidos">';
-      preenchidos.forEach(({c,i})=>{ h+='<div class="sr-field" style="margin-bottom:0"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
-      h+='</div>';
-      if(vazios.length>0){
-        h+='<button type="button" class="sr-ativ-add" id="pe-equipe-mostrar-mais" style="margin-top:10px">+ Mostrar mais '+vazios.length+' campo(s) vazio(s) da equipe</button>';
-        h+='<div style="display:none;flex-direction:column;gap:10px;margin-top:10px" id="pe-equipe-vazios">';
-        vazios.forEach(({c,i})=>{ h+='<div class="sr-field" style="margin-bottom:0"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
+      // Reorganiza a Equipe nos blocos nomeados pedidos (Negócios e
+      // Requisitos, Produto e Experiência, etc.), pelo NOME do cabeçalho —
+      // Gerente do Projeto/SM/Líder e qualquer campo não reconhecido caem em
+      // "Outros Papéis da Equipe", nunca são perdidos.
+      const gruposPorBloco={};
+      itens.forEach(item=>{
+        const bloco=peBlocoDoPapel_(item.c.header);
+        (gruposPorBloco[bloco]=gruposPorBloco[bloco]||[]).push(item);
+      });
+      const ordemBlocos=[...PE_BLOCOS_EQUIPE.map(b=>b.titulo),'Outros Papéis da Equipe'];
+      h+='<div class="pe-equipe-grupo-wrap">';
+      ordemBlocos.forEach((tituloBloco,blocoIdx)=>{
+        const itensDoBloco=gruposPorBloco[tituloBloco];
+        if(!itensDoBloco||itensDoBloco.length===0) return;
+        const preenchidos=itensDoBloco.filter(({c})=>c.valor);
+        const vazios=itensDoBloco.filter(({c})=>!c.valor);
+        h+='<div class="card pe-equipe-card"><div class="card-title"><h3>'+tituloBloco+'</h3></div>';
+        h+='<div class="pe-equipe-grid" id="pe-equipe-preenchidos-'+blocoIdx+'">';
+        preenchidos.forEach(({c,i})=>{ h+='<div class="sr-field" style="margin-bottom:0"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
         h+='</div>';
-      }
+        if(vazios.length>0){
+          h+='<button type="button" class="sr-ativ-add" id="pe-equipe-mostrar-mais-'+blocoIdx+'" style="margin-top:10px">+ Mostrar mais '+vazios.length+' vaga(s) vazia(s)</button>';
+          h+='<div class="pe-equipe-grid" style="display:none;margin-top:10px" id="pe-equipe-vazios-'+blocoIdx+'">';
+          vazios.forEach(({c,i})=>{ h+='<div class="sr-field" style="margin-bottom:0"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
+          h+='</div>';
+        }
+        h+='</div>';
+      });
       h+='</div>';
     }else{
       h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>'+nomeSecao+'</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">';
@@ -2999,11 +3062,13 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos){
   document.getElementById('pe-voltar-btn').onclick=carregarListaPortfolio;
   document.getElementById('pe-btn-salvar').onclick=salvarEdicaoPortfolio;
   document.getElementById('pe-btn-excluir').onclick=excluirProjetoAtual;
-  const mostrarMaisBtn=document.getElementById('pe-equipe-mostrar-mais');
-  if(mostrarMaisBtn) mostrarMaisBtn.onclick=()=>{
-    document.getElementById('pe-equipe-vazios').style.display='flex';
-    mostrarMaisBtn.style.display='none';
-  };
+  document.querySelectorAll('[id^="pe-equipe-mostrar-mais-"]').forEach(btn=>{
+    btn.onclick=()=>{
+      const idx=btn.id.replace('pe-equipe-mostrar-mais-','');
+      document.getElementById('pe-equipe-vazios-'+idx).style.display='grid';
+      btn.style.display='none';
+    };
+  });
   peInicializarCombosPessoa();
 }
 
