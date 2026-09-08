@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxPqP6edfl4YK_xP0k81JURuI7kof24vD0CXxxJUg1iWskhivNwvwRHZ2aRjiKW7cAJtQ/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbza_T8UPXPgrRQ8r8cWCJ1wU2TfRRgHvq1BEPjcNcXbFIuKp-5fz8oTGrKHEODtkzqotQ/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1456,7 +1456,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v7.6 · Última atualização: —</footer>
+  <footer id="app-footer">v8.0 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1565,7 +1565,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v7.6';
+const APP_VERSION='v8.0';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2872,7 +2872,7 @@ async function carregarProjetoParaEdicao(nomeProjeto){
 // chave no próprio nome da coluna. Campo que não bate com nada cai em "Outras
 // Informações" — nenhum campo existente fica de fora do formulário.
 function peClassificarSecao(headerNorm, idx){
-  if(idx>=13 && idx<=36) return 'Equipe';
+  if(idx>=13 && idx<=38) return 'Equipe';
   if(headerNorm==='cliente'||headerNorm==='projeto'||headerNorm.indexOf('sow')!==-1||headerNorm.indexOf('fat')!==-1||headerNorm.indexOf('tipo')!==-1) return 'Identificação';
   if(headerNorm==='status'||headerNorm.indexOf('complexidade')!==-1||headerNorm.indexOf('prioridade')!==-1) return 'Status e Classificação';
   if(headerNorm.indexOf('data')!==-1||headerNorm.indexOf('prev')!==-1||headerNorm.indexOf('entrega')!==-1||headerNorm.indexOf('dias')!==-1||headerNorm.indexOf('zoho')!==-1) return 'Cronograma';
@@ -2891,7 +2891,7 @@ function peEhCampoData(headerNorm){
 // Campos de pessoa = mesmo intervalo de colunas já usado pra classificar a
 // seção "Equipe" (Gerente, SM, Líder, PO + especialistas) — são exatamente os
 // campos que representam responsáveis/pessoas no Portifolio.
-function peEhCampoPessoa(idx){ return idx>=13 && idx<=36; }
+function peEhCampoPessoa(idx){ return idx>=13 && idx<=38; }
 
 // Normaliza um nome de papel/cabeçalho pra uma chave "canônica" (só letras e
 // números), removendo espaço/hífen/pontuação — assim "Analista de Negócios - 1",
