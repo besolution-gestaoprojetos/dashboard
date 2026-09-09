@@ -1456,7 +1456,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v8.0 · Última atualização: —</footer>
+  <footer id="app-footer">v8.3 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1565,7 +1565,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v8.0';
+const APP_VERSION='v8.3';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2184,6 +2184,29 @@ function inRange(dateIso,de,ate){if(!dateIso)return false;if(de&&dateIso<de)retu
 function sumByDateRange(dayDict,de,ate){let total=0;for(const[d,v] of Object.entries(dayDict)){if(d==='sem-data')continue;if(inRange(d,de,ate))total+=v;}return total;}
 function bucketByMonth(dayDict,de,ate){const buckets={};for(const[d,v] of Object.entries(dayDict)){if(d==='sem-data')continue;if(!inRange(d,de,ate))continue;const m=d.slice(0,7);buckets[m]=(buckets[m]||0)+v;}return buckets;}
 function getMondaySunday(date){const d=new Date(date);const day=d.getDay();const diffToMon=day===0?-6:1-day;const mon=new Date(d);mon.setDate(d.getDate()+diffToMon);const sun=new Date(mon);sun.setDate(mon.getDate()+6);const f=x=>x.toISOString().slice(0,10);return[f(mon),f(sun)];}
+
+// Agrupa um dicionário data->valor em buckets por SEMANA (segunda a domingo),
+// somando os valores de cada dia dentro da mesma semana. `getValor` extrai o
+// número de horas de cada entrada (PPREVISTO guarda o número direto; PM guarda
+// um array [horas,tarefas,{}], por isso o extrator é parametrizável).
+function bucketBySemana(dayDict,de,ate,getValor){
+  const buckets={}; // 'YYYY-MM-DD' (segunda-feira da semana) -> horas
+  for(const[d,v] of Object.entries(dayDict||{})){
+    if(d==='sem-data')continue;
+    if((de||ate)&&!inRange(d,de,ate))continue;
+    const[monday]=getMondaySunday(new Date(d+'T00:00:00'));
+    buckets[monday]=(buckets[monday]||0)+getValor(v);
+  }
+  return buckets;
+}
+// Número da semana no ano (ISO 8601, aproximado o suficiente pra rótulo de
+// gráfico — não precisa ser exato nas bordas de virada de ano).
+function isoWeekNum(dataISO){
+  const d=new Date(dataISO+'T00:00:00');
+  const primeiroJan=new Date(d.getFullYear(),0,1);
+  const dias=Math.round((d-primeiroJan)/86400000);
+  return Math.ceil((dias+primeiroJan.getDay()+1)/7);
+}
 
 function valueLabelPlugin(fmt,horiz){
   return {id:'vl_'+Math.random(),afterDatasetsDraw(chart){
@@ -3353,13 +3376,41 @@ function renderPessoa(){
   }else{
     hEst=PHEST[emailKey]||0; hApo=PHAP[emailKey]||0;
   }
-  // % Ociosidade do card "Estimado x Executado" — capacidade de 40h/semana,
-  // proporcional ao número de dias do PERÍODO SELECIONADO (1 semana=40h, 2
-  // semanas=80h etc.). Só é possível calcular com um período de datas fechado
-  // (De E Até preenchidos) — sem isso, não há um número de dias definido pra
-  // calcular a capacidade proporcional, então o indicador fica oculto (não é
-  // a mesma coisa que a "Ociosidade Esta Semana" que já existe no topo da
-  // página, que compara Previsto x Executado, não Capacidade x Executado).
+
+  // Quebra por SEMANA (segunda a domingo) do período — se nenhum período foi
+  // selecionado, usa as últimas 12 semanas por padrão, pra sempre mostrar algo
+  // útil sem obrigar a pessoa a escolher datas primeiro.
+  const CAPACIDADE_SEMANAL=40;
+  let semDe=de, semAte=ate;
+  if(!periodoAtivoPes){
+    const hoje=new Date();
+    const[,domingoAtual]=getMondaySunday(hoje);
+    const inicio=new Date(hoje); inicio.setDate(inicio.getDate()-12*7);
+    const[segundaInicio]=getMondaySunday(inicio);
+    semDe=segundaInicio; semAte=domingoAtual;
+  }
+  const previstoSemanal=bucketBySemana(PPREVISTO[emailKey]||{},semDe,semAte,v=>v);
+  const executadoSemanal=bucketBySemana(PM[emailKey]||{},semDe,semAte,v=>v[0]);
+  const todasSemanasSet=new Set([...Object.keys(previstoSemanal),...Object.keys(executadoSemanal)]);
+  // Preenche semanas SEM nenhum dado (nem previsto nem executado) também —
+  // uma semana "sumida" é informação relevante (pessoa parada), não deve ficar
+  // invisível no gráfico/tabela.
+  {
+    const cursor=new Date(semDe+'T00:00:00'); const fimCursor=new Date(semAte+'T00:00:00');
+    while(cursor<=fimCursor){ todasSemanasSet.add(getMondaySunday(cursor)[0]); cursor.setDate(cursor.getDate()+7); }
+  }
+  const semanasDetalhe=[...todasSemanasSet].sort().map(monday=>{
+    const prev=Math.round((previstoSemanal[monday]||0)*10)/10;
+    const exec=Math.round((executadoSemanal[monday]||0)*10)/10;
+    const excedente40=Math.max(0,Math.round((exec-CAPACIDADE_SEMANAL)*10)/10);
+    const ociosidade40=Math.max(0,Math.round((CAPACIDADE_SEMANAL-exec)*10)/10);
+    const[,sunday]=getMondaySunday(new Date(monday+'T00:00:00'));
+    return{monday,sunday,prev,exec,excedente40,ociosidade40};
+  });
+
+  // Mantido pra compatibilidade com o texto do "Resumo" acima, mas o indicador
+  // visual de capacidade agora vive na quebra semanal (mais preciso: compara
+  // semana a semana, não uma média diluída no período inteiro).
   let capacidadeHoras=null, ociosidadeCapacidadePct=null;
   if(de && ate){
     const diasPeriodo=Math.round((new Date(ate+'T00:00:00')-new Date(de+'T00:00:00'))/86400000)+1;
@@ -3396,23 +3447,63 @@ function renderPessoa(){
     <div class="card"><div class="card-title"><h3>Tarefas por Status</h3></div><div class="table-wrap" style="max-height:260px"><table><thead><tr><th>Status</th><th>Qtd</th></tr></thead><tbody>${statusRows.map(([s,c])=>'<tr class="task-link" data-status-row="'+s.replace(/"/g,'&quot;')+'" style="cursor:pointer"><td><span class="status-pill" style="border-left:3px solid '+(STATUS_COLOR[s]||'#64748b')+'">'+s+'</span></td><td><strong>'+c+'</strong></td></tr>').join('')||'<tr><td colspan="2" style="color:var(--text-faint)">Sem tarefas</td></tr>'}</tbody></table></div></div>
     <div class="card"><div class="card-title"><h3>Estimado x Executado${infoTip(TIP_ESTIMADO_EXECUTADO)}<span class="sub">${periodoAtivoPes?' (no período)':' (geral)'}</span></h3></div><div style="padding:10px 0">
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:14px">
-        ${ociosidadeCapacidadePct!==null?'<div><span style="font-size:11px;color:var(--text-faint)">% Ociosidade'+infoTip('Percentual da capacidade de 40h/semana (proporcional ao período selecionado: '+fH(capacidadeHoras)+' no total) que NÃO foi executado. Capacidade - Executado, em relação à capacidade.')+'</span><div style="font-size:22px;font-weight:700;color:'+(ociosidadeCapacidadePct>=50?'var(--st-bloqueado)':ociosidadeCapacidadePct>=25?'#f59e0b':'var(--st-feito)')+'">'+ociosidadeCapacidadePct+'%</div></div>':''}
         <div><span style="font-size:11px;color:var(--text-faint)">Horas Estimadas</span><div style="font-size:22px;font-weight:700;color:var(--text)">${fH(hEst)}</div></div>
         <div><span style="font-size:11px;color:var(--text-faint)">Horas Executadas</span><div style="font-size:22px;font-weight:700;color:var(--primary)">${fH(hApo)}</div></div>
       </div>
       ${hEst>0?'<div class="bullet-row" style="grid-template-columns:1fr 42px"><div class="bullet-track"><div class="bullet-fill" style="width:'+Math.min(Math.round(hApo/hEst*100),100)+'%;'+(hApo>hEst?'background:var(--st-bloqueado)':'')+'"></div></div><div class="bullet-pct">'+Math.round(hApo/hEst*100)+'%</div></div>':'<div style="color:var(--text-faint);font-size:12px">Sem horas estimadas vinculadas.</div>'}
-      ${capacidadeHoras===null?'<div style="color:var(--text-faint);font-size:11.5px;margin-top:10px;font-style:italic">Selecione um período com data De e Até pra ver a % de ociosidade (capacidade de 40h/semana proporcional ao período).</div>':'<div style="color:var(--text-faint);font-size:11.5px;margin-top:10px">Capacidade do período (40h/semana): '+fH(capacidadeHoras)+'</div>'}
+      <div style="color:var(--text-faint);font-size:11.5px;margin-top:10px">Somas do ${periodoAtivoPes?'período selecionado':'total geral'}. Veja a quebra por semana ao lado para saber exatamente em qual semana houve excesso ou folga.</div>
     </div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><h3>📅 Carga de Trabalho por Semana${infoTip('Cada semana vai de segunda a domingo. \"Estimado\" é a soma das horas estimadas das tarefas com vencimento naquela semana; \"Executado\" é a soma das horas realmente apontadas (Zoho) naquela semana. A linha tracejada marca 40h — o padrão de uma semana cheia de trabalho.')}</h3>
+      <span class="sub">${semanasDetalhe.length} semana(s)${periodoAtivoPes?' no período selecionado':' · últimas 12 semanas (selecione um período para outra janela)'}</span>
+    </div>
+    <div style="padding:12px 4px 4px">
+      ${semanasDetalhe.length===0?'<div class="empty-state" style="padding:30px"><p>Sem dados nesse intervalo.</p></div>':`
+      <div style="height:260px;margin-bottom:18px"><canvas id="chSemanal"></canvas></div>
+      <div class="table-wrap" style="max-height:320px"><table><thead><tr><th>Semana</th><th>Estimado</th><th>Executado</th><th>vs. Estimado</th><th>vs. 40h/semana</th></tr></thead><tbody>
+        ${semanasDetalhe.slice().reverse().map(s=>{
+          const semanaLabel=s.monday.slice(8,10)+'/'+s.monday.slice(5,7)+' a '+s.sunday.slice(8,10)+'/'+s.sunday.slice(5,7)+' (S'+isoWeekNum(s.monday)+')';
+          let vsEstimadoHtml;
+          if(s.prev===0&&s.exec===0) vsEstimadoHtml='<span style="color:var(--text-faint)">—</span>';
+          else if(s.prev===0) vsEstimadoHtml='<span style="color:var(--text-faint)" title="Executou horas sem nenhuma estimativa vinculada nessa semana">Sem estimativa</span>';
+          else if(s.exec>s.prev) vsEstimadoHtml='<span class="status-pill" style="border-left:3px solid var(--st-bloqueado)">+'+fH(s.exec-s.prev)+' acima</span>';
+          else vsEstimadoHtml='<span class="status-pill" style="border-left:3px solid var(--st-feito)">'+Math.round(s.exec/s.prev*100)+'% do estimado</span>';
+          let vs40Html;
+          if(s.exec===0) vs40Html='<span style="color:var(--text-faint)">Sem apontamento</span>';
+          else if(s.excedente40>0) vs40Html='<span class="status-pill" style="border-left:3px solid var(--st-bloqueado);color:var(--st-bloqueado);font-weight:700">🔴 +'+fH(s.excedente40)+' acima de 40h</span>';
+          else if(s.exec>=32) vs40Html='<span class="status-pill" style="border-left:3px solid var(--st-feito)">✅ Dentro da carga</span>';
+          else vs40Html='<span class="status-pill" style="border-left:3px solid #f59e0b">🟡 '+fH(s.ociosidade40)+' de folga</span>';
+          return '<tr><td>'+semanaLabel+'</td><td>'+fH(s.prev)+'</td><td><strong>'+fH(s.exec)+'</strong></td><td>'+vsEstimadoHtml+'</td><td>'+vs40Html+'</td></tr>';
+        }).join('')}
+      </tbody></table></div>`}
+    </div>
   </div>
 
   <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Detalhamento por Projeto<span class="sub">${periodoAtivoPes?' (no período)':' (geral)'}</span></h3><span class="sub">${pL.length}</span></div><div class="table-wrap"><table><thead><tr><th>Projeto</th><th>Tarefas</th><th>Horas</th><th>%</th></tr></thead><tbody>${pL.map(p=>'<tr'+(p.semApontamento?' style="opacity:.75"':'')+'><td>'+projetoLinkHtml(p.n,p.n.length>35?p.n.slice(0,35)+'…':p.n)+'</td><td><strong>'+p.t+'</strong></td><td>'+fH(p.h)+'</td><td>'+(p.semApontamento?'<span class="status-pill" title="Alocado na equipe do projeto, mas sem nenhuma hora ou tarefa registrada ainda">Sem apontamento</span>':'<div class="bullet-row" style="grid-template-columns:1fr 36px"><div class="bullet-track"><div class="bullet-fill" style="width:'+p.pct+'%"></div></div><div class="bullet-pct">'+p.pct+'%</div></div>')+'</td></tr>').join('')||'<tr><td colspan="4" style="color:var(--text-faint);text-align:center;padding:20px">Nenhuma atividade nesse período.</td></tr>'}</tbody></table></div></div>
 
   <div class="card"><div class="card-title"><h3>Horas Trabalhadas por Mês</h3><span class="sub">comparativo mensal · fonte: Data de Apontamento</span></div><div style="height:280px">${monthsSorted.length>0?'<canvas id="chPM"></canvas>':'<div class="empty-state"><p>Sem dados no período selecionado.</p></div>'}</div></div>`;
 
-  if(!COK||!monthsSorted.length)return;Object.values(ch).forEach(c=>{try{c.destroy();}catch(e){}});ch={};
-  ch.pm=new Chart(document.getElementById('chPM'),{type:'bar',data:{labels:mL,datasets:[{data:mD,backgroundColor:'#0C4A6E',borderRadius:6}]},
-    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:24}},plugins:{legend:{display:false},tooltip:noTooltip},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}},
-    plugins:[valueLabelPlugin(v=>fH(v),false)]});
+  if(!COK)return;Object.values(ch).forEach(c=>{try{c.destroy();}catch(e){}});ch={};
+  if(monthsSorted.length){
+    ch.pm=new Chart(document.getElementById('chPM'),{type:'bar',data:{labels:mL,datasets:[{data:mD,backgroundColor:'#0C4A6E',borderRadius:6}]},
+      options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:24}},plugins:{legend:{display:false},tooltip:noTooltip},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}},
+      plugins:[valueLabelPlugin(v=>fH(v),false)]});
+  }
+  if(semanasDetalhe.length){
+    const labelsSemana=semanasDetalhe.map(s=>s.monday.slice(8,10)+'/'+s.monday.slice(5,7));
+    ch.semanal=new Chart(document.getElementById('chSemanal'),{
+      data:{labels:labelsSemana,datasets:[
+        {type:'bar',label:'Estimado',data:semanasDetalhe.map(s=>s.prev),backgroundColor:'#94a3b8',borderRadius:5,order:2},
+        {type:'bar',label:'Executado',data:semanasDetalhe.map(s=>s.exec),backgroundColor:semanasDetalhe.map(s=>s.excedente40>0?'#dc2626':'#0C4A6E'),borderRadius:5,order:2},
+        {type:'line',label:'Referência 40h/semana',data:semanasDetalhe.map(()=>40),borderColor:'#f59e0b',borderDash:[6,4],borderWidth:2,pointRadius:0,fill:false,order:1}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:true,position:'top',labels:{boxWidth:12,font:{size:11}}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fH(c.raw)}}},
+        scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}}
+    });
+  }
 }
 
 // === AREA ===
