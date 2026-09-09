@@ -290,6 +290,13 @@ main{flex:1; padding:22px 24px 60px; max-width:1520px; width:100%; margin:0 auto
 .page.active{display:block; animation:fadeIn .25s ease;}
 @keyframes fadeIn{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
 
+/* Faixa de voltar — fina, discreta, logo abaixo do menu (não mais colada no
+   título da página, que ocupava uma linha inteira só pra isso). */
+.voltar-strip{display:flex; align-items:center; padding:5px 24px; background:var(--surface-alt); border-bottom:1px solid var(--border);}
+.voltar-strip.hidden{display:none;}
+.voltar-strip-btn{display:flex; align-items:center; gap:5px; background:transparent; color:var(--primary); border:1px solid var(--border); border-radius:6px; padding:3px 9px; font-size:11.5px; font-weight:600; cursor:pointer; font-family:var(--font-body);}
+.voltar-strip-btn:hover{background:var(--surface); border-color:var(--primary);}
+
 .page-header{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:8px;}
 .page-header h1{font-size:24px; font-variation-settings:'wdth' 115; font-weight:800;}
 .page-header p{margin:2px 0 0; color:var(--text-muted); font-size:13px;}
@@ -425,15 +432,25 @@ main{flex:1; padding:22px 24px 60px; max-width:1520px; width:100%; margin:0 auto
 /* KPI card */
 .kpi{
   background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg);
-  padding:14px 16px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden;
+  padding:12px 14px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden;
   display:flex; flex-direction:column; gap:6px;
 }
 .kpi::before{
   content:''; position:absolute; left:0; top:0; bottom:0; width:4px;
   background:linear-gradient(180deg, var(--primary), var(--accent));
 }
+.kpi.tem-icone::before{display:none;} /* o ícone colorido já comunica a categoria — dispensa a faixa lateral */
+.kpi .kpi-top-row{display:flex; align-items:center; justify-content:space-between;}
+.kpi .kpi-icon-chip{width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+.kpi .kpi-icon-chip svg{width:15px; height:15px; stroke-width:2; fill:none; stroke:currentColor;}
+.kpi .kpi-trend{font-size:10.5px; font-weight:700; padding:1px 6px; border-radius:999px; display:flex; align-items:center; gap:2px;}
+.kpi .kpi-trend svg{width:9px; height:9px; stroke-width:3; fill:none; stroke:currentColor;}
+.kpi .kpi-trend.bom{background:#dcfce7; color:#15803d;}
+.kpi .kpi-trend.ruim{background:#fee2e2; color:#b91c1c;}
+.kpi .kpi-trend.neutro{background:var(--surface-alt); color:var(--text-muted);}
 .kpi .kpi-label{font-family:var(--font-mono); font-size:10.5px; font-weight:500; text-transform:uppercase; letter-spacing:.07em; color:var(--text-faint);}
 .kpi .kpi-value{font-family:var(--font-display); font-size:30px; font-weight:700; line-height:1;}
+.kpi.tem-icone .kpi-value{font-size:22px;}
 .kpi .kpi-foot{font-size:12px; color:var(--text-muted); display:flex; gap:6px; flex-wrap:wrap;}
 
 /* Badges & chips */
@@ -649,6 +666,49 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 .task-modal-field{display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid var(--border);}
 .task-modal-field:last-child{border-bottom:none;}
 .task-modal-field-full{flex-direction:column; gap:4px;}
+
+/* Status Report — visualização executiva (imita um documento/apresentação
+   formal, com logos, cards e hierarquia visual clara). */
+.sr-exec-card{max-width:920px;}
+.sr-exec-doc{background:#fff; margin:16px; border-radius:10px; box-shadow:0 1px 3px rgba(0,0,0,.08); overflow:hidden;}
+.sr-exec-header{display:flex; align-items:flex-start; justify-content:space-between; padding:22px 28px 18px; border-bottom:1px solid #e2e8f0;}
+.sr-exec-header img{height:22px;}
+.sr-exec-header-right{text-align:right;}
+.sr-exec-badge-label{font-size:10px; font-weight:800; letter-spacing:.08em; color:#94a3b8; text-transform:uppercase;}
+.sr-exec-cliente-badge{font-size:13px; font-weight:700; color:#334155; display:flex; align-items:center; gap:6px; justify-content:flex-end; margin-bottom:4px;}
+.sr-exec-periodo{font-size:13px; font-weight:700; color:#0f172a;}
+.sr-exec-titulo{padding:22px 28px 18px;}
+.sr-exec-titulo h1{font-size:24px; margin:0 0 4px; color:#0f172a;}
+.sr-exec-titulo p{margin:0; font-size:13px; color:#64748b;}
+.sr-exec-infogrid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; padding:0 28px 22px;}
+.sr-exec-infocard{border:1px solid #e2e8f0; border-radius:10px; padding:10px 14px;}
+.sr-exec-infocard .lbl{font-size:9.5px; font-weight:800; letter-spacing:.07em; color:#94a3b8; text-transform:uppercase; display:block; margin-bottom:4px;}
+.sr-exec-infocard .val{font-size:14px; font-weight:700; color:#0f172a;}
+.sr-exec-infocard .dot{display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:6px;}
+.sr-exec-section{padding:0 28px 22px;}
+.sr-exec-section-title{font-size:11.5px; font-weight:800; letter-spacing:.06em; color:#0f172a; text-transform:uppercase; display:flex; align-items:center; gap:8px; margin-bottom:10px;}
+.sr-exec-section-title::before{content:''; width:3px; height:14px; background:var(--primary); border-radius:2px;}
+.sr-exec-texto{font-size:13.5px; line-height:1.6; color:#334155;}
+.sr-exec-alerta{background:#fef2f2; border:1px solid #fecaca; border-radius:10px; padding:14px 16px; display:flex; gap:12px; align-items:flex-start;}
+.sr-exec-alerta .ic{width:22px; height:22px; border-radius:50%; background:#dc2626; color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; flex-shrink:0;}
+.sr-exec-alerta b{color:#b91c1c; display:block; font-size:12.5px; margin-bottom:2px;}
+.sr-exec-alerta p{margin:0; font-size:12.5px; color:#7f1d1d;}
+.sr-exec-2col{display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:0 28px 22px;}
+.sr-exec-stat3{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+.sr-exec-statbox{background:#f8fafc; border-radius:8px; padding:12px; text-align:center;}
+.sr-exec-statbox .n{font-size:22px; font-weight:800; color:#0f172a;}
+.sr-exec-statbox .l{font-size:9.5px; color:#94a3b8; font-weight:700; letter-spacing:.04em; text-transform:uppercase;}
+.sr-exec-riscoitem{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; padding:9px 0; border-bottom:1px solid #f1f5f9;}
+.sr-exec-riscoitem:last-child{border-bottom:none;}
+.sr-exec-riscoitem b{font-size:12.5px; color:#0f172a; display:block;}
+.sr-exec-riscoitem span{font-size:11.5px; color:#94a3b8;}
+.sr-exec-sevbadge{font-size:10.5px; font-weight:700; padding:2px 9px; border-radius:999px; white-space:nowrap;}
+.sr-exec-bullets{margin:0; padding-left:18px; font-size:13px; color:#334155; line-height:1.9;}
+.sr-exec-plano table{width:100%; border-collapse:collapse; font-size:12.5px;}
+.sr-exec-plano th{text-align:left; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; color:#94a3b8; padding:6px 8px; border-bottom:1px solid #e2e8f0;}
+.sr-exec-plano td{padding:8px; border-bottom:1px solid #f1f5f9; color:#334155;}
+.sr-exec-footer{display:flex; justify-content:space-between; padding:14px 28px; border-top:1px solid #e2e8f0; font-size:11px; color:#94a3b8;}
+@media (max-width:760px){.sr-exec-infogrid{grid-template-columns:repeat(2,1fr);} .sr-exec-2col{grid-template-columns:1fr;}}
 .task-modal-section-title{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--primary); margin:18px 0 8px; padding-bottom:6px; border-bottom:1px solid var(--border);}
 .task-modal-section-title:first-child{margin-top:0;}
 .task-modal-grid-2{display:grid; grid-template-columns:1fr 1fr; gap:0 20px;}
@@ -1156,13 +1216,15 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
     <span>👤 <b>Modo de visualização:</b> você está vendo o sistema como <b id="viewas-banner-nome"></b> — <span id="viewas-banner-perfil"></span></span>
     <button id="viewas-voltar-btn">← Voltar para meu acesso</button>
   </div>
+  <div class="voltar-strip" id="voltar-strip">
+    <button class="voltar-strip-btn" id="global-voltar-btn" type="button">← Voltar</button>
+  </div>
   <main id="main-shell">
     <div id="shell-loading-placeholder" style="display:none; padding:100px 20px; text-align:center;">
       <div class="login-spinner" style="width:34px;height:34px;border-width:3px;margin:0 auto 18px;"></div>
       <p style="font-size:15px;font-weight:600;color:var(--text)">Carregando o dashboard…</p>
       <p style="font-size:13px;color:var(--text-faint);margin-top:6px">Isso deve levar só alguns instantes.</p>
     </div>
-    <button class="filter-clear" id="global-voltar-btn" type="button" style="margin:16px 24px 0;">← Voltar</button>
     <!-- PAGE CLIENTE -->
     <section class="page active" id="page-cliente">
       <div class="page-header"><div><h1>Portfólio</h1><p>Projetos, prazos, horas estimadas x executadas e status por cliente.</p></div></div>
@@ -1456,7 +1518,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v8.3 · Última atualização: —</footer>
+  <footer id="app-footer">v8.6 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1477,6 +1539,15 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <button id="task-modal-close" type="button" aria-label="Fechar">✕</button>
     </div>
     <div id="task-modal-body" class="task-modal-body"></div>
+  </div>
+</div>
+<div id="sr-exec-modal-overlay" class="task-modal-overlay">
+  <div class="task-modal-card sr-exec-card">
+    <div class="task-modal-header" style="padding:10px 16px">
+      <h3 style="font-size:13px;color:var(--text-faint)">Visualização · Status Report</h3>
+      <button id="sr-exec-modal-close" type="button" aria-label="Fechar">✕</button>
+    </div>
+    <div id="sr-exec-modal-body" class="task-modal-body" style="padding:0;background:#f1f5f9"></div>
   </div>
 </div>
 <div id="ia-modal-overlay" class="task-modal-overlay">
@@ -1565,7 +1636,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v8.3';
+const APP_VERSION='v8.6';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1667,6 +1738,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
     setLoginLoading(false);
     hideLoginOverlay();
     document.getElementById('main-shell').classList.add('aguardando-dados');
+    document.getElementById('voltar-strip').classList.add('hidden');
     mostrarLoadingGlobal('Carregando dados do dashboard…');
     carregarDadosCompletos(token);
   }catch(e){
@@ -1871,6 +1943,45 @@ let COK=typeof Chart!=='undefined';let ch={};
 
 function fN(n){return(n||0).toLocaleString('pt-BR');}
 function fH(n){return(n||0).toLocaleString('pt-BR',{maximumFractionDigits:1})+'h';}
+
+// ============================================================
+// KPIs — biblioteca de ícones (linha fina, neutro) + função geradora, usada
+// em substituição aos <div class="kpi">...</div> escritos à mão. Mantém as
+// mesmas classes/estrutura de sempre (kpi-label, kpi-value, kpi-foot), só
+// acrescenta o ícone colorido e, quando informado, uma tendência.
+// ============================================================
+const KPI_ICONES={
+  projetos:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/>',
+  tarefas:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+  alerta:'<path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>',
+  horas:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
+  bateria:'<rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 10v4"/>',
+  balanca:'<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/>',
+  pessoas:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  ranking:'<path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/>',
+  cpu:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/>',
+  relogio:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  calendario:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  bloqueio:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  relatorio:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/>',
+  usuarioX:'<circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h3"/><path d="M17 8l5 5M22 8l-5 5"/>'
+};
+// kpiHtml({label, value, foot, icon, color, valueColor, trend:{dir:'up'|'down', texto, sentido:'bom'|'ruim'}})
+function kpiHtml(o){
+  const iconSvg=o.icon&&KPI_ICONES[o.icon]?'<svg viewBox="0 0 24 24">'+KPI_ICONES[o.icon]+'</svg>':'';
+  const chip=iconSvg?'<div class="kpi-icon-chip" style="background:'+(o.bg||'#eff6ff')+';color:'+(o.color||'#2563eb')+'">'+iconSvg+'</div>':'';
+  const trendHtml=o.trend?'<span class="kpi-trend '+o.trend.sentido+'"><svg viewBox="0 0 24 24">'+(o.trend.dir==='up'?'<path d="M12 19V5M5 12l7-7 7 7"/>':'<path d="M12 5v14M5 12l7 7 7-7"/>')+'</svg>'+o.trend.texto+'</span>':'';
+  const topRow=(chip||trendHtml)?'<div class="kpi-top-row">'+chip+trendHtml+'</div>':'';
+  const valueStyleParts=[];
+  if(o.valueColor)valueStyleParts.push('color:'+o.valueColor);
+  if(o.valueFontSize)valueStyleParts.push('font-size:'+o.valueFontSize);
+  return '<div class="kpi'+(chip?' tem-icone':'')+'">'+topRow+
+    '<span class="kpi-label">'+o.label+'</span>'+
+    '<span class="kpi-value"'+(valueStyleParts.length?' style="'+valueStyleParts.join(';')+'"':'')+'>'+o.value+'</span>'+
+    (o.foot?'<span class="kpi-foot"'+(o.footColor?' style="color:'+o.footColor+'"':'')+'>'+o.foot+'</span>':'')+
+    '</div>';
+}
 function percentileRank(value, arr){
   if(!arr.length) return null;
   const sorted=[...arr].sort((a,b)=>a-b);
@@ -2043,8 +2154,8 @@ function goToPage(name){
   // O botão global de "← Voltar" fica oculto só em "Detalhamento do Projeto",
   // que já tem seu próprio botão de voltar contextual (#proj-voltar, com rótulo
   // específico de origem) — evita duplicidade de botões de voltar na mesma tela.
-  const globalBack=document.getElementById('global-voltar-btn');
-  if(globalBack) globalBack.style.display = (name==='projdetail') ? 'none' : '';
+  const globalBackStrip=document.getElementById('voltar-strip');
+  if(globalBackStrip) globalBackStrip.classList.toggle('hidden', name==='projdetail');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 // Equivalente a history.back(): desempilha a última página visitada e navega até
@@ -2543,9 +2654,9 @@ function renderAlocacoes(){
   linhas.sort((a,b)=>b.projetosVinculados.length-a.projetosVinculados.length || a.p.a.localeCompare(b.p.a,'pt-BR'));
 
   const semProjeto=linhas.filter(l=>l.projetosVinculados.length===0).length;
-  document.getElementById('kpi-alocacoes').innerHTML=`
-    <div class="kpi"><span class="kpi-label">Pessoas (com os filtros)</span><span class="kpi-value">${linhas.length}</span></div>
-    <div class="kpi"><span class="kpi-label">Sem Nenhum Projeto</span><span class="kpi-value" style="color:${semProjeto>0?'var(--st-bloqueado)':'var(--text)'}">${semProjeto}</span></div>`;
+  document.getElementById('kpi-alocacoes').innerHTML=
+    kpiHtml({label:'Pessoas (com os filtros)',value:linhas.length,icon:'pessoas',bg:'#eff6ff',color:'#2563eb'})+
+    kpiHtml({label:'Sem Nenhum Projeto',value:semProjeto,icon:'alerta',bg:semProjeto>0?'#fef2f2':'#eff6ff',color:semProjeto>0?'#dc2626':'#2563eb',valueColor:semProjeto>0?'var(--st-bloqueado)':'var(--text)'});
 
   let h='<div class="card"><div class="card-title"><h3>Alocações por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:600px"><table><thead><tr><th>Pessoa</th><th>Qtd. Projetos</th><th>Projetos Vinculados</th><th>Qtd. Tarefas</th><th>Gestor</th><th>Horas Previstas</th><th>Horas Apontadas</th></tr></thead><tbody>';
   linhas.forEach(l=>{
@@ -2651,8 +2762,8 @@ function renderInteligenciaAlocacao(){
   const contagemFaixas={}; IA_FAIXAS_SCORE.forEach(f=>contagemFaixas[f.label]=0);
   IA_ANALISES_CACHE.forEach(l=>{ contagemFaixas[l.faixa.label]++; });
   document.getElementById('kpi-inteligencia').innerHTML=`
-    <div class="kpi"><span class="kpi-label">Pessoas Analisadas</span><span class="kpi-value">${IA_ANALISES_CACHE.length}</span></div>
-    ${IA_FAIXAS_SCORE.map(f=>'<div class="kpi"><span class="kpi-label">'+f.emoji+' '+f.label+'</span><span class="kpi-value">'+contagemFaixas[f.label]+'</span></div>').join('')}`;
+    ${kpiHtml({label:'Pessoas Analisadas',value:IA_ANALISES_CACHE.length,icon:'pessoas',bg:'#eff6ff',color:'#2563eb'})}
+    ${IA_FAIXAS_SCORE.map(f=>kpiHtml({label:f.emoji+' '+f.label,value:contagemFaixas[f.label]})).join('')}`;
 
   const setaCol=(col)=>IA_SORT_STATE.col===col?(IA_SORT_STATE.dir==='asc'?' ▲':' ▼'):'';
   let h='<div class="card"><div class="card-title"><h3>Análise por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:620px"><table><thead><tr>'+
@@ -3222,12 +3333,12 @@ function renderCliente(){
   prj=sortByStatusOrder(prj);
   let tT=0,tC=0,tEst=0,tApo=0,tSemEst=0;
   prj.forEach(p=>{tT+=p.tar_total;tC+=p.tar_conc;tEst+=p.horas_est;tApo+=p.horas_apo;tSemEst+=p.tar_sem_est;});
-  document.getElementById('kpi-cli').innerHTML=`
-    <div class="kpi"><span class="kpi-label">Projetos</span><span class="kpi-value">${prj.length}</span></div>
-    <div class="kpi"><span class="kpi-label">Tarefas</span><span class="kpi-value">${fN(tT)}</span><span class="kpi-foot">${fN(tC)} concluídas</span></div>
-    <div class="kpi"><span class="kpi-label">Horas Estimadas</span><span class="kpi-value">${fH(tEst)}</span></div>
-    <div class="kpi"><span class="kpi-label">Horas Executadas</span><span class="kpi-value">${fH(tApo)}</span></div>
-    <div class="kpi"><span class="kpi-label">Sem Estimativa</span><span class="kpi-value">${fN(tSemEst)}</span><span class="kpi-foot">tarefas</span></div>`;
+  document.getElementById('kpi-cli').innerHTML=
+    kpiHtml({label:'Projetos',value:prj.length,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})+
+    kpiHtml({label:'Tarefas',value:fN(tT),icon:'tarefas',bg:'#ecfeff',color:'#0891b2',foot:fN(tC)+' concluídas'})+
+    kpiHtml({label:'Horas Estimadas',value:fH(tEst),icon:'horas',bg:'#f0fdfa',color:'#0f766e'})+
+    kpiHtml({label:'Horas Executadas',value:fH(tApo),icon:'horas',bg:'#eef2ff',color:'#4f46e5'})+
+    kpiHtml({label:'Sem Estimativa',value:fN(tSemEst),icon:'alerta',bg:'#fff7ed',color:'#ea580c',foot:'tarefas'});
   document.getElementById('ritmo-resumo-cli').innerHTML=ritmoResumoHtml(prj);
 
   let h='<div class="proj-grid">';
@@ -3430,12 +3541,62 @@ function renderPessoa(){
   const hExecutadoSemana=Object.entries(PM[emailKey]||{}).filter(([d])=>d!=='sem-data'&&d>=monISO&&d<=sunISO).reduce((s,[,v])=>s+v[0],0);
   const ociosidadeSemanaPct=hPrevistoSemana>0?Math.max(0,Math.round((1-hExecutadoSemana/hPrevistoSemana)*100)):null;
 
+  // Tendências reais (nunca inventadas) — só aparecem quando dá pra comparar
+  // com um "antes" de verdade, usando os mesmos dados já carregados:
+  // Ociosidade Esta Semana sempre pode comparar com a semana passada (é
+  // sempre "esta semana", período nenhum precisa estar selecionado). Tarefas
+  // e Horas do período só comparam quando um período foi escolhido — sem
+  // isso não existe um "período anterior" definido pra comparar.
+  let trendOciosidade=null, trendTarefas=null, trendHoras=null;
+  {
+    const semanaPassadaFim=new Date(monISO+'T00:00:00'); semanaPassadaFim.setDate(semanaPassadaFim.getDate()-1);
+    const[monPassadaISO]=getMondaySunday(semanaPassadaFim);
+    const sunPassadaISO=semanaPassadaFim.toISOString().slice(0,10);
+    const hPrevistoPassada=Object.entries(PPREVISTO[emailKey]||{}).filter(([d])=>d>=monPassadaISO&&d<=sunPassadaISO).reduce((s,[,v])=>s+v,0);
+    const hExecutadoPassada=Object.entries(PM[emailKey]||{}).filter(([d])=>d!=='sem-data'&&d>=monPassadaISO&&d<=sunPassadaISO).reduce((s,[,v])=>s+v[0],0);
+    const ociosidadePassadaPct=hPrevistoPassada>0?Math.max(0,Math.round((1-hExecutadoPassada/hPrevistoPassada)*100)):null;
+    if(ociosidadeSemanaPct!==null&&ociosidadePassadaPct!==null){
+      const diffPp=ociosidadeSemanaPct-ociosidadePassadaPct;
+      if(diffPp!==0) trendOciosidade={dir:diffPp>0?'up':'down',texto:(diffPp>0?'+':'')+diffPp+'pp',sentido:diffPp>0?'ruim':'bom'};
+    }
+  }
+  if(periodoAtivoPes&&de&&ate){
+    const diasPeriodo=Math.round((new Date(ate+'T00:00:00')-new Date(de+'T00:00:00'))/86400000)+1;
+    const anteriorAte=new Date(de+'T00:00:00'); anteriorAte.setDate(anteriorAte.getDate()-1);
+    const anteriorDe=new Date(anteriorAte); anteriorDe.setDate(anteriorDe.getDate()-diasPeriodo+1);
+    const anteriorDeISO=anteriorDe.toISOString().slice(0,10), anteriorAteISO=anteriorAte.toISOString().slice(0,10);
+    let fTAnterior=0,fH2Anterior=0;
+    for(const[d,v] of Object.entries(pmD)){
+      if(d==='sem-data'||!inRange(d,anteriorDeISO,anteriorAteISO))continue;
+      fTAnterior+=v[1];fH2Anterior+=v[0];
+    }
+    if(fTAnterior>0){
+      const pct=Math.round((fT-fTAnterior)/fTAnterior*100);
+      if(pct!==0) trendTarefas={dir:pct>=0?'up':'down',texto:(pct>=0?'+':'')+pct+'%',sentido:pct>=0?'bom':'ruim'};
+    }
+    if(fH2Anterior>0){
+      const pct=Math.round((fH2-fH2Anterior)/fH2Anterior*100);
+      // Mais horas registradas não é objetivamente bom nem ruim sem mais
+      // contexto (pode ser mais produtividade ou sobrecarga) — mostra o
+      // número sem julgamento de cor.
+      if(pct!==0) trendHoras={dir:pct>=0?'up':'down',texto:(pct>=0?'+':'')+pct+'%',sentido:'neutro'};
+    }
+  }
+
   el.innerHTML=`
   <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Perfil</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;font-size:13px"><div><span style="font-size:11px;color:var(--text-faint);display:block">Nome</span><strong>${info.a}</strong></div><div><span style="font-size:11px;color:var(--text-faint);display:block">Cargo</span>${info.cargo||'—'} · ${info.nv||'—'}</div><div><span style="font-size:11px;color:var(--text-faint);display:block">Área</span>${info.area||'—'}</div><div><span style="font-size:11px;color:var(--text-faint);display:block">Gestor</span>${personLinkHtml(info.gestor)}</div><div><span style="font-size:11px;color:var(--text-faint);display:block">E-mail</span><span style="color:var(--primary)">${info.email||'—'}</span></div><div><span style="font-size:11px;color:var(--text-faint);display:block">GPs</span>${[...ger].map(g=>personLinkHtml(g)).join(', ')||'—'}</div></div></div>
 
   <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Resumo</h3></div><div class="insight-card ${fH2===0&&fT===0?'risco':fH2===0?'atencao':'positivo'}"><div class="ic-icon">${fH2===0&&fT===0?'⚠':fH2===0?'⚡':'✓'}</div><p><b>${info.a}</b> — <b>${info.cargo||'—'}</b> (${info.nv||'—'}), área de <b>${info.area||'—'}</b>, gestor <b>${personLinkHtml(info.gestor)}</b>.${pL.length>0?' <b>'+pL.length+'</b> projeto(s), <b>'+fT+'</b> tarefas no período, <b>'+fH(fH2)+'</b>.':' Sem alocação.'}${hEst>0?' Estimado: <b>'+fH(hEst)+'</b> vs executado <b>'+fH(hApo)+'</b>.':''}${qtdSemana>0?' <b>'+qtdSemana+'</b> tarefa(s) vencendo esta semana.':''}${ociosidadeSemanaPct!==null&&ociosidadeSemanaPct>=25?' Ociosidade esta semana: <b>'+ociosidadeSemanaPct+'%</b>.':''}${clMin>0?' Claude: '+cS+'.':''}</p></div></div>
 
-  <div class="grid grid-kpi" style="margin-bottom:16px"><div class="kpi"><span class="kpi-label">Projetos</span><span class="kpi-value">${pL.length}</span></div><div class="kpi"><span class="kpi-label">Tarefas (período)</span><span class="kpi-value">${fT}</span></div><div class="kpi"><span class="kpi-label">Horas Registradas</span><span class="kpi-value">${fH(fH2)}</span></div><div class="kpi"><span class="kpi-label">Vencendo Esta Semana</span><span class="kpi-value" style="color:${qtdSemana>0?'var(--st-bloqueado)':'var(--primary)'}">${qtdSemana}</span><span class="kpi-foot">${monISO.slice(8,10)}/${monISO.slice(5,7)} a ${sunISO.slice(8,10)}/${sunISO.slice(5,7)}</span></div>${ociosidadeSemanaPct!==null?'<div class="kpi"><span class="kpi-label">Ociosidade Esta Semana</span><span class="kpi-value" style="color:'+(ociosidadeSemanaPct>=50?'var(--st-bloqueado)':ociosidadeSemanaPct>=25?'#f59e0b':'var(--st-feito)')+'">'+ociosidadeSemanaPct+'%</span><span class="kpi-foot">'+fH(hExecutadoSemana)+' de '+fH(hPrevistoSemana)+' previstas</span></div>':''}<div class="kpi"><span class="kpi-label">Claude Code</span><span class="kpi-value">${cS}</span><span class="kpi-foot">${clD>0?clD+' dias ativos':''}</span></div><div class="kpi"><span class="kpi-label">Tokens (Claude)</span><span class="kpi-value">${fN(clTokens)}</span></div></div>
+  <div class="grid grid-kpi" style="margin-bottom:16px">
+    ${kpiHtml({label:'Projetos',value:pL.length,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})}
+    ${kpiHtml({label:'Tarefas (período)',value:fT,icon:'tarefas',bg:'#ecfeff',color:'#0891b2',trend:trendTarefas})}
+    ${kpiHtml({label:'Horas Registradas',value:fH(fH2),icon:'horas',bg:'#f0fdfa',color:'#0f766e',trend:trendHoras})}
+    ${kpiHtml({label:'Vencendo Esta Semana',value:qtdSemana,icon:'alerta',bg:qtdSemana>0?'#fef2f2':'#eff6ff',color:qtdSemana>0?'#dc2626':'var(--primary)',valueColor:qtdSemana>0?'var(--st-bloqueado)':'var(--primary)',foot:monISO.slice(8,10)+'/'+monISO.slice(5,7)+' a '+sunISO.slice(8,10)+'/'+sunISO.slice(5,7)})}
+    ${ociosidadeSemanaPct!==null?kpiHtml({label:'Ociosidade Esta Semana',value:ociosidadeSemanaPct+'%',icon:'bateria',bg:'#fff7ed',color:'#ea580c',valueColor:(ociosidadeSemanaPct>=50?'var(--st-bloqueado)':ociosidadeSemanaPct>=25?'#f59e0b':'var(--st-feito)'),foot:fH(hExecutadoSemana)+' de '+fH(hPrevistoSemana)+' previstas',trend:trendOciosidade}):''}
+    ${kpiHtml({label:'Claude Code',value:cS,icon:'cpu',bg:'#faf5ff',color:'#9333ea',foot:clD>0?clD+' dias ativos':''})}
+    ${kpiHtml({label:'Tokens (Claude)',value:fN(clTokens),icon:'cpu',bg:'#faf5ff',color:'#9333ea'})}
+  </div>
 
   <div class="pd-section" style="margin-bottom:16px"><h3>📊 Comparativo com o Time (percentil)</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
     ${(()=>{const l=percentileLabel(pctHoras);return '<div class="insight-card '+l.cls+'" style="margin:0"><div class="ic-icon">⏱</div><p><b>Horas Trabalhadas</b>'+infoTip(TIP_PERCENTIL_HORAS)+'<br>'+l.txt+'</p></div>';})()}
@@ -3536,7 +3697,13 @@ function renderArea(){
   });
   const aH=tPs>0?Math.round(tHrs/tPs*10)/10:0;
   const tClStr=tClMin>0?String(Math.floor(tClMin/60)).padStart(2,'0')+':'+String(Math.floor(tClMin%60)).padStart(2,'0'):'—';
-  document.getElementById('kpi-area').innerHTML=fA?'':`<div class="kpi"><span class="kpi-label">Pessoas</span><span class="kpi-value">${tPs}</span><span class="kpi-foot">${entries.length} área${entries.length>1?'s':''}</span></div><div class="kpi"><span class="kpi-label">Projetos</span><span class="kpi-value">${tPj}</span></div><div class="kpi"><span class="kpi-label">Horas</span><span class="kpi-value">${fH(tHrs)}</span><span class="kpi-foot">média ${fH(aH)}/pessoa</span></div><div class="kpi"><span class="kpi-label">Tarefas</span><span class="kpi-value">${fN(tTar)}</span></div><div class="kpi"><span class="kpi-label">Claude Code</span><span class="kpi-value">${tClStr}</span></div><div class="kpi"><span class="kpi-label">Tokens (Claude)</span><span class="kpi-value">${fN(tClTok)}</span></div>`;
+  document.getElementById('kpi-area').innerHTML=fA?'':
+    kpiHtml({label:'Pessoas',value:tPs,icon:'pessoas',bg:'#eff6ff',color:'#2563eb',foot:entries.length+' área'+(entries.length>1?'s':'')})+
+    kpiHtml({label:'Projetos',value:tPj,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})+
+    kpiHtml({label:'Horas',value:fH(tHrs),icon:'horas',bg:'#f0fdfa',color:'#0f766e',foot:'média '+fH(aH)+'/pessoa'})+
+    kpiHtml({label:'Tarefas',value:fN(tTar),icon:'tarefas',bg:'#ecfeff',color:'#0891b2'})+
+    kpiHtml({label:'Claude Code',value:tClStr,icon:'cpu',bg:'#faf5ff',color:'#9333ea'})+
+    kpiHtml({label:'Tokens (Claude)',value:fN(tClTok),icon:'cpu',bg:'#faf5ff',color:'#9333ea'});
   let h='';
   if(!fA){
     const srtArr=Object.entries(AREAS).map(([a,d])=>{
@@ -3587,7 +3754,13 @@ function renderArea(){
     const pctAreaTokens=clTokArea>0?percentileRank(clTokArea, allAreaTokensArr):null;
     h+='<div style="margin-bottom:20px"><h2 style="font-size:17px;margin-bottom:4px">'+area+' <span style="font-size:13px;color:var(--text-faint);font-weight:400">'+d.ps+' pessoas</span></h2>';
     h+='<div style="font-size:12.5px;color:var(--text-muted);margin-bottom:12px">Head da área: <strong style="color:var(--text)">'+d.head+'</strong></div>';
-    h+='<div class="grid grid-kpi" style="margin-bottom:12px"><div class="kpi"><span class="kpi-label">Pessoas</span><span class="kpi-value">'+d.ps+'</span></div><div class="kpi"><span class="kpi-label">Projetos</span><span class="kpi-value">'+d.pj+'</span></div><div class="kpi"><span class="kpi-label">Horas</span><span class="kpi-value">'+fH(aHrs)+'</span><span class="kpi-foot">'+fH(avgHP)+'/pessoa</span></div><div class="kpi"><span class="kpi-label">Tarefas</span><span class="kpi-value">'+aTar+'</span><span class="kpi-foot">'+avgTP+'/pessoa</span></div>'+(clM>0?'<div class="kpi"><span class="kpi-label">Claude</span><span class="kpi-value">'+clStr+'</span></div>':'')+(clTokArea>0?'<div class="kpi"><span class="kpi-label">Tokens (Claude)</span><span class="kpi-value">'+fN(clTokArea)+'</span></div>':'')+'</div>';
+    h+='<div class="grid grid-kpi" style="margin-bottom:12px">'+
+      kpiHtml({label:'Pessoas',value:d.ps,icon:'pessoas',bg:'#eff6ff',color:'#2563eb'})+
+      kpiHtml({label:'Projetos',value:d.pj,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})+
+      kpiHtml({label:'Horas',value:fH(aHrs),icon:'horas',bg:'#f0fdfa',color:'#0f766e',foot:fH(avgHP)+'/pessoa'})+
+      kpiHtml({label:'Tarefas',value:aTar,icon:'tarefas',bg:'#ecfeff',color:'#0891b2',foot:avgTP+'/pessoa'})+
+      (clM>0?kpiHtml({label:'Claude',value:clStr,icon:'cpu',bg:'#faf5ff',color:'#9333ea'}):'')+
+      (clTokArea>0?kpiHtml({label:'Tokens (Claude)',value:fN(clTokArea),icon:'cpu',bg:'#faf5ff',color:'#9333ea'}):'')+'</div>';
     h+='<div class="pd-section" style="margin-bottom:12px"><h3>📊 Comparativo com outras Áreas (percentil)</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">';
     (()=>{const l=percentileLabel(pctAreaHoras);h+='<div class="insight-card '+l.cls+'" style="margin:0"><div class="ic-icon">⏱</div><p><b>Horas Registradas</b><br>'+l.txt+'</p></div>';})();
     (()=>{const l=percentileLabel(pctAreaTarefas);h+='<div class="insight-card '+l.cls+'" style="margin:0"><div class="ic-icon">📋</div><p><b>Volume de Tarefas</b><br>'+l.txt+'</p></div>';})();
@@ -3658,11 +3831,11 @@ function renderPend(){
   const both=list.filter(t=>t.falta_inicio&&t.falta_venc).length;
   const onlyInicio=list.filter(t=>t.falta_inicio&&!t.falta_venc).length;
   const onlyVenc=list.filter(t=>!t.falta_inicio&&t.falta_venc).length;
-  document.getElementById('kpi-pend').innerHTML=`
-    <div class="kpi"><span class="kpi-label">Total de Tarefas</span><span class="kpi-value">${fN(list.length)}</span></div>
-    <div class="kpi"><span class="kpi-label">Faltam Início + Vencimento</span><span class="kpi-value" style="color:var(--st-bloqueado)">${fN(both)}</span></div>
-    <div class="kpi"><span class="kpi-label">Falta só Início</span><span class="kpi-value">${fN(onlyInicio)}</span></div>
-    <div class="kpi"><span class="kpi-label">Falta só Vencimento</span><span class="kpi-value">${fN(onlyVenc)}</span></div>`;
+  document.getElementById('kpi-pend').innerHTML=
+    kpiHtml({label:'Total de Tarefas',value:fN(list.length),icon:'tarefas',bg:'#ecfeff',color:'#0891b2'})+
+    kpiHtml({label:'Faltam Início + Vencimento',value:fN(both),icon:'alerta',bg:'#fef2f2',color:'#dc2626',valueColor:'var(--st-bloqueado)'})+
+    kpiHtml({label:'Falta só Início',value:fN(onlyInicio),icon:'calendario',bg:'#fff7ed',color:'#ea580c'})+
+    kpiHtml({label:'Falta só Vencimento',value:fN(onlyVenc),icon:'calendario',bg:'#fff7ed',color:'#ea580c'});
 
   const byGerente={};
   list.forEach(t=>{if(!byGerente[t.gerente])byGerente[t.gerente]=[];byGerente[t.gerente].push(t);});
@@ -3866,6 +4039,7 @@ document.addEventListener('click', (e)=>{
   if(srVer && srVer.dataset.reportId){ abrirVisualizacaoStatusReport(srVer.dataset.reportId); return; }
   if(e.target.closest('#task-modal-close') || e.target.id==='task-modal-overlay'){ fecharDetalheTarefa(); }
   if(e.target.closest('#ia-modal-close') || e.target.id==='ia-modal-overlay'){ document.getElementById('ia-modal-overlay').classList.remove('show'); }
+  if(e.target.closest('#sr-exec-modal-close') || e.target.id==='sr-exec-modal-overlay'){ document.getElementById('sr-exec-modal-overlay').classList.remove('show'); }
 });
 // Retorna o nome da tarefa como link clicável para o modal de detalhamento. idx é
 // a posição da tarefa no array PROJ_TASKS[pjName] (identificador estável dentro
@@ -4133,9 +4307,9 @@ function renderProjDetail(pjName){
   // KPIs principais (sem mais o "Início → Fim Previsto" compacto — virou a
   // timeline de 4 marcos logo abaixo, mais clara)
   h += '<div class="grid grid-kpi" style="margin-bottom:16px">';
-  h += '<div class="kpi"><span class="kpi-label">Prazo</span><span class="kpi-value" style="color:'+(at?'var(--st-bloqueado)':'var(--primary)')+'">'+(p.dd||'—')+'</span><span class="kpi-foot">'+(p.dias_planejados!=null?p.dias_planejados+' dias planejados':'')+'</span></div>';
-  h += '<div class="kpi"><span class="kpi-label">Gerente</span><span class="kpi-value" style="font-size:16px">'+personLinkHtml(p.gp)+'</span></div>';
-  h += '<div class="kpi"><span class="kpi-label">Equipe</span><span class="kpi-value">'+p.qe+'</span><span class="kpi-foot">pessoas</span></div>';
+  h += kpiHtml({label:'Prazo',value:(p.dd||'—'),icon:'calendario',bg:at?'#fef2f2':'#eff6ff',color:at?'#dc2626':'var(--primary)',valueColor:(at?'var(--st-bloqueado)':'var(--primary)'),foot:(p.dias_planejados!=null?p.dias_planejados+' dias planejados':'')});
+  h += kpiHtml({label:'Gerente',value:personLinkHtml(p.gp),icon:'pessoas',bg:'#eff6ff',color:'#2563eb',valueFontSize:'16px'});
+  h += kpiHtml({label:'Equipe',value:p.qe,icon:'pessoas',bg:'#eff6ff',color:'#2563eb',foot:'pessoas'});
   h += '</div>';
 
   // Timeline dos 4 marcos de data do projeto (item pedido) — usa só os dados
@@ -4163,10 +4337,10 @@ function renderProjDetail(pjName){
   })();
 
   h += '<div class="grid grid-kpi" style="margin-bottom:16px">';
-  h += '<div class="kpi"><span class="kpi-label">Horas Previstas</span><span class="kpi-value">'+fH(p.horas_est)+'</span></div>';
-  h += '<div class="kpi"><span class="kpi-label">Horas Realizadas</span><span class="kpi-value" style="color:var(--primary)">'+fH(p.horas_apo)+'</span></div>';
-  h += '<div class="kpi"><span class="kpi-label">Consumo de Horas</span><span class="kpi-value" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+(pctEst!=null?pctEst+'%':'—')+'</span></div>';
-  h += '<div class="kpi"><span class="kpi-label">Vencendo Esta Semana</span><span class="kpi-value" style="color:'+(tarefasSemana.length>0?'var(--st-bloqueado)':'var(--primary)')+'">'+tarefasSemana.length+'</span></div>';
+  h += kpiHtml({label:'Horas Previstas',value:fH(p.horas_est),icon:'horas',bg:'#f0fdfa',color:'#0f766e'});
+  h += kpiHtml({label:'Horas Realizadas',value:fH(p.horas_apo),icon:'horas',bg:'#eef2ff',color:'#4f46e5',valueColor:'var(--primary)'});
+  h += kpiHtml({label:'Consumo de Horas',value:(pctEst!=null?pctEst+'%':'—'),icon:'balanca',bg:pctEst>100?'#fef2f2':'#f8fafc',color:pctEst>100?'#dc2626':'#64748b',valueColor:(pctEst>100?'var(--st-bloqueado)':'var(--text)')});
+  h += kpiHtml({label:'Vencendo Esta Semana',value:tarefasSemana.length,icon:'alerta',bg:tarefasSemana.length>0?'#fef2f2':'#eff6ff',color:tarefasSemana.length>0?'#dc2626':'var(--primary)',valueColor:(tarefasSemana.length>0?'var(--st-bloqueado)':'var(--primary)')});
   h += '</div>';
 
   // Equipe
@@ -4304,12 +4478,12 @@ function renderOciosos(){
 
   document.getElementById('kpi-ociosos').innerHTML =
     (periodoAtivo?
-    '<div class="kpi"><span class="kpi-label">Com Tarefa Atribuída no Período</span><span class="kpi-value" style="color:var(--primary)">'+comTarefaPeriodo.length+'</span><span class="kpi-foot">de '+D.p.filter(p=>p.a).length+' colaboradores</span></div>'+
-    '<div class="kpi"><span class="kpi-label">Sem Tarefa Atribuída no Período</span><span class="kpi-value" style="color:'+(semTarefaPeriodo.length>0?'var(--st-bloqueado)':'var(--text)')+'">'+semTarefaPeriodo.length+'</span><span class="kpi-foot">nenhum vencimento no período</span></div>'
+    kpiHtml({label:'Com Tarefa Atribuída no Período',value:comTarefaPeriodo.length,icon:'check',bg:'#eff6ff',color:'#2563eb',valueColor:'var(--primary)',foot:'de '+D.p.filter(p=>p.a).length+' colaboradores'})+
+    kpiHtml({label:'Sem Tarefa Atribuída no Período',value:semTarefaPeriodo.length,icon:'usuarioX',bg:semTarefaPeriodo.length>0?'#fef2f2':'#f8fafc',color:semTarefaPeriodo.length>0?'#dc2626':'#64748b',valueColor:(semTarefaPeriodo.length>0?'var(--st-bloqueado)':'var(--text)'),foot:'nenhum vencimento no período'})
     :
-    '<div class="kpi"><span class="kpi-label">Disponibilidade (real)</span><span class="kpi-value" style="color:var(--st-bloqueado)">'+SEM_ALOC.length+'</span><span class="kpi-foot">de '+D.p.filter(p=>p.a).length+' colaboradores</span></div>'+
-    '<div class="kpi"><span class="kpi-label">Alocados, sem apontamento no Zoho</span><span class="kpi-value" style="color:#f59e0b">'+ALOC_SEM_APONT.length+'</span><span class="kpi-foot">estão em equipe de projeto no Portifolio</span></div>'+
-    '<div class="kpi"><span class="kpi-label">Ociosidade Alta Esta Semana</span><span class="kpi-value" style="color:'+(ociososSemanaList.length>0?'#f59e0b':'var(--primary)')+'">'+ociososSemanaList.length+'</span><span class="kpi-foot">alocados, mas ≥50% abaixo do previsto</span></div>');
+    kpiHtml({label:'Disponibilidade (real)',value:SEM_ALOC.length,icon:'usuarioX',bg:'#fef2f2',color:'#dc2626',valueColor:'var(--st-bloqueado)',foot:'de '+D.p.filter(p=>p.a).length+' colaboradores'})+
+    kpiHtml({label:'Alocados, sem apontamento no Zoho',value:ALOC_SEM_APONT.length,icon:'alerta',bg:'#fff7ed',color:'#f59e0b',valueColor:'#f59e0b',foot:'estão em equipe de projeto no Portifolio'})+
+    kpiHtml({label:'Ociosidade Alta Esta Semana',value:ociososSemanaList.length,icon:'bateria',bg:ociososSemanaList.length>0?'#fff7ed':'#eff6ff',color:ociososSemanaList.length>0?'#f59e0b':'var(--primary)',valueColor:(ociososSemanaList.length>0?'#f59e0b':'var(--primary)'),foot:'alocados, mas ≥50% abaixo do previsto'}));
 
   let h='';
 
@@ -5017,12 +5191,12 @@ function renderLider(){
   const clientesSet=new Set(); const equipeSet=new Set();
   prj.forEach(p=>{tT+=p.tar_total;tC+=p.tar_conc;tEst+=p.horas_est;tApo+=p.horas_apo;clientesSet.add(p.cl);(p.eq||[]).forEach(m=>equipeSet.add(m));});
 
-  document.getElementById('kpi-lider').innerHTML=`
-    <div class="kpi"><span class="kpi-label">Projetos</span><span class="kpi-value">${prj.length}</span><span class="kpi-foot">${clientesSet.size} cliente(s)</span></div>
-    <div class="kpi"><span class="kpi-label">Tarefas</span><span class="kpi-value">${fN(tT)}</span><span class="kpi-foot">${fN(tC)} concluídas</span></div>
-    <div class="kpi"><span class="kpi-label">Horas Estimadas</span><span class="kpi-value">${fH(tEst)}</span></div>
-    <div class="kpi"><span class="kpi-label">Horas Executadas</span><span class="kpi-value">${fH(tApo)}</span></div>
-    <div class="kpi"><span class="kpi-label">Pessoas na Equipe</span><span class="kpi-value">${equipeSet.size}</span><span class="kpi-foot">distintas nos projetos</span></div>`;
+  document.getElementById('kpi-lider').innerHTML=
+    kpiHtml({label:'Projetos',value:prj.length,icon:'projetos',bg:'#eff6ff',color:'#2563eb',foot:clientesSet.size+' cliente(s)'})+
+    kpiHtml({label:'Tarefas',value:fN(tT),icon:'tarefas',bg:'#ecfeff',color:'#0891b2',foot:fN(tC)+' concluídas'})+
+    kpiHtml({label:'Horas Estimadas',value:fH(tEst),icon:'horas',bg:'#f0fdfa',color:'#0f766e'})+
+    kpiHtml({label:'Horas Executadas',value:fH(tApo),icon:'horas',bg:'#eef2ff',color:'#4f46e5'})+
+    kpiHtml({label:'Pessoas na Equipe',value:equipeSet.size,icon:'pessoas',bg:'#eff6ff',color:'#2563eb',foot:'distintas nos projetos'});
   document.getElementById('ritmo-resumo-lider').innerHTML=ritmoResumoHtml(prj);
 
   let h='<div class="proj-grid">';
@@ -5113,12 +5287,12 @@ function renderGerente(){
   const clientesSet=new Set(); const equipeSet=new Set(); let atrasados=0;
   prj.forEach(p=>{tT+=p.tar_total;tC+=p.tar_conc;tEst+=p.horas_est;tApo+=p.horas_apo;clientesSet.add(p.cl);(p.eq||[]).forEach(m=>equipeSet.add(m));if(p.dd&&String(p.dd).toLowerCase().includes('atraso'))atrasados++;});
 
-  document.getElementById('kpi-gerente').innerHTML=`
-    <div class="kpi"><span class="kpi-label">Projetos</span><span class="kpi-value">${prj.length}</span><span class="kpi-foot">${clientesSet.size} cliente(s)</span></div>
-    <div class="kpi"><span class="kpi-label">Projetos Atrasados</span><span class="kpi-value" style="color:${atrasados>0?'var(--st-bloqueado)':'var(--primary)'}">${atrasados}</span></div>
-    <div class="kpi"><span class="kpi-label">Horas Estimadas</span><span class="kpi-value">${fH(tEst)}</span></div>
-    <div class="kpi"><span class="kpi-label">Horas Executadas</span><span class="kpi-value">${fH(tApo)}</span></div>
-    <div class="kpi"><span class="kpi-label">Pessoas na Equipe</span><span class="kpi-value">${equipeSet.size}</span><span class="kpi-foot">distintas nos projetos</span></div>`;
+  document.getElementById('kpi-gerente').innerHTML=
+    kpiHtml({label:'Projetos',value:prj.length,icon:'projetos',bg:'#eff6ff',color:'#2563eb',foot:clientesSet.size+' cliente(s)'})+
+    kpiHtml({label:'Projetos Atrasados',value:atrasados,icon:'alerta',bg:atrasados>0?'#fef2f2':'#eff6ff',color:atrasados>0?'#dc2626':'var(--primary)',valueColor:(atrasados>0?'var(--st-bloqueado)':'var(--primary)')})+
+    kpiHtml({label:'Horas Estimadas',value:fH(tEst),icon:'horas',bg:'#f0fdfa',color:'#0f766e'})+
+    kpiHtml({label:'Horas Executadas',value:fH(tApo),icon:'horas',bg:'#eef2ff',color:'#4f46e5'})+
+    kpiHtml({label:'Pessoas na Equipe',value:equipeSet.size,icon:'pessoas',bg:'#eff6ff',color:'#2563eb',foot:'distintas nos projetos'});
   document.getElementById('ritmo-resumo-gerente').innerHTML=ritmoResumoHtml(prj);
 
   let h='<div class="proj-grid">';
@@ -5416,13 +5590,13 @@ function renderSetorial(){
   const ocioMediaArea=nOcio>0?Math.round(somaOcio/nOcio):null;
   const aH=d.ps>0?Math.round(d.hrs/d.ps*10)/10:0;
 
-  kpiEl.innerHTML=`
-    <div class="kpi"><span class="kpi-label">Pessoas na Área</span><span class="kpi-value">${d.ps}</span><span class="kpi-foot">Head: ${d.head||'—'}</span></div>
-    <div class="kpi"><span class="kpi-label">Projetos com Alocação</span><span class="kpi-value">${d.pj}</span></div>
-    <div class="kpi"><span class="kpi-label">Horas (geral)</span><span class="kpi-value">${fH(d.hrs)}</span><span class="kpi-foot">média ${fH(aH)}/pessoa</span></div>
-    <div class="kpi"><span class="kpi-label">Sem Alocação${infoTip('Sem nenhuma alocação registrada — nem em equipe de projeto (Portifolio), nem tarefas/horas (Zoho).')}</span><span class="kpi-value" style="color:${semAloc.length>0?'var(--st-bloqueado)':'var(--text)'}">${semAloc.length}</span></div>
-    <div class="kpi"><span class="kpi-label">Alocados sem Apontamento${infoTip('Estão em equipe de projeto ativo, mas sem nenhuma hora/tarefa lançada no Zoho.')}</span><span class="kpi-value" style="color:${alocSemApo.length>0?'#f59e0b':'var(--text)'}">${alocSemApo.length}</span></div>
-    <div class="kpi"><span class="kpi-label">Ociosidade Média (semana)${infoTip(TIP_OCIOSIDADE_SEMANAL+' Aqui: média entre as pessoas da área que têm tarefa vencendo esta semana.')}</span><span class="kpi-value" style="color:${ocioMediaArea===null?'var(--text)':ocioMediaArea>=50?'var(--st-bloqueado)':ocioMediaArea>=25?'#f59e0b':'var(--text)'}">${ocioMediaArea===null?'—':ocioMediaArea+'%'}</span></div>`;
+  kpiEl.innerHTML=
+    kpiHtml({label:'Pessoas na Área',value:d.ps,icon:'pessoas',bg:'#eff6ff',color:'#2563eb',foot:'Head: '+(d.head||'—')})+
+    kpiHtml({label:'Projetos com Alocação',value:d.pj,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})+
+    kpiHtml({label:'Horas (geral)',value:fH(d.hrs),icon:'horas',bg:'#f0fdfa',color:'#0f766e',foot:'média '+fH(aH)+'/pessoa'})+
+    kpiHtml({label:'Sem Alocação'+infoTip('Sem nenhuma alocação registrada — nem em equipe de projeto (Portifolio), nem tarefas/horas (Zoho).'),value:semAloc.length,icon:'usuarioX',bg:semAloc.length>0?'#fef2f2':'#f8fafc',color:semAloc.length>0?'#dc2626':'#64748b',valueColor:(semAloc.length>0?'var(--st-bloqueado)':'var(--text)')})+
+    kpiHtml({label:'Alocados sem Apontamento'+infoTip('Estão em equipe de projeto ativo, mas sem nenhuma hora/tarefa lançada no Zoho.'),value:alocSemApo.length,icon:'alerta',bg:alocSemApo.length>0?'#fff7ed':'#f8fafc',color:alocSemApo.length>0?'#f59e0b':'#64748b',valueColor:(alocSemApo.length>0?'#f59e0b':'var(--text)')})+
+    kpiHtml({label:'Ociosidade Média (semana)'+infoTip(TIP_OCIOSIDADE_SEMANAL+' Aqui: média entre as pessoas da área que têm tarefa vencendo esta semana.'),value:(ocioMediaArea===null?'—':ocioMediaArea+'%'),icon:'bateria',bg:'#fff7ed',color:'#ea580c',valueColor:(ocioMediaArea===null?'var(--text)':ocioMediaArea>=50?'var(--st-bloqueado)':ocioMediaArea>=25?'#f59e0b':'var(--text)')});
 
   let h='';
   h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>⚠️ Fora do escopo atual dos dados</h3></div><div style="padding:4px 0;font-size:13px;color:var(--text-muted);line-height:1.6">'
@@ -5482,11 +5656,11 @@ function renderTransversal(){
   });
   const pctConsumo=tEst>0?Math.round(tApo/tEst*100):null;
 
-  document.getElementById('kpi-transversal').innerHTML=`
-    <div class="kpi"><span class="kpi-label">Projetos</span><span class="kpi-value">${prj.length}</span></div>
-    <div class="kpi"><span class="kpi-label">Atraso do Projeto${infoTip('Foco Operacional (GP/SM): projeto com indicador de atraso no cronograma.')}</span><span class="kpi-value" style="color:${atrasados>0?'var(--st-bloqueado)':'var(--text)'}">${atrasados}</span></div>
-    <div class="kpi"><span class="kpi-label">Com Impedimentos/Bloqueios${infoTip('Foco Operacional (GP/SM): projetos com pelo menos uma tarefa em status "Blocked".')}</span><span class="kpi-value" style="color:${bloqueados>0?'#f59e0b':'var(--text)'}">${bloqueados}</span></div>
-    <div class="kpi"><span class="kpi-label">Horas — Estimado x Executado${infoTip(TIP_ESTIMADO_EXECUTADO)}</span><span class="kpi-value">${fH(tEst)} → ${fH(tApo)}</span><span class="kpi-foot">${pctConsumo===null?'—':pctConsumo+'% consumido'}</span></div>`;
+  document.getElementById('kpi-transversal').innerHTML=
+    kpiHtml({label:'Projetos',value:prj.length,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})+
+    kpiHtml({label:'Atraso do Projeto'+infoTip('Foco Operacional (GP/SM): projeto com indicador de atraso no cronograma.'),value:atrasados,icon:'alerta',bg:atrasados>0?'#fef2f2':'#f8fafc',color:atrasados>0?'#dc2626':'#64748b',valueColor:(atrasados>0?'var(--st-bloqueado)':'var(--text)')})+
+    kpiHtml({label:'Com Impedimentos/Bloqueios'+infoTip('Foco Operacional (GP/SM): projetos com pelo menos uma tarefa em status "Blocked".'),value:bloqueados,icon:'bloqueio',bg:bloqueados>0?'#fff7ed':'#f8fafc',color:bloqueados>0?'#f59e0b':'#64748b',valueColor:(bloqueados>0?'#f59e0b':'var(--text)')})+
+    kpiHtml({label:'Horas — Estimado x Executado'+infoTip(TIP_ESTIMADO_EXECUTADO),value:fH(tEst)+' → '+fH(tApo),icon:'balanca',bg:'#eef2ff',color:'#4f46e5',foot:(pctConsumo===null?'—':pctConsumo+'% consumido')});
 
   let h='<div class="proj-grid">';
   prj.forEach(p=>{
@@ -5770,36 +5944,74 @@ function buildHistoricoStatusReportHtml(projeto, modoView){
   h+='</div>';
   return h;
 }
-// Visualização somente-leitura de um Status Report específico — reaproveita o
-// mesmo modal já usado pro detalhamento de tarefa (task-modal-overlay), só que
-// com o conteúdo de um Status Report inteiro.
+// Cor pro nível de risco (mesma lógica de semáforo já usada pra criticidade,
+// só que nivel_risco é uma lista simples de texto, sem cor própria cadastrada).
+function srNivelRiscoCor(v){
+  if(v==='Alto') return '#dc2626';
+  if(v==='Médio') return '#f59e0b';
+  if(v==='Baixo') return '#16a34a';
+  return '#94a3b8';
+}
+// Visualização executiva do Status Report — layout tipo apresentação/documento
+// formal, com logo da Be Solution e identificação do cliente. Usa só os dados
+// que já existem no Status Report (nada inventado); quando o campo é texto
+// livre com várias linhas (Riscos e Bloqueios, Decisões), cada linha vira um
+// item de lista — é a forma mais fiel de aproveitar o que a pessoa já escreveu
+// sem impor uma estrutura que a fonte de dados não tem.
+function renderStatusReportExecutivo(r){
+  let atividades=[];
+  try{ atividades=r.atividades_json?JSON.parse(r.atividades_json):[]; }catch(e){ atividades=[]; }
+  const critInfo=srCriticidadeInfo(r.criticidade);
+  const critCor=critInfo?critInfo.cor:'#94a3b8';
+  const riscoCor=srNivelRiscoCor(r.nivel_risco);
+  const logoBeSolution=document.querySelector('.brand-logo img')?document.querySelector('.brand-logo img').src:'';
+  const linhasParaLista=(txt)=>(txt||'').split('\n').map(l=>l.trim()).filter(Boolean);
+  const decisoesLinhas=linhasParaLista(r.decisoes_pontos_atencao);
+  const riscosLinhas=linhasParaLista(r.riscos_bloqueios);
+
+  let h='<div class="sr-exec-doc">';
+  h+='<div class="sr-exec-header">'+
+    (logoBeSolution?'<img src="'+logoBeSolution+'" alt="Be Solution">':'<strong style="font-size:15px">Be Solution</strong>')+
+    '<div class="sr-exec-header-right">'+
+      '<div class="sr-exec-cliente-badge">🏢 '+(r.cliente||'—')+'</div>'+
+      '<span class="sr-exec-badge-label">Status Report</span>'+
+      '<div class="sr-exec-periodo">'+srFmtBr(r.semana_inicio)+' — '+srFmtBr(r.semana_fim)+'</div>'+
+    '</div></div>';
+  h+='<div class="sr-exec-titulo"><h1>'+(r.projeto||'—')+'</h1><p>'+(r.previsao_proxima_fase?r.previsao_proxima_fase+' · ':'')+'Semana de '+srFmtBr(r.semana_inicio)+' a '+srFmtBr(r.semana_fim)+'</p></div>';
+  h+='<div class="sr-exec-infogrid">'+
+    '<div class="sr-exec-infocard"><span class="lbl">Gerente</span><span class="val">'+(r.gerente_nome||'—')+'</span></div>'+
+    '<div class="sr-exec-infocard"><span class="lbl">Status do Projeto</span><span class="val">'+(r.status_projeto||'—')+'</span></div>'+
+    '<div class="sr-exec-infocard"><span class="lbl">Criticidade</span><span class="val"><span class="dot" style="background:'+critCor+'"></span>'+(r.criticidade||'—')+'</span></div>'+
+    '<div class="sr-exec-infocard"><span class="lbl">Nível de Risco</span><span class="val"><span class="dot" style="background:'+riscoCor+'"></span>'+(r.nivel_risco||'—')+'</span></div>'+
+  '</div>';
+  if(r.resumo_executivo){
+    h+='<div class="sr-exec-section"><div class="sr-exec-section-title">Resumo Executivo</div><p class="sr-exec-texto">'+r.resumo_executivo.replace(/\n/g,'<br>')+'</p></div>';
+  }
+  if(riscosLinhas.length>0){
+    h+='<div class="sr-exec-section"><div class="sr-exec-alerta"><div class="ic">!</div><div><b>Principal ponto de atenção</b><p>'+riscosLinhas[0]+'</p></div></div></div>';
+  }
+  if(decisoesLinhas.length>0||riscosLinhas.length>0){
+    h+='<div class="sr-exec-2col">';
+    h+='<div><div class="sr-exec-section-title">Decisões e Pontos Importantes</div>'+(decisoesLinhas.length>0?'<ul class="sr-exec-bullets">'+decisoesLinhas.map(l=>'<li>'+l+'</li>').join('')+'</ul>':'<p class="sr-exec-texto" style="color:#94a3b8">Nenhuma decisão registrada.</p>')+'</div>';
+    h+='<div><div class="sr-exec-section-title">Riscos e Bloqueios</div>'+(riscosLinhas.length>0?'<ul class="sr-exec-bullets">'+riscosLinhas.map(l=>'<li>'+l+'</li>').join('')+'</ul>':'<p class="sr-exec-texto" style="color:#94a3b8">Nenhum risco registrado.</p>')+'</div>';
+    h+='</div>';
+  }
+  if(atividades.length>0){
+    h+='<div class="sr-exec-section sr-exec-plano"><div class="sr-exec-section-title">Plano de Ação</div><table><thead><tr><th>Atividade</th><th>Responsável</th><th>Status</th></tr></thead><tbody>'+
+      atividades.map(a=>'<tr><td>'+(a.atividade||'—')+'</td><td>'+(a.responsavel||'—')+'</td><td>'+(a.status||'—')+'</td></tr>').join('')+
+    '</tbody></table></div>';
+  }
+  h+='<div class="sr-exec-footer"><span>Status Report · '+(r.previsao_proxima_fase||srFmtBr(r.semana_inicio))+'</span><span>Elaborado por Be Solution</span></div>';
+  h+='</div>';
+  return h;
+}
+// Visualização somente-leitura de um Status Report específico — layout
+// executivo dedicado (modal mais largo que o de detalhamento de tarefa).
 function abrirVisualizacaoStatusReport(reportId){
   const r=STATUS_REPORTS.find(x=>x.id===reportId);
   if(!r) return;
-  let atividades=[];
-  try{ atividades=r.atividades_json?JSON.parse(r.atividades_json):[]; }catch(e){ atividades=[]; }
-  const campo=(label,val)=> (val!==null && val!==undefined && val!=='') ? '<div class="task-modal-field task-modal-field-full"><span class="task-modal-label">'+label+'</span><span class="task-modal-value" style="white-space:pre-wrap;text-align:left">'+val+'</span></div>' : '';
-  let h='';
-  h+='<div class="task-modal-field"><span class="task-modal-label">Projeto</span><span class="task-modal-value">'+projetoLinkHtml(r.projeto)+'</span></div>';
-  h+='<div class="task-modal-field"><span class="task-modal-label">Cliente</span><span class="task-modal-value">'+(r.cliente||'—')+'</span></div>';
-  h+='<div class="task-modal-field"><span class="task-modal-label">Semana</span><span class="task-modal-value">'+srFmtBr(r.semana_inicio)+' – '+srFmtBr(r.semana_fim)+'</span></div>';
-  h+='<div class="task-modal-field"><span class="task-modal-label">Gerente</span><span class="task-modal-value">'+(r.gerente_nome||'—')+'</span></div>';
-  h+='<div class="task-modal-field"><span class="task-modal-label">Status do Report</span><span class="task-modal-value">'+r.status_preenchimento+'</span></div>';
-  h+='<div class="task-modal-field"><span class="task-modal-label">Criticidade</span><span class="task-modal-value">'+srCriticidadeBadge(r.criticidade)+'</span></div>';
-  h+='<div class="task-modal-field"><span class="task-modal-label">Status/Fase do Projeto</span><span class="task-modal-value">'+(r.status_projeto||'—')+'</span></div>';
-  h+='<div class="task-modal-field"><span class="task-modal-label">Nível de Risco</span><span class="task-modal-value">'+(r.nivel_risco||'—')+'</span></div>';
-  h+=campo('Sprint / Semana', r.previsao_proxima_fase);
-  h+=campo('Resumo Executivo', r.resumo_executivo);
-  h+=campo('Decisões e Pontos Importantes', r.decisoes_pontos_atencao);
-  h+=campo('Riscos e Bloqueios', r.riscos_bloqueios);
-  if(atividades.length>0){
-    h+='<div class="task-modal-field task-modal-field-full"><span class="task-modal-label">Plano de Ação</span><div class="table-wrap" style="margin-top:6px"><table><thead><tr><th>Atividade</th><th>Responsável</th><th>Descrição</th><th>Status</th></tr></thead><tbody>'+
-      atividades.map(a=>'<tr><td>'+(a.atividade||'—')+'</td><td>'+(a.responsavel||'—')+'</td><td>'+(a.descricao||'—')+'</td><td>'+(a.status||'—')+'</td></tr>').join('')+
-    '</tbody></table></div></div>';
-  }
-  document.getElementById('task-modal-title').textContent='Status Report — '+srFmtBr(r.semana_inicio)+' a '+srFmtBr(r.semana_fim);
-  document.getElementById('task-modal-body').innerHTML=h;
-  document.getElementById('task-modal-overlay').classList.add('show');
+  document.getElementById('sr-exec-modal-body').innerHTML=renderStatusReportExecutivo(r);
+  document.getElementById('sr-exec-modal-overlay').classList.add('show');
 }
 // Abre o histórico completo de Status Reports de um projeto em modal — usado
 // pelo botão "Histórico de Status Reports" no Detalhamento do Projeto.
@@ -5912,11 +6124,11 @@ function renderStatusReportPainel(){
   const pendentes=reports.filter(r=>r.status_preenchimento==='Rascunho').length;
   const totalProjetos=[...new Set(D.pj.map(p=>p.pj))].length;
 
-  document.getElementById('kpi-srp').innerHTML=`
-    <div class="kpi"><span class="kpi-label">Projetos com Status Report</span><span class="kpi-value">${totalProjetosComReport}</span><span class="kpi-foot">de ${totalProjetos} projeto(s) no portfólio</span></div>
-    <div class="kpi"><span class="kpi-label">Reports Finalizados</span><span class="kpi-value" style="color:var(--st-feito)">${finalizados}</span></div>
-    <div class="kpi"><span class="kpi-label">Reports em Rascunho</span><span class="kpi-value" style="color:#f59e0b">${pendentes}</span></div>
-    <div class="kpi"><span class="kpi-label">Sem Nenhum Report</span><span class="kpi-value" style="color:${totalProjetos-totalProjetosComReport>0?'var(--st-bloqueado)':'var(--text)'}">${totalProjetos-totalProjetosComReport}</span></div>`;
+  document.getElementById('kpi-srp').innerHTML=
+    kpiHtml({label:'Projetos com Status Report',value:totalProjetosComReport,icon:'relatorio',bg:'#eff6ff',color:'#2563eb',foot:'de '+totalProjetos+' projeto(s) no portfólio'})+
+    kpiHtml({label:'Reports Finalizados',value:finalizados,icon:'check',bg:'#f0fdf4',color:'#16a34a',valueColor:'var(--st-feito)'})+
+    kpiHtml({label:'Reports em Rascunho',value:pendentes,icon:'relatorio',bg:'#fff7ed',color:'#f59e0b',valueColor:'#f59e0b'})+
+    kpiHtml({label:'Sem Nenhum Report',value:(totalProjetos-totalProjetosComReport),icon:'alerta',bg:(totalProjetos-totalProjetosComReport>0?'#fef2f2':'#f8fafc'),color:(totalProjetos-totalProjetosComReport>0?'#dc2626':'#64748b'),valueColor:(totalProjetos-totalProjetosComReport>0?'var(--st-bloqueado)':'var(--text)')});
 
   let h='<div class="card"><div class="card-title"><h3>Último Status Report por Projeto</h3></div>';
   if(linhas.length===0){
