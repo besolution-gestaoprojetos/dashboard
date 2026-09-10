@@ -651,6 +651,41 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 .pe-equipe-card{margin-bottom:0;}
 .pe-equipe-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px;}
 @media (max-width:700px){.pd-timeline-datas{flex-direction:column; align-items:stretch;} .pd-timeline-step{flex-direction:row; text-align:left; min-width:0; gap:10px;} .pd-timeline-marker{margin-bottom:0;} .pd-timeline-linha{width:2px; height:16px; margin:0 0 0 18px;}}
+
+/* Hero banner do Detalhamento do Projeto */
+.pd-hero{background:linear-gradient(120deg,#0c1e3d,#0f3460 60%,#1a4d7a); border-radius:14px; padding:22px 26px; margin-bottom:14px; color:#fff; display:grid; grid-template-columns:1.6fr auto 1.2fr; gap:20px; align-items:center;}
+.pd-hero-tag{display:inline-block; background:rgba(255,255,255,.12); font-size:10px; font-weight:800; letter-spacing:.08em; padding:3px 10px; border-radius:6px; margin-bottom:8px;}
+.pd-hero h1{margin:0 0 8px; font-size:24px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+.pd-hero-status{font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.3); background:rgba(255,255,255,.12);}
+.pd-hero-meta{font-size:12.5px; opacity:.85;}
+.pd-hero-divider{width:1px; align-self:stretch; background:rgba(255,255,255,.15);}
+.pd-hero-cliente-lbl{font-size:10px; opacity:.7; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px;}
+.pd-hero-cliente{display:flex; align-items:center; gap:8px; font-size:15px; font-weight:700;}
+.pd-hero-resumo{background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 16px; margin-bottom:14px;}
+.pd-hero-resumo .pd-resumo-titulo{font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--text-faint); display:block; margin-bottom:5px;}
+.pd-hero-resumo p{margin:0; font-size:13px; line-height:1.5; color:var(--text-muted);}
+
+.pd-infogrid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:14px;}
+.pd-infocard{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:12px; box-shadow:var(--shadow-sm);}
+.pd-infocard .ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;}
+.pd-infocard .lbl{font-size:10.5px; color:var(--text-faint); display:block;}
+.pd-infocard .val{font-size:13.5px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:5px;}
+.pd-infocard .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+.pd-donut-wrap{display:flex; align-items:center; gap:20px; flex-wrap:wrap;}
+.pd-legend-item{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:4px 0;justify-content:space-between;}
+.pd-legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+
+/* Exportar PDF: usa a impressão nativa do navegador — some com tudo que não
+   é o conteúdo do projeto (menu, filtros, botões), sem precisar carregar
+   nenhuma biblioteca extra de geração de PDF. */
+@media print{
+  .topbar, .nav-menu, .voltar-strip, #proj-voltar, #pd-export-pdf, #pd-historico-sr-btn, .page-header, .filter-bar, footer, .task-modal-overlay, .viewas-loading-toast, #loading-global, #pd-gantt-status, #pd-gantt-de, #pd-gantt-ate, #pd-gantt-clear, #pd-incompleto-status{display:none !important;}
+  body, #main-shell{background:#fff !important;}
+  main{max-width:100% !important; padding:0 !important;}
+  .card, .pd-section, .pd-infocard, .kpi{box-shadow:none !important; break-inside:avoid;}
+  .pd-hero{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+}
 .task-resp-mais:hover{background:var(--primary); color:#fff;}
 .person-link:hover,.task-link:hover{color:var(--primary); text-decoration-color:var(--primary);}
 
@@ -1507,18 +1542,17 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 
     <!-- PAGE DETALHE DO PROJETO (acessível via clique no card) -->
     <section class="page" id="page-projdetail">
-      <div class="page-header">
+      <div class="page-header" style="margin-bottom:10px">
         <div>
           <button class="filter-clear" id="proj-voltar" style="margin-bottom:10px;">← Voltar para Visão do Portfólio</button>
           <button class="filter-clear" id="pd-historico-sr-btn" style="margin-bottom:10px;margin-left:8px;">📜 Histórico de Status Reports</button>
-          <h1 id="pd-titulo">Projeto</h1>
-          <p id="pd-subtitulo">—</p>
+          <button class="filter-clear" id="pd-export-pdf" style="margin-bottom:10px;margin-left:8px;">⬇️ Exportar PDF</button>
         </div>
       </div>
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v8.6 · Última atualização: —</footer>
+  <footer id="app-footer">v8.7 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1636,7 +1670,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v8.6';
+const APP_VERSION='v8.7';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -3942,6 +3976,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   });
   document.getElementById('pd-historico-sr-btn').onclick=()=>{ if(PD_CURRENT_PJ) abrirHistoricoStatusReportModal(PD_CURRENT_PJ); };
+  document.getElementById('pd-export-pdf').onclick=()=>{ window.print(); };
 });
 
 function getMondaySundayISO(){ return getMondaySunday(new Date()); }
@@ -4252,11 +4287,20 @@ function renderGanttChart(tasks){
     plugins:[ganttTodayLinePlugin(hojeOffset)]
   });
 }
+// Status Report mais recente de um projeto (por semana_fim) — usado pra
+// trazer Criticidade e Nível de Risco no Detalhamento do Projeto, já que
+// esses dois campos só existem no Status Report, não no cadastro do
+// Portifolio. Considera rascunho ou finalizado (o rascunho mais recente
+// ainda reflete a visão mais atual de quem está acompanhando o projeto).
+function ultimoStatusReportDoProjeto(pjName){
+  const reports=(STATUS_REPORTS||[]).filter(r=>r.projeto===pjName);
+  if(reports.length===0) return null;
+  return reports.slice().sort((a,b)=>(b.semana_fim||'').localeCompare(a.semana_fim||''))[0];
+}
 function renderProjDetail(pjName){
   const p = D.pj.find(x=>x.pj===pjName);
   if(!p){ document.getElementById('projdetail-content').innerHTML='<div class="empty-state"><p>Projeto não encontrado.</p></div>'; return; }
-  document.getElementById('pd-titulo').textContent = p.pj;
-  document.getElementById('pd-subtitulo').innerHTML = p.cl + ' &middot; ' + statusChipHtml(p.st);
+  const ultimoSR=ultimoStatusReportDoProjeto(pjName);
 
   let tasks = PROJ_TASKS[pjName] || [];
   const allTags = new Set();
@@ -4293,8 +4337,17 @@ function renderProjDetail(pjName){
 
   let h = '';
 
-  // Resumo automático
-  h += '<div class="pd-section"><h3>📋 Resumo do Projeto</h3><div class="insight-card '+(at?'risco':pct===100?'positivo':'atencao')+'"><div class="ic-icon">'+(at?'⚠':pct===100?'✓':'⚡')+'</div><p>';
+  // Hero banner — nome do projeto, status, sprint/período, cliente.
+  h += '<div class="pd-hero">'+
+    '<div><span class="pd-hero-tag">PROJETO</span><h1>'+p.pj+' <span class="pd-hero-status">'+statusChipHtml(p.st)+'</span></h1>'+
+    '<div class="pd-hero-meta">📅 '+(ultimoSR&&ultimoSR.previsao_proxima_fase?ultimoSR.previsao_proxima_fase+' · ':'')+(p.di||'—')+(p.pea?' – '+p.pea:'')+'</div></div>'+
+    '<div class="pd-hero-divider"></div>'+
+    '<div><div class="pd-hero-cliente-lbl">Cliente</div><div class="pd-hero-cliente">🏢 '+(p.cl||'—')+'</div></div>'+
+  '</div>';
+
+  // Resumo automático — agora abaixo do hero, num card claro (sem os
+  // <b> herdarem o estilo do rótulo, que é uma classe separada).
+  h += '<div class="pd-hero-resumo"><span class="pd-resumo-titulo">Resumo do Projeto</span><p>';
   h += 'O projeto <b>'+p.pj+'</b> ('+p.cl+') está <b>'+p.st+'</b>, com <b>'+pct+'%</b> das tarefas concluídas ('+p.tar_conc+' de '+p.tar_total+'). ';
   h += 'Gerenciado por <b>'+personLinkHtml(p.gp)+'</b>, com equipe de <b>'+p.qe+'</b> pessoas. ';
   if(p.dd) h += 'Prazo: <b style="color:'+(at?'var(--st-bloqueado)':'inherit')+'">'+p.dd+'</b>. ';
@@ -4302,14 +4355,28 @@ function renderProjDetail(pjName){
   if(bloqueadas.length>0) h += '<b style="color:var(--st-bloqueado)">'+bloqueadas.length+' tarefa(s) bloqueada(s)</b>. ';
   if(atrasadas.length>0) h += '<b style="color:var(--st-bloqueado)">'+atrasadas.length+' tarefa(s) atrasada(s)</b>. ';
   if(faltando.length>0) h += (faltando.length)+' tarefa(s) com dados incompletos.';
-  h += '</p></div></div>';
+  h += '</p></div>';
 
-  // KPIs principais (sem mais o "Início → Fim Previsto" compacto — virou a
-  // timeline de 4 marcos logo abaixo, mais clara)
+  // 4 cards de info — Criticidade e Nível de Risco vêm do Status Report mais
+  // recente do projeto (não existem no cadastro do Portifolio); mostram "—"
+  // quando não há nenhum Status Report registrado ainda.
+  const critInfo=ultimoSR?srCriticidadeInfo(ultimoSR.criticidade):null;
+  const critCor=critInfo?critInfo.cor:'#94a3b8';
+  const riscoCor=ultimoSR?srNivelRiscoCor(ultimoSR.nivel_risco):'#94a3b8';
+  h += '<div class="pd-infogrid">'+
+    '<div class="pd-infocard"><div class="ic" style="background:#eff6ff;color:#2563eb">👤</div><div><span class="lbl">Gerente</span><span class="val">'+personLinkHtml(p.gp)+'</span></div></div>'+
+    '<div class="pd-infocard"><div class="ic" style="background:#eff6ff;color:#2563eb">📅</div><div><span class="lbl">Status do Projeto</span><span class="val"><span class="dot" style="background:'+(p.st==='Em Andamento'?'#16a34a':'#94a3b8')+'"></span>'+(p.st||'—')+'</span></div></div>'+
+    '<div class="pd-infocard"><div class="ic" style="background:#fef2f2;color:#dc2626">⚠️</div><div><span class="lbl">Criticidade'+infoTip('Vem do Status Report mais recente deste projeto — não é um campo do Portifólio.')+'</span><span class="val"><span class="dot" style="background:'+critCor+'"></span>'+(ultimoSR&&ultimoSR.criticidade?ultimoSR.criticidade:'—')+'</span></div></div>'+
+    '<div class="pd-infocard"><div class="ic" style="background:#fff7ed;color:#ea580c">🛡️</div><div><span class="lbl">Nível de Risco'+infoTip('Vem do Status Report mais recente deste projeto — não é um campo do Portifólio.')+'</span><span class="val"><span class="dot" style="background:'+riscoCor+'"></span>'+(ultimoSR&&ultimoSR.nivel_risco?ultimoSR.nivel_risco:'—')+'</span></div></div>'+
+  '</div>';
+
+  // 5 KPIs principais
   h += '<div class="grid grid-kpi" style="margin-bottom:16px">';
   h += kpiHtml({label:'Prazo',value:(p.dd||'—'),icon:'calendario',bg:at?'#fef2f2':'#eff6ff',color:at?'#dc2626':'var(--primary)',valueColor:(at?'var(--st-bloqueado)':'var(--primary)'),foot:(p.dias_planejados!=null?p.dias_planejados+' dias planejados':'')});
-  h += kpiHtml({label:'Gerente',value:personLinkHtml(p.gp),icon:'pessoas',bg:'#eff6ff',color:'#2563eb',valueFontSize:'16px'});
-  h += kpiHtml({label:'Equipe',value:p.qe,icon:'pessoas',bg:'#eff6ff',color:'#2563eb',foot:'pessoas'});
+  h += kpiHtml({label:'Horas Realizadas',value:fH(p.horas_apo),icon:'horas',bg:'#eef2ff',color:'#4f46e5',valueColor:'var(--primary)',foot:(pctEst!=null?pctEst+'% do total':'')});
+  h += kpiHtml({label:'Horas Previstas',value:fH(p.horas_est),icon:'horas',bg:'#f0fdfa',color:'#0f766e',foot:'planejado'});
+  h += kpiHtml({label:'% Conclusão',value:pct+'%',icon:'check',bg:'#f0fdf4',color:'#16a34a',valueColor:'#16a34a',foot:'de '+p.tar_total+' tarefas'});
+  h += kpiHtml({label:'Vencendo Esta Semana',value:tarefasSemana.length,icon:'alerta',bg:tarefasSemana.length>0?'#fef2f2':'#eff6ff',color:tarefasSemana.length>0?'#dc2626':'var(--primary)',valueColor:(tarefasSemana.length>0?'var(--st-bloqueado)':'var(--primary)')});
   h += '</div>';
 
   // Timeline dos 4 marcos de data do projeto (item pedido) — usa só os dados
@@ -4336,18 +4403,21 @@ function renderProjDetail(pjName){
     return th;
   })();
 
-  h += '<div class="grid grid-kpi" style="margin-bottom:16px">';
-  h += kpiHtml({label:'Horas Previstas',value:fH(p.horas_est),icon:'horas',bg:'#f0fdfa',color:'#0f766e'});
-  h += kpiHtml({label:'Horas Realizadas',value:fH(p.horas_apo),icon:'horas',bg:'#eef2ff',color:'#4f46e5',valueColor:'var(--primary)'});
-  h += kpiHtml({label:'Consumo de Horas',value:(pctEst!=null?pctEst+'%':'—'),icon:'balanca',bg:pctEst>100?'#fef2f2':'#f8fafc',color:pctEst>100?'#dc2626':'#64748b',valueColor:(pctEst>100?'var(--st-bloqueado)':'var(--text)')});
-  h += kpiHtml({label:'Vencendo Esta Semana',value:tarefasSemana.length,icon:'alerta',bg:tarefasSemana.length>0?'#fef2f2':'#eff6ff',color:tarefasSemana.length>0?'#dc2626':'var(--primary)',valueColor:(tarefasSemana.length>0?'var(--st-bloqueado)':'var(--primary)')});
-  h += '</div>';
-
-  // Equipe
+  // Equipe + Tarefas por Status (rosca) lado a lado
+  h += '<div class="grid grid-2b" style="margin-bottom:16px">';
   h += '<div class="pd-section"><h3>👥 Equipe do Projeto</h3><div style="display:flex;flex-wrap:wrap;gap:8px">';
   (p.eq||[]).forEach(nome=>{ h += '<span class="status-pill" style="font-size:12px;padding:5px 12px">'+personLinkHtml(nome)+'</span>'; });
   if(!p.eq || p.eq.length===0) h += '<span style="color:var(--text-faint);font-size:13px">Nenhum membro cadastrado.</span>';
   h += '</div></div>';
+  const statusEntries=Object.entries(statusCount).sort((a,b)=>b[1]-a[1]);
+  h += '<div class="pd-section"><h3>📊 Tarefas por Status</h3>';
+  if(statusEntries.length>0){
+    h += '<div class="pd-donut-wrap"><div style="width:120px;height:120px;flex-shrink:0"><canvas id="pd-status-donut"></canvas></div><div style="flex:1;min-width:140px">'+
+      statusEntries.map(([s,c])=>'<div class="pd-legend-item"><span style="display:flex;align-items:center;gap:8px"><span class="pd-legend-dot" style="background:'+(STATUS_COLOR[s]||'#64748b')+'"></span>'+s+'</span><strong>'+c+'</strong></div>').join('')+
+    '</div></div>';
+  } else { h += '<div class="empty-state"><p>Sem tarefas.</p></div>'; }
+  h += '</div>';
+  h += '</div>';
 
   // Filtro de tags
   if(allTags.size>0){
@@ -4359,43 +4429,35 @@ function renderProjDetail(pjName){
     h += '</div></div>';
   }
 
-  // Tarefas por status
+  // Tarefas em Destaque (mesmo critério de "vencendo esta semana" já usado
+  // hoje) + Bloqueadas/Atrasadas empilhadas ao lado, mais compactas.
   h += '<div class="grid grid-2b" style="margin-bottom:16px">';
-  h += '<div class="pd-section"><h3>📊 Tarefas por Status</h3><div class="table-wrap" style="max-height:280px">';
-  h += '<table><thead><tr><th>Status</th><th>Qtd</th></tr></thead><tbody>';
-  Object.entries(statusCount).sort((a,b)=>b[1]-a[1]).forEach(([s,c])=>{
-    h += '<tr><td><span class="status-pill" style="border-left:3px solid '+(STATUS_COLOR[s]||'#64748b')+'">'+s+'</span></td><td><strong>'+c+'</strong></td></tr>';
-  });
-  if(Object.keys(statusCount).length===0) h += '<tr><td colspan="2" style="color:var(--text-faint)">Sem tarefas.</td></tr>';
-  h += '</tbody></table></div></div>';
-
-  // Tarefas da semana
-  h += '<div class="pd-section"><h3>📅 Tarefas Vencendo Esta Semana ('+monISO.slice(8,10)+'/'+monISO.slice(5,7)+' a '+sunISO.slice(8,10)+'/'+sunISO.slice(5,7)+')</h3><div class="table-wrap" style="max-height:280px">';
+  h += '<div class="pd-section"><h3>🔴 Tarefas em Destaque'+(tarefasSemana.length>0?' <span class="sub" style="color:var(--st-bloqueado)">'+tarefasSemana.length+' vencendo esta semana</span>':'')+'</h3><div class="table-wrap" style="max-height:280px">';
   if(tarefasSemana.length>0){
     h += '<table><thead><tr><th>Tarefa</th><th>Responsável</th><th>Vencimento</th></tr></thead><tbody>';
     tarefasSemana.forEach(t=>{ const idx=PROJ_TASKS[pjName].indexOf(t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>40?t.tarefa.slice(0,40)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td>'+t.dt_venc+'</td></tr>'; });
     h += '</tbody></table>';
   } else { h += '<div class="empty-state"><p>Nenhuma tarefa vencendo esta semana.</p></div>'; }
   h += '</div></div>';
-  h += '</div>';
 
-  // Bloqueadas
-  h += '<div class="pd-section"><h3>🚫 Tarefas Bloqueadas ('+bloqueadas.length+')</h3><div class="table-wrap" style="max-height:280px">';
+  h += '<div style="display:flex;flex-direction:column;gap:16px">';
+  h += '<div class="pd-section" style="margin:0"><h3>🚫 Tarefas Bloqueadas <span class="sub">'+bloqueadas.length+'</span></h3><div class="table-wrap" style="max-height:130px">';
   if(bloqueadas.length>0){
     h += '<table><thead><tr><th>Tarefa</th><th>Responsável</th><th>Vencimento</th></tr></thead><tbody>';
     bloqueadas.forEach(t=>{ const idx=PROJ_TASKS[pjName].indexOf(t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>45?t.tarefa.slice(0,45)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td>'+(t.dt_venc||'—')+'</td></tr>'; });
     h += '</tbody></table>';
-  } else { h += '<div class="empty-state"><p>Nenhuma tarefa bloqueada.</p></div>'; }
+  } else { h += '<div class="empty-state" style="padding:16px"><p>Nenhuma tarefa bloqueada.</p></div>'; }
   h += '</div></div>';
 
-  // Atrasadas
-  h += '<div class="pd-section"><h3>⏰ Tarefas Atrasadas ('+atrasadas.length+')</h3><div class="table-wrap" style="max-height:280px">';
+  h += '<div class="pd-section" style="margin:0"><h3>⏰ Tarefas Atrasadas <span class="sub">'+atrasadas.length+'</span></h3><div class="table-wrap" style="max-height:130px">';
   if(atrasadas.length>0){
     h += '<table><thead><tr><th>Tarefa</th><th>Responsável</th><th>Status</th><th>Venceu em</th></tr></thead><tbody>';
     atrasadas.forEach(t=>{ const idx=PROJ_TASKS[pjName].indexOf(t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>40?t.tarefa.slice(0,40)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td><span class="status-pill">'+t.status+'</span></td><td style="color:var(--st-bloqueado)">'+t.dt_venc+'</td></tr>'; });
     h += '</tbody></table>';
-  } else { h += '<div class="empty-state"><p>Nenhuma tarefa atrasada.</p></div>'; }
+  } else { h += '<div class="empty-state" style="padding:16px"><p>Nenhuma tarefa atrasada.</p></div>'; }
   h += '</div></div>';
+  h += '</div>';
+  h += '</div>';
 
   // Faltando dados
   h += '<div class="pd-section"><h3>⚠️ Tarefas com Dados Incompletos ('+faltando.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Sem data de início, vencimento e/ou responsável</span>';
@@ -4437,6 +4499,26 @@ function renderProjDetail(pjName){
   h += '<span class="sub" id="pd-gantt-sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px"></span><div id="pd-gantt-wrap" style="overflow-y:auto;max-height:520px"></div></div>';
 
   document.getElementById('projdetail-content').innerHTML = h;
+  if(ch.pdStatus){ try{ch.pdStatus.destroy();}catch(e){} }
+  const donutCanvas=document.getElementById('pd-status-donut');
+  if(donutCanvas && typeof Chart!=='undefined' && statusEntries.length>0){
+    ch.pdStatus=new Chart(donutCanvas,{
+      type:'doughnut',
+      data:{ labels:statusEntries.map(([s])=>s), datasets:[{ data:statusEntries.map(([,c])=>c), backgroundColor:statusEntries.map(([s])=>STATUS_COLOR[s]||'#64748b'), borderWidth:2, borderColor:'var(--surface)' }] },
+      options:{ responsive:true, maintainAspectRatio:false, cutout:'68%', plugins:{ legend:{display:false}, tooltip:{callbacks:{label:(c)=>c.label+': '+c.raw}} } },
+      plugins:[{ id:'centroTotal', afterDraw:(chart)=>{
+        const {ctx,chartArea}=chart; if(!chartArea) return;
+        const total=chart.data.datasets[0].data.reduce((a,b)=>a+b,0);
+        const cx=(chartArea.left+chartArea.right)/2, cy=(chartArea.top+chartArea.bottom)/2;
+        ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.font='700 20px '+getComputedStyle(document.body).fontFamily; ctx.fillStyle=getComputedStyle(document.body).color;
+        ctx.fillText(total,cx,cy-6);
+        ctx.font='600 9px '+getComputedStyle(document.body).fontFamily; ctx.fillStyle='#94a3b8';
+        ctx.fillText('TOTAL',cx,cy+11);
+        ctx.restore();
+      }}]
+    });
+  }
   PD_GANTT_BASE_TASKS = tasks;
   renderGanttChart(tasks);
 }
