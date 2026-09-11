@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbz1B8AP9sitEYGVZWzAu3-vv0J_EHI_iPqLJENolUWgTjfHwjIAuNZoA3TMfbXqdwFpiA/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbx8hOfq-2duy8YXDXkP1dbrwXTNHFEy5q0botL2jC99ZpWcRnnGMMEXkxBLFE6gVWJM6w/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1578,7 +1578,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v9.0 · Última atualização: —</footer>
+  <footer id="app-footer">v9.2 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1705,7 +1705,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v9.0';
+const APP_VERSION='v9.2';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -4395,6 +4395,11 @@ function renderProjDetail(pjName){
   // Semana atual
   const [monISO,sunISO] = getMondaySundayISO();
   const tarefasSemana = tasks.filter(t=> t.dt_venc_iso && t.dt_venc_iso>=monISO && t.dt_venc_iso<=sunISO);
+  // Mesma janela, mas dentro do recorte do bloco (dt_cadastro>=corte, sem
+  // Backlog/Reuniões) — é a que alimenta o KPI "Vencendo Esta Semana" deste
+  // bloco especificamente; "Tarefas em Destaque" mais abaixo continua usando
+  // a lista completa (tarefasSemana), que é um contexto diferente.
+  const tarefasSemanaBloco = tasksStatusBloco.filter(t=> t.dt_venc_iso && t.dt_venc_iso>=monISO && t.dt_venc_iso<=sunISO);
 
   // Bloqueadas
   const bloqueadas = tasks.filter(t=> (t.status||'').toLowerCase().includes('block'));
@@ -4408,6 +4413,13 @@ function renderProjDetail(pjName){
   // — a tarefa continua bloqueada normalmente nas demais listas/indicadores,
   // só fica fora do indicador de atraso especificamente.
   const atrasadas = tasks.filter(t=> t.dt_venc_iso && t.dt_venc_iso<hojeISO && !t.dt_conc && (t.status||'').toLowerCase()!=='done' && (t.status||'').toLowerCase()!=='blocked');
+
+  // % Conclusão do bloco: usa o mesmo recorte (dt_cadastro>=corte, sem
+  // Backlog/Reuniões) — por isso pode ser diferente do "X% concluído" que
+  // aparece no Resumo do Projeto acima, que reflete o projeto INTEIRO sem
+  // esse recorte (são dois números com propósito diferente, de propósito).
+  const concluidasBloco = tasksStatusBloco.filter(t=>(t.status||'').toLowerCase()==='done').length;
+  const pctBloco = tasksStatusBloco.length>0?Math.round(concluidasBloco/tasksStatusBloco.length*100):0;
 
   const pct = p.tar_total>0?Math.round(p.tar_conc/p.tar_total*100):0;
   const pctEst = p.horas_est>0?Math.round(p.horas_apo/p.horas_est*100):null;
@@ -4453,8 +4465,8 @@ function renderProjDetail(pjName){
   h += kpiHtml({label:'Prazo',value:(p.dd||'—'),icon:'calendario',bg:at?'#fef2f2':'#eff6ff',color:at?'#dc2626':'var(--primary)',valueColor:(at?'var(--st-bloqueado)':'var(--primary)'),foot:(p.dias_planejados!=null?p.dias_planejados+' dias planejados':'')});
   h += kpiHtml({label:'Horas Previstas',value:fH(p.horas_est),icon:'horas',bg:'#f0fdfa',color:'#0f766e',foot:'planejado'});
   h += kpiHtml({label:'Horas Realizadas',value:fH(p.horas_apo),icon:'horas',bg:'#eef2ff',color:'#4f46e5',valueColor:'var(--primary)',foot:(pctEst!=null?pctEst+'% do total':'')});
-  h += kpiHtml({label:'% Conclusão',value:pct+'%',icon:'check',bg:'#f0fdf4',color:'#16a34a',valueColor:'#16a34a',foot:'de '+p.tar_total+' tarefas'});
-  h += kpiHtml({label:'Vencendo Esta Semana',value:tarefasSemana.length,icon:'alerta',bg:tarefasSemana.length>0?'#fef2f2':'#eff6ff',color:tarefasSemana.length>0?'#dc2626':'var(--primary)',valueColor:(tarefasSemana.length>0?'var(--st-bloqueado)':'var(--primary)')});
+  h += kpiHtml({label:'% Conclusão',value:pctBloco+'%',icon:'check',bg:'#f0fdf4',color:'#16a34a',valueColor:'#16a34a',foot:'de '+tasksStatusBloco.length+' tarefas'});
+  h += kpiHtml({label:'Vencendo Esta Semana',value:tarefasSemanaBloco.length,icon:'alerta',bg:tarefasSemanaBloco.length>0?'#fef2f2':'#eff6ff',color:tarefasSemanaBloco.length>0?'#dc2626':'var(--primary)',valueColor:(tarefasSemanaBloco.length>0?'var(--st-bloqueado)':'var(--primary)')});
   h += '</div>';
 
   // Timeline dos 4 marcos de data do projeto (item pedido) — usa só os dados
