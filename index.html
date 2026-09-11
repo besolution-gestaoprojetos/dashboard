@@ -1112,6 +1112,16 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .loading-global-retry{flex-shrink:0; font-size:12.5px; font-weight:700; color:var(--primary); background:var(--primary-100); border:none; border-radius:8px; padding:6px 14px; cursor:pointer;}
 .loading-global-retry:hover{background:var(--primary); color:#fff;}
 @media (max-width:700px){#loading-global{top:56px;} .loading-global-msg{font-size:12px;}}
+
+/* Loading inline reutilizável — mesma linguagem visual do loading global
+   (spinner + barra indeterminada), só que compacto e centrado, pra usar
+   DENTRO de uma área de conteúdo específica (ex: uma lista carregando),
+   em vez da faixa fixa no topo da página inteira. */
+.loading-inline{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:60px 20px;}
+.loading-inline .login-spinner{width:26px; height:26px; border-width:3px;}
+.loading-inline-msg{font-size:13px; font-weight:600; color:var(--text-muted);}
+.loading-inline-bar-track{width:180px; height:4px; border-radius:999px; background:var(--surface-alt); overflow:hidden; position:relative;}
+.loading-inline-bar-fill{position:absolute; top:0; left:0; height:100%; width:35%; border-radius:999px; background:var(--primary); animation:loading-global-indeterminado 1.3s ease-in-out infinite;}
 #main-shell.aguardando-dados > .page{display:none !important;}
 #main-shell.aguardando-dados #shell-loading-placeholder{display:block !important;}
 #main-shell.aguardando-dados #global-voltar-btn{display:none !important;}
@@ -1568,7 +1578,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v8.8 · Última atualização: —</footer>
+  <footer id="app-footer">v9.0 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1651,6 +1661,12 @@ function loadDataJSONP(url){
 // Nunca mostra porcentagem inventada: a barra é sempre indeterminada (só
 // anima), já que o Apps Script não expõe progresso real de execução.
 // ============================================================
+// Versão "inline" do mesmo padrão visual do loading global (spinner + barra
+// indeterminada), pra usar dentro de uma área de conteúdo específica (ex:
+// uma lista/formulário carregando) em vez da faixa fixa no topo da página.
+function loadingInlineHtml(mensagem){
+  return '<div class="loading-inline"><div class="login-spinner"></div><div class="loading-inline-msg">'+mensagem+'</div><div class="loading-inline-bar-track"><div class="loading-inline-bar-fill"></div></div></div>';
+}
 function mostrarLoadingGlobal(mensagem){
   const el=document.getElementById('loading-global');
   el.classList.remove('error');
@@ -1689,7 +1705,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v8.8';
+const APP_VERSION='v9.0';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2676,19 +2692,11 @@ function initAlocacoes(){
     document.getElementById('f-aloc-prioridade').value='';
     renderAlocacoes();
   };
-  renderAlocacoes();
-}
-function renderAlocacoes(){
-  const fPessoa=document.getElementById('f-aloc-pessoa').value;
-  const fQtdProj=document.getElementById('f-aloc-qtdproj').value;
-  const fStatus=document.getElementById('f-aloc-status').value;
-  const fComplexidade=document.getElementById('f-aloc-complexidade').value;
-  const fPrioridade=document.getElementById('f-aloc-prioridade').value;
-
-  let pessoas=D.p.filter(p=>p.a);
-  if(fPessoa) pessoas=pessoas.filter(p=>p.a===fPessoa);
-
-  let linhas=pessoas.map(p=>{
+  // Base calculada aqui, uma vez só (ao abrir a página) — projetosVinculados
+  // por pessoa não muda entre um clique de filtro e outro na mesma sessão,
+  // então recalcular pra todo mundo a cada filtro era trabalho repetido à
+  // toa; agora os filtros só reduzem/reordenam o que já foi calculado.
+  ALOC_LINHAS_BASE=D.p.filter(p=>p.a).map(p=>{
     const ek=(p.email||'').toLowerCase();
     const projetosVinculados=alocProjetosDaPessoa(p);
     const qtdTarefas=Object.values(PSTAT[ek]||{}).reduce((s,v)=>s+v,0);
@@ -2697,6 +2705,18 @@ function renderAlocacoes(){
     const statusesDaPessoa=new Set(Object.keys(PSTAT[ek]||{}));
     return {p,projetosVinculados,qtdTarefas,horasPrevistas,horasApontadas,statusesDaPessoa};
   });
+  renderAlocacoes();
+}
+let ALOC_LINHAS_BASE=[];
+function renderAlocacoes(){
+  const fPessoa=document.getElementById('f-aloc-pessoa').value;
+  const fQtdProj=document.getElementById('f-aloc-qtdproj').value;
+  const fStatus=document.getElementById('f-aloc-status').value;
+  const fComplexidade=document.getElementById('f-aloc-complexidade').value;
+  const fPrioridade=document.getElementById('f-aloc-prioridade').value;
+
+  let linhas=ALOC_LINHAS_BASE;
+  if(fPessoa) linhas=linhas.filter(l=>l.p.a===fPessoa);
 
   // Qtd. de Projetos agora é sempre quantidade EXATA (sem "ou mais")
   if(fQtdProj!=='') linhas=linhas.filter(l=>l.projetosVinculados.length===parseInt(fQtdProj));
@@ -2739,6 +2759,13 @@ function renderAlocacoes(){
 // ao servidor — tudo já está em memória desde o login).
 // ============================================================
 function initInteligenciaAlocacao(){
+  // Cálculo do score de TODAS as pessoas feito aqui, uma vez só (ao abrir a
+  // página) — não mais dentro de renderInteligenciaAlocacao, que roda a cada
+  // troca de filtro. Os dados-base (D.p, D.pj, PROJ_TASKS) não mudam entre um
+  // clique de filtro e outro na mesma sessão, então recalcular tudo de novo a
+  // cada filtro era trabalho repetido sem necessidade — só refiltrar/reordenar
+  // o resultado já calculado é suficiente e muito mais rápido.
+  IA_ANALISES_CACHE=iaCalcularTodasAnalises_();
   // Mesma exclusão de Heads aplicada em iaCalcularTodasAnalises_ — precisa
   // valer também aqui, senão o filtro de Pessoa ainda ofereceria o nome de um
   // Head como opção (mesmo que selecioná-lo não trouxesse nenhum resultado).
@@ -2786,7 +2813,6 @@ function renderInteligenciaAlocacao(){
   const fPrioridade=document.getElementById('f-ia-prioridade').value;
   const fStatus=document.getElementById('f-ia-status').value;
 
-  IA_ANALISES_CACHE=iaCalcularTodasAnalises_();
   let linhas=IA_ANALISES_CACHE;
 
   if(fPessoa) linhas=linhas.filter(l=>l.pessoa.a===fPessoa);
@@ -2953,7 +2979,7 @@ function peMostrarView(modo){
 
 // ---------- LISTA / BUSCA ----------
 async function carregarListaPortfolio(){
-  document.getElementById('pe-lista-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Carregando lista de projetos…</p></div>';
+  document.getElementById('pe-lista-view').innerHTML=loadingInlineHtml('Carregando lista de projetos…');
   peMostrarView('lista');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
@@ -3034,7 +3060,7 @@ async function carregarProjetoParaEdicao(nomeProjeto){
   if(PE_PROJETO_EM_CARREGAMENTO===nomeProjeto) return; // já está carregando este mesmo projeto — ignora o clique repetido
   PE_PROJETO_EM_CARREGAMENTO=nomeProjeto;
   const minhaSeq=++PE_CARREGAMENTO_SEQ;
-  document.getElementById('pe-form-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Carregando…</p></div>';
+  document.getElementById('pe-form-view').innerHTML=loadingInlineHtml('Carregando…');
   peMostrarView('form');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
