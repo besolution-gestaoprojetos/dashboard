@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwfuk5bSRMs0vqnwMKs2N-QbVAmqjUmVNt8UX7zyGh8-nyblu7k87mC5kPEfuyYViSdYg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbz1B8AP9sitEYGVZWzAu3-vv0J_EHI_iPqLJENolUWgTjfHwjIAuNZoA3TMfbXqdwFpiA/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -164,13 +164,17 @@ a{color:inherit;}
 .nav-cat.open .nav-cat-caret{transform:rotate(180deg);}
 
 .nav-cat-panel{
-  position:absolute; top:calc(100% + 8px); left:0; min-width:210px; z-index:10001;
+  position:absolute; top:calc(100% + 8px); left:0; min-width:210px; max-width:calc(100vw - 32px); z-index:10001;
   background:var(--surface); border:1px solid var(--border); border-radius:12px;
   box-shadow:0 14px 30px -8px rgba(0,0,0,.22); padding:6px;
   display:flex; flex-direction:column; gap:2px;
   opacity:0; visibility:hidden; transform:translateY(-6px);
   transition:opacity .18s ease, transform .18s ease, visibility .18s;
 }
+/* A última categoria (mais à direita na barra) abre o painel alinhado pela
+   direita, não pela esquerda — evita que ele estoure a borda direita da tela
+   em telas médias/estreitas, antes do breakpoint mobile entrar em ação. */
+.nav-menu>.nav-cat:last-child .nav-cat-panel{left:auto; right:0;}
 .nav-cat.open .nav-cat-panel{opacity:1; visibility:visible; transform:translateY(0);}
 .nav-cat-panel .nav-tab{
   display:block; text-align:left; width:100%; border-radius:8px; padding:9px 12px;
@@ -191,7 +195,8 @@ a{color:inherit;}
 .nav-hamburger.active span:before{transform:rotate(45deg); top:0;}
 .nav-hamburger.active span:after{transform:rotate(-45deg); top:0;}
 
-@media (max-width:640px){
+@media (max-width:900px){
+  .topbar{flex-wrap:wrap; padding:10px 14px;}
   .nav-hamburger{display:flex;}
   .nav-menu{
     display:none; position:fixed; top:60px; left:0; right:0; bottom:0; z-index:9997;
@@ -223,7 +228,7 @@ a{color:inherit;}
 }
 .viewas-btn:hover{background:var(--primary); color:#fff;}
 .viewas-dropdown{
-  position:absolute; top:calc(100% + 8px); right:0; z-index:10000; width:320px;
+  position:absolute; top:calc(100% + 8px); right:0; z-index:10000; width:320px; max-width:calc(100vw - 32px);
   background:var(--surface); border:1px solid var(--border); border-radius:12px;
   box-shadow:0 12px 30px -8px rgba(0,0,0,.25); padding:12px; max-height:400px; display:flex; flex-direction:column;
 }
@@ -588,7 +593,6 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 }
 
 @media (max-width:640px){
-  .topbar{flex-wrap:wrap; padding:10px 14px;}
   main{padding:16px 14px 40px;}
   .bullet-row{grid-template-columns:100px 1fr 36px;}
 }
@@ -685,6 +689,18 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
   main{max-width:100% !important; padding:0 !important;}
   .card, .pd-section, .pd-infocard, .kpi{box-shadow:none !important; break-inside:avoid;}
   .pd-hero{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+}
+/* Exportar PDF de dentro do modal de Status Report — precisa de uma exceção
+   à regra acima (que esconde .task-modal-overlay), e também tirar o modal do
+   position:fixed, que muitos navegadores simplesmente NÃO imprimem/cortam. */
+body.imprimindo-sr-exec .topbar, body.imprimindo-sr-exec .nav-menu, body.imprimindo-sr-exec .voltar-strip,
+body.imprimindo-sr-exec #main-shell, body.imprimindo-sr-exec footer, body.imprimindo-sr-exec .viewas-loading-toast,
+body.imprimindo-sr-exec #loading-global{display:none !important;}
+@media print{
+  body.imprimindo-sr-exec #sr-exec-modal-overlay{display:block !important; position:static !important; background:none !important; padding:0 !important;}
+  body.imprimindo-sr-exec .sr-exec-card{position:static !important; max-width:100% !important; max-height:none !important; box-shadow:none !important;}
+  body.imprimindo-sr-exec .task-modal-header{display:none !important;}
+  body.imprimindo-sr-exec .sr-exec-doc{margin:0 !important; box-shadow:none !important;}
 }
 .task-resp-mais:hover{background:var(--primary); color:#fff;}
 .person-link:hover,.task-link:hover{color:var(--primary); text-decoration-color:var(--primary);}
@@ -1552,7 +1568,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v8.7 · Última atualização: —</footer>
+  <footer id="app-footer">v8.8 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1579,7 +1595,10 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
   <div class="task-modal-card sr-exec-card">
     <div class="task-modal-header" style="padding:10px 16px">
       <h3 style="font-size:13px;color:var(--text-faint)">Visualização · Status Report</h3>
-      <button id="sr-exec-modal-close" type="button" aria-label="Fechar">✕</button>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button id="sr-exec-export-pdf" type="button" class="filter-clear" style="font-size:12px;padding:6px 12px">⬇️ Exportar PDF</button>
+        <button id="sr-exec-modal-close" type="button" aria-label="Fechar">✕</button>
+      </div>
     </div>
     <div id="sr-exec-modal-body" class="task-modal-body" style="padding:0;background:#f1f5f9"></div>
   </div>
@@ -1670,7 +1689,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v8.7';
+const APP_VERSION='v8.8';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2802,6 +2821,7 @@ function renderInteligenciaAlocacao(){
   const setaCol=(col)=>IA_SORT_STATE.col===col?(IA_SORT_STATE.dir==='asc'?' ▲':' ▼'):'';
   let h='<div class="card"><div class="card-title"><h3>Análise por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:620px"><table><thead><tr>'+
     '<th class="ia-th-sort" data-col="pessoa">Pessoa'+setaCol('pessoa')+'</th>'+
+    '<th>Cargo</th><th>Nível</th>'+
     '<th class="ia-th-sort" data-col="projetos">Projetos'+setaCol('projetos')+'</th>'+
     '<th>Complexidade</th><th>Prioridade</th>'+
     '<th class="ia-th-sort" data-col="entrega">Próxima Entrega'+setaCol('entrega')+'</th>'+
@@ -2810,12 +2830,14 @@ function renderInteligenciaAlocacao(){
     '<th class="ia-th-sort" data-col="horasApontadas">H. Apontadas'+setaCol('horasApontadas')+'</th>'+
     '<th class="ia-th-sort" data-col="score">Score'+setaCol('score')+'</th><th>Situação</th></tr></thead><tbody>';
   if(linhas.length===0){
-    h+='<tr><td colspan="10" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
+    h+='<tr><td colspan="12" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
   }else{
     linhas.forEach(l=>{
       const entregaTxt=l.proximaEntrega?(l.proximaEntrega.data+(l.proximaEntrega.diasRestantes!=null?' ('+(l.proximaEntrega.diasRestantes<0?'vencido':l.proximaEntrega.diasRestantes+'d'):'')+')'):'—';
       h+='<tr class="ia-row" data-ia-pessoa="'+l.pessoa.a.replace(/"/g,'&quot;')+'" style="cursor:pointer">'+
         '<td><strong>'+personLinkHtml(l.pessoa.a)+'</strong></td>'+
+        '<td>'+(l.pessoa.cargo||'—')+'</td>'+
+        '<td>'+(l.pessoa.nv||'—')+'</td>'+
         '<td>'+l.qtdProjetos+'</td>'+
         '<td>'+(l.complexidadeMax!=='—'?'<span class="status-pill">'+l.complexidadeMax+'</span>':'—')+'</td>'+
         '<td>'+(l.prioridadeMax!=='—'?'<span class="status-pill">'+l.prioridadeMax+'</span>':'—')+'</td>'+
@@ -3977,6 +3999,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   });
   document.getElementById('pd-historico-sr-btn').onclick=()=>{ if(PD_CURRENT_PJ) abrirHistoricoStatusReportModal(PD_CURRENT_PJ); };
   document.getElementById('pd-export-pdf').onclick=()=>{ window.print(); };
+  document.getElementById('sr-exec-export-pdf').onclick=exportarStatusReportPdf;
 });
 
 function getMondaySundayISO(){ return getMondaySunday(new Date()); }
@@ -4183,6 +4206,25 @@ function coletarTarefasDaPessoa(emailKey, nomePessoa){
 // Abre a lista de tarefas de uma pessoa filtrada por status (clique em "Tarefas
 // por Status" no Desempenho) — cada linha da lista abre o detalhamento completo
 // daquela tarefa, reaproveitando o mesmo modal.
+// Mesma ideia de abrirListaTarefasPorStatus (pessoa), mas escopada ao
+// projeto — usada pelo clique na quantidade do bloco "Tarefas por Status" do
+// Detalhamento do Projeto. Recebe a MESMA lista já filtrada usada no
+// KPI/gráfico (tasksStatusBloco), garantindo que a listagem bata exatamente
+// com o número mostrado, sem recalcular nada diferente.
+function abrirListaTarefasPorStatusDoProjeto(pjName, status, listaFiltrada){
+  const itens=listaFiltrada.filter(t=>(t.status||'Sem status')===status);
+  let h='<div style="margin-bottom:10px;font-size:12px;color:var(--text-faint)">'+itens.length+' tarefa(s) de <strong>'+pjName+'</strong> com status <strong>'+status+'</strong></div>';
+  if(itens.length===0){
+    h+='<div class="empty-state" style="padding:30px 10px"><p>Nenhuma tarefa encontrada.</p></div>';
+  }else{
+    h+='<div class="table-wrap" style="max-height:400px"><table><thead><tr><th>Tarefa</th><th>Responsável</th><th>Vencimento</th></tr></thead><tbody>';
+    itens.forEach(t=>{ const idx=PROJ_TASKS[pjName].indexOf(t); h+='<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>45?t.tarefa.slice(0,45)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td>'+(t.dt_venc||'—')+'</td></tr>'; });
+    h+='</tbody></table></div>';
+  }
+  document.getElementById('task-modal-title').textContent='Tarefas — '+status;
+  document.getElementById('task-modal-body').innerHTML=h;
+  document.getElementById('task-modal-overlay').classList.add('show');
+}
 function abrirListaTarefasPorStatus(emailKey, nomePessoa, status){
   const itens=coletarTarefasDaPessoa(emailKey,nomePessoa).filter(x=>(x.t.status||'Sem status')===status);
   let h='<div style="margin-bottom:10px;font-size:12px;color:var(--text-faint)">'+itens.length+' tarefa(s) com status <strong>'+status+'</strong></div>';
@@ -4310,9 +4352,19 @@ function renderProjDetail(pjName){
     tasks = tasks.filter(t=> t.tag && t.tag.split(',').map(s=>s.trim()).includes(PD_TAG_FILTER));
   }
 
-  // Status counts (on filtered set)
+  // Status counts — bloco "Tarefas por Status" tem um recorte PRÓPRIO,
+  // aplicado só aqui (não afeta Destaque/Bloqueadas/Atrasadas/Gantt, que
+  // continuam usando `tasks` sem esse recorte): só tarefas criadas a partir
+  // de 01/06/2026 (dt_cadastro), e nunca Backlog/Reuniões.
+  const DATA_CORTE_STATUS_BLOCO='2026-06-01';
+  const STATUS_EXCLUIDOS_BLOCO=['backlog','reunioes','reuniões'];
+  const tasksStatusBloco=tasks.filter(t=>{
+    if(STATUS_EXCLUIDOS_BLOCO.includes((t.status||'').toLowerCase())) return false;
+    if(!t.dt_cadastro_iso || t.dt_cadastro_iso<DATA_CORTE_STATUS_BLOCO) return false;
+    return true;
+  });
   const statusCount = {};
-  tasks.forEach(t=>{ statusCount[t.status]=(statusCount[t.status]||0)+1; });
+  tasksStatusBloco.forEach(t=>{ statusCount[t.status]=(statusCount[t.status]||0)+1; });
 
   // Semana atual
   const [monISO,sunISO] = getMondaySundayISO();
@@ -4373,8 +4425,8 @@ function renderProjDetail(pjName){
   // 5 KPIs principais
   h += '<div class="grid grid-kpi" style="margin-bottom:16px">';
   h += kpiHtml({label:'Prazo',value:(p.dd||'—'),icon:'calendario',bg:at?'#fef2f2':'#eff6ff',color:at?'#dc2626':'var(--primary)',valueColor:(at?'var(--st-bloqueado)':'var(--primary)'),foot:(p.dias_planejados!=null?p.dias_planejados+' dias planejados':'')});
-  h += kpiHtml({label:'Horas Realizadas',value:fH(p.horas_apo),icon:'horas',bg:'#eef2ff',color:'#4f46e5',valueColor:'var(--primary)',foot:(pctEst!=null?pctEst+'% do total':'')});
   h += kpiHtml({label:'Horas Previstas',value:fH(p.horas_est),icon:'horas',bg:'#f0fdfa',color:'#0f766e',foot:'planejado'});
+  h += kpiHtml({label:'Horas Realizadas',value:fH(p.horas_apo),icon:'horas',bg:'#eef2ff',color:'#4f46e5',valueColor:'var(--primary)',foot:(pctEst!=null?pctEst+'% do total':'')});
   h += kpiHtml({label:'% Conclusão',value:pct+'%',icon:'check',bg:'#f0fdf4',color:'#16a34a',valueColor:'#16a34a',foot:'de '+p.tar_total+' tarefas'});
   h += kpiHtml({label:'Vencendo Esta Semana',value:tarefasSemana.length,icon:'alerta',bg:tarefasSemana.length>0?'#fef2f2':'#eff6ff',color:tarefasSemana.length>0?'#dc2626':'var(--primary)',valueColor:(tarefasSemana.length>0?'var(--st-bloqueado)':'var(--primary)')});
   h += '</div>';
@@ -4413,7 +4465,7 @@ function renderProjDetail(pjName){
   h += '<div class="pd-section"><h3>📊 Tarefas por Status</h3>';
   if(statusEntries.length>0){
     h += '<div class="pd-donut-wrap"><div style="width:120px;height:120px;flex-shrink:0"><canvas id="pd-status-donut"></canvas></div><div style="flex:1;min-width:140px">'+
-      statusEntries.map(([s,c])=>'<div class="pd-legend-item"><span style="display:flex;align-items:center;gap:8px"><span class="pd-legend-dot" style="background:'+(STATUS_COLOR[s]||'#64748b')+'"></span>'+s+'</span><strong>'+c+'</strong></div>').join('')+
+      statusEntries.map(([s,c])=>'<div class="pd-legend-item pd-status-clicavel" data-status="'+s.replace(/"/g,'&quot;')+'" style="cursor:pointer"><span style="display:flex;align-items:center;gap:8px"><span class="pd-legend-dot" style="background:'+(STATUS_COLOR[s]||'#64748b')+'"></span>'+s+'</span><strong>'+c+'</strong></div>').join('')+
     '</div></div>';
   } else { h += '<div class="empty-state"><p>Sem tarefas.</p></div>'; }
   h += '</div>';
@@ -4499,12 +4551,15 @@ function renderProjDetail(pjName){
   h += '<span class="sub" id="pd-gantt-sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px"></span><div id="pd-gantt-wrap" style="overflow-y:auto;max-height:520px"></div></div>';
 
   document.getElementById('projdetail-content').innerHTML = h;
+  document.querySelectorAll('#projdetail-content .pd-status-clicavel').forEach(el=>{
+    el.addEventListener('click',()=>{ abrirListaTarefasPorStatusDoProjeto(pjName, el.dataset.status, tasksStatusBloco); });
+  });
   if(ch.pdStatus){ try{ch.pdStatus.destroy();}catch(e){} }
   const donutCanvas=document.getElementById('pd-status-donut');
   if(donutCanvas && typeof Chart!=='undefined' && statusEntries.length>0){
     ch.pdStatus=new Chart(donutCanvas,{
       type:'doughnut',
-      data:{ labels:statusEntries.map(([s])=>s), datasets:[{ data:statusEntries.map(([,c])=>c), backgroundColor:statusEntries.map(([s])=>STATUS_COLOR[s]||'#64748b'), borderWidth:2, borderColor:'var(--surface)' }] },
+      data:{ labels:statusEntries.map(([s])=>s), datasets:[{ data:statusEntries.map(([,c])=>c), backgroundColor:statusEntries.map(([s])=>STATUS_COLOR[s]||'#64748b'), borderWidth:0 }] },
       options:{ responsive:true, maintainAspectRatio:false, cutout:'68%', plugins:{ legend:{display:false}, tooltip:{callbacks:{label:(c)=>c.label+': '+c.raw}} } },
       plugins:[{ id:'centroTotal', afterDraw:(chart)=>{
         const {ctx,chartArea}=chart; if(!chartArea) return;
@@ -6094,6 +6149,38 @@ function abrirVisualizacaoStatusReport(reportId){
   if(!r) return;
   document.getElementById('sr-exec-modal-body').innerHTML=renderStatusReportExecutivo(r);
   document.getElementById('sr-exec-modal-overlay').classList.add('show');
+}
+// Exportar PDF do Status Report em visualização — usa a impressão nativa do
+// navegador (mesma estratégia já usada em Detalhamento do Projeto), com
+// estado de carregamento e proteção contra clique duplicado enquanto a
+// caixa de diálogo de impressão está aberta.
+let SR_EXEC_EXPORTANDO=false;
+function exportarStatusReportPdf(){
+  if(SR_EXEC_EXPORTANDO) return; // ignora cliques repetidos enquanto já está exportando
+  SR_EXEC_EXPORTANDO=true;
+  const btn=document.getElementById('sr-exec-export-pdf');
+  const textoOriginal=btn.textContent;
+  btn.disabled=true;
+  btn.innerHTML='<span class="login-spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span>Gerando PDF…';
+  document.body.classList.add('imprimindo-sr-exec');
+  const finalizar=()=>{
+    document.body.classList.remove('imprimindo-sr-exec');
+    btn.disabled=false;
+    btn.textContent=textoOriginal;
+    SR_EXEC_EXPORTANDO=false;
+    window.removeEventListener('afterprint', finalizar);
+  };
+  window.addEventListener('afterprint', finalizar);
+  // Pequeno atraso pro navegador aplicar as classes/CSS de impressão antes de
+  // abrir a caixa de diálogo — sem isso, alguns navegadores capturam o layout
+  // ainda com o modal no estado de tela (position:fixed).
+  setTimeout(()=>{
+    window.print();
+    // Nem todo navegador dispara "afterprint" de forma confiável (ex: alguns
+    // fluxos de "Salvar como PDF") — um retorno de segurança garante que o
+    // botão nunca fique travado em "Gerando..." indefinidamente.
+    setTimeout(()=>{ if(SR_EXEC_EXPORTANDO) finalizar(); }, 3000);
+  }, 150);
 }
 // Abre o histórico completo de Status Reports de um projeto em modal — usado
 // pelo botão "Histórico de Status Reports" no Detalhamento do Projeto.
