@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxB6Dx_zWKHgDWohuPys0Cu-XM7LLGrzzSbWbLEGVRiHkDK2KkMaGI16LZghKSQQYKvaQ/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbz-hpSUrO6U7nyB0_gw58jTHLw7rmaeqyVw8GMTPNvMwM-u14CloCy4sQdJEGQehqXLHw/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1244,6 +1244,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
           <button class="nav-tab" data-page="setorial">Gestão Setorial</button>
           <button class="nav-tab" data-page="transversal">Gestão Transversal</button>
           <button class="nav-tab" data-page="statusreportpainel">Painel de Status Report</button>
+          <button class="nav-tab" data-page="logalteracoes">Log de Alterações</button>
         </div>
       </div>
       <div class="nav-cat" data-cat="projetos">
@@ -1446,6 +1447,20 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="srp-content"></div>
     </section>
 
+    <!-- PAGE LOG DE ALTERAÇÕES -->
+    <section class="page" id="page-logalteracoes">
+      <div class="page-header"><div><h1>Log de Alterações</h1><p>Auditoria de criações, alterações e exclusões no Portfólio e nos Status Reports — exclusivo do perfil Administrador.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label>Tabela</label><select id="f-log-tabela"><option value="">Todas</option><option value="Portifolio">Portifolio</option><option value="Status_Report">Status_Report</option></select></div>
+        <div class="filter-field"><label>Tipo de Operação</label><select id="f-log-tipo"><option value="">Todos</option><option value="Criação">Criação</option><option value="Alteração">Alteração</option><option value="Exclusão">Exclusão</option></select></div>
+        <div class="filter-field"><label>Usuário</label><select id="f-log-usuario"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label>De</label><input type="date" id="f-log-de"></div>
+        <div class="filter-field"><label>Até</label><input type="date" id="f-log-ate"></div>
+        <button class="filter-clear" id="f-log-clear">Limpar filtros</button>
+        <button class="filter-clear" id="f-log-atualizar" style="margin-left:auto">🔄 Atualizar</button>
+      </div>
+      <div id="log-alteracoes-content"></div>
+    </section>
 
     <!-- PAGE TOP5 -->
     <!-- PAGE TOP EXECUTIVO -->
@@ -1585,7 +1600,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v9.9 · Última atualização: —</footer>
+  <footer id="app-footer">v10.1 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1668,7 +1683,11 @@ function loadDataJSONP(url){
     script.src=url+sep+'callback='+cbName;
     script.onerror=()=>{ if(!done){ cleanup(); reject(new Error('Falha ao carregar script JSONP')); } };
     document.body.appendChild(script);
-    setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('Timeout aguardando resposta do Apps Script')); } },70000);
+    // 100s (era 70s) — dá mais margem pra uma requisição que ficou enfileirada
+    // no Apps Script (ex: acionador agendado rodando ao mesmo tempo) ainda
+    // conseguir responder, em vez de desistir cedo demais e mostrar erro pro
+    // usuário quando a resposta só estava demorando um pouco mais.
+    setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('Timeout aguardando resposta do Apps Script')); } },100000);
   });
 }
 // ============================================================
@@ -1720,7 +1739,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v9.9';
+const APP_VERSION='v10.1';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2135,7 +2154,7 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel'],
+  'Administrador':  ['cliente','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
@@ -2172,7 +2191,7 @@ const PERM_MENU = {
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Visão do Portfólio',alocacoes:'Alocações',inteligencia:'Inteligência de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Report'};
+const PAGE_LABELS = {cliente:'Visão do Portfólio',alocacoes:'Alocações',inteligencia:'Inteligência de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 
 function paginasPermitidas(){ return PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido']; }
@@ -6400,6 +6419,86 @@ async function srSalvar(finalizar){
 // arquitetura de restrição usada em todo o resto do dashboard), essa página só
 // precisa agregar o que já chegou — não duplica nenhuma lógica de permissão.
 // ============================================================
+// ============================================================
+// PAGE LOG DE ALTERAÇÕES — busca sob demanda (não faz parte do payload
+// principal do dashboard, já que é uma tela de auditoria pouco acessada);
+// sempre lê direto da aba na hora de abrir a página ou clicar em Atualizar.
+// ============================================================
+let LOG_ALTERACOES=[];
+async function buscarLogAlteracoes(){
+  const content=document.getElementById('log-alteracoes-content');
+  content.innerHTML=loadingInlineHtml('Carregando log de alterações…');
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=listarLogAlteracoes';
+    const r=await loadDataJSONPComRetry(url,1);
+    if(r && r.ok){
+      LOG_ALTERACOES=r.log||[];
+      popularFiltrosLogAlteracoes();
+      renderLogAlteracoes();
+    }else{
+      content.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((r&&r.message)||'Não foi possível carregar o log.')+'</p></div>';
+    }
+  }catch(e){
+    content.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Falha ao contatar o servidor. Tente novamente.</p></div>';
+  }
+}
+function popularFiltrosLogAlteracoes(){
+  const usuarios=[...new Set(LOG_ALTERACOES.map(l=>l.usuario_nome).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const sel=document.getElementById('f-log-usuario');
+  const valorAtual=sel.value;
+  sel.innerHTML='<option value="">Todos</option>'+usuarios.map(u=>'<option value="'+u.replace(/"/g,'&quot;')+'">'+u+'</option>').join('');
+  sel.value=valorAtual;
+}
+function initLogAlteracoes(){
+  ['f-log-tabela','f-log-tipo','f-log-usuario','f-log-de','f-log-ate'].forEach(id=>{ document.getElementById(id).onchange=renderLogAlteracoes; });
+  document.getElementById('f-log-clear').onclick=()=>{
+    document.getElementById('f-log-tabela').value='';
+    document.getElementById('f-log-tipo').value='';
+    document.getElementById('f-log-usuario').value='';
+    document.getElementById('f-log-de').value='';
+    document.getElementById('f-log-ate').value='';
+    renderLogAlteracoes();
+  };
+  document.getElementById('f-log-atualizar').onclick=buscarLogAlteracoes;
+  buscarLogAlteracoes();
+}
+function renderLogAlteracoes(){
+  const fTabela=document.getElementById('f-log-tabela').value;
+  const fTipo=document.getElementById('f-log-tipo').value;
+  const fUsuario=document.getElementById('f-log-usuario').value;
+  const fDe=document.getElementById('f-log-de').value;
+  const fAte=document.getElementById('f-log-ate').value;
+
+  let linhas=LOG_ALTERACOES;
+  if(fTabela) linhas=linhas.filter(l=>l.tabela===fTabela);
+  if(fTipo) linhas=linhas.filter(l=>l.tipo_operacao===fTipo);
+  if(fUsuario) linhas=linhas.filter(l=>l.usuario_nome===fUsuario);
+  if(fDe) linhas=linhas.filter(l=>l.data_hora.slice(0,10)>=fDe);
+  if(fAte) linhas=linhas.filter(l=>l.data_hora.slice(0,10)<=fAte);
+
+  const TIPO_COR={'Criação':'#16a34a','Alteração':'#2563eb','Exclusão':'#dc2626'};
+  let h='<div class="card"><div class="card-title"><h3>Registros</h3><span class="sub">'+linhas.length+'</span></div>';
+  if(linhas.length===0){
+    h+='<div class="empty-state" style="padding:50px 20px"><p>Nenhum registro encontrado com esses filtros.</p></div>';
+  }else{
+    h+='<div class="table-wrap" style="max-height:640px"><table><thead><tr><th>Data/Hora</th><th>Usuário</th><th>Tabela</th><th>Identificador</th><th>Operação</th><th>Campo</th><th>Antes</th><th>Depois</th></tr></thead><tbody>';
+    linhas.forEach(l=>{
+      h+='<tr><td style="white-space:nowrap">'+formatarDataHoraLog_(l.data_hora)+'</td><td>'+(l.usuario_nome||l.usuario_email||'—')+'</td><td>'+l.tabela+'</td><td>'+l.identificador+'</td>'+
+        '<td><span class="status-pill" style="border-left:3px solid '+(TIPO_COR[l.tipo_operacao]||'#64748b')+'">'+l.tipo_operacao+'</span></td>'+
+        '<td>'+(l.campo||'—')+'</td><td style="max-width:220px;white-space:normal">'+(l.valor_anterior||'—')+'</td><td style="max-width:220px;white-space:normal">'+(l.valor_novo||'—')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+  }
+  h+='</div>';
+  document.getElementById('log-alteracoes-content').innerHTML=h;
+}
+function formatarDataHoraLog_(iso){
+  if(!iso) return '—';
+  const [data,hora]=iso.split('T');
+  const [y,m,d]=data.split('-');
+  return d+'/'+m+'/'+y+(hora?' '+hora.slice(0,5):'');
+}
 function initStatusReportPainel(){
   const projetos=[...new Set(D.pj.map(p=>p.pj))].sort();
   const gerentes=[...new Set(STATUS_REPORTS.map(r=>r.gerente_nome).filter(Boolean))].sort();
@@ -6485,7 +6584,8 @@ const PAGE_INIT_MAP={
   ociosos:initOciosos, topexec:initTopExec, futuristic:renderFuturistic,
   lider:initLider, gerente:initGerente, equipe:initEquipe,
   setorial:initSetorial, transversal:initTransversal, statusreport:initStatusReport,
-  statusreportpainel:initStatusReportPainel
+  statusreportpainel:initStatusReportPainel,
+  logalteracoes:initLogAlteracoes
 };
 function boot(paginaPrioritaria){
   const ordem=Object.keys(PAGE_INIT_MAP);
