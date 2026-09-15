@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzVdSHRxxVjjSrnjbrh3XhAoZbipHsLI3FdI-2qnAJ7yLOBDNmsLCKrx8WjpHFB5WRrCw/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxB6Dx_zWKHgDWohuPys0Cu-XM7LLGrzzSbWbLEGVRiHkDK2KkMaGI16LZghKSQQYKvaQ/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -718,6 +718,13 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .task-modal-field:last-child{border-bottom:none;}
 .task-modal-field-full{flex-direction:column; gap:4px;}
 
+/* Confirmação de salvamento do Status Report — modal simples e direto,
+   pra deixar bem claro (visualmente, não só um texto discreto que some
+   sozinho) que o registro foi salvo de verdade. */
+.sr-save-confirm-card{background:var(--surface); border-radius:16px; padding:32px 30px; max-width:340px; width:100%; margin:auto; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.sr-save-confirm-icon{width:56px; height:56px; border-radius:50%; background:#dcfce7; color:#16a34a; font-size:28px; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;}
+.sr-save-confirm-card h3{margin:0 0 8px; font-size:18px; color:var(--text);}
+.sr-save-confirm-card p{margin:0 0 18px; font-size:13.5px; color:var(--text-muted); line-height:1.5;}
 /* Status Report — visualização executiva (imita um documento/apresentação
    formal, com logos, cards e hierarquia visual clara). */
 .sr-exec-card{max-width:920px;}
@@ -1578,7 +1585,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v9.2 · Última atualização: —</footer>
+  <footer id="app-footer">v9.9 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1599,6 +1606,14 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <button id="task-modal-close" type="button" aria-label="Fechar">✕</button>
     </div>
     <div id="task-modal-body" class="task-modal-body"></div>
+  </div>
+</div>
+<div id="sr-save-confirm-overlay" class="task-modal-overlay">
+  <div class="sr-save-confirm-card">
+    <div class="sr-save-confirm-icon">✓</div>
+    <h3 id="sr-save-confirm-title">Salvo com sucesso!</h3>
+    <p id="sr-save-confirm-msg">O Status Report foi salvo.</p>
+    <button type="button" id="sr-save-confirm-ok" class="filter-clear" style="margin-top:6px">OK</button>
   </div>
 </div>
 <div id="sr-exec-modal-overlay" class="task-modal-overlay">
@@ -1705,7 +1720,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v9.2';
+const APP_VERSION='v9.9';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -3132,11 +3147,19 @@ const PE_BLOCOS_EQUIPE=[
 function peBlocoDoPapel_(header){
   const chave=peChaveCanonicaPapel_(header);
   for(const bloco of PE_BLOCOS_EQUIPE){ if(bloco.papeis.includes(chave)) return bloco.titulo; }
-  return 'Outros Papéis da Equipe';
+  return 'Gestão do Projeto';
 }
 function peConstruirInputHtml(c,i,opcoesConhecidas){
   const headerNorm=peNormalizarHeader(c.header);
   const valorEscapado=(c.valor===null||c.valor===undefined?'':String(c.valor)).replace(/"/g,'&quot;');
+  if(headerNorm==='observacoes'||headerNorm==='observacao'){
+    // Campo de texto livre — vira caixa de texto (textarea), não uma linha
+    // única, já que observações tendem a ser mais longas. Escapa como
+    // CONTEÚDO html (< > &), não como atributo (aspas não precisam de
+    // escape aqui dentro da tag).
+    const valorConteudo=(c.valor===null||c.valor===undefined?'':String(c.valor)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return '<textarea data-pe-idx="'+i+'" class="pe-campo" rows="3" style="width:100%;resize:vertical;font-family:inherit;font-size:13px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)">'+valorConteudo+'</textarea>';
+  }
   if(peEhCampoPessoa(i)){
     // Campo de pessoa: combobox pesquisável, preenchido com os nomes reais de
     // Pessoas_Area (D.p, já carregado) — não permite mais digitar um nome que
@@ -3230,39 +3253,61 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos){
   const secoes={ 'Identificação':[], 'Status e Classificação':[], 'Cronograma':[], 'Equipe':[], 'Outras Informações':[] };
   campos.forEach((c,i)=>{ secoes[peClassificarSecao(peNormalizarHeader(c.header),i)].push({c,i}); });
 
+  // "Gestão do Projeto" (Gerente do Projeto, SM, Líder Responsável — e
+  // qualquer papel não mapeado nos blocos nomeados) sai da seção Equipe pra
+  // aparecer como bloco PRÓPRIO, logo depois de Identificação — pedido
+  // específico, não é mais só mais um sub-bloco de Equipe.
+  const itensGestaoProjeto=secoes['Equipe'].filter(item=>peBlocoDoPapel_(item.c.header)==='Gestão do Projeto');
+  secoes['Equipe']=secoes['Equipe'].filter(item=>peBlocoDoPapel_(item.c.header)!=='Gestão do Projeto');
+  function peRenderBlocoEquipeCard_(tituloBloco,itensDoBloco,blocoIdx){
+    const preenchidos=itensDoBloco.filter(({c})=>c.valor);
+    const vazios=itensDoBloco.filter(({c})=>!c.valor);
+    let hb='<div class="card pe-equipe-card"><div class="card-title"><h3>'+tituloBloco+'</h3></div>';
+    hb+='<div class="pe-equipe-grid" id="pe-equipe-preenchidos-'+blocoIdx+'">';
+    preenchidos.forEach(({c,i})=>{ hb+='<div class="sr-field" style="margin-bottom:0"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
+    hb+='</div>';
+    if(vazios.length>0){
+      hb+='<button type="button" class="sr-ativ-add" id="pe-equipe-mostrar-mais-'+blocoIdx+'" style="margin-top:10px">+ Mostrar mais '+vazios.length+' vaga(s) vazia(s)</button>';
+      hb+='<div class="pe-equipe-grid" style="display:none;margin-top:10px" id="pe-equipe-vazios-'+blocoIdx+'">';
+      vazios.forEach(({c,i})=>{ hb+='<div class="sr-field" style="margin-bottom:0"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
+      hb+='</div>';
+    }
+    hb+='</div>';
+    return hb;
+  }
+
   let h='<button type="button" class="filter-clear" id="pe-voltar-btn" style="margin-bottom:14px">← Voltar para a lista</button>';
   h+='<div class="page-header" style="padding:0 0 16px"><h2 style="font-size:20px;font-weight:800">'+nomeProjeto+'</h2></div>';
 
   Object.entries(secoes).forEach(([nomeSecao,itens])=>{
+    if(nomeSecao==='Identificação'){
+      if(itens.length>0){
+        h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>'+nomeSecao+'</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">';
+        itens.forEach(({c,i})=>{ h+='<div class="sr-field"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
+        h+='</div></div>';
+      }
+      if(itensGestaoProjeto.length>0){
+        h+='<div class="pe-equipe-grupo-wrap" style="margin-bottom:16px">'+peRenderBlocoEquipeCard_('Gestão do Projeto',itensGestaoProjeto,'gestao')+'</div>';
+      }
+      return;
+    }
     if(itens.length===0) return;
     if(nomeSecao==='Equipe'){
       // Reorganiza a Equipe nos blocos nomeados pedidos (Negócios e
       // Requisitos, Produto e Experiência, etc.), pelo NOME do cabeçalho —
-      // Gerente do Projeto/SM/Líder e qualquer campo não reconhecido caem em
-      // "Outros Papéis da Equipe", nunca são perdidos.
+      // "Gestão do Projeto" já foi extraída e mostrada separadamente, logo
+      // depois de Identificação (ver acima).
       const gruposPorBloco={};
       itens.forEach(item=>{
         const bloco=peBlocoDoPapel_(item.c.header);
         (gruposPorBloco[bloco]=gruposPorBloco[bloco]||[]).push(item);
       });
-      const ordemBlocos=[...PE_BLOCOS_EQUIPE.map(b=>b.titulo),'Outros Papéis da Equipe'];
+      const ordemBlocos=PE_BLOCOS_EQUIPE.map(b=>b.titulo);
       h+='<div class="pe-equipe-grupo-wrap">';
       ordemBlocos.forEach((tituloBloco,blocoIdx)=>{
         const itensDoBloco=gruposPorBloco[tituloBloco];
         if(!itensDoBloco||itensDoBloco.length===0) return;
-        const preenchidos=itensDoBloco.filter(({c})=>c.valor);
-        const vazios=itensDoBloco.filter(({c})=>!c.valor);
-        h+='<div class="card pe-equipe-card"><div class="card-title"><h3>'+tituloBloco+'</h3></div>';
-        h+='<div class="pe-equipe-grid" id="pe-equipe-preenchidos-'+blocoIdx+'">';
-        preenchidos.forEach(({c,i})=>{ h+='<div class="sr-field" style="margin-bottom:0"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
-        h+='</div>';
-        if(vazios.length>0){
-          h+='<button type="button" class="sr-ativ-add" id="pe-equipe-mostrar-mais-'+blocoIdx+'" style="margin-top:10px">+ Mostrar mais '+vazios.length+' vaga(s) vazia(s)</button>';
-          h+='<div class="pe-equipe-grid" style="display:none;margin-top:10px" id="pe-equipe-vazios-'+blocoIdx+'">';
-          vazios.forEach(({c,i})=>{ h+='<div class="sr-field" style="margin-bottom:0"><label>'+c.header+'</label>'+peConstruirInputHtml(c,i,opcoesConhecidas)+'</div>'; });
-          h+='</div>';
-        }
-        h+='</div>';
+        h+=peRenderBlocoEquipeCard_(tituloBloco,itensDoBloco,blocoIdx);
       });
       h+='</div>';
     }else{
@@ -4121,9 +4166,12 @@ document.addEventListener('click', (e)=>{
   }
   const srVer = e.target.closest('.sr-ver-btn-view');
   if(srVer && srVer.dataset.reportId){ abrirVisualizacaoStatusReport(srVer.dataset.reportId); return; }
+  const srAtualizarBtn = e.target.closest('.sr-hist-atualizar-btn');
+  if(srAtualizarBtn){ srAtualizarHistorico(srAtualizarBtn); return; }
   if(e.target.closest('#task-modal-close') || e.target.id==='task-modal-overlay'){ fecharDetalheTarefa(); }
   if(e.target.closest('#ia-modal-close') || e.target.id==='ia-modal-overlay'){ document.getElementById('ia-modal-overlay').classList.remove('show'); }
   if(e.target.closest('#sr-exec-modal-close') || e.target.id==='sr-exec-modal-overlay'){ document.getElementById('sr-exec-modal-overlay').classList.remove('show'); }
+  if(e.target.closest('#sr-save-confirm-ok') || e.target.id==='sr-save-confirm-overlay'){ document.getElementById('sr-save-confirm-overlay').classList.remove('show'); }
 });
 // Retorna o nome da tarefa como link clicável para o modal de detalhamento. idx é
 // a posição da tarefa no array PROJ_TASKS[pjName] (identificador estável dentro
@@ -4405,7 +4453,12 @@ function renderProjDetail(pjName){
   const bloqueadas = tasks.filter(t=> (t.status||'').toLowerCase().includes('block'));
 
   // Faltando dados
-  const faltando = tasks.filter(t=> !t.dt_inicio || !t.dt_venc || !t.resp);
+  // Mesma regra já aplicada em Pendências e no bloco de Tarefas por Status:
+  // só considera "dados incompletos" tarefas criadas a partir de 01/06/2026
+  // (dt_cadastro) — tarefas antigas, criadas antes dessa data, não entram
+  // nessa contagem/listagem, mesmo que também estejam com dados faltando.
+  const DATA_CORTE_INCOMPLETOS='2026-06-01';
+  const faltando = tasks.filter(t=> (!t.dt_inicio || !t.dt_venc || !t.resp) && t.dt_cadastro_iso && t.dt_cadastro_iso>=DATA_CORTE_INCOMPLETOS);
 
   // Atrasadas (dt_venc passado e não concluída)
   const hojeISO = new Date().toISOString().slice(0,10);
@@ -4550,7 +4603,7 @@ function renderProjDetail(pjName){
   h += '</div>';
 
   // Faltando dados
-  h += '<div class="pd-section"><h3>⚠️ Tarefas com Dados Incompletos ('+faltando.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Sem data de início, vencimento e/ou responsável</span>';
+  h += '<div class="pd-section"><h3>⚠️ Tarefas com Dados Incompletos ('+faltando.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Sem data de início, vencimento e/ou responsável — considera só tarefas cadastradas a partir de 01/06/2026</span>';
   const statusesIncompleto = [...new Set(tasks.map(t=>t.status).filter(Boolean))].sort();
   if(statusesIncompleto.length>0){
     h += '<div style="margin-bottom:10px"><label style="font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.03em;margin-right:8px">Status da Tarefa</label><select id="pd-incompleto-status" style="font-size:13px;padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text)">';
@@ -4561,9 +4614,9 @@ function renderProjDetail(pjName){
   const faltandoFiltrado = PD_INCOMPLETO_STATUS_FILTER ? faltando.filter(t=>t.status===PD_INCOMPLETO_STATUS_FILTER) : faltando;
   h += '<div class="table-wrap" style="max-height:320px">';
   if(faltandoFiltrado.length>0){
-    h += '<table><thead><tr><th>Tarefa</th><th>Status</th><th>Falta Início</th><th>Falta Vencimento</th><th>Falta Responsável</th></tr></thead><tbody>';
+    h += '<table><thead><tr><th>Tarefa</th><th>Status</th><th>Data de Cadastro</th><th>Falta Início</th><th>Falta Vencimento</th><th>Falta Responsável</th></tr></thead><tbody>';
     faltandoFiltrado.forEach(t=>{
-      const idx=PROJ_TASKS[pjName].indexOf(t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>40?t.tarefa.slice(0,40)+'…':t.tarefa)+'</td><td><span class="status-pill" style="border-left:3px solid '+(STATUS_COLOR[t.status]||'#64748b')+'">'+(t.status||'—')+'</span></td><td>'+(!t.dt_inicio?'<span style="color:var(--st-bloqueado)">⚠ Sim</span>':'Não')+'</td><td>'+(!t.dt_venc?'<span style="color:var(--st-bloqueado)">⚠ Sim</span>':'Não')+'</td><td>'+(!t.resp?'<span style="color:var(--st-bloqueado)">⚠ Sim</span>':'Não')+'</td></tr>';
+      const idx=PROJ_TASKS[pjName].indexOf(t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>40?t.tarefa.slice(0,40)+'…':t.tarefa)+'</td><td><span class="status-pill" style="border-left:3px solid '+(STATUS_COLOR[t.status]||'#64748b')+'">'+(t.status||'—')+'</span></td><td>'+srFmtBr(t.dt_cadastro_iso)+'</td><td>'+(!t.dt_inicio?'<span style="color:var(--st-bloqueado)">⚠ Sim</span>':'Não')+'</td><td>'+(!t.dt_venc?'<span style="color:var(--st-bloqueado)">⚠ Sim</span>':'Não')+'</td><td>'+(!t.resp?'<span style="color:var(--st-bloqueado)">⚠ Sim</span>':'Não')+'</td></tr>';
     });
     h += '</tbody></table>';
   } else { h += '<div class="empty-state"><p>'+(PD_INCOMPLETO_STATUS_FILTER?'Nenhuma tarefa incompleta com esse status.':'Todas as tarefas têm os dados preenchidos.')+'</p></div>'; }
@@ -6034,7 +6087,7 @@ function renderStatusReport(){
 
   // Histórico (função reutilizada também no botão "Histórico de Status Reports"
   // do Detalhamento do Projeto e no Painel de Status Reports do Administrador)
-  h+='<div style="margin-top:24px">'+buildHistoricoStatusReportHtml(projeto)+'</div>';
+  h+='<div id="sr-hist-inline-wrap" style="margin-top:24px">'+buildHistoricoStatusReportHtml(projeto,false,'sr-hist-inline-wrap')+'</div>';
 
   document.getElementById('sr-content').innerHTML=h;
 
@@ -6097,9 +6150,57 @@ function renderStatusReport(){
 // modoView=true renderiza botões "Ver" que abrem o report em modal somente-
 // leitura (usado fora da página Status Report); modoView=false (padrão) usa o
 // botão "Ver/Editar" que pula pra semana no formulário editável.
-function buildHistoricoStatusReportHtml(projeto, modoView){
+// Atualiza o Histórico de Status Reports buscando os dados DIRETO do
+// servidor (não do que já está em memória) — usado pelo botão "🔄
+// Atualizar", que aparece em toda instância desse histórico (página Status
+// Report, modal do Detalhamento do Projeto, modal do Painel de Status
+// Reports). Substitui só o conteúdo do container correspondente, sem afetar
+// o resto da página/modal em que está inserido.
+async function srAtualizarHistorico(btn){
+  const projeto=btn.dataset.projeto;
+  const modoView=btn.dataset.modoView==='1';
+  const containerId=btn.dataset.containerId;
+  const textoOriginal=btn.textContent;
+  btn.disabled=true; btn.textContent='Atualizando…';
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=listarStatusReports';
+    const r=await loadDataJSONPComRetry(url,1);
+    if(r && r.ok){
+      STATUS_REPORTS.length=0;
+      r.reports.forEach(rep=>STATUS_REPORTS.push(rep));
+      const container=document.getElementById(containerId);
+      if(container){
+        container.innerHTML=buildHistoricoStatusReportHtml(projeto, modoView, containerId);
+        // sr-ver-btn-edit usa vinculação direta (não delegação, pra não
+        // conflitar com sr-ver-btn-view usado nos modais) — precisa ser
+        // reconectado manualmente depois de substituir o HTML.
+        if(!modoView){
+          container.querySelectorAll('.sr-ver-btn-edit').forEach(vb=>{
+            vb.onclick=()=>{
+              const semana=vb.dataset.semana;
+              const hoje=new Date(); const [monAtualISO]=getMondaySunday(hoje);
+              SR_STATE.weekOffset=Math.round((new Date(semana+'T12:00:00')-new Date(monAtualISO+'T12:00:00'))/(7*86400000));
+              renderStatusReport();
+              window.scrollTo({top:0,behavior:'smooth'});
+            };
+          });
+        }
+      }
+    }else{
+      btn.disabled=false; btn.textContent=textoOriginal;
+      alert('Não foi possível atualizar o histórico agora. Tente novamente.');
+    }
+  }catch(e){
+    btn.disabled=false; btn.textContent=textoOriginal;
+    alert('Falha ao contatar o servidor. Verifique sua conexão e tente novamente.');
+  }
+}
+function buildHistoricoStatusReportHtml(projeto, modoView, containerId){
   const historico=STATUS_REPORTS.filter(r=>r.projeto===projeto).sort((a,b)=>b.semana_inicio.localeCompare(a.semana_inicio));
-  let h='<div class="card"><div class="card-title"><h3>📜 Histórico de Status Reports — '+projeto+'</h3></div>';
+  let h='<div class="card"><div class="card-title"><h3>📜 Histórico de Status Reports — '+projeto+'</h3>'+
+    '<button type="button" class="filter-clear sr-hist-atualizar-btn" data-projeto="'+projeto.replace(/"/g,'&quot;')+'" data-modo-view="'+(modoView?'1':'0')+'" data-container-id="'+(containerId||'')+'" style="padding:5px 12px;font-size:12px">🔄 Atualizar</button>'+
+  '</div>';
   if(historico.length===0){
     h+='<div class="empty-state" style="padding:30px 10px"><p>Nenhum Status Report registrado ainda para este projeto.</p></div>';
   }else{
@@ -6224,8 +6325,18 @@ function exportarStatusReportPdf(){
 // pelo botão "Histórico de Status Reports" no Detalhamento do Projeto.
 function abrirHistoricoStatusReportModal(projeto){
   document.getElementById('task-modal-title').textContent='Histórico de Status Reports';
-  document.getElementById('task-modal-body').innerHTML=buildHistoricoStatusReportHtml(projeto, true);
+  document.getElementById('task-modal-body').innerHTML=buildHistoricoStatusReportHtml(projeto, true, 'task-modal-body');
   document.getElementById('task-modal-overlay').classList.add('show');
+}
+// Confirmação clara (modal, não só um texto que some sozinho) de que o
+// Status Report foi realmente salvo — além do srFeedback discreto, que
+// continua existindo pra quem prefere só o toast.
+function srMostrarConfirmacaoSalvo(finalizado){
+  document.getElementById('sr-save-confirm-title').textContent = finalizado?'Finalizado com sucesso!':'Rascunho salvo!';
+  document.getElementById('sr-save-confirm-msg').textContent = finalizado
+    ? 'O Status Report foi finalizado e não pode mais ser editado.'
+    : 'O rascunho foi salvo. Você pode continuar editando quando quiser.';
+  document.getElementById('sr-save-confirm-overlay').classList.add('show');
 }
 async function srSalvar(finalizar){
   const projeto=document.getElementById('f-sr-projeto').value;
@@ -6270,6 +6381,7 @@ async function srSalvar(finalizar){
       if(idx!==-1) STATUS_REPORTS[idx]=r.record; else STATUS_REPORTS.push(r.record);
       srFeedback(finalizar?'Status Report finalizado com sucesso.':'Rascunho salvo com sucesso.',true);
       renderStatusReport();
+      srMostrarConfirmacaoSalvo(finalizar);
     }else{
       srFeedback((r&&r.message)||'Não foi possível salvar o Status Report.',false);
     }
