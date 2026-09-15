@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzwx7vTjOdPB-w30Uy5D04slSi91PzGh1Yil08OMuaPPXL7WiArPJZ-OnOpuZ4QIWOHtQ/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwWUzuI2vfSXxecy_csRSCR3frrdHhsDH2_1RSKTDuFqtT55b4otr7PVq8YbXprCVe9LA/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1600,7 +1600,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v10.2 · Última atualização: —</footer>
+  <footer id="app-footer">v10.5 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1739,7 +1739,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v10.2';
+const APP_VERSION='v10.5';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -4231,6 +4231,24 @@ function formatarTextoLongo(texto){
     return '<p class="task-desc-p">'+b.c+'</p>';
   }).join('');
 }
+// Normaliza texto pra comparação — MESMA lógica usada no backend (norm_),
+// precisa ficar idêntica pra calcular a mesma chave única de uma tarefa e
+// buscar a descrição dela sob demanda (ver tarefaChaveUnicaFrontend_).
+function normFrontend_(s){
+  let str=(s===null||s===undefined?'':String(s)).trim().toLowerCase();
+  str=str.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  str=str.replace(/[-_():,.]+/g,' ');
+  str=str.replace(/\s+/g,' ').trim();
+  return str;
+}
+// Mesma chave única calculada no backend (tarefaChaveUnica_) — precisa ficar
+// EXATAMENTE igual, senão a busca da descrição sob demanda nunca encontra a
+// tarefa certa. pjName vem separado porque PROJ_TASKS já é organizado por
+// projeto (a tarefa em si não carrega o nome do projeto dentro dela).
+function tarefaChaveUnicaFrontend_(t,pjName){
+  if(t.id_pj && t.id_item) return String(t.id_pj)+'|'+String(t.id_item);
+  return 'semid|'+normFrontend_(pjName)+'|'+normFrontend_(t.tarefa)+'|'+(t.dt_venc_iso||'')+'|'+(t.status||'');
+}
 function abrirDetalheTarefa(pjName, idx){
   const t = (PROJ_TASKS[pjName]||[])[idx];
   if(!t) return;
@@ -4267,12 +4285,39 @@ function abrirDetalheTarefa(pjName, idx){
   // no Status Report semanal do projeto, não em cada tarefa individual.
 
   // Seção "Descrição" — sempre por último, com destaque visual, igual ao
-  // modelo de referência (bloco separado ao final).
-  if(t.descricao) h += '<div class="task-modal-section-title">Descrição</div><div class="task-desc-box">'+formatarTextoLongo(t.descricao)+'</div>';
+  // modelo de referência (bloco separado ao final). O texto não vem mais no
+  // payload principal (era o maior contribuinte pro tamanho total) — busca
+  // sob demanda, só agora que a pessoa realmente abriu esta tarefa.
+  const chaveDescricao=tarefaChaveUnicaFrontend_(t,pjName);
+  h += '<div class="task-modal-section-title" id="task-desc-title-async">Descrição</div><div class="task-desc-box" id="task-desc-box-async" data-chave="'+chaveDescricao.replace(/"/g,'&quot;')+'"><span style="color:var(--text-faint);font-size:12px">Carregando…</span></div>';
 
   document.getElementById('task-modal-title').textContent='Detalhamento da Tarefa';
   document.getElementById('task-modal-body').innerHTML = h;
   document.getElementById('task-modal-overlay').classList.add('show');
+  buscarDescricaoTarefaAsync_(chaveDescricao);
+}
+// Busca a descrição de UMA tarefa sob demanda. Confere se o modal ainda está
+// mostrando a MESMA tarefa antes de preencher — se a pessoa já fechou ou
+// abriu outra tarefa enquanto a resposta ainda vinha, a resposta antiga é
+// simplesmente descartada (evita preencher a tarefa errada por uma corrida
+// entre cliques rápidos).
+async function buscarDescricaoTarefaAsync_(chave){
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=getTarefaDescricao&chave='+encodeURIComponent(chave);
+    const r=await loadDataJSONPComRetry(url,1);
+    const box=document.getElementById('task-desc-box-async');
+    if(!box || box.dataset.chave!==chave) return; // modal fechado ou trocou de tarefa nesse meio tempo
+    if(r && r.ok && r.descricao){
+      box.innerHTML=formatarTextoLongo(r.descricao);
+    }else{
+      document.getElementById('task-desc-title-async')?.remove();
+      box.remove();
+    }
+  }catch(e){
+    const box=document.getElementById('task-desc-box-async');
+    if(box && box.dataset.chave===chave) box.innerHTML='<span style="color:var(--text-faint);font-size:12px">Não foi possível carregar a descrição agora.</span>';
+  }
 }
 // Coleta todas as tarefas de uma pessoa (por e-mail, com fallback por nome),
 // cruzando os projetos em que ela aparece (D.tpe) com PROJ_TASKS de cada um.
