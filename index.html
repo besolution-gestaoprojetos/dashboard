@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbz-hpSUrO6U7nyB0_gw58jTHLw7rmaeqyVw8GMTPNvMwM-u14CloCy4sQdJEGQehqXLHw/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzwx7vTjOdPB-w30Uy5D04slSi91PzGh1Yil08OMuaPPXL7WiArPJZ-OnOpuZ4QIWOHtQ/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1600,7 +1600,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v10.1 · Última atualização: —</footer>
+  <footer id="app-footer">v10.2 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1739,7 +1739,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v10.1';
+const APP_VERSION='v10.2';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1859,7 +1859,10 @@ async function carregarDadosCompletos(token){
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(token);
-    const j=await loadDataJSONPComRetry(url,1);
+    // 2 tentativas extras (3 no total) — essa é a chamada mais crítica do
+    // fluxo (sem ela o dashboard não abre de jeito nenhum), então vale
+    // insistir mais antes de mostrar erro pro usuário.
+    const j=await loadDataJSONPComRetry(url,2);
     if(j && j.error){
       mostrarErroLoadingGlobal(j.message||'Erro ao carregar os dados. Tente novamente.', ()=>carregarDadosCompletos(token));
       return;
