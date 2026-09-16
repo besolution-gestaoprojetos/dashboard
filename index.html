@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwWUzuI2vfSXxecy_csRSCR3frrdHhsDH2_1RSKTDuFqtT55b4otr7PVq8YbXprCVe9LA/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbw2B3vZWT6kH1WkmnbInLRqAPoA98XLldomik5eZjEluTqk6EWqO524K_ZafaR7rqHhtg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -725,6 +725,17 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .sr-save-confirm-icon{width:56px; height:56px; border-radius:50%; background:#dcfce7; color:#16a34a; font-size:28px; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;}
 .sr-save-confirm-card h3{margin:0 0 8px; font-size:18px; color:var(--text);}
 .sr-save-confirm-card p{margin:0 0 18px; font-size:13.5px; color:var(--text-muted); line-height:1.5;}
+/* Andamento dos Projetos — barras de progresso semafóricas (a cor reflete a
+   relação execução x prazo, não o percentual absoluto) e indicador de
+   tendência. */
+.and-barra-track{width:100%; height:8px; border-radius:999px; background:var(--surface-alt); overflow:hidden; position:relative;}
+.and-barra-fill{height:100%; border-radius:999px; transition:width .3s ease;}
+.and-barra-label{font-size:11px; color:var(--text-faint); display:flex; justify-content:space-between; margin-bottom:3px;}
+.and-tendencia{font-size:15px;}
+.and-insight-box{border-radius:8px; padding:10px 12px; margin-bottom:8px; font-size:12.5px; line-height:1.5; display:flex; gap:8px; align-items:flex-start;}
+.and-toggle-prazo{display:inline-flex; background:var(--surface-alt); border-radius:8px; padding:3px; gap:2px;}
+.and-toggle-btn{padding:6px 14px; border-radius:6px; border:none; background:transparent; font-size:12px; font-weight:600; color:var(--text-faint); cursor:pointer; font-family:var(--font-body);}
+.and-toggle-btn.active{background:var(--surface); box-shadow:var(--shadow-sm); color:var(--primary); font-weight:700;}
 /* Status Report — visualização executiva (imita um documento/apresentação
    formal, com logos, cards e hierarquia visual clara). */
 .sr-exec-card{max-width:920px;}
@@ -1261,6 +1272,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
         <div class="nav-cat-panel">
           <button class="nav-tab" data-page="area">Áreas</button>
           <button class="nav-tab" data-page="topexec">Destaques</button>
+          <button class="nav-tab" data-page="andamento">Andamento dos Projetos</button>
         </div>
       </div>
     </nav>
@@ -1462,6 +1474,28 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="log-alteracoes-content"></div>
     </section>
 
+    <!-- PAGE ANDAMENTO DOS PROJETOS -->
+    <section class="page" id="page-andamento">
+      <div class="page-header"><div><h1>Andamento dos Projetos</h1><p>Visão executiva: prazo consumido, tarefas concluídas e risco de comprometimento, por projeto.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label>Cliente</label><select id="f-and-cliente"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label>Projeto</label><select id="f-and-projeto"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label>Status do Projeto</label><select id="f-and-status"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label>Risco de Prazo</label><select id="f-and-risco"><option value="">Todos</option><option value="No prazo">🟢 No prazo</option><option value="Atenção">🟡 Atenção</option><option value="Risco">🟠 Risco</option><option value="Comprometido">🔴 Comprometido</option></select></div>
+        <div class="filter-field"><label>Período (Início a partir de)</label><input type="date" id="f-and-de"></div>
+        <button class="filter-clear" id="f-and-clear">Limpar filtros</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--text-faint)">Prazo de referência:</span>
+        <div class="and-toggle-prazo" id="and-toggle-prazo">
+          <button type="button" class="and-toggle-btn" data-ref="pei">Prev. Entrega Inicial</button>
+          <button type="button" class="and-toggle-btn active" data-ref="pea">Prev. Entrega Atual</button>
+        </div>
+      </div>
+      <div class="grid grid-kpi" id="kpi-andamento" style="margin-bottom:16px"></div>
+      <div id="andamento-content"></div>
+    </section>
+
     <!-- PAGE TOP5 -->
     <!-- PAGE TOP EXECUTIVO -->
     <section class="page" id="page-topexec">
@@ -1600,7 +1634,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v10.5 · Última atualização: —</footer>
+  <footer id="app-footer">v10.8 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1739,7 +1773,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v10.5';
+const APP_VERSION='v10.8';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1842,8 +1876,8 @@ async function attemptLoadWithToken(token, viewAsEmail){
     hideLoginOverlay();
     document.getElementById('main-shell').classList.add('aguardando-dados');
     document.getElementById('voltar-strip').classList.add('hidden');
-    mostrarLoadingGlobal('Carregando dados do dashboard…');
-    carregarDadosCompletos(token);
+    mostrarLoadingGlobal('Carregando dados essenciais…');
+    carregarDadosCore(token);
   }catch(e){
     setLoginLoading(false);
     console.warn('Falha ao verificar credenciais.',e);
@@ -1851,9 +1885,120 @@ async function attemptLoadWithToken(token, viewAsEmail){
   }
 }
 
-// Fase 2 do login normal: busca o dataset completo em segundo plano (chamada
-// também pelo botão "Tentar novamente" do loading global, se essa fase
-// falhar). Só reprocessa a partir daqui — a identidade da fase 1 continua válida.
+// CARREGAMENTO EM ESTÁGIOS — etapa "core": busca só os campos leves (D,
+// Áreas, Status Reports), o suficiente pra montar a Visão do Portfólio e o
+// menu. Assim que chega, já libera a tela pra pessoa (em vez de esperar o
+// payload inteiro, que é bem maior) — os campos pesados (PROJ_TASKS e afins)
+// continuam chegando normalmente, só que em segundo plano, com um indicador
+// fino no topo em vez do placeholder de "Carregando o dashboard" ocupando a
+// tela inteira. Se essa etapa falhar por qualquer razão, cai de volta pro
+// fluxo antigo (uma chamada só, mais lenta, mas comprovadamente confiável)
+// em vez de arriscar deixar a pessoa presa numa etapa nova.
+async function carregarDadosCore(token){
+  HEAVY_DATA_READY=false;
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(token)+'&action=core';
+    const j=await loadDataJSONPComRetry(url,1);
+    if(!j || j.error || !j._core){
+      // Resposta inesperada (ou o backend não reconheceu action=core, ex:
+      // versão mais antiga do .gs) — completa com o fluxo de sempre, que
+      // busca tudo de uma vez e já é validado.
+      carregarDadosCompletos(token);
+      return;
+    }
+    D=j.D; AREAS=j.AREAS; AREA_CL=j.AREA_CL||{}; STATUS_REPORTS=j.STATUS_REPORTS||[];
+    // Campos pesados começam vazios — só ficam prontos quando a etapa de
+    // segundo plano completar. Páginas que dependem deles ficam bloqueadas
+    // na navegação até lá (ver goToPage/HEAVY_DATA_READY), então nunca
+    // chegam a ler esses valores vazios por engano.
+    HM={}; PM={}; PM_PROJ={}; CD={}; CTOK={}; EXECTOP=[]; PSTAT={}; PHEST={}; PHAP={};
+    PVENC={}; PPREVISTO={}; PEND=[]; PROJ_TASKS={}; SEM_ALOC=[]; ALOC_SEM_APONT=[];
+    CURRENT_USER_NOME=j._usuarioNome||j._usuario; CURRENT_USER_EMAIL=j._usuario;
+    showDataBadge('live');
+    updateFooter(j._ultimaAtualizacaoPlanilha, j._backendVersion);
+    VIEW_AS_STATE = j._viewingAs || null;
+    TODOS_USUARIOS = j._todosUsuarios || [];
+    EFFECTIVE_PERFIL = VIEW_AS_STATE ? VIEW_AS_STATE.perfil : j._perfil;
+    const viewasWrap=document.getElementById('viewas-wrap');
+    if(viewasWrap) viewasWrap.style.display = (j._perfil==='Administrador') ? '' : 'none';
+    addLogoutControl(j._usuarioNome||j._usuario, j._perfil);
+    atualizarFaixaVisualizarComo();
+    aplicarMenuDinamico();
+    atualizarLoadingGlobal('Carregando detalhes completos…');
+    document.getElementById('main-shell').classList.remove('aguardando-dados');
+    const paginaAtivaEl=document.querySelector('.page.active');
+    let paginaAlvo=paginaAtivaEl?paginaAtivaEl.id.replace('page-',''):'cliente';
+    if(!paginasPermitidas().includes(paginaAlvo)) paginaAlvo=paginasPermitidas()[0]||'cliente';
+    // Enquanto os dados pesados não chegam, só a Visão do Portfólio (que já
+    // funciona com dados leves) é uma página segura pra abrir de cara.
+    if(paginaAlvo!=='cliente' && !paginasPermitidas().includes('cliente')){
+      // Perfil sem acesso nem a essa página (raro) — melhor deixar o fluxo
+      // completo de sempre decidir, em vez de arriscar abrir algo quebrado.
+      carregarDadosCompletos(token);
+      return;
+    }
+    paginaAlvo='cliente';
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+    document.getElementById('page-cliente')?.classList.add('active');
+    document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.page==='cliente'));
+    boot('cliente');
+    carregarDadosPesadosEmSegundoPlano(token);
+  }catch(e){
+    console.warn('Falha na etapa "core" do carregamento, caindo pro fluxo completo.',e);
+    carregarDadosCompletos(token);
+  }
+}
+// CARREGAMENTO EM ESTÁGIOS — etapa pesada, em segundo plano: busca o payload
+// completo (igual ao fluxo de sempre) enquanto a pessoa já está vendo e
+// usando a Visão do Portfólio. Ao terminar, preenche os campos que faltavam
+// e atualiza a página atual (se ela precisava desses dados). Falha aqui é
+// tratada de forma discreta — a pessoa não perde o que já estava usando.
+async function carregarDadosPesadosEmSegundoPlano(token){
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(token);
+    const j=await loadDataJSONPComRetry(url,2);
+    if(j && j.error){
+      mostrarErroCarregamentoPesado_(()=>carregarDadosPesadosEmSegundoPlano(token));
+      return;
+    }
+    D=j.D; HM=j.HM; PM=j.PM; PM_PROJ=j.PM_PROJ||{}; CD=j.CD; CTOK=j.CTOK; AREAS=j.AREAS; AREA_CL=j.AREA_CL;
+    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PEND=j.PEND;
+    PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
+    STATUS_REPORTS=j.STATUS_REPORTS||[];
+    updateFooter(j._ultimaAtualizacaoPlanilha, j._backendVersion);
+    HEAVY_DATA_READY=true;
+    esconderLoadingGlobal();
+    // Reaplica a página atual com os dados agora completos — importante pra
+    // Visão do Portfólio, que pode já estar com um cliente selecionado e
+    // agora ganha o que dependia de PROJ_TASKS (ex: filtro de tag).
+    const paginaAtivaEl=document.querySelector('.page.active');
+    const paginaAlvo=paginaAtivaEl?paginaAtivaEl.id.replace('page-',''):'cliente';
+    boot(paginaAlvo);
+  }catch(e){
+    console.warn('Falha ao carregar dados completos em segundo plano.',e);
+    mostrarErroCarregamentoPesado_(()=>carregarDadosPesadosEmSegundoPlano(token));
+  }
+}
+// Falha na etapa pesada não pode travar quem já está usando a Visão do
+// Portfólio — em vez do banner de erro bloqueante de sempre, avisa de forma
+// discreta e deixa a pessoa decidir se quer tentar de novo agora.
+function mostrarErroCarregamentoPesado_(onRetry){
+  const el=document.getElementById('loading-global');
+  el.classList.add('show','error');
+  document.getElementById('loading-global-spinner').style.display='none';
+  document.getElementById('loading-global-msg').textContent='Não foi possível carregar os detalhes completos (tarefas, horas). A Visão do Portfólio já está disponível normalmente.';
+  const btn=document.getElementById('loading-global-retry');
+  btn.style.display='';
+  btn.onclick=onRetry;
+}
+
+// Fase 2 do login normal (fluxo de contingência, usado quando a etapa
+// "core" falha ou não é reconhecida pelo backend): busca o dataset completo
+// de uma vez só, bloqueando a tela até terminar — igual ao comportamento de
+// antes do carregamento em estágios existir. Também é chamada pelo botão
+// "Tentar novamente" do loading global, se essa fase falhar.
 async function carregarDadosCompletos(token){
   mostrarLoadingGlobal('Carregando dados do dashboard…');
   try{
@@ -1883,6 +2028,7 @@ async function carregarDadosCompletos(token){
     atualizarFaixaVisualizarComo();
     aplicarMenuDinamico();
     esconderLoadingGlobal();
+    HEAVY_DATA_READY=true;
     document.getElementById('main-shell').classList.remove('aguardando-dados');
     const paginaAtivaEl=document.querySelector('.page.active');
     let paginaAlvo=paginaAtivaEl?paginaAtivaEl.id.replace('page-',''):'cliente';
@@ -2074,6 +2220,300 @@ const KPI_ICONES={
   usuarioX:'<circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h3"/><path d="M17 8l5 5M22 8l-5 5"/>'
 };
 // kpiHtml({label, value, foot, icon, color, valueColor, trend:{dir:'up'|'down', texto, sentido:'bom'|'ruim'}})
+// Regra de "tarefas válidas" — usada em vários pontos do dashboard (bloco de
+// Status no Detalhamento do Projeto, Tarefas com Dados Incompletos, e
+// Andamento dos Projetos): só tarefas cadastradas a partir desta data, nunca
+// Backlog/Reuniões. Centralizado aqui — mudar a regra num lugar só, em vez
+// de espalhada em cada página que precisa dela.
+const DATA_CORTE_TAREFAS_VALIDAS='2026-06-01';
+const STATUS_EXCLUIDOS_TAREFAS_VALIDAS=['backlog','reunioes','reuniões'];
+function filtrarTarefasValidas(tasks){
+  return tasks.filter(t=>{
+    if(STATUS_EXCLUIDOS_TAREFAS_VALIDAS.includes((t.status||'').toLowerCase())) return false;
+    if(!t.dt_cadastro_iso || t.dt_cadastro_iso<DATA_CORTE_TAREFAS_VALIDAS) return false;
+    return true;
+  });
+}
+// ============================================================
+// ANDAMENTO DOS PROJETOS — motor de cálculo
+// Todos os limiares de classificação ficam AQUI, num lugar só — nunca
+// espalhados pelos componentes visuais que só leem o resultado já
+// classificado.
+// ============================================================
+// Qual data usar como referência de "fim planejado" pro cálculo de % Prazo
+// — alternável na tela (botão Inicial/Atual). 'pea' = Prev. Entrega Atual
+// (padrão — reflete a expectativa mais corrente); 'pei' = Prev. Entrega
+// Inicial (o que foi planejado originalmente). Troca este valor recalcula
+// TUDO que deriva de % Prazo (GAP, Ritmo, Risco, Tendência) — nunca deixa
+// os dois cenários misturados na mesma leitura.
+let AND_REFERENCIA_PRAZO='pea';
+const AND_LIMIARES = {
+  gapRisco: -18,           // GAP <= isso -> pelo menos "Risco"
+  gapComprometido: -30,    // GAP <= isso -> "Comprometido" (combinado com outros sinais)
+  ritmoAumentoDiff: 5,     // (%tarefasRestantes - %prazoRestante) acima disso -> "Aumento de ritmo"
+  ritmoCriticoDiff: 20,    // acima disso -> "Ritmo crítico"
+  tendenciaMinDiasProjeto: 7,  // projeto precisa ter pelo menos essa idade pra calcular tendência
+  tendenciaMinGapDiff: 3,      // diferença mínima de GAP (em p.p.) pra não classificar como "Estável"
+  tendenciaJanelaDias: 7       // compara com quantos dias atrás
+};
+
+// % de prazo transcorrido — Início até a data de referência escolhida
+// (Prev. Entrega Inicial OU Prev. Entrega Atual — alternável na tela, ver
+// AND_REFERENCIA_PRAZO). Projeto concluído = 100%. Sem as duas datas, ou
+// com a entrega antes do Início (dado inconsistente) -> sem dados, nunca
+// um número inventado.
+function calcularPrazoPctProjeto(p, dataRef, campoReferencia){
+  const ref=dataRef||new Date();
+  const campo=campoReferencia||AND_REFERENCIA_PRAZO;
+  if(p.de) return {pct:100, semDados:false}; // já tem Data de Entrega real preenchida
+  const di=parseBrDateLocal_(p.di), fim=parseBrDateLocal_(p[campo]);
+  if(!di || !fim || fim<=di) return {pct:null, semDados:true};
+  if(ref<di) return {pct:0, semDados:false}; // ainda não iniciado
+  const totalDias=(fim-di)/86400000;
+  const decorridos=(ref-di)/86400000;
+  return {pct:Math.round(decorridos/totalDias*100), semDados:false};
+}
+// % de tarefas concluídas — só as "válidas" (dt_cadastro>=corte, sem
+// Backlog/Reuniões), sobre o universo de tarefas que já existiam até a data
+// de referência (importante pro cálculo retroativo da tendência — o
+// "total" de tarefas de uma semana atrás não é o mesmo de hoje).
+function calcularTarefasPctProjeto(pjName, dataRef){
+  const ref=dataRef||new Date();
+  const refIso=ref.toISOString().slice(0,10);
+  const validas=filtrarTarefasValidas(PROJ_TASKS[pjName]||[]).filter(t=>t.dt_cadastro_iso<=refIso);
+  if(validas.length===0) return {pct:null, total:0, concluidas:0, semDados:true};
+  const concluidas=validas.filter(t=>{
+    if((t.status||'').toLowerCase()!=='done') return false;
+    const dtConc=parseBrDateLocal_(t.dt_conc);
+    return !dtConc || dtConc<=ref; // sem dt_conc registrada mas status Done: conta (dado real, só sem data exata)
+  }).length;
+  return {pct:Math.round(concluidas/validas.length*100), total:validas.length, concluidas, semDados:false};
+}
+function calcularRitmoNecessario(prazoInfo, tarefasInfo){
+  if(prazoInfo.semDados || tarefasInfo.semDados) return {status:'Sem dados', cor:'#94a3b8'};
+  const prazoRestante=100-prazoInfo.pct, tarefasRestantes=100-tarefasInfo.pct;
+  const diff=tarefasRestantes-prazoRestante;
+  if(prazoRestante<=0 && tarefasRestantes>0) return {status:'Ritmo crítico', cor:'#dc2626'};
+  if(diff>=AND_LIMIARES.ritmoCriticoDiff) return {status:'Ritmo crítico', cor:'#dc2626'};
+  if(diff>=AND_LIMIARES.ritmoAumentoDiff) return {status:'Aumento de ritmo', cor:'#f59e0b'};
+  return {status:'Normal', cor:'#16a34a'};
+}
+// Risco de prazo — combina vários sinais (não só o GAP isolado), como
+// pedido: GAP, tarefas atrasadas/bloqueadas, se o prazo já venceu, ritmo
+// necessário. "Blocked" NUNCA conta como atrasada aqui.
+function calcularRiscoPrazo(p, prazoInfo, tarefasInfo, gap, atrasadas, bloqueadas, ritmo){
+  if(p.de) return {nivel:'No prazo', cor:'#16a34a', emoji:'🟢'}; // entregue
+  if(prazoInfo.semDados || tarefasInfo.semDados) return {nivel:'Sem dados', cor:'#94a3b8', emoji:'⚪'};
+  const prazoVencido = prazoInfo.pct>100;
+  let pontos=0;
+  if(gap<=AND_LIMIARES.gapComprometido) pontos+=3; else if(gap<=AND_LIMIARES.gapRisco) pontos+=2; else if(gap<0) pontos+=1;
+  if(prazoVencido && tarefasInfo.pct<100) pontos+=2;
+  if(atrasadas>=5) pontos+=2; else if(atrasadas>0) pontos+=1;
+  if(bloqueadas>0) pontos+=1;
+  if(ritmo.status==='Ritmo crítico') pontos+=2; else if(ritmo.status==='Aumento de ritmo') pontos+=1;
+  if(pontos>=6) return {nivel:'Comprometido', cor:'#dc2626', emoji:'🔴'};
+  if(pontos>=4) return {nivel:'Risco', cor:'#f97316', emoji:'🟠'};
+  if(pontos>=2) return {nivel:'Atenção', cor:'#f59e0b', emoji:'🟡'};
+  return {nivel:'No prazo', cor:'#16a34a', emoji:'🟢'};
+}
+// Tendência — compara o GAP de hoje com o GAP de N dias atrás, reconstruído
+// dos próprios dados (dt_conc de cada tarefa), sem precisar de nenhum
+// snapshot separado guardado. Só calcula se o projeto já é "velho" o
+// suficiente pra fazer sentido comparar.
+function calcularTendenciaProjeto(p, pjName, prazoInfo, tarefasInfo, gap){
+  const di=parseBrDateLocal_(p.di);
+  if(!di || prazoInfo.semDados || tarefasInfo.semDados) return {seta:'—', label:'Sem histórico'};
+  const hoje=new Date();
+  const idadeDias=(hoje-di)/86400000;
+  if(idadeDias<AND_LIMIARES.tendenciaMinDiasProjeto) return {seta:'—', label:'Sem histórico'};
+  const dataPassada=new Date(hoje.getTime()-AND_LIMIARES.tendenciaJanelaDias*86400000);
+  if(dataPassada<di) return {seta:'—', label:'Sem histórico'};
+  const prazoPassado=calcularPrazoPctProjeto(p, dataPassada);
+  const tarefasPassado=calcularTarefasPctProjeto(pjName, dataPassada);
+  if(prazoPassado.semDados || tarefasPassado.semDados) return {seta:'—', label:'Sem histórico'};
+  const gapPassado=tarefasPassado.pct-prazoPassado.pct;
+  const diff=gap-gapPassado;
+  if(diff>=AND_LIMIARES.tendenciaMinGapDiff) return {seta:'↗', label:'Melhorando'};
+  if(diff<=-AND_LIMIARES.tendenciaMinGapDiff) return {seta:'↘', label:'Piorando'};
+  return {seta:'→', label:'Estável'};
+}
+// Monta o objeto completo de andamento de um projeto — usado tanto na
+// tabela principal quanto no detalhamento.
+function calcularAndamentoProjeto(p){
+  const pjName=p.pj;
+  const prazoInfo=calcularPrazoPctProjeto(p);
+  const tarefasInfo=calcularTarefasPctProjeto(pjName);
+  const gap=(!prazoInfo.semDados && !tarefasInfo.semDados) ? (tarefasInfo.pct-prazoInfo.pct) : null;
+  const tasksValidas=filtrarTarefasValidas(PROJ_TASKS[pjName]||[]);
+  const hojeISO=new Date().toISOString().slice(0,10);
+  const atrasadas=tasksValidas.filter(t=>t.dt_venc_iso && t.dt_venc_iso<hojeISO && !t.dt_conc && (t.status||'').toLowerCase()!=='done' && (t.status||'').toLowerCase()!=='blocked');
+  const bloqueadas=tasksValidas.filter(t=>(t.status||'').toLowerCase().includes('block'));
+  const ritmo=calcularRitmoNecessario(prazoInfo, tarefasInfo);
+  const risco=calcularRiscoPrazo(p, prazoInfo, tarefasInfo, gap, atrasadas.length, bloqueadas.length, ritmo);
+  const tendencia=calcularTendenciaProjeto(p, pjName, prazoInfo, tarefasInfo, gap);
+  return {p, prazoInfo, tarefasInfo, gap, atrasadas, bloqueadas, ritmo, risco, tendencia};
+}
+// Gera as frases de "Principais Insights" dinamicamente a partir dos dados
+// reais deste projeto — nunca um texto genérico sem evidência por trás.
+function gerarInsightsAndamento(a){
+  const insights=[];
+  if(a.gap!==null && a.gap<=AND_LIMIARES.gapRisco){
+    insights.push({emoji:'🔴',cor:'#dc2626',texto:'Execução '+Math.abs(a.gap)+' p.p. abaixo do avanço esperado pelo prazo.'});
+  }
+  if(a.ritmo.status==='Ritmo crítico' && !a.prazoInfo.semDados && !a.tarefasInfo.semDados){
+    insights.push({emoji:'🟡',cor:'#f59e0b',texto:(100-a.tarefasInfo.pct)+'% das tarefas permanecem para '+Math.max(0,100-a.prazoInfo.pct)+'% do prazo restante.'});
+  }
+  if(a.atrasadas.length>0 || a.bloqueadas.length>0){
+    const partes=[];
+    if(a.atrasadas.length>0) partes.push(a.atrasadas.length+' tarefa(s) atrasada(s)');
+    if(a.bloqueadas.length>0) partes.push(a.bloqueadas.length+' bloqueada(s)');
+    insights.push({emoji:'🟠',cor:'#f97316',texto:'Existem '+partes.join(' e ')+'.'});
+  }
+  if(a.prazoInfo.pct>100 && a.tarefasInfo.pct<100){
+    insights.push({emoji:'🔴',cor:'#dc2626',texto:'Possível risco de comprometimento do prazo: a data prevista já passou e ainda restam tarefas.'});
+  }
+  if(insights.length===0 && a.risco.nivel==='No prazo'){
+    insights.push({emoji:'🟢',cor:'#16a34a',texto:'Execução acompanhando o prazo, sem sinais de risco nos dados atuais.'});
+  }
+  return insights;
+}
+// ============================================================
+// PAGE ANDAMENTO DOS PROJETOS
+// ============================================================
+let AND_DADOS_CACHE=[]; // recalculado uma vez ao entrar na página (não a cada filtro) — mesmo padrão de cache já usado em Alocações/Inteligência de Alocação
+function initAndamento(){
+  // D.pj já vem filtrado por escopo do backend (perfil Administrador/Head
+  // vê tudo permitido; Gerente de Projeto só os seus) — a página não
+  // precisa (nem deve) fazer nenhuma checagem extra de permissão aqui.
+  AND_DADOS_CACHE=D.pj.map(calcularAndamentoProjeto);
+
+  const clientes=[...new Set(D.pj.map(p=>p.cl))].filter(Boolean).sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  document.getElementById('f-and-cliente').innerHTML='<option value="">Todos</option>'+clientes.map(c=>'<option value="'+c.replace(/"/g,'&quot;')+'">'+c+'</option>').join('');
+  const statusList=[...new Set(D.pj.map(p=>p.st))].filter(Boolean).sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  document.getElementById('f-and-status').innerHTML='<option value="">Todos</option>'+statusList.map(s=>'<option value="'+s.replace(/"/g,'&quot;')+'">'+s+'</option>').join('');
+  popularProjetoFilterAndamento();
+
+  document.getElementById('f-and-cliente').onchange=()=>{ popularProjetoFilterAndamento(); renderAndamento(); };
+  ['f-and-projeto','f-and-status','f-and-risco','f-and-de'].forEach(id=>{ document.getElementById(id).onchange=renderAndamento; });
+  document.getElementById('f-and-clear').onclick=()=>{
+    ['f-and-cliente','f-and-projeto','f-and-status','f-and-risco','f-and-de'].forEach(id=>{ document.getElementById(id).value=''; });
+    popularProjetoFilterAndamento();
+    renderAndamento();
+  };
+  document.querySelectorAll('#and-toggle-prazo .and-toggle-btn').forEach(btn=>{
+    btn.onclick=()=>{
+      if(btn.dataset.ref===AND_REFERENCIA_PRAZO) return; // já selecionado, nada a recalcular
+      AND_REFERENCIA_PRAZO=btn.dataset.ref;
+      document.querySelectorAll('#and-toggle-prazo .and-toggle-btn').forEach(b=>b.classList.toggle('active',b===btn));
+      // Muda a REFERÊNCIA do % Prazo -> tudo que deriva dela (GAP, Ritmo,
+      // Risco, Tendência) precisa ser recalculado do zero, não só re-filtrado.
+      AND_DADOS_CACHE=D.pj.map(calcularAndamentoProjeto);
+      renderAndamento();
+    };
+  });
+  renderAndamento();
+}
+function popularProjetoFilterAndamento(){
+  const cli=document.getElementById('f-and-cliente').value;
+  const sel=document.getElementById('f-and-projeto');
+  const prevVal=sel.value;
+  const projs=(cli?D.pj.filter(p=>p.cl===cli):D.pj).map(p=>p.pj).sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  sel.innerHTML='<option value="">Todos</option>'+projs.map(p=>'<option value="'+p.replace(/"/g,'&quot;')+'">'+p+'</option>').join('');
+  if(projs.includes(prevVal)) sel.value=prevVal;
+}
+function and_barraHtml(label, pct, cor, semDados){
+  if(semDados) return '<div class="and-barra-label"><span>'+label+'</span><span>sem dados</span></div><div class="and-barra-track"></div>';
+  const pctVisual=Math.max(0,Math.min(100,pct));
+  return '<div class="and-barra-label"><span>'+label+'</span><span style="font-weight:700;color:var(--text)">'+pct+'%</span></div><div class="and-barra-track"><div class="and-barra-fill" style="width:'+pctVisual+'%;background:'+cor+'"></div></div>';
+}
+// A cor da barra reflete a relação execução x prazo (o risco já calculado),
+// não o percentual absoluto isolado — pedido explícito.
+function renderAndamento(){
+  const fCliente=document.getElementById('f-and-cliente').value;
+  const fProjeto=document.getElementById('f-and-projeto').value;
+  const fStatus=document.getElementById('f-and-status').value;
+  const fRisco=document.getElementById('f-and-risco').value;
+  const fDe=document.getElementById('f-and-de').value;
+
+  let linhas=AND_DADOS_CACHE;
+  if(fCliente) linhas=linhas.filter(a=>a.p.cl===fCliente);
+  if(fProjeto) linhas=linhas.filter(a=>a.p.pj===fProjeto);
+  if(fStatus) linhas=linhas.filter(a=>a.p.st===fStatus);
+  if(fRisco) linhas=linhas.filter(a=>a.risco.nivel===fRisco);
+  if(fDe){
+    linhas=linhas.filter(a=>{ const di=parseBrDateLocal_(a.p.di); return di && di.toISOString().slice(0,10)>=fDe; });
+  }
+
+  // KPIs — sempre sobre o conjunto FILTRADO (exceto o próprio filtro de
+  // risco, que já reflete o clique) — clicáveis, aplicam o filtro de risco.
+  const contagem={'No prazo':0,'Atenção':0,'Risco':0,'Comprometido':0};
+  linhas.forEach(a=>{ if(contagem[a.risco.nivel]!==undefined) contagem[a.risco.nivel]++; });
+  document.getElementById('kpi-andamento').innerHTML=
+    kpiHtml({label:'Projetos',value:linhas.length,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})+
+    and_kpiRiscoClicavel('No prazo',contagem['No prazo'],'#16a34a','#f0fdf4')+
+    and_kpiRiscoClicavel('Atenção',contagem['Atenção'],'#f59e0b','#fff7ed')+
+    and_kpiRiscoClicavel('Risco',contagem['Risco'],'#f97316','#fff7ed')+
+    and_kpiRiscoClicavel('Comprometido',contagem['Comprometido'],'#dc2626','#fef2f2');
+
+  let h='<div class="card"><div class="card-title"><h3>Projetos</h3><span class="sub">'+linhas.length+'</span></div>';
+  if(linhas.length===0){
+    h+='<div class="empty-state" style="padding:50px 20px"><p>Nenhum projeto encontrado com esses filtros.</p></div>';
+  }else{
+    h+='<div class="table-wrap" style="max-height:640px"><table><thead><tr><th>Projeto</th><th>Cliente</th><th style="min-width:130px">Prazo ('+(AND_REFERENCIA_PRAZO==='pei'?'Inicial':'Atual')+')</th><th style="min-width:130px">Tarefas</th><th>GAP</th><th>Ritmo Necessário</th><th>Risco</th><th>Tendência</th></tr></thead><tbody>';
+    linhas.forEach(a=>{
+      const gapTxt=a.gap===null?'—':((a.gap>=0?'+':'')+a.gap+'pp');
+      const gapCor=a.gap===null?'#94a3b8':(a.gap>=0?'#16a34a':(a.gap<=AND_LIMIARES.gapRisco?'#dc2626':'#f59e0b'));
+      h+='<tr class="and-row-clicavel" data-projeto="'+a.p.pj.replace(/"/g,'&quot;')+'" style="cursor:pointer">'+
+        '<td>'+a.p.pj+'</td><td>'+a.p.cl+'</td>'+
+        '<td>'+and_barraHtml('',a.prazoInfo.pct,a.risco.cor,a.prazoInfo.semDados)+'</td>'+
+        '<td>'+and_barraHtml('',a.tarefasInfo.pct,a.risco.cor,a.tarefasInfo.semDados)+'</td>'+
+        '<td style="font-weight:700;color:'+gapCor+'">'+gapTxt+'</td>'+
+        '<td><span class="status-pill" style="border-left:3px solid '+a.ritmo.cor+';color:'+a.ritmo.cor+'">'+a.ritmo.status+'</span></td>'+
+        '<td><span class="status-pill" style="border-left:3px solid '+a.risco.cor+';color:'+a.risco.cor+'">'+a.risco.emoji+' '+a.risco.nivel+'</span></td>'+
+        '<td style="text-align:center" class="and-tendencia" title="'+a.tendencia.label+'">'+a.tendencia.seta+'</td>'+
+        '</tr>';
+    });
+    h+='</tbody></table></div>';
+  }
+  h+='</div>';
+  document.getElementById('andamento-content').innerHTML=h;
+}
+function and_kpiRiscoClicavel(nivel,valor,cor,bg){
+  return '<div class="kpi tem-icone and-kpi-risco-clicavel" data-risco="'+nivel+'" style="cursor:pointer"><div class="kpi-top-row"><div class="kpi-icon-chip" style="background:'+bg+';color:'+cor+'"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></div></div><span class="kpi-label">'+nivel+'</span><span class="kpi-value" style="color:'+cor+'">'+valor+'</span></div>';
+}
+function abrirDetalheAndamento(pjName){
+  const a=AND_DADOS_CACHE.find(x=>x.p.pj===pjName);
+  if(!a) return;
+  const p=a.p;
+  const campo=(label,val)=> val ? '<div class="task-modal-field"><span class="task-modal-label">'+label+'</span><span class="task-modal-value">'+val+'</span></div>' : '';
+  let h='<div class="task-modal-field task-modal-field-full"><span class="task-modal-label">Projeto</span><span class="task-modal-value" style="font-weight:700;font-size:15px">'+p.pj+'</span></div>';
+  h+='<div class="task-modal-grid-2">'+campo('Cliente',p.cl)+campo('Data de Início',p.di)+campo('Prev. Entrega Inicial',p.pei)+campo('Prev. Entrega Atual',p.pea)+campo('Data de Entrega',p.de||'Não informado')+'</div>';
+  h+='<div class="task-modal-section-title">Indicadores</div>';
+  h+='<div style="font-size:11px;color:var(--text-faint);margin-bottom:8px">Prazo calculado em relação à <strong>'+(AND_REFERENCIA_PRAZO==='pei'?'Prev. Entrega Inicial':'Prev. Entrega Atual')+'</strong></div>';
+  h+='<div style="padding:4px 0 10px">'+and_barraHtml('% Prazo',a.prazoInfo.pct,a.risco.cor,a.prazoInfo.semDados)+'</div>';
+  h+='<div style="padding:4px 0 14px">'+and_barraHtml('% Tarefas',a.tarefasInfo.pct,a.risco.cor,a.tarefasInfo.semDados)+'</div>';
+  h+='<div class="task-modal-grid-2">'+
+    campo('GAP', a.gap===null?'—':((a.gap>=0?'+':'')+a.gap+' p.p.'))+
+    campo('Ritmo Necessário', a.ritmo.status)+
+    campo('Risco de Prazo', a.risco.emoji+' '+a.risco.nivel)+
+    campo('Tendência', a.tendencia.seta+' '+a.tendencia.label)+
+  '</div>';
+  h+='<div class="task-modal-section-title">Resumo das Tarefas</div>';
+  h+='<div class="task-modal-grid-2">'+
+    campo('Total',a.tarefasInfo.total)+campo('Concluídas',a.tarefasInfo.concluidas)+
+    campo('Atrasadas',a.atrasadas.length)+campo('Bloqueadas',a.bloqueadas.length)+
+    campo('Restantes',a.tarefasInfo.total-a.tarefasInfo.concluidas)+
+  '</div>';
+  const insights=gerarInsightsAndamento(a);
+  if(insights.length>0){
+    h+='<div class="task-modal-section-title">Principais Insights</div>';
+    insights.forEach(ins=>{ h+='<div class="and-insight-box" style="background:'+ins.cor+'14;border:1px solid '+ins.cor+'40"><span>'+ins.emoji+'</span><span>'+ins.texto+'</span></div>'; });
+  }
+  h+='<div style="margin-top:14px"><button type="button" class="filter-clear" id="and-ver-detalhamento-btn" data-projeto="'+p.pj.replace(/"/g,'&quot;')+'">Ver Detalhamento Completo do Projeto →</button></div>';
+  document.getElementById('task-modal-title').textContent='Andamento — '+p.pj;
+  document.getElementById('task-modal-body').innerHTML=h;
+  document.getElementById('task-modal-overlay').classList.add('show');
+}
 function kpiHtml(o){
   const iconSvg=o.icon&&KPI_ICONES[o.icon]?'<svg viewBox="0 0 24 24">'+KPI_ICONES[o.icon]+'</svg>':'';
   const chip=iconSvg?'<div class="kpi-icon-chip" style="background:'+(o.bg||'#eff6ff')+';color:'+(o.color||'#2563eb')+'">'+iconSvg+'</div>':'';
@@ -2157,12 +2597,12 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes'],
+  'Administrador':  ['cliente','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
   // Também vê Gestão Setorial (sua área) e Gestão Transversal (apoio ao GP).
-  'Head':           ['cliente','alocacoes','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','transversal','statusreport'],
+  'Head':           ['cliente','alocacoes','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','transversal','statusreport','andamento'],
   // Tech Lead / PO / SM: veem o(s) projeto(s) onde atuam por completo, junto com a equipe.
   // Gestão Transversal é a página central desses perfis (LP/GP/SM).
   'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail','transversal','statusreport'],
@@ -2176,8 +2616,9 @@ const PERM_MENU = {
   // escopo "próprio apenas"), então tem o mesmo menu de Tech Lead/PO/SM.
   // 'Projetos' é o perfil do Gerente de Projeto — vê a própria Gerência (com o
   // projeto dele), o Detalhamento do Projeto, e agora também o Status Report
-  // semanal do seu projeto.
-  'Projetos':       ['gerente','projdetail','statusreport'],
+  // semanal do seu projeto. "Andamento dos Projetos" pedido explicitamente pro
+  // Gerente de Projeto acompanhar (só) o(s) projeto(s) dele.
+  'Projetos':       ['gerente','projdetail','statusreport','andamento'],
   'Corporativo':    ['cliente','pessoa','projdetail'],
   'Infra':          ['cliente','pessoa','projdetail'],
   'Analytics':      ['cliente','pessoa','projdetail'],
@@ -2194,7 +2635,7 @@ const PERM_MENU = {
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Visão do Portfólio',alocacoes:'Alocações',inteligencia:'Inteligência de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações'};
+const PAGE_LABELS = {cliente:'Visão do Portfólio',alocacoes:'Alocações',inteligencia:'Inteligência de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 
 function paginasPermitidas(){ return PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido']; }
@@ -2233,6 +2674,21 @@ function mostrarAcessoNegado(pagina){
 // sequência de páginas visitadas para o botão global "← Voltar" poder desfazer
 // a navegação passo a passo, com fallback para o Portfólio quando a pilha esvazia.
 let PAGE_NAV_STACK = [];
+// true por padrão — só vira false durante a janela do carregamento em
+// estágios (fase "core" já entregue, fase pesada ainda a caminho). Fora
+// desse fluxo (Visualizar como, fluxo clássico), nunca chega a ser tocada,
+// então navegação continua liberada normalmente.
+let HEAVY_DATA_READY = true;
+function mostrarToastCarregandoAinda(){
+  const el=document.getElementById('viewas-loading-toast');
+  if(!el) return;
+  const span=el.querySelector('span');
+  const textoOriginal=span?span.textContent:'';
+  if(span) span.textContent='Ainda carregando os dados completos, aguarde um instante…';
+  el.classList.add('show');
+  clearTimeout(window.__toastCarregandoTimeout);
+  window.__toastCarregandoTimeout=setTimeout(()=>{ el.classList.remove('show'); if(span) span.textContent=textoOriginal; }, 2500);
+}
 let PAGE_NAV_GOING_BACK = false;
 function goToPage(name){
   // GUARDA DE ROTA: mesmo que alguém chame goToPage() diretamente pelo console do
@@ -2241,6 +2697,15 @@ function goToPage(name){
   // (a proteção real dos DADOS já acontece no backend antes de qualquer coisa chegar aqui).
   if(!paginasPermitidas().includes(name)){
     mostrarAcessoNegado(name);
+    return;
+  }
+  // CARREGAMENTO EM ESTÁGIOS: "Visão do Portfólio" (cliente) já funciona só
+  // com os dados leves (fase "core"), mas as demais páginas precisam dos
+  // dados pesados (PROJ_TASKS e afins) — se a pessoa tentar navegar pra
+  // qualquer outra página antes desses dados chegarem em segundo plano, só
+  // avisa e mantém onde está, em vez de deixar a página quebrada/vazia.
+  if(!HEAVY_DATA_READY && name!=='cliente'){
+    mostrarToastCarregandoAinda();
     return;
   }
   const paginaAtualEl=document.querySelector('.page.active');
@@ -4190,6 +4655,16 @@ document.addEventListener('click', (e)=>{
   if(srVer && srVer.dataset.reportId){ abrirVisualizacaoStatusReport(srVer.dataset.reportId); return; }
   const srAtualizarBtn = e.target.closest('.sr-hist-atualizar-btn');
   if(srAtualizarBtn){ srAtualizarHistorico(srAtualizarBtn); return; }
+  const andRow = e.target.closest('.and-row-clicavel');
+  if(andRow && andRow.dataset.projeto){ abrirDetalheAndamento(andRow.dataset.projeto); return; }
+  const andKpiRisco = e.target.closest('.and-kpi-risco-clicavel');
+  if(andKpiRisco && andKpiRisco.dataset.risco){ document.getElementById('f-and-risco').value=andKpiRisco.dataset.risco; renderAndamento(); return; }
+  const andVerDetalhamento = e.target.closest('#and-ver-detalhamento-btn');
+  if(andVerDetalhamento && andVerDetalhamento.dataset.projeto){
+    document.getElementById('task-modal-overlay').classList.remove('show');
+    openProjDetail(andVerDetalhamento.dataset.projeto);
+    return;
+  }
   if(e.target.closest('#task-modal-close') || e.target.id==='task-modal-overlay'){ fecharDetalheTarefa(); }
   if(e.target.closest('#ia-modal-close') || e.target.id==='ia-modal-overlay'){ document.getElementById('ia-modal-overlay').classList.remove('show'); }
   if(e.target.closest('#sr-exec-modal-close') || e.target.id==='sr-exec-modal-overlay'){ document.getElementById('sr-exec-modal-overlay').classList.remove('show'); }
@@ -4497,13 +4972,7 @@ function renderProjDetail(pjName){
   // aplicado só aqui (não afeta Destaque/Bloqueadas/Atrasadas/Gantt, que
   // continuam usando `tasks` sem esse recorte): só tarefas criadas a partir
   // de 01/06/2026 (dt_cadastro), e nunca Backlog/Reuniões.
-  const DATA_CORTE_STATUS_BLOCO='2026-06-01';
-  const STATUS_EXCLUIDOS_BLOCO=['backlog','reunioes','reuniões'];
-  const tasksStatusBloco=tasks.filter(t=>{
-    if(STATUS_EXCLUIDOS_BLOCO.includes((t.status||'').toLowerCase())) return false;
-    if(!t.dt_cadastro_iso || t.dt_cadastro_iso<DATA_CORTE_STATUS_BLOCO) return false;
-    return true;
-  });
+  const tasksStatusBloco=filtrarTarefasValidas(tasks);
   const statusCount = {};
   tasksStatusBloco.forEach(t=>{ statusCount[t.status]=(statusCount[t.status]||0)+1; });
 
@@ -6633,7 +7102,8 @@ const PAGE_INIT_MAP={
   lider:initLider, gerente:initGerente, equipe:initEquipe,
   setorial:initSetorial, transversal:initTransversal, statusreport:initStatusReport,
   statusreportpainel:initStatusReportPainel,
-  logalteracoes:initLogAlteracoes
+  logalteracoes:initLogAlteracoes,
+  andamento:initAndamento
 };
 function boot(paginaPrioritaria){
   const ordem=Object.keys(PAGE_INIT_MAP);
