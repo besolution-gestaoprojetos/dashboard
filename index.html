@@ -1476,7 +1476,9 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 
     <!-- PAGE ANDAMENTO DOS PROJETOS -->
     <section class="page" id="page-andamento">
-      <div class="page-header"><div><h1>Andamento dos Projetos</h1><p>Visão executiva: prazo consumido, tarefas concluídas e risco de comprometimento, por projeto.</p></div></div>
+      <div class="page-header"><div><h1>Andamento dos Projetos</h1><p>Visão executiva: prazo consumido, tarefas concluídas e risco de comprometimento, por projeto.</p></div>
+        <button type="button" class="filter-clear" id="and-explicacao-btn">❓ Como esses indicadores são calculados</button>
+      </div>
       <div class="filter-bar">
         <div class="filter-field"><label>Cliente</label><select id="f-and-cliente"><option value="">Todos</option></select></div>
         <div class="filter-field"><label>Projeto</label><select id="f-and-projeto"><option value="">Todos</option></select></div>
@@ -1634,7 +1636,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v10.8 · Última atualização: —</footer>
+  <footer id="app-footer">v11.0 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1773,7 +1775,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v10.8';
+const APP_VERSION='v11.0';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2382,6 +2384,7 @@ function gerarInsightsAndamento(a){
 // ============================================================
 let AND_DADOS_CACHE=[]; // recalculado uma vez ao entrar na página (não a cada filtro) — mesmo padrão de cache já usado em Alocações/Inteligência de Alocação
 function initAndamento(){
+  document.getElementById('and-explicacao-btn').onclick=abrirExplicacaoAndamento;
   // D.pj já vem filtrado por escopo do backend (perfil Administrador/Head
   // vê tudo permitido; Gerente de Projeto só os seus) — a página não
   // precisa (nem deve) fazer nenhuma checagem extra de permissão aqui.
@@ -2480,6 +2483,45 @@ function renderAndamento(){
 }
 function and_kpiRiscoClicavel(nivel,valor,cor,bg){
   return '<div class="kpi tem-icone and-kpi-risco-clicavel" data-risco="'+nivel+'" style="cursor:pointer"><div class="kpi-top-row"><div class="kpi-icon-chip" style="background:'+bg+';color:'+cor+'"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg></div></div><span class="kpi-label">'+nivel+'</span><span class="kpi-value" style="color:'+cor+'">'+valor+'</span></div>';
+}
+// Explicação em linguagem simples de cada indicador — pensada pra quem não
+// acompanha o dashboard no dia a dia entender sem precisar perguntar pra
+// ninguém. Cada bloco: o que é, como é calculado, e um exemplo prático.
+function abrirExplicacaoAndamento(){
+  const bloco=(emoji,titulo,oQueE,comoCalcula,exemplo)=>
+    '<div style="margin-bottom:22px"><div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px">'+emoji+' '+titulo+'</div>'+
+    '<p style="font-size:13px;color:var(--text-muted);line-height:1.6;margin:0 0 8px">'+oQueE+'</p>'+
+    '<p style="font-size:12.5px;color:var(--text-faint);line-height:1.6;margin:0 0 8px"><strong>Como é calculado:</strong> '+comoCalcula+'</p>'+
+    (exemplo?'<div style="background:var(--surface-alt);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--text-muted);line-height:1.5"><strong>Exemplo:</strong> '+exemplo+'</div>':'')+
+    '</div>';
+  let h='<p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Esta página resume, pra cada projeto, se a execução está acompanhando o prazo. Veja abaixo o que cada coluna realmente significa.</p>';
+  h+=bloco('📅','Prazo (Inicial/Atual)',
+    'Mostra quanto do tempo total do projeto já passou, não quanto trabalho foi feito.',
+    'Divide o tempo já decorrido desde o Início pelo tempo total planejado até a entrega (Prev. Entrega Inicial ou Atual, conforme o botão selecionado no topo da página).',
+    'Um projeto que começou há 6 meses e tem 10 meses de duração total está com <strong>60% de Prazo</strong> — mesmo que ninguém tenha trabalhado nele ainda.');
+  h+=bloco('✅','Tarefas',
+    'Mostra quanto do trabalho já foi realmente concluído.',
+    'Conta quantas tarefas do projeto estão marcadas como concluídas, dividido pelo total de tarefas válidas (tarefas muito antigas, de Backlog ou de Reunião não entram nessa conta).',
+    'Se o projeto tem 100 tarefas válidas e 65 já foram concluídas, o indicador mostra <strong>65% de Tarefas</strong>.');
+  h+=bloco('📊','GAP',
+    'Compara "quanto tempo já passou" com "quanto trabalho já foi feito" — é o indicador mais direto pra saber se o projeto está adiantado ou atrasado em relação ao prazo.',
+    'É a diferença entre % Tarefas e % Prazo. GAP positivo ou perto de zero é bom sinal (a execução acompanha ou até adianta o prazo); GAP bem negativo é sinal de alerta.',
+    'Prazo em 80% mas só 65% das tarefas concluídas → GAP = 65 − 80 = <strong>-15 pontos</strong>. A execução está 15 pontos percentuais atrás do que o tempo já passado sugeriria.');
+  h+=bloco('🏃','Ritmo Necessário',
+    'Responde: "dá pra manter o ritmo atual, ou vai precisar acelerar?"',
+    'Compara quanto trabalho ainda falta (100% − % Tarefas) com quanto tempo ainda resta (100% − % Prazo). Se falta muito mais trabalho do que tempo, o ritmo precisa aumentar.',
+    'Restam 35% das tarefas, mas só 20% do prazo — o projeto precisa executar quase o dobro do ritmo atual pra terminar a tempo. Isso aparece como <strong>"Ritmo crítico"</strong>.');
+  h+=bloco('🚦','Risco de Prazo',
+    'Uma classificação geral e resumida — No Prazo, Atenção, Risco ou Comprometido — pra identificar rapidamente quais projetos merecem atenção primeiro.',
+    'Combina vários sinais ao mesmo tempo: o GAP, se existem tarefas atrasadas ou bloqueadas, se o prazo já venceu, e o Ritmo Necessário. Quanto mais sinais de alerta juntos, mais alto o risco. Uma tarefa bloqueada nunca é contada como "atrasada" — são coisas diferentes.',
+    'Um projeto com GAP bem negativo, várias tarefas atrasadas e o prazo já vencido é classificado como <strong>"Comprometido"</strong> — não porque um único número deu ruim, mas porque vários sinais apontam risco ao mesmo tempo.');
+  h+=bloco('↗️','Tendência',
+    'Mostra se a situação do projeto está melhorando, piorando, ou estável — comparando com como ele estava há uma semana.',
+    'Recalcula o GAP de hoje e o GAP de 7 dias atrás (usando as datas em que as tarefas foram realmente concluídas) e compara os dois. Se o projeto for muito novo ou não houver dados suficientes pra essa comparação, mostra "Sem histórico" em vez de arriscar um palpite.',
+    'Se o GAP piorou nos últimos 7 dias (a execução perdeu ritmo em relação ao prazo), a seta aponta <strong>↘ Piorando</strong> — mesmo que nenhuma tarefa nova tenha atrasado, o simples fato do prazo continuar andando sem novas entregas já é um sinal de alerta.');
+  document.getElementById('task-modal-title').textContent='Como os indicadores são calculados';
+  document.getElementById('task-modal-body').innerHTML=h;
+  document.getElementById('task-modal-overlay').classList.add('show');
 }
 function abrirDetalheAndamento(pjName){
   const a=AND_DADOS_CACHE.find(x=>x.p.pj===pjName);
@@ -4989,12 +5031,12 @@ function renderProjDetail(pjName){
   const bloqueadas = tasks.filter(t=> (t.status||'').toLowerCase().includes('block'));
 
   // Faltando dados
-  // Mesma regra já aplicada em Pendências e no bloco de Tarefas por Status:
-  // só considera "dados incompletos" tarefas criadas a partir de 01/06/2026
-  // (dt_cadastro) — tarefas antigas, criadas antes dessa data, não entram
-  // nessa contagem/listagem, mesmo que também estejam com dados faltando.
-  const DATA_CORTE_INCOMPLETOS='2026-06-01';
-  const faltando = tasks.filter(t=> (!t.dt_inicio || !t.dt_venc || !t.resp) && t.dt_cadastro_iso && t.dt_cadastro_iso>=DATA_CORTE_INCOMPLETOS);
+  // Só considera "dados incompletos" tarefas criadas a partir de 01/07/2026
+  // (dt_cadastro) — tarefas antigas não entram nessa contagem/listagem,
+  // mesmo que também estejam com dados faltando. Tarefas com status
+  // Backlog nunca entram aqui, independente da data.
+  const DATA_CORTE_INCOMPLETOS='2026-07-01';
+  const faltando = tasks.filter(t=> (!t.dt_inicio || !t.dt_venc || !t.resp) && t.dt_cadastro_iso && t.dt_cadastro_iso>=DATA_CORTE_INCOMPLETOS && (t.status||'').toLowerCase()!=='backlog');
 
   // Atrasadas (dt_venc passado e não concluída)
   const hojeISO = new Date().toISOString().slice(0,10);
@@ -5139,7 +5181,7 @@ function renderProjDetail(pjName){
   h += '</div>';
 
   // Faltando dados
-  h += '<div class="pd-section"><h3>⚠️ Tarefas com Dados Incompletos ('+faltando.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Sem data de início, vencimento e/ou responsável — considera só tarefas cadastradas a partir de 01/06/2026</span>';
+  h += '<div class="pd-section"><h3>⚠️ Tarefas com Dados Incompletos ('+faltando.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Sem data de início, vencimento e/ou responsável — considera só tarefas cadastradas a partir de 01/07/2026, exceto Backlog</span>';
   const statusesIncompleto = [...new Set(tasks.map(t=>t.status).filter(Boolean))].sort();
   if(statusesIncompleto.length>0){
     h += '<div style="margin-bottom:10px"><label style="font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.03em;margin-right:8px">Status da Tarefa</label><select id="pd-incompleto-status" style="font-size:13px;padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text)">';
