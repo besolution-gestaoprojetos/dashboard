@@ -1636,7 +1636,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v11.1 · Última atualização: —</footer>
+  <footer id="app-footer">v11.3 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1775,7 +1775,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v11.1';
+const APP_VERSION='v11.3';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1906,6 +1906,18 @@ async function carregarDadosCore(token){
       // Resposta inesperada (ou o backend não reconheceu action=core, ex:
       // versão mais antiga do .gs) — completa com o fluxo de sempre, que
       // busca tudo de uma vez e já é validado.
+      carregarDadosCompletos(token);
+      return;
+    }
+    // Administrador entra direto em Central de Comando — mas essa página
+    // depende de dados pesados (tendências, indicadores agregados) pra
+    // fazer sentido, então não dá pra usar o atalho de dados leves aqui
+    // (mostraria a tela incompleta, ou pularia de uma página pra outra
+    // visivelmente). Pula direto pro carregamento completo de sempre —
+    // um pouco mais lento pra entrar, mas sem susto nem tela pela metade.
+    if(j._perfil==='Administrador' && !j._viewingAs){
+      document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+      document.getElementById('page-futuristic')?.classList.add('active');
       carregarDadosCompletos(token);
       return;
     }
@@ -2429,6 +2441,17 @@ function and_barraHtml(label, pct, cor, semDados){
   const pctVisual=Math.max(0,Math.min(100,pct));
   return '<div class="and-barra-label"><span>'+label+'</span><span style="font-weight:700;color:var(--text)">'+pct+'%</span></div><div class="and-barra-track"><div class="and-barra-fill" style="width:'+pctVisual+'%;background:'+cor+'"></div></div>';
 }
+// Barra da coluna Tarefas: volta a usar a cor do risco (igual à barra de
+// Prazo) — mantém o "bater o olho e já ver quem precisa de atenção" que se
+// perdia com a barra verde/azul fixa. Só acrescenta o percentual que ainda
+// falta, como informação extra ao lado do percentual concluído.
+function and_barraTarefasHtml(pct, cor, semDados){
+  if(semDados) return '<div class="and-barra-label"><span>Concluído</span><span>sem dados</span></div><div class="and-barra-track"></div>';
+  const pctVisual=Math.max(0,Math.min(100,pct));
+  const restante=100-pctVisual;
+  return '<div class="and-barra-label"><span style="font-weight:700;color:var(--text)">'+pct+'%</span><span style="color:var(--text-faint)">faltam '+restante+'%</span></div>'+
+    '<div class="and-barra-track"><div class="and-barra-fill" style="width:'+pctVisual+'%;background:'+cor+'"></div></div>';
+}
 // A cor da barra reflete a relação execução x prazo (o risco já calculado),
 // não o percentual absoluto isolado — pedido explícito.
 function renderAndamento(){
@@ -2469,7 +2492,7 @@ function renderAndamento(){
       h+='<tr class="and-row-clicavel" data-projeto="'+a.p.pj.replace(/"/g,'&quot;')+'" style="cursor:pointer">'+
         '<td>'+a.p.pj+'</td><td>'+a.p.cl+'</td>'+
         '<td>'+and_barraHtml('',a.prazoInfo.pct,a.risco.cor,a.prazoInfo.semDados)+'</td>'+
-        '<td>'+and_barraHtml('',a.tarefasInfo.pct,a.risco.cor,a.tarefasInfo.semDados)+'</td>'+
+        '<td>'+and_barraTarefasHtml(a.tarefasInfo.pct,a.risco.cor,a.tarefasInfo.semDados)+'</td>'+
         '<td style="font-weight:700;color:'+gapCor+'">'+gapTxt+'</td>'+
         '<td><span class="status-pill" style="border-left:3px solid '+a.ritmo.cor+';color:'+a.ritmo.cor+'">'+a.ritmo.status+'</span></td>'+
         '<td><span class="status-pill" style="border-left:3px solid '+a.risco.cor+';color:'+a.risco.cor+'">'+a.risco.emoji+' '+a.risco.nivel+'</span></td>'+
@@ -2533,7 +2556,7 @@ function abrirDetalheAndamento(pjName){
   h+='<div class="task-modal-section-title">Indicadores</div>';
   h+='<div style="font-size:11px;color:var(--text-faint);margin-bottom:8px">Prazo calculado em relação à <strong>'+(AND_REFERENCIA_PRAZO==='pei'?'Prev. Entrega Inicial':'Prev. Entrega Atual')+'</strong></div>';
   h+='<div style="padding:4px 0 10px">'+and_barraHtml('% Prazo',a.prazoInfo.pct,a.risco.cor,a.prazoInfo.semDados)+'</div>';
-  h+='<div style="padding:4px 0 14px">'+and_barraHtml('% Tarefas',a.tarefasInfo.pct,a.risco.cor,a.tarefasInfo.semDados)+'</div>';
+  h+='<div style="padding:4px 0 14px">'+and_barraTarefasHtml(a.tarefasInfo.pct,a.risco.cor,a.tarefasInfo.semDados)+'</div>';
   h+='<div class="task-modal-grid-2">'+
     campo('GAP', a.gap===null?'—':((a.gap>=0?'+':'')+a.gap+' p.p.'))+
     campo('Ritmo Necessário', a.ritmo.status)+
