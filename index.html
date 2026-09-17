@@ -1636,7 +1636,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v11.0 · Última atualização: —</footer>
+  <footer id="app-footer">v11.1 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1775,7 +1775,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v11.0';
+const APP_VERSION='v11.1';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -2644,7 +2644,7 @@ const PERM_MENU = {
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
   // Também vê Gestão Setorial (sua área) e Gestão Transversal (apoio ao GP).
-  'Head':           ['cliente','alocacoes','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','transversal','statusreport','andamento'],
+  'Head':           ['cliente','alocacoes','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','transversal','statusreport'],
   // Tech Lead / PO / SM: veem o(s) projeto(s) onde atuam por completo, junto com a equipe.
   // Gestão Transversal é a página central desses perfis (LP/GP/SM).
   'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail','transversal','statusreport'],
@@ -2657,10 +2657,9 @@ const PERM_MENU = {
   // 'Projetos' é diferente dos demais: vê o(s) projeto(s) onde atua (não é mais
   // escopo "próprio apenas"), então tem o mesmo menu de Tech Lead/PO/SM.
   // 'Projetos' é o perfil do Gerente de Projeto — vê a própria Gerência (com o
-  // projeto dele), o Detalhamento do Projeto, e agora também o Status Report
-  // semanal do seu projeto. "Andamento dos Projetos" pedido explicitamente pro
-  // Gerente de Projeto acompanhar (só) o(s) projeto(s) dele.
-  'Projetos':       ['gerente','projdetail','statusreport','andamento'],
+  // projeto dele), o Detalhamento do Projeto, e o Status Report semanal do
+  // seu projeto. "Andamento dos Projetos" é exclusivo do Administrador.
+  'Projetos':       ['gerente','projdetail','statusreport'],
   'Corporativo':    ['cliente','pessoa','projdetail'],
   'Infra':          ['cliente','pessoa','projdetail'],
   'Analytics':      ['cliente','pessoa','projdetail'],
