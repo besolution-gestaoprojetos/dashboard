@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxywLQfFDdrHQpOCcnqh6Rp3ee59H7qyPLNkGWr7dgIFwqo67xjbVSQUe0zlSeT68eZmg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbw17GUz1Tw5qxQlgNAS-gr6v7zRFr_AS0uHBmbJY3F_UZCp4Y0sZkaXY19dRbklkDSoEA/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -626,7 +626,7 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 /* Inteligência de Alocação */
 .ia-score-bar-track{display:inline-block; width:60px; height:6px; border-radius:999px; background:var(--surface-alt); overflow:hidden; vertical-align:middle; margin-right:6px;}
 .ia-score-bar-fill{height:100%; border-radius:999px;}
-.ia-badge-situacao{display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:700; white-space:nowrap;}
+.ia-badge-situacao{display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:999px; font-size:14px; font-weight:700; white-space:nowrap; cursor:default;}
 .ia-th-sort{user-select:none;}
 .ia-th-sort:hover{color:var(--primary);}
 
@@ -1279,6 +1279,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
           <button class="nav-tab" data-page="transversal">Gestão Transversal</button>
           <button class="nav-tab" data-page="statusreportpainel">Painel de Status Report</button>
           <button class="nav-tab" data-page="logalteracoes">Log de Alterações</button>
+          <button class="nav-tab" data-page="permissoes">Administração de Permissões</button>
         </div>
       </div>
       <div class="nav-cat" data-cat="projetos">
@@ -1515,6 +1516,15 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="log-alteracoes-content"></div>
     </section>
 
+    <!-- PAGE ADMINISTRAÇÃO DE PERMISSÕES -->
+    <section class="page" id="page-permissoes">
+      <div class="page-header"><div><h1>Administração de Permissões</h1><p>Exceções de acesso a páginas por usuário — o perfil continua sendo o padrão; aqui você libera ou remove páginas específicas para alguém, sem mudar o perfil dele. Exclusivo do perfil Administrador.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field" style="min-width:300px"><label>Usuário</label><select id="f-perm-usuario"><option value="">Selecione um usuário…</option></select></div>
+      </div>
+      <div id="permissoes-content"></div>
+    </section>
+
     <!-- PAGE ANDAMENTO DOS PROJETOS -->
     <section class="page" id="page-andamento">
       <div class="page-header"><div><h1>Andamento dos Projetos</h1><p>Visão executiva: prazo consumido, tarefas concluídas e risco de comprometimento, por projeto.</p></div>
@@ -1524,7 +1534,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
         <div class="filter-field"><label>Cliente</label><select id="f-and-cliente"><option value="">Todos</option></select></div>
         <div class="filter-field"><label>Projeto</label><select id="f-and-projeto"><option value="">Todos</option></select></div>
         <div class="filter-field"><label>Status do Projeto</label><select id="f-and-status"><option value="">Todos</option></select></div>
-        <div class="filter-field"><label>Risco de Prazo</label><select id="f-and-risco"><option value="">Todos</option><option value="No prazo">🟢 No prazo</option><option value="Atenção">🟡 Atenção</option><option value="Risco">🟠 Risco</option><option value="Comprometido">🔴 Comprometido</option></select></div>
+        <div class="filter-field"><label>Risco de Prazo</label><select id="f-and-risco"><option value="">Todos</option><option value="No prazo">🟢 No prazo</option><option value="Atenção">🟡 Atenção</option><option value="Risco">🟠 Risco</option><option value="Comprometido">🔴 Comprometido</option><option value="Paralisado">⏸️ Paralisado</option></select></div>
         <div class="filter-field"><label>Período (Início a partir de)</label><input type="date" id="f-and-de"></div>
         <button class="filter-clear" id="f-and-clear">Limpar filtros</button>
       </div>
@@ -1677,7 +1687,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v11.5 · Última atualização: —</footer>
+  <footer id="app-footer">v11.7 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1816,7 +1826,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v11.5';
+const APP_VERSION='v11.7';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1911,6 +1921,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
     // os dados ainda.
     CURRENT_USER_NOME=authResp.nome; CURRENT_USER_EMAIL=authResp.email;
     EFFECTIVE_PERFIL=authResp.perfil; VIEW_AS_STATE=null; TODOS_USUARIOS=[];
+    EFFECTIVE_EXCECOES=authResp.excecoes||{add:[],remove:[]};
     const viewasWrapFase1=document.getElementById('viewas-wrap');
     if(viewasWrapFase1) viewasWrapFase1.style.display = (authResp.perfil==='Administrador') ? '' : 'none';
     addLogoutControl(authResp.nome, authResp.perfil);
@@ -1943,6 +1954,9 @@ async function attemptLoadWithToken(token, viewAsEmail){
 // {icone, bg, cor, titulo, descricao, tag, tagCor} — tagCor 'nova' (azul) ou
 // 'melhoria' (verde).
 const NOVIDADES=[
+  {icone:'⏸️', bg:'#f1f5f9', cor:'#64748b', titulo:'Situação de Paralisação', descricao:'Projetos com Status "Pausado" no Portfólio agora aparecem como "Paralisado" em vez de "Atrasado", e a contagem de atraso fica suspensa enquanto durar a pausa.', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🟢', bg:'#f0fdf4', cor:'#16a34a', titulo:'Inteligência de Alocação mais limpa', descricao:'A tabela agora mostra só o ícone de situação (passe o mouse pra ver o nome completo), deixando a leitura mais rápida.', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🔐', bg:'#eff6ff', cor:'#2563eb', titulo:'Administração de Permissões', descricao:'Libere ou remova páginas específicas para um usuário, além do que o perfil dele já dá por padrão.', tag:'Nova página', tagCor:'nova'},
   {icone:'📊', bg:'#eff6ff', cor:'#2563eb', titulo:'Andamento dos Projetos', descricao:'Visão executiva com % de prazo, GAP e risco calculado automaticamente pra cada projeto.', tag:'Nova página', tagCor:'nova'},
   {icone:'📜', bg:'#f0fdf4', cor:'#16a34a', titulo:'Log de Alterações', descricao:'Auditoria completa de criações, edições e exclusões no Portfólio e Status Reports.', tag:'Nova página', tagCor:'nova'},
   {icone:'⚡', bg:'#fff7ed', cor:'#ea580c', titulo:'Carregamento mais rápido', descricao:'Reduzimos o tamanho dos dados carregados em até 75%, tornando o acesso mais ágil.', tag:'Melhoria', tagCor:'melhoria'},
@@ -1999,6 +2013,7 @@ async function carregarDadosCore(token){
     VIEW_AS_STATE = j._viewingAs || null;
     TODOS_USUARIOS = j._todosUsuarios || [];
     EFFECTIVE_PERFIL = VIEW_AS_STATE ? VIEW_AS_STATE.perfil : j._perfil;
+    EFFECTIVE_EXCECOES = j._excecoesPermissao || {add:[],remove:[]};
     const viewasWrap=document.getElementById('viewas-wrap');
     if(viewasWrap) viewasWrap.style.display = (j._perfil==='Administrador') ? '' : 'none';
     addLogoutControl(j._usuarioNome||j._usuario, j._perfil);
@@ -2104,6 +2119,7 @@ async function carregarDadosCompletos(token, semBannerTopo){
     VIEW_AS_STATE = j._viewingAs || null;
     TODOS_USUARIOS = j._todosUsuarios || [];
     EFFECTIVE_PERFIL = VIEW_AS_STATE ? VIEW_AS_STATE.perfil : j._perfil;
+    EFFECTIVE_EXCECOES = j._excecoesPermissao || {add:[],remove:[]};
     const viewasWrap=document.getElementById('viewas-wrap');
     if(viewasWrap) viewasWrap.style.display = (j._perfil==='Administrador') ? '' : 'none';
     addLogoutControl(j._usuarioNome||j._usuario, j._perfil);
@@ -2164,6 +2180,7 @@ async function attemptLoadWithTokenClassico(token, viewAsEmail){
     VIEW_AS_STATE = j._viewingAs || null;
     TODOS_USUARIOS = j._todosUsuarios || [];
     EFFECTIVE_PERFIL = VIEW_AS_STATE ? VIEW_AS_STATE.perfil : j._perfil;
+    EFFECTIVE_EXCECOES = j._excecoesPermissao || {add:[],remove:[]};
 
     const viewasWrap=document.getElementById('viewas-wrap');
     if(viewasWrap) viewasWrap.style.display = (j._perfil==='Administrador') ? '' : 'none';
@@ -2385,6 +2402,12 @@ function calcularRitmoNecessario(prazoInfo, tarefasInfo){
 // necessário. "Blocked" NUNCA conta como atrasada aqui.
 function calcularRiscoPrazo(p, prazoInfo, tarefasInfo, gap, atrasadas, bloqueadas, ritmo){
   if(p.de) return {nivel:'No prazo', cor:'#16a34a', emoji:'🟢'}; // entregue
+  // Projeto com Status="Pausado" no Portfólio (situação de paralisação) —
+  // a contagem de atraso é suspensa: não é classificado como risco/atrasado
+  // só porque o prazo previsto passou enquanto o projeto estava parado.
+  // Checado ANTES de "sem dados" pra sempre priorizar a situação real do
+  // projeto sobre a ausência de datas.
+  if(p.pausado) return {nivel:'Paralisado', cor:'#64748b', emoji:'⏸️'};
   if(prazoInfo.semDados || tarefasInfo.semDados) return {nivel:'Sem dados', cor:'#94a3b8', emoji:'⚪'};
   const prazoVencido = prazoInfo.pct>100;
   let pontos=0;
@@ -2439,6 +2462,10 @@ function calcularAndamentoProjeto(p){
 // reais deste projeto — nunca um texto genérico sem evidência por trás.
 function gerarInsightsAndamento(a){
   const insights=[];
+  if(a.p.pausado){
+    insights.push({emoji:'⏸️',cor:'#64748b',texto:'Projeto paralisado'+(a.p.data_paralisacao?' desde '+a.p.data_paralisacao:'')+'. A contagem de prazo/atraso fica suspensa enquanto o projeto estiver com Status "Pausado".'});
+    return insights;
+  }
   if(a.gap!==null && a.gap<=AND_LIMIARES.gapRisco){
     insights.push({emoji:'🔴',cor:'#dc2626',texto:'Execução '+Math.abs(a.gap)+' p.p. abaixo do avanço esperado pelo prazo.'});
   }
@@ -2540,14 +2567,15 @@ function renderAndamento(){
 
   // KPIs — sempre sobre o conjunto FILTRADO (exceto o próprio filtro de
   // risco, que já reflete o clique) — clicáveis, aplicam o filtro de risco.
-  const contagem={'No prazo':0,'Atenção':0,'Risco':0,'Comprometido':0};
+  const contagem={'No prazo':0,'Atenção':0,'Risco':0,'Comprometido':0,'Paralisado':0};
   linhas.forEach(a=>{ if(contagem[a.risco.nivel]!==undefined) contagem[a.risco.nivel]++; });
   document.getElementById('kpi-andamento').innerHTML=
     kpiHtml({label:'Projetos',value:linhas.length,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})+
     and_kpiRiscoClicavel('No prazo',contagem['No prazo'],'#16a34a','#f0fdf4')+
     and_kpiRiscoClicavel('Atenção',contagem['Atenção'],'#f59e0b','#fff7ed')+
     and_kpiRiscoClicavel('Risco',contagem['Risco'],'#f97316','#fff7ed')+
-    and_kpiRiscoClicavel('Comprometido',contagem['Comprometido'],'#dc2626','#fef2f2');
+    and_kpiRiscoClicavel('Comprometido',contagem['Comprometido'],'#dc2626','#fef2f2')+
+    and_kpiRiscoClicavel('Paralisado',contagem['Paralisado'],'#64748b','#f8fafc');
 
   let h='<div class="card"><div class="card-title"><h3>Projetos</h3><span class="sub">'+linhas.length+'</span></div>';
   if(linhas.length===0){
@@ -2606,6 +2634,10 @@ function abrirExplicacaoAndamento(){
     'Uma classificação geral e resumida — No Prazo, Atenção, Risco ou Comprometido — pra identificar rapidamente quais projetos merecem atenção primeiro.',
     'Combina vários sinais ao mesmo tempo: o GAP, se existem tarefas atrasadas ou bloqueadas, se o prazo já venceu, e o Ritmo Necessário. Quanto mais sinais de alerta juntos, mais alto o risco. Uma tarefa bloqueada nunca é contada como "atrasada" — são coisas diferentes.',
     'Um projeto com GAP bem negativo, várias tarefas atrasadas e o prazo já vencido é classificado como <strong>"Comprometido"</strong> — não porque um único número deu ruim, mas porque vários sinais apontam risco ao mesmo tempo.');
+  h+=bloco('⏸️','Paralisado',
+    'Um projeto marcado como "Pausado" no Portfólio nunca é classificado como atrasado ou em risco, mesmo que a data prevista já tenha passado — a paralisação é uma decisão explícita, não um problema de execução.',
+    'Assim que o Status do projeto no Portfólio volta a ser "Em Andamento" (ou outro status ativo), a classificação normal de prazo/risco volta a valer automaticamente.',
+    'O projeto "Correção da Redação" foi pausado em 10/09, com a entrega prevista também em 10/09 — em vez de aparecer como "Atrasado", ele aparece como <strong>"Paralisado"</strong>.');
   h+=bloco('↗️','Tendência',
     'Mostra se a situação do projeto está melhorando, piorando, ou estável — comparando com como ele estava há uma semana.',
     'Recalcula o GAP de hoje e o GAP de 7 dias atrás (usando as datas em que as tarefas foram realmente concluídas) e compara os dois. Se o projeto for muito novo ou não houver dados suficientes pra essa comparação, mostra "Sem histórico" em vez de arriscar um palpite.',
@@ -2620,7 +2652,7 @@ function abrirDetalheAndamento(pjName){
   const p=a.p;
   const campo=(label,val)=> val ? '<div class="task-modal-field"><span class="task-modal-label">'+label+'</span><span class="task-modal-value">'+val+'</span></div>' : '';
   let h='<div class="task-modal-field task-modal-field-full"><span class="task-modal-label">Projeto</span><span class="task-modal-value" style="font-weight:700;font-size:15px">'+p.pj+'</span></div>';
-  h+='<div class="task-modal-grid-2">'+campo('Cliente',p.cl)+campo('Data de Início',p.di)+campo('Prev. Entrega Inicial',p.pei)+campo('Prev. Entrega Atual',p.pea)+campo('Data de Entrega',p.de||'Não informado')+'</div>';
+  h+='<div class="task-modal-grid-2">'+campo('Cliente',p.cl)+campo('Data de Início',p.di)+campo('Prev. Entrega Inicial',p.pei)+campo('Prev. Entrega Atual',p.pea)+campo('Data de Entrega',p.de||'Não informado')+(p.pausado?campo('Data da Paralisação',p.data_paralisacao||'Não informada'):'')+'</div>';
   h+='<div class="task-modal-section-title">Indicadores</div>';
   h+='<div style="font-size:11px;color:var(--text-faint);margin-bottom:8px">Prazo calculado em relação à <strong>'+(AND_REFERENCIA_PRAZO==='pei'?'Prev. Entrega Inicial':'Prev. Entrega Atual')+'</strong></div>';
   h+='<div style="padding:4px 0 10px">'+and_barraHtml('% Prazo',a.prazoInfo.pct,a.risco.cor,a.prazoInfo.semDados)+'</div>';
@@ -2730,7 +2762,7 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento'],
+  'Administrador':  ['cliente','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','permissoes'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
@@ -2767,10 +2799,36 @@ const PERM_MENU = {
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Visão do Portfólio',alocacoes:'Alocações',inteligencia:'Inteligência de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos'};
+const PAGE_LABELS = {cliente:'Visão do Portfólio',alocacoes:'Alocações',inteligencia:'Inteligência de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Administração de Permissões'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
+// EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
+// PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
+// guarda os desvios cadastrados na tela de Administração de Permissões
+// pra ESTE usuário (ou pro usuário visualizado, em "Visualizar como"):
+// {add:['pagina',...], remove:['pagina',...]}. Atualizado junto com
+// EFFECTIVE_PERFIL sempre que uma resposta do backend chega (auth/core/
+// completa), a partir de authResp.excecoes / j._excecoesPermissao.
+let EFFECTIVE_EXCECOES={add:[],remove:[]};
+// Páginas que podem ser gerenciadas via exceção na tela de Administração de
+// Permissões — todo mundo em PAGE_LABELS, exceto "projdetail" (drill-down
+// automático, não é uma página de menu de verdade) e "permissoes" (a
+// própria tela de administração, sempre exclusiva do perfil Administrador,
+// nunca liberável por exceção, pra não abrir brecha de auto-promoção).
+const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes');
 
-function paginasPermitidas(){ return PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido']; }
+function paginasPermitidas(){
+  const base = PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido'];
+  // Administrador sempre tem acesso total por definição do perfil — exceções
+  // não se aplicam a ele (não faz sentido restringir/ampliar quem já vê tudo).
+  if(EFFECTIVE_PERFIL==='Administrador') return base;
+  const add=(EFFECTIVE_EXCECOES&&EFFECTIVE_EXCECOES.add)||[];
+  const remove=(EFFECTIVE_EXCECOES&&EFFECTIVE_EXCECOES.remove)||[];
+  if(!add.length && !remove.length) return base;
+  let efetivo=base.slice();
+  add.forEach(p=>{ if(PAGE_LABELS[p] && !efetivo.includes(p)) efetivo.push(p); });
+  if(remove.length) efetivo=efetivo.filter(p=>!remove.includes(p));
+  return efetivo;
+}
 
 // Aplica o menu dinâmico: some com as abas que o perfil ativo não pode ver
 function aplicarMenuDinamico(){
@@ -3513,7 +3571,7 @@ function renderInteligenciaAlocacao(){
         '<td>'+fH(l.horasPrevistas)+'</td>'+
         '<td>'+fH(l.horasApontadas)+'</td>'+
         '<td><div class="ia-score-bar-track"><div class="ia-score-bar-fill" style="width:'+l.score+'%;background:'+iaCorFaixa_(l.faixa)+'"></div></div><span style="font-weight:700;font-size:12px">'+l.score+'</span></td>'+
-        '<td><span class="ia-badge-situacao" style="background:'+iaCorFaixaBg_(l.faixa)+';color:'+iaCorFaixa_(l.faixa)+'">'+l.faixa.emoji+' '+l.faixa.label+'</span></td>'+
+        '<td>'+iaBadgeSituacaoHtml(l.faixa)+'</td>'+
       '</tr>';
     });
   }
@@ -3535,6 +3593,16 @@ function renderInteligenciaAlocacao(){
 }
 function iaCorFaixa_(faixa){ return faixa.label==='Sobrecarga'?'#dc2626':faixa.label==='Alto Risco'?'#ea580c':faixa.label==='Atenção'?'#ca8a04':'#16a34a'; }
 function iaCorFaixaBg_(faixa){ return faixa.label==='Sobrecarga'?'rgba(220,38,38,.12)':faixa.label==='Alto Risco'?'rgba(234,88,12,.12)':faixa.label==='Atenção'?'rgba(202,138,4,.12)':'rgba(22,163,74,.12)'; }
+// Badge de situação só com o ÍCONE do semáforo (sem o texto do nome ao lado)
+// — pedido explícito pra deixar a apresentação mais enxuta. O significado
+// (cor + ícone) continua o mesmo; o nome completo fica disponível via
+// tooltip nativo (title, funciona ao passar o mouse no desktop e com
+// toque-e-segure na maioria dos navegadores mobile) e, pra garantir acesso
+// em qualquer dispositivo touch, a linha/badge continua clicável e abre o
+// modal de detalhe da pessoa, que já mostra a situação por extenso.
+function iaBadgeSituacaoHtml(faixa){
+  return '<span class="ia-badge-situacao" style="background:'+iaCorFaixaBg_(faixa)+';color:'+iaCorFaixa_(faixa)+'" title="'+faixa.label+'" aria-label="'+faixa.label+'">'+faixa.emoji+'</span>';
+}
 
 function iaAbrirModalDetalhe(nomePessoa){
   const analise=(IA_ANALISES_CACHE||[]).find(l=>l.pessoa.a===nomePessoa);
@@ -3551,7 +3619,7 @@ function iaAbrirModalDetalhe(nomePessoa){
   const h=`
     <div style="text-align:center;margin-bottom:18px">
       <div style="font-size:34px;font-weight:800;color:${iaCorFaixa_(analise.faixa)}">${analise.score}<span style="font-size:16px;color:var(--text-faint)">/100</span></div>
-      <span class="ia-badge-situacao" style="background:${iaCorFaixaBg_(analise.faixa)};color:${iaCorFaixa_(analise.faixa)}">${analise.faixa.emoji} ${analise.faixa.label}</span>
+      ${iaBadgeSituacaoHtml(analise.faixa)}
       <p style="font-size:11.5px;color:var(--text-faint);margin-top:6px">${analise.faixa.texto} — indicador de apoio à decisão, não uma afirmação automática.</p>
     </div>
     <div class="task-modal-section-title">Projetos (${analise.projetos.length})</div>
@@ -7155,6 +7223,127 @@ function formatarDataHoraLog_(iso){
   const [y,m,d]=data.split('-');
   return d+'/'+m+'/'+y+(hora?' '+hora.slice(0,5):'');
 }
+// ============================================================
+// PAGE ADMINISTRAÇÃO DE PERMISSÕES (Opção B) — exclusiva do Administrador.
+// O perfil (PERM_MENU) continua sendo a base padrão de páginas visíveis;
+// esta tela gerencia só as EXCEÇÕES por usuário (liberar uma página extra
+// ou remover uma do padrão do perfil dele) — não duplica nem substitui a
+// lógica de permissão por perfil já existente (paginasPermitidas() aplica
+// as duas camadas juntas em runtime, em todo o resto do dashboard).
+// ============================================================
+let EXCECOES_PERMISSAO_TODAS=[];
+let PERM_ADMIN_EMAIL_SELECIONADO='';
+async function buscarExcecoesPermissaoTodas(){
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=listarExcecoesPermissao';
+    const r=await loadDataJSONPComRetry(url,1);
+    EXCECOES_PERMISSAO_TODAS=(r&&r.ok)?(r.excecoes||[]):[];
+  }catch(e){
+    EXCECOES_PERMISSAO_TODAS=[];
+  }
+}
+function permExcecoesPorEmail_(email){
+  const alvo={add:[],remove:[]};
+  const e=(email||'').toLowerCase();
+  EXCECOES_PERMISSAO_TODAS.forEach(x=>{
+    if((x.email||'').toLowerCase()!==e) return;
+    if(x.tipo==='ADD') alvo.add.push(x.pagina);
+    else if(x.tipo==='REMOVE') alvo.remove.push(x.pagina);
+  });
+  return alvo;
+}
+function initPermissoes(){
+  const sel=document.getElementById('f-perm-usuario');
+  const usuariosOrdenados=TODOS_USUARIOS.slice().sort((a,b)=>(a.nome||a.email).localeCompare(b.nome||b.email,'pt-BR'));
+  const valorAtual=PERM_ADMIN_EMAIL_SELECIONADO;
+  sel.innerHTML='<option value="">Selecione um usuário…</option>'+usuariosOrdenados.map(u=>
+    '<option value="'+String(u.email).replace(/"/g,'&quot;')+'">'+(u.nome||u.email)+' — '+u.perfil+'</option>'
+  ).join('');
+  sel.value=valorAtual;
+  sel.onchange=()=>{ PERM_ADMIN_EMAIL_SELECIONADO=sel.value; renderPermissoesUsuario(); };
+  document.getElementById('permissoes-content').innerHTML=loadingInlineHtml('Carregando exceções cadastradas…');
+  buscarExcecoesPermissaoTodas().then(renderPermissoesUsuario);
+}
+function renderPermissoesUsuario(){
+  const content=document.getElementById('permissoes-content');
+  if(!PERM_ADMIN_EMAIL_SELECIONADO){
+    content.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Selecione um usuário acima para ver e ajustar suas páginas.</p></div>';
+    return;
+  }
+  const usuario=TODOS_USUARIOS.find(u=>u.email===PERM_ADMIN_EMAIL_SELECIONADO);
+  if(!usuario){
+    content.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Usuário não encontrado.</p></div>';
+    return;
+  }
+  if(usuario.perfil==='Administrador'){
+    content.innerHTML='<div class="empty-state" style="padding:60px 20px"><p>O perfil Administrador já tem acesso a todas as páginas — exceções não se aplicam a ele.</p></div>';
+    return;
+  }
+  const base=PERM_MENU[usuario.perfil]||PERM_MENU['Sem Perfil Definido'];
+  const exc=permExcecoesPorEmail_(usuario.email);
+  let h='<div class="card"><div class="card-title"><h3>'+(usuario.nome||usuario.email)+'</h3><span class="sub">Perfil: '+usuario.perfil+'</span></div>';
+  h+='<p style="font-size:12px;color:var(--text-faint);margin:-6px 0 14px">Marcado = a pessoa vê a página. Desmarque para remover o acesso, marque para liberar uma página extra. Voltar ao estado original do perfil remove a exceção automaticamente.</p>';
+  h+='<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px">';
+  PAGINAS_GERENCIAVEIS_EXCECAO.forEach(p=>{
+    const noPadrao=base.includes(p);
+    const temExcecaoAdd=exc.add.includes(p);
+    const temExcecaoRemove=exc.remove.includes(p);
+    const efetivo=(noPadrao&&!temExcecaoRemove)||(!noPadrao&&temExcecaoAdd);
+    let tag='<span style="font-size:10px;color:var(--text-faint)">Padrão do perfil</span>';
+    if(temExcecaoAdd) tag='<span class="status-pill" style="border-left:3px solid #16a34a;font-size:10px">Liberado por exceção</span>';
+    else if(temExcecaoRemove) tag='<span class="status-pill" style="border-left:3px solid #dc2626;font-size:10px">Removido por exceção</span>';
+    h+='<label style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;cursor:pointer;background:var(--surface)">'+
+       '<input type="checkbox" data-pagina="'+p+'" '+(efetivo?'checked':'')+' style="width:16px;height:16px;flex-shrink:0">'+
+       '<span style="flex:1"><b style="font-size:13px">'+(PAGE_LABELS[p]||p)+'</b><br>'+tag+'</span>'+
+       '</label>';
+  });
+  h+='</div></div>';
+  content.innerHTML=h;
+  content.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change',()=>togglePermissaoExcecao(usuario.email, cb.dataset.pagina, base.includes(cb.dataset.pagina), cb));
+  });
+}
+async function togglePermissaoExcecao(email, pagina, noPadrao, checkboxEl){
+  checkboxEl.disabled=true;
+  const querAcesso=checkboxEl.checked;
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    let url;
+    if(querAcesso===noPadrao){
+      // Estado desejado já é igual ao padrão do perfil -> remove qualquer exceção cadastrada pra essa página
+      const payload={email:email, pagina:pagina};
+      url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=removerExcecaoPermissao&payload='+encodeURIComponent(JSON.stringify(payload));
+    }else{
+      const payload={email:email, pagina:pagina, tipo: querAcesso?'ADD':'REMOVE'};
+      url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=salvarExcecaoPermissao&payload='+encodeURIComponent(JSON.stringify(payload));
+    }
+    const r=await loadDataJSONPComRetry(url,1);
+    if(!r||!r.ok){
+      mostrarToastPermissao((r&&r.message)||'Não foi possível salvar. Tente novamente.', false);
+    }else{
+      mostrarToastPermissao('Permissão atualizada.', true);
+      await buscarExcecoesPermissaoTodas();
+    }
+  }catch(e){
+    mostrarToastPermissao('Falha ao contatar o servidor.', false);
+  }
+  renderPermissoesUsuario();
+}
+function mostrarToastPermissao(msg, ok){
+  let el=document.getElementById('perm-toast');
+  if(!el){
+    el=document.createElement('div');
+    el.id='perm-toast';
+    el.style.cssText='position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:99999;padding:12px 22px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 6px 18px rgba(0,0,0,.25);color:#fff;transition:opacity .3s;';
+    document.body.appendChild(el);
+  }
+  el.style.background=ok?'#16a34a':'#dc2626';
+  el.textContent=msg;
+  el.style.opacity='1';
+  clearTimeout(el._timeout);
+  el._timeout=setTimeout(()=>{ el.style.opacity='0'; }, 2800);
+}
 function initStatusReportPainel(){
   const projetos=[...new Set(D.pj.map(p=>p.pj))].sort();
   const gerentes=[...new Set(STATUS_REPORTS.map(r=>r.gerente_nome).filter(Boolean))].sort();
@@ -7242,7 +7431,8 @@ const PAGE_INIT_MAP={
   setorial:initSetorial, transversal:initTransversal, statusreport:initStatusReport,
   statusreportpainel:initStatusReportPainel,
   logalteracoes:initLogAlteracoes,
-  andamento:initAndamento
+  andamento:initAndamento,
+  permissoes:initPermissoes
 };
 function boot(paginaPrioritaria){
   const ordem=Object.keys(PAGE_INIT_MAP);
