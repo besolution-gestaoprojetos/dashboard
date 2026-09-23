@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbw17GUz1Tw5qxQlgNAS-gr6v7zRFr_AS0uHBmbJY3F_UZCp4Y0sZkaXY19dRbklkDSoEA/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwKOXEfYxHfXLiUa-WxzQ_fVdyeXqsI0ubll7FCbOCcaohagsm77AKVLPAmyPIb7Sr1Lg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1280,6 +1280,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
           <button class="nav-tab" data-page="statusreportpainel">Painel de Status Report</button>
           <button class="nav-tab" data-page="logalteracoes">Log de Alterações</button>
           <button class="nav-tab" data-page="permissoes">Administração de Permissões</button>
+          <button class="nav-tab" data-page="pessoasadmin">Administração de Pessoas</button>
         </div>
       </div>
       <div class="nav-cat" data-cat="projetos">
@@ -1369,6 +1370,14 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="pe-feedback" style="display:none;margin-bottom:14px;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600"></div>
       <div id="pe-lista-view"></div>
       <div id="pe-form-view" style="display:none"></div>
+    </section>
+
+    <!-- PAGE ADMINISTRAÇÃO DE PESSOAS -->
+    <section class="page" id="page-pessoasadmin">
+      <div class="page-header"><div><h1>Administração de Pessoas</h1><p>Cadastro, perfil de acesso e último login — fonte única de identidade do dashboard (aba Pessoas_Area).</p></div></div>
+      <div id="pa-feedback" style="display:none;margin-bottom:14px;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600"></div>
+      <div id="pa-lista-view"></div>
+      <div id="pa-form-view" style="display:none"></div>
     </section>
 
     <!-- PAGE ALOCAÇÕES -->
@@ -1687,7 +1696,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">v11.7 · Última atualização: —</footer>
+  <footer id="app-footer">v11.9 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1826,7 +1835,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v11.7';
+const APP_VERSION='v11.9';
 function updateFooter(dataDateStr,backendVersion){
   const el=document.getElementById('app-footer');
   if(!el) return;
@@ -1954,6 +1963,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
 // {icone, bg, cor, titulo, descricao, tag, tagCor} — tagCor 'nova' (azul) ou
 // 'melhoria' (verde).
 const NOVIDADES=[
+  {icone:'👥', bg:'#eff6ff', cor:'#2563eb', titulo:'Administração de Pessoas', descricao:'Cadastre, edite e consulte todo mundo em um só lugar — nome, cargo, área, perfil de acesso e último login.', tag:'Nova página', tagCor:'nova'},
   {icone:'⏸️', bg:'#f1f5f9', cor:'#64748b', titulo:'Situação de Paralisação', descricao:'Projetos com Status "Pausado" no Portfólio agora aparecem como "Paralisado" em vez de "Atrasado", e a contagem de atraso fica suspensa enquanto durar a pausa.', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🟢', bg:'#f0fdf4', cor:'#16a34a', titulo:'Inteligência de Alocação mais limpa', descricao:'A tabela agora mostra só o ícone de situação (passe o mouse pra ver o nome completo), deixando a leitura mais rápida.', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🔐', bg:'#eff6ff', cor:'#2563eb', titulo:'Administração de Permissões', descricao:'Libere ou remova páginas específicas para um usuário, além do que o perfil dele já dá por padrão.', tag:'Nova página', tagCor:'nova'},
@@ -2762,7 +2772,7 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','permissoes'],
+  'Administrador':  ['cliente','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','permissoes','pessoasadmin'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
@@ -2799,7 +2809,7 @@ const PERM_MENU = {
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Visão do Portfólio',alocacoes:'Alocações',inteligencia:'Inteligência de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Administração de Permissões'};
+const PAGE_LABELS = {cliente:'Visão do Portfólio',alocacoes:'Alocações',inteligencia:'Inteligência de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Administração de Permissões',pessoasadmin:'Administração de Pessoas'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 // EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
 // PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
@@ -2814,7 +2824,7 @@ let EFFECTIVE_EXCECOES={add:[],remove:[]};
 // automático, não é uma página de menu de verdade) e "permissoes" (a
 // própria tela de administração, sempre exclusiva do perfil Administrador,
 // nunca liberável por exceção, pra não abrir brecha de auto-promoção).
-const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes');
+const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin');
 
 function paginasPermitidas(){
   const base = PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido'];
@@ -4093,6 +4103,228 @@ async function excluirProjetoAtual(){
     peFeedback('Falha ao contatar o servidor. Tente novamente.',false);
     btn.disabled=false;
   }
+}
+
+// ============================================================
+// ADMINISTRAÇÃO DE PESSOAS — CRUD da aba Pessoas_Area (fonte única de
+// identidade/acesso do dashboard). Mesmo padrão de lista+formulário da
+// Edição do Portfólio (funções pe*), com prefixo "pa" pra não colidir —
+// coexistem na mesma página. Sem exclusão: só consulta/inclusão/edição,
+// como pedido; campos descobertos dinamicamente a partir do cabeçalho real
+// de Pessoas_Area, então colunas novas aparecem sozinhas no formulário.
+// ============================================================
+let PA_LISTA_CACHE=[]; // lista leve (nome/email/cargo/área/perfil/último acesso) pra busca local
+let PA_ULTIMA_LEITURA=null; // {rowIndex, campos, nome} da pessoa carregada, pra montar o payload de salvar
+let PA_MODO='lista'; // 'lista' | 'form'
+let PA_PERFIS_VALIDOS=[]; // lista de perfis reconhecidos, devolvida pelo backend — popula o dropdown de "Perfil de Acesso"
+function initPessoasAdmin(){
+  PA_MODO='lista';
+  carregarListaPessoasAdmin();
+}
+function paFeedback(msg,ok){
+  const el=document.getElementById('pa-feedback');
+  el.textContent=msg;
+  el.style.background=ok?'rgba(22,163,74,.12)':'rgba(220,38,38,.12)';
+  el.style.color=ok?'var(--st-feito)':'var(--st-bloqueado)';
+  el.style.display='block';
+  clearTimeout(window.__paFeedbackTimeout);
+  window.__paFeedbackTimeout=setTimeout(()=>{ el.style.display='none'; },5000);
+}
+function paMostrarView(modo){
+  PA_MODO=modo;
+  document.getElementById('pa-lista-view').style.display=modo==='lista'?'':'none';
+  document.getElementById('pa-form-view').style.display=modo==='form'?'':'none';
+}
+
+// ---------- LISTA / BUSCA ----------
+async function carregarListaPessoasAdmin(){
+  document.getElementById('pa-lista-view').innerHTML=loadingInlineHtml('Carregando lista de pessoas…');
+  paMostrarView('lista');
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=listarPessoasAdmin';
+    const r=await loadDataJSONPComRetry(url,1);
+    if(!r || !r.ok){
+      document.getElementById('pa-lista-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((r&&r.message)||'Não foi possível carregar a lista de pessoas.')+'</p><button type="button" class="filter-clear" id="pa-lista-retry" style="margin-top:12px">Tentar novamente</button></div>';
+      document.getElementById('pa-lista-retry').onclick=carregarListaPessoasAdmin;
+      return;
+    }
+    PA_LISTA_CACHE=r.pessoas;
+    PA_PERFIS_VALIDOS=r.perfisValidos||[];
+    renderListaPessoasAdmin('');
+  }catch(e){
+    document.getElementById('pa-lista-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Falha ao contatar o servidor. Verifique sua conexão.</p><button type="button" class="filter-clear" id="pa-lista-retry" style="margin-top:12px">Tentar novamente</button></div>';
+    document.getElementById('pa-lista-retry').onclick=carregarListaPessoasAdmin;
+  }
+}
+function renderListaPessoasAdmin(termoBusca){
+  const termo=peNormalizarHeader(termoBusca);
+  const filtrados=!termo?PA_LISTA_CACHE:PA_LISTA_CACHE.filter(p=>
+    peNormalizarHeader(p.nome).includes(termo) || peNormalizarHeader(p.email).includes(termo) ||
+    peNormalizarHeader(p.cargo).includes(termo) || peNormalizarHeader(p.area).includes(termo) || peNormalizarHeader(p.perfil).includes(termo)
+  );
+  let h='<div class="card"><div class="card-title"><h3>Pessoas ('+PA_LISTA_CACHE.length+')</h3>'+
+    '<button type="button" class="sr-btn sr-btn-primary" id="pa-novo-btn" style="padding:7px 16px">+ Nova Pessoa</button></div>'+
+    '<input type="text" id="pa-busca" placeholder="Buscar por nome, e-mail, cargo, área ou perfil…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13.5px;margin-bottom:14px;box-sizing:border-box">'+
+    '<div class="table-wrap" style="max-height:560px"><table><thead><tr><th>Nome</th><th>E-mail</th><th>Cargo</th><th>Área</th><th>Perfil de Acesso</th><th>Último Acesso</th><th></th></tr></thead><tbody>';
+  if(filtrados.length===0){
+    h+='<tr><td colspan="7" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada'+(termo?' com esse termo de busca':'')+'.</td></tr>';
+  }else{
+    filtrados.forEach(p=>{
+      h+='<tr style="cursor:pointer" class="pa-lista-row" data-pa-pessoa="'+p.nome.replace(/"/g,'&quot;')+'">'+
+        '<td><strong>'+p.nome+'</strong></td><td>'+(p.email||'—')+'</td><td>'+(p.cargo||'—')+'</td><td>'+(p.area||'—')+'</td>'+
+        '<td>'+(p.perfil?'<span class="status-pill">'+p.perfil+'</span>':'<span style="color:var(--text-faint)">Sem Perfil Definido</span>')+'</td>'+
+        '<td>'+(p.ultimo_acesso||'—')+'</td>'+
+        '<td><button type="button" class="filter-clear" style="padding:5px 12px">Abrir</button></td></tr>';
+    });
+  }
+  h+='</tbody></table></div></div>';
+  document.getElementById('pa-lista-view').innerHTML=h;
+  document.getElementById('pa-novo-btn').onclick=()=>abrirFormularioNovaPessoa();
+  const buscaEl=document.getElementById('pa-busca');
+  buscaEl.oninput=()=>renderListaPessoasAdmin(buscaEl.value);
+  buscaEl.focus();
+  buscaEl.setSelectionRange(buscaEl.value.length,buscaEl.value.length);
+  document.querySelectorAll('.pa-lista-row').forEach(row=>{
+    row.addEventListener('click',()=>carregarPessoaParaEdicao(row.dataset.paPessoa));
+  });
+}
+
+// ---------- CRIAR ----------
+async function abrirFormularioNovaPessoa(){
+  const nome=prompt('Nome da nova pessoa (Assinatura — esse será o identificador único dela no dashboard, usado pra casar com a equipe dos projetos):');
+  if(!nome || !nome.trim()) return;
+  paFeedback('Cadastrando pessoa…',true);
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=criarPessoaAdmin&pessoa='+encodeURIComponent(nome.trim());
+    const r=await loadDataJSONPComRetry(url,1);
+    if(r && r.ok){
+      paFeedback('Pessoa cadastrada com sucesso. Preencha os demais dados abaixo.',true);
+      carregarPessoaParaEdicao(nome.trim());
+    }else{
+      paFeedback((r&&r.message)||'Não foi possível cadastrar a pessoa.',false);
+    }
+  }catch(e){
+    paFeedback('Falha ao contatar o servidor. Tente novamente.',false);
+  }
+}
+
+// ---------- LER / EDITAR ----------
+let PA_CARREGAMENTO_SEQ=0;
+let PA_PESSOA_EM_CARREGAMENTO=null;
+async function carregarPessoaParaEdicao(nomePessoa){
+  if(PA_PESSOA_EM_CARREGAMENTO===nomePessoa) return;
+  PA_PESSOA_EM_CARREGAMENTO=nomePessoa;
+  const minhaSeq=++PA_CARREGAMENTO_SEQ;
+  document.getElementById('pa-form-view').innerHTML=loadingInlineHtml('Carregando…');
+  paMostrarView('form');
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=getPessoaAdmin&pessoa='+encodeURIComponent(nomePessoa);
+    const r=await loadDataJSONPComRetry(url,1);
+    if(PA_PESSOA_EM_CARREGAMENTO===nomePessoa) PA_PESSOA_EM_CARREGAMENTO=null;
+    if(minhaSeq!==PA_CARREGAMENTO_SEQ) return;
+    if(!r || !r.ok){
+      document.getElementById('pa-form-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((r&&r.message)||'Não foi possível carregar esta pessoa.')+'</p><button type="button" class="filter-clear" id="pa-form-retry" style="margin-top:12px;margin-right:8px">Tentar novamente</button><button type="button" class="filter-clear" id="pa-voltar-erro">← Voltar para a lista</button></div>';
+      document.getElementById('pa-form-retry').onclick=()=>carregarPessoaParaEdicao(nomePessoa);
+      document.getElementById('pa-voltar-erro').onclick=carregarListaPessoasAdmin;
+      return;
+    }
+    if(r.perfisValidos) PA_PERFIS_VALIDOS=r.perfisValidos;
+    PA_ULTIMA_LEITURA={ nome: nomePessoa, rowIndex: r.rowIndex, campos: r.campos };
+    renderFormularioPessoaAdmin(nomePessoa, r.campos);
+  }catch(e){
+    if(PA_PESSOA_EM_CARREGAMENTO===nomePessoa) PA_PESSOA_EM_CARREGAMENTO=null;
+    if(minhaSeq!==PA_CARREGAMENTO_SEQ) return;
+    document.getElementById('pa-form-view').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Falha ao contatar o servidor. Verifique sua conexão.</p><button type="button" class="filter-clear" id="pa-form-retry" style="margin-top:12px">Tentar novamente</button></div>';
+    document.getElementById('pa-form-retry').onclick=()=>carregarPessoaParaEdicao(nomePessoa);
+  }
+}
+// Campos de data pelo NOME do cabeçalho — mesma lógica de peEhCampoData (uma
+// célula vazia nunca "parece" data pro backend, então sem isso o campo
+// viraria texto solto quando estivesse vazio).
+function paEhCampoData(headerNorm){
+  return headerNorm.indexOf('data')!==-1 && headerNorm.indexOf('dias')===-1;
+}
+function paConstruirInputHtml(c,i){
+  const headerNorm=peNormalizarHeader(c.header);
+  const valorEscapado=(c.valor===null||c.valor===undefined?'':String(c.valor)).replace(/"/g,'&quot;');
+  if(headerNorm==='perfil de acesso'||headerNorm==='perfil acesso'){
+    // Dropdown com os perfis reconhecidos pelo backend — evita erro de
+    // digitação que faria a pessoa cair silenciosamente no perfil mais
+    // restrito ("Sem Perfil Definido").
+    return '<select data-pa-idx="'+i+'" class="pa-campo"><option value="">— Sem Perfil Definido —</option>'+
+      PA_PERFIS_VALIDOS.map(perf=>'<option value="'+perf.replace(/"/g,'&quot;')+'"'+(c.valor===perf?' selected':'')+'>'+perf+'</option>').join('')+
+      (c.valor && PA_PERFIS_VALIDOS.indexOf(c.valor)===-1?'<option value="'+valorEscapado+'" selected>'+c.valor+' (não reconhecido)</option>':'')+
+      '</select>';
+  }
+  if(headerNorm==='resumo'||headerNorm==='observacoes'||headerNorm==='observacao'){
+    const valorConteudo=(c.valor===null||c.valor===undefined?'':String(c.valor)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return '<textarea data-pa-idx="'+i+'" class="pa-campo" rows="3" style="width:100%;resize:vertical;font-family:inherit;font-size:13px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)">'+valorConteudo+'</textarea>';
+  }
+  if(headerNorm==='area'){
+    const areas=[...new Set(D.p.map(p=>p.area).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+    return '<select data-pa-idx="'+i+'" class="pa-campo"><option value="">— Selecione —</option>'+
+      areas.map(a=>'<option value="'+a.replace(/"/g,'&quot;')+'"'+(c.valor===a?' selected':'')+'>'+a+'</option>').join('')+
+      (c.valor && areas.indexOf(c.valor)===-1?'<option value="'+valorEscapado+'" selected>'+c.valor+'</option>':'')+
+      '</select>';
+  }
+  if(headerNorm==='ultimo acesso'){
+    // Gravado automaticamente a cada login — só leitura aqui, pra não correr o
+    // risco de alguém "forjar" um último acesso editando o formulário.
+    return '<input type="text" class="pa-campo-readonly" value="'+valorEscapado+'" readonly disabled style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2,var(--surface));color:var(--text-faint)">';
+  }
+  if(c.tipo==='data' || paEhCampoData(headerNorm)) return '<input type="date" data-pa-idx="'+i+'" class="pa-campo" value="'+valorEscapado+'">';
+  if(c.tipo==='numero') return '<input type="number" data-pa-idx="'+i+'" class="pa-campo" value="'+valorEscapado+'" step="any">';
+  if(c.tipo==='checkbox') return '<input type="checkbox" data-pa-idx="'+i+'" class="pa-campo" '+(c.valor?'checked':'')+' style="width:18px;height:18px">';
+  return '<input type="text" data-pa-idx="'+i+'" class="pa-campo" value="'+valorEscapado+'">';
+}
+function renderFormularioPessoaAdmin(nomePessoa, campos){
+  let h='<button type="button" class="filter-clear" id="pa-voltar-btn" style="margin-bottom:14px">← Voltar para a lista</button>';
+  h+='<div class="page-header" style="padding:0 0 16px"><h2 style="font-size:20px;font-weight:800">'+nomePessoa+'</h2></div>';
+  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Dados</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">';
+  campos.forEach((c,i)=>{
+    // O campo "Último Acesso" (readonly) não recebe o atributo data-pa-idx, então
+    // fica automaticamente de fora do payload de salvar — nunca é sobrescrito.
+    h+='<div class="sr-field"><label>'+c.header+'</label>'+paConstruirInputHtml(c,i)+'</div>';
+  });
+  h+='</div></div>';
+  h+='<div class="sr-actions"><button type="button" class="sr-btn sr-btn-primary" id="pa-btn-salvar">💾 Salvar Alterações</button></div>';
+  document.getElementById('pa-form-view').innerHTML=h;
+  document.getElementById('pa-voltar-btn').onclick=carregarListaPessoasAdmin;
+  document.getElementById('pa-btn-salvar').onclick=salvarEdicaoPessoaAdmin;
+}
+
+// ---------- SALVAR ----------
+async function salvarEdicaoPessoaAdmin(){
+  if(!PA_ULTIMA_LEITURA) return;
+  const campos=document.querySelectorAll('#pa-form-view .pa-campo');
+  const valores=PA_ULTIMA_LEITURA.campos.map(c=>c.valor); // parte do valor original, sobrescreve só o que tem input editável
+  campos.forEach(el=>{
+    const idx=parseInt(el.dataset.paIdx);
+    if(el.type==='checkbox') valores[idx]=el.checked;
+    else valores[idx]=el.value;
+  });
+  const btn=document.getElementById('pa-btn-salvar');
+  btn.disabled=true;
+  mostrarLoadingGlobal('Salvando alterações…');
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const payload={ rowIndex: PA_ULTIMA_LEITURA.rowIndex, valores: valores };
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=savePessoaAdmin&pessoa='+encodeURIComponent(PA_ULTIMA_LEITURA.nome)+'&payload='+encodeURIComponent(JSON.stringify(payload));
+    const r=await loadDataJSONPComRetry(url,1);
+    if(r && r.ok){
+      paFeedback('Pessoa salva com sucesso.',true);
+      carregarPessoaParaEdicao(PA_ULTIMA_LEITURA.nome); // recarrega pra refletir o que foi salvo de verdade
+    }else{
+      paFeedback((r&&r.message)||'Não foi possível salvar as alterações.',false);
+    }
+  }catch(e){
+    paFeedback('Falha ao contatar o servidor. Tente novamente.',false);
+  }
+  esconderLoadingGlobal();
+  btn.disabled=false;
 }
 
 function initCliente(){
@@ -7432,7 +7664,8 @@ const PAGE_INIT_MAP={
   statusreportpainel:initStatusReportPainel,
   logalteracoes:initLogAlteracoes,
   andamento:initAndamento,
-  permissoes:initPermissoes
+  permissoes:initPermissoes,
+  pessoasadmin:initPessoasAdmin
 };
 function boot(paginaPrioritaria){
   const ordem=Object.keys(PAGE_INIT_MAP);
