@@ -1143,9 +1143,17 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 #main-shell.aguardando-dados > .page{display:none !important;}
 #main-shell.aguardando-dados #shell-loading-placeholder{display:block !important;}
 /* Quando mostrando-novidades está ativa, esconde o placeholder genérico e
-   mostra a tela de Novidades no lugar — só usada pro Administrador. */
+   mostra a tela de Novidades no lugar — só usada pro Administrador. Faltava
+   também esconder a página .active por trás dela (ex: "page-futuristic",
+   marcada active de propósito pra já estar pronta quando o Administrador
+   clicar no menu) — sem esta regra, a Central de Comando aparecia visível
+   embaixo da tela de Novidades assim que "aguardando-dados" saía (a regra
+   acima só cobria esse caso, não o de mostrando-novidades). Só desaparece
+   de verdade quando a pessoa navega pelo menu (goToPage remove a classe
+   mostrando-novidades). */
 #main-shell.mostrando-novidades #shell-loading-placeholder{display:none !important;}
 #main-shell.mostrando-novidades #shell-novidades-placeholder{display:block !important;}
+#main-shell.mostrando-novidades > .page{display:none !important;}
 .nov-wrap{max-width:820px;margin:0 auto;padding:40px 24px 60px;}
 .nov-header{text-align:center;margin-bottom:36px;}
 .nov-header .brand-logo{justify-content:center;margin-bottom:18px;}
@@ -1699,7 +1707,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">Central de Projetos Be Solution · v12.3 · Última atualização: —</footer>
+  <footer id="app-footer">Central de Projetos Be Solution · v12.4 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1858,7 +1866,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v12.3';
+const APP_VERSION='v12.4';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 // F14 — guarda os últimos valores passados pra updateFooter (fora da função,
