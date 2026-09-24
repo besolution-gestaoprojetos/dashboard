@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbylCBCf8tMlw6eKmupOLj1hDVWl7quT9r77FfChQZOA9TQ_kbyeJxnOXSuPollFjr2BMg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyiwK9iu7K9LST4__7gJwA4rBgfHNrDlMvngC2RxgA_JJRk4aU8-HTVIKS5jyd8K0N7lA/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1707,7 +1707,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">Central de Projetos Be Solution · v12.4 · Última atualização: —</footer>
+  <footer id="app-footer">Central de Projetos Be Solution · v12.5 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1762,8 +1762,18 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 <div id="task-resp-popover" class="sr-crit-popover"></div>
 <div id="pe-pessoa-popover" class="sr-crit-popover" style="max-height:280px;overflow-y:auto;padding:6px"></div>
 <div id="info-popover" class="sr-crit-popover"></div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js" defer></script>
-<script defer>
+<!-- CORREÇÃO v12.5: "defer" foi removido daqui. Tentativa de otimização (v12.3,
+     F11) queria adiar o carregamento do Chart.js pra não bloquear o início do
+     login — mas "defer" NÃO tem efeito num bloco de script INLINE, sem "src"
+     (regra do próprio HTML), então o script principal logo abaixo continuava
+     rodando na hora, ANTES do Chart.js (agora adiado) terminar de carregar,
+     deixando "Chart" indefinido e quebrando todos os gráficos do sistema.
+     Voltando ao carregamento síncrono de sempre (mais simples e correto): o
+     Chart.js bloqueia o parser até terminar de baixar/executar, e só DEPOIS
+     disso o script principal roda — garante que "Chart" sempre existe quando
+     usado. -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script>
 (function(){
 let D,HM,PM,PM_PROJ,CD,AREAS,TOP5,PSTAT,PHEST,PHAP,PVENC,PPREVISTO,PEND,PROJ_TASKS,SEM_ALOC,ALOC_SEM_APONT,CTOK,AREA_CL,EXECTOP;
 // F7/F8/F9 — Caches derivados dos dados globais (D/PM/HM/PPREVISTO/PROJ_TASKS).
@@ -1866,7 +1876,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v12.4';
+const APP_VERSION='v12.5';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 // F14 — guarda os últimos valores passados pra updateFooter (fora da função,
