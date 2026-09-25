@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxqANaM23BfxKemghKf5TqGF4iSk8RNTLshbmkoC27C2yCtjnD__u9Nh8ONI2gv9gSIBg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyEkrYNQmE5hym65hCVPxezVvXWUmysYpQoJP3129znmzB3WCiKuOA9lW0pw3f3-a-HgA/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1707,7 +1707,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">Central de Projetos Be Solution · v12.7 · Última atualização: —</footer>
+  <footer id="app-footer">Central de Projetos Be Solution · v12.8 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1802,29 +1802,36 @@ function showDataBadge(mode){
     document.body.appendChild(el);
   }
   if(mode==='live'){ el.textContent='🟢 Dados ao vivo (Google Sheets)'; el.style.background='#0EA5E9'; el.style.color='#fff'; }
-  // F14 — indicador leve (mesmo padrão visual já existente) pro estado entre
-  // o preview do cache local ser mostrado e a revalidação em segundo plano
-  // terminar (ver tentarPreviewCacheLocal) — reaproveita este mesmo
-  // componente, só com um 3º texto/cor.
-  else if(mode==='cache'){ el.textContent='🟡 Cache local — atualizando…'; el.style.background='#f59e0b'; el.style.color='#1a1a1a'; }
   else { el.textContent='⚠️ Snapshot local (sem conexão com a planilha)'; el.style.background='#f59e0b'; el.style.color='#1a1a1a'; }
 }
+// v12.8: trocado de JSONP (tag <script src>) para fetch() nativo. Motivo:
+// o Chrome passou a bloquear as respostas do Apps Script com
+// net::ERR_BLOCKED_BY_ORB (Opaque Response Blocking) nesse tipo de
+// carregamento, mesmo com o Content-Type correto — problema documentado do
+// lado do navegador, não algo que dava pra contornar só re-tentando. O
+// Apps Script já responde JSON puro (sem precisar de callback) quando a URL
+// não tem o parâmetro "callback" — o backend não precisou mudar nada. Mantido
+// o nome "loadDataJSONP" pra não mexer em nenhum dos pontos que já chamam
+// esta função (o comportamento pra quem chama é idêntico: uma Promise que
+// resolve com o JSON ou rejeita com Error).
 function loadDataJSONP(url){
   return new Promise((resolve,reject)=>{
-    const cbName='__dashCb_'+Date.now()+'_'+Math.floor(Math.random()*1e6);
-    let done=false;
-    const cleanup=()=>{ try{delete window[cbName];}catch(e){} if(script.parentNode) script.parentNode.removeChild(script); };
-    window[cbName]=(data)=>{ done=true; cleanup(); resolve(data); };
-    const script=document.createElement('script');
-    const sep=url.indexOf('?')!==-1?'&':'?';
-    script.src=url+sep+'callback='+cbName;
-    script.onerror=()=>{ if(!done){ cleanup(); reject(new Error('Falha ao carregar script JSONP')); } };
-    document.body.appendChild(script);
-    // 100s (era 70s) — dá mais margem pra uma requisição que ficou enfileirada
-    // no Apps Script (ex: acionador agendado rodando ao mesmo tempo) ainda
-    // conseguir responder, em vez de desistir cedo demais e mostrar erro pro
-    // usuário quando a resposta só estava demorando um pouco mais.
-    setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('Timeout aguardando resposta do Apps Script')); } },100000);
+    const controller=new AbortController();
+    // 100s — mesma margem de antes, pra uma requisição enfileirada no Apps
+    // Script (ex: acionador agendado rodando ao mesmo tempo) ainda conseguir
+    // responder, em vez de desistir cedo demais.
+    const timeoutId=setTimeout(()=>controller.abort(),100000);
+    fetch(url,{signal:controller.signal,cache:'no-store'})
+      .then(resp=>{
+        if(!resp.ok) throw new Error('Resposta HTTP '+resp.status+' do Apps Script');
+        return resp.json();
+      })
+      .then(data=>{ clearTimeout(timeoutId); resolve(data); })
+      .catch(err=>{
+        clearTimeout(timeoutId);
+        if(err && err.name==='AbortError') reject(new Error('Timeout aguardando resposta do Apps Script'));
+        else reject(err instanceof Error ? err : new Error(String(err)));
+      });
   });
 }
 // ============================================================
@@ -1876,16 +1883,10 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v12.7';
+const APP_VERSION='v12.8';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
-// F14 — guarda os últimos valores passados pra updateFooter (fora da função,
-// como efeito colateral dela) pra poder incluí-los no cache local salvo em
-// salvarCacheLocalDosDados, sem precisar alterar nenhum dos vários pontos que
-// já chamam updateFooter(...) hoje.
-let DASH_ULTIMA_ATUALIZACAO_PLANILHA=null, DASH_BACKEND_VERSION=null;
 function updateFooter(dataDateStr,backendVersion){
-  DASH_ULTIMA_ATUALIZACAO_PLANILHA=dataDateStr; DASH_BACKEND_VERSION=backendVersion;
   const el=document.getElementById('app-footer');
   if(!el) return;
   let txt = PLATFORM_NAME + ' · ' + APP_VERSION + ' · Última atualização: ' + (dataDateStr || 'indisponível');
@@ -1897,132 +1898,12 @@ function updateFooter(dataDateStr,backendVersion){
 }
 
 // ============================================================
-// F14 — CACHE LOCAL (stale-while-revalidate): ao recarregar a página (F5) na
-// MESMA aba/sessão, em vez de deixar a tela em branco/carregando até o fluxo
-// completo de login (auth → core → dados pesados) terminar de novo, usa o
-// último payload completo salvo em sessionStorage pra popular a tela na
-// hora — enquanto isso, o fluxo real continua rodando por trás pra validar a
-// sessão e trazer os dados atualizados, substituindo o preview quando chega
-// (ver initGoogleAuth/attemptLoadWithToken). Usa sessionStorage (não
-// localStorage) de propósito, pra não vazar entre sessões/dispositivos
-// diferentes — só sobrevive dentro da mesma aba. Nunca é usado como
-// validação de sessão: é só uma prévia visual; a autenticação de verdade
-// sempre roda por trás (ver CACHE_PREVIEW_ATIVO).
-// ============================================================
-const DASH_CACHE_KEY='dash_cache_v1';
-// Janela de validade do preview local — bem curta de propósito (é só uma
-// prévia visual enquanto o dado de verdade chega, nunca a fonte definitiva),
-// evita reaproveitar um preview de uma sessão muito antiga deixada aberta.
-const DASH_CACHE_MAX_AGE_MS=6*60*60*1000; // 6h
-// Só grava/lê o cache quando é o dado REAL da própria pessoa — nunca durante
-// "Visualizar como" (VIEW_AS_STATE truthy), pra nunca persistir os dados de
-// outra pessoa como se fossem os do usuário real.
-function salvarCacheLocalDosDados(){
-  if(VIEW_AS_STATE) return;
-  try{
-    const payload={
-      v:1, ts:Date.now(), token:AUTH_TOKEN,
-      D,HM,PM,PM_PROJ,CD,CTOK,AREAS,AREA_CL,EXECTOP,PSTAT,PHEST,PHAP,PVENC,PPREVISTO,PEND,
-      PROJ_TASKS,SEM_ALOC,ALOC_SEM_APONT,STATUS_REPORTS,
-      CURRENT_USER_NOME,CURRENT_USER_EMAIL,EFFECTIVE_PERFIL,EFFECTIVE_EXCECOES,TODOS_USUARIOS,
-      _ultimaAtualizacaoPlanilha:DASH_ULTIMA_ATUALIZACAO_PLANILHA,_backendVersion:DASH_BACKEND_VERSION
-    };
-    sessionStorage.setItem(DASH_CACHE_KEY, JSON.stringify(payload));
-  }catch(e){
-    // Cota do sessionStorage estourada, modo privado que bloqueia storage,
-    // payload grande demais, etc. — o cache local é só uma otimização de
-    // performance; uma falha aqui NUNCA pode quebrar o carregamento normal
-    // (os dados já estão na tela de qualquer forma, vieram da rede). Só ignora.
-    console.warn('F14: não foi possível salvar o cache local dos dados.',e);
-  }
-}
-// Aplica o preview do cache local na tela, se houver um válido pro mesmo
-// token. Retorna true se aplicou (preview visível), false se não havia cache
-// utilizável (nesse caso nada na tela muda — segue o fluxo normal de sempre).
-function tentarPreviewCacheLocal(token){
-  try{
-    const raw=sessionStorage.getItem(DASH_CACHE_KEY);
-    if(!raw) return false;
-    const cache=JSON.parse(raw);
-    if(!cache || cache.token!==token) return false;
-    if(!cache.ts || (Date.now()-cache.ts)>DASH_CACHE_MAX_AGE_MS) return false;
-    if(!cache.D || !cache.EFFECTIVE_PERFIL) return false;
-
-    D=cache.D; HM=cache.HM||{}; PM=cache.PM||{}; PM_PROJ=cache.PM_PROJ||{}; CD=cache.CD||{}; CTOK=cache.CTOK||{};
-    AREAS=cache.AREAS||{}; AREA_CL=cache.AREA_CL||{}; EXECTOP=cache.EXECTOP||[]; PSTAT=cache.PSTAT||{};
-    PHEST=cache.PHEST||{}; PHAP=cache.PHAP||{}; PVENC=cache.PVENC||{}; PPREVISTO=cache.PPREVISTO||{};
-    PEND=cache.PEND||[]; PROJ_TASKS=cache.PROJ_TASKS||{}; SEM_ALOC=cache.SEM_ALOC||[]; ALOC_SEM_APONT=cache.ALOC_SEM_APONT||[];
-    STATUS_REPORTS=cache.STATUS_REPORTS||[];
-    CURRENT_USER_NOME=cache.CURRENT_USER_NOME; CURRENT_USER_EMAIL=cache.CURRENT_USER_EMAIL;
-    EFFECTIVE_PERFIL=cache.EFFECTIVE_PERFIL; EFFECTIVE_EXCECOES=cache.EFFECTIVE_EXCECOES||{add:[],remove:[]};
-    TODOS_USUARIOS=cache.TODOS_USUARIOS||[]; VIEW_AS_STATE=null;
-    invalidarCachesDeDadosGlobais();
-    HEAVY_DATA_READY=true;
-    AUTH_TOKEN=token;
-
-    const viewasWrap=document.getElementById('viewas-wrap');
-    if(viewasWrap) viewasWrap.style.display = (EFFECTIVE_PERFIL==='Administrador') ? '' : 'none';
-    addLogoutControl(cache.CURRENT_USER_NOME||cache.CURRENT_USER_EMAIL, EFFECTIVE_PERFIL);
-    atualizarFaixaVisualizarComo();
-    aplicarMenuDinamico();
-    showDataBadge('cache');
-    updateFooter(cache._ultimaAtualizacaoPlanilha, cache._backendVersion);
-
-    setLoginLoading(false);
-    hideLoginOverlay();
-    document.getElementById('main-shell').classList.remove('aguardando-dados');
-
-    // Mesma regra de tela inicial usada no fluxo real (ver carregarDadosCore):
-    // Administrador entra em Novidades; os demais perfis, em "Visão do
-    // Portfólio" (ou a 1ª página permitida do perfil, se essa não for uma
-    // opção pra ele).
-    let paginaAlvo='cliente';
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-    if(EFFECTIVE_PERFIL==='Administrador'){
-      document.getElementById('page-futuristic')?.classList.add('active');
-      renderNovidades();
-      document.getElementById('main-shell').classList.add('mostrando-novidades');
-      paginaAlvo='futuristic';
-    }else{
-      if(!paginasPermitidas().includes(paginaAlvo)) paginaAlvo=paginasPermitidas()[0]||'cliente';
-      document.getElementById('page-'+paginaAlvo)?.classList.add('active');
-      document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.page===paginaAlvo));
-    }
-    CACHE_PREVIEW_ATIVO=true;
-    boot(paginaAlvo);
-    return true;
-  }catch(e){
-    console.warn('F14: não foi possível aplicar o preview do cache local.',e);
-    return false;
-  }
-}
-// Se o preview local foi mostrado mas a validação real (action=auth) que
-// roda por trás falha (token expirado, sem perfil, acesso negado etc.), o
-// preview deixa de ser confiável — volta pra tela de login de verdade em vez
-// de deixar a pessoa "presa" olhando dados desatualizados sem saber que a
-// sessão não é mais válida.
-function reexibirTelaLoginAposFalhaDoPreview(){
-  document.getElementById('login-overlay').classList.remove('hidden');
-  document.getElementById('main-shell').classList.add('aguardando-dados');
-}
-
-// ============================================================
 // AUTENTICAÇÃO — Google Sign-In restrito a @besolution.com.br,
 // validado no servidor (Apps Script) a cada carregamento.
 // ============================================================
 const GOOGLE_CLIENT_ID='613411182204-20bfj0b659eiitudg60gbo5r08t4cc7r.apps.googleusercontent.com';
 const ALLOWED_DOMAIN='besolution.com.br';
 let AUTH_TOKEN=null;
-// F14 — true entre o momento em que um preview vindo do cache local
-// (sessionStorage) é mostrado na tela e o momento em que o fluxo real de
-// autenticação (action=auth) responde pela primeira vez depois disso. Serve
-// pra: (1) impedir que attemptLoadWithToken confunda "cheguei aqui com a tela
-// de login já escondida por causa do preview" com "o dashboard já estava
-// aberto de verdade" (que mudaria pro fluxo clássico de "Visualizar como");
-// (2) saber que, se essa validação real falhar, é preciso voltar pra tela de
-// login de verdade (ver reexibirTelaLoginAposFalhaDoPreview), já que o
-// preview não é uma validação de sessão — só uma prévia visual.
-let CACHE_PREVIEW_ATIVO=false;
 
 function showLoginError(msg){ const el=document.getElementById('login-error'); el.textContent=msg; el.classList.add('show'); }
 function hideLoginError(){ document.getElementById('login-error').classList.remove('show'); }
@@ -2043,17 +1924,12 @@ function initGoogleAuth(){
   initViewAsUI();
   google.accounts.id.initialize({ client_id:GOOGLE_CLIENT_ID, callback:handleCredentialResponse, hd:ALLOWED_DOMAIN });
   google.accounts.id.renderButton(document.getElementById('g_id_signin'), { theme:'outline', size:'large', text:'signin_with', shape:'pill' });
+  // v12.8: não mostra mais nenhum dado (nem prévia de cache local — ver
+  // remoção da F14) antes da sessão ser validada de verdade pelo servidor.
+  // Um token salvo aqui só evita reexibir o botão do Google; os dados só
+  // aparecem depois que action=auth confirma a sessão.
   const saved=sessionStorage.getItem('dash_id_token');
-  if(saved){
-    // F14 — stale-while-revalidate: se houver um cache local válido pra este
-    // token, mostra ele IMEDIATAMENTE (preview), e em seguida (sem esperar)
-    // dispara o fluxo real de autenticação normalmente, que revalida/atualiza
-    // tudo em segundo plano e substitui o preview quando a resposta chega —
-    // exatamente como já acontece hoje quando os dados demoram, só que agora
-    // a tela não fica vazia/carregando nesse meio tempo.
-    tentarPreviewCacheLocal(saved);
-    attemptLoadWithToken(saved);
-  }
+  if(saved) attemptLoadWithToken(saved);
 }
 function handleCredentialResponse(response){
   const token=response.credential;
@@ -2083,15 +1959,8 @@ let TODOS_USUARIOS=[];    // lista {email,nome,perfil} — só vem preenchida qu
 async function attemptLoadWithToken(token, viewAsEmail){
   hideLoginError();
   AUTH_TOKEN=token;
-  // F14: consome a flag do preview do cache local já aqui no topo (antes de
-  // qualquer "return" antecipado), pra nenhum caminho de saída desta função
-  // esquecer de reverter a tela de login caso o preview tenha sido mostrado
-  // e algo dê errado logo em seguida (ver usos de previewAtivoAgora abaixo).
-  const previewAtivoAgora=CACHE_PREVIEW_ATIVO;
-  CACHE_PREVIEW_ATIVO=false;
   const isPlaceholder=!DASHBOARD_API_URL || DASHBOARD_API_URL.indexOf('COLE_AQUI')!==-1;
   if(isPlaceholder){
-    if(previewAtivoAgora) reexibirTelaLoginAposFalhaDoPreview();
     showLoginError('Configuração pendente: URL do Apps Script não definida.');
     return;
   }
@@ -2102,12 +1971,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
   // "Voltar" chama esta função SEM viewAsEmail (igual o login novo) — por
   // isso o sinal real de "já estou com o dashboard aberto" é o overlay de
   // login já estar escondido, não só a presença de viewAsEmail.
-  // F14: se a tela de login está escondida só por causa do PREVIEW do cache
-  // local (ver tentarPreviewCacheLocal/CACHE_PREVIEW_ATIVO), isso NÃO conta
-  // como "dashboard já aberto de verdade" — sem essa exceção, todo reload com
-  // cache local cairia por engano no fluxo clássico de "Visualizar como" em
-  // vez do fluxo normal em 2 fases.
-  const dashboardJaAberto=document.getElementById('login-overlay').classList.contains('hidden') && !previewAtivoAgora;
+  const dashboardJaAberto=document.getElementById('login-overlay').classList.contains('hidden');
   if(viewAsEmail!==undefined || dashboardJaAberto) return attemptLoadWithTokenClassico(token, viewAsEmail);
 
   // v12.7: se uma fase 1 (auth) de uma chamada anterior ainda está em
@@ -2135,11 +1999,6 @@ async function attemptLoadWithToken(token, viewAsEmail){
     if(!authResp || !authResp.ok){
       LOGIN_2FASES_EM_ANDAMENTO=false; // v12.7: libera pra permitir nova tentativa
       setLoginLoading(false);
-      // F14: se essa falha veio logo depois de um preview do cache local, o
-      // preview não é mais confiável (a validação real da sessão falhou) —
-      // volta pra tela de login de verdade em vez de deixar a pessoa "presa"
-      // olhando dados desatualizados sem saber que a sessão não é válida.
-      if(previewAtivoAgora) reexibirTelaLoginAposFalhaDoPreview();
       if(authResp && authResp.internal){
         showLoginError(authResp.message||'Erro interno ao verificar credenciais. Tente novamente em instantes.');
       }else if(authResp && authResp.semPerfil){
@@ -2171,17 +2030,8 @@ async function attemptLoadWithToken(token, viewAsEmail){
     // no fluxo clássico isolado (attemptLoadWithTokenClassico), então a
     // trava não precisa mais cobrir o restante desta função.
     LOGIN_2FASES_EM_ANDAMENTO=false;
-    // F14: se um preview do cache local já está na tela (previewAtivoAgora),
-    // NÃO esconde o conteúdo atrás do placeholder de carregamento de tela
-    // cheia (#main-shell.aguardando-dados) nem mostra o banner bloqueante —
-    // a pessoa já está vendo algo (o preview); esconder isso agora só pra
-    // reaparecer alguns instantes depois (quando "core" responder) seria
-    // pior que não ter feito preview nenhum. Sem preview, o comportamento é
-    // exatamente o de antes.
-    if(!previewAtivoAgora){
-      document.getElementById('main-shell').classList.add('aguardando-dados');
-      mostrarLoadingGlobal('Carregando dados essenciais…');
-    }
+    document.getElementById('main-shell').classList.add('aguardando-dados');
+    mostrarLoadingGlobal('Carregando dados essenciais…');
     document.getElementById('voltar-strip').classList.add('hidden');
     carregarDadosCore(token);
   }catch(e){
@@ -2331,7 +2181,6 @@ async function carregarDadosPesadosEmSegundoPlano(token){
     const paginaAtivaEl=document.querySelector('.page.active');
     const paginaAlvo=paginaAtivaEl?paginaAtivaEl.id.replace('page-',''):'cliente';
     boot(paginaAlvo);
-    salvarCacheLocalDosDados(); // F14: guarda este payload completo pro próximo F5 usar como preview
   }catch(e){
     console.warn('Falha ao carregar dados completos em segundo plano.',e);
     mostrarErroCarregamentoPesado_(()=>carregarDadosPesadosEmSegundoPlano(token));
@@ -2413,7 +2262,6 @@ async function carregarDadosCompletos(token, semBannerTopo){
       document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.page===paginaAlvo));
     }
     boot(paginaAlvo);
-    salvarCacheLocalDosDados(); // F14: guarda este payload completo pro próximo F5 usar como preview
   }catch(e){
     console.warn('Falha ao carregar dados completos.',e);
     mostrarErroLoadingGlobal('Não foi possível carregar os dados. Verifique sua conexão.', ()=>carregarDadosCompletos(token, semBannerTopo));
@@ -2483,7 +2331,6 @@ async function attemptLoadWithTokenClassico(token, viewAsEmail){
     }
 
     boot(paginaAlvo);
-    salvarCacheLocalDosDados(); // F14: guarda (só quando NÃO é "Visualizar como" — ver guarda dentro da função)
   }catch(e){
     setLoginLoading(false);
     if(toast) toast.classList.remove('show');
@@ -2500,11 +2347,6 @@ function addLogoutControl(userLabel,perfil){
   const btn=document.getElementById('logout-btn-top');
   btn.onclick=()=>{
     sessionStorage.removeItem('dash_id_token');
-    // F14: remove também o cache local — sem isso não haveria risco de
-    // vazamento (o preview só é aplicado se o token bater, e o token já foi
-    // removido acima), mas evita guardar um payload que nunca mais vai
-    // encontrar o token correspondente.
-    try{ sessionStorage.removeItem(DASH_CACHE_KEY); }catch(e){}
     location.reload();
   };
 }
