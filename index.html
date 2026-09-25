@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyFCF_G6MLJ7RZ1UarKZgNv89-CkxgTq9Qku-9b-8qhHiWLV7IYrCZ73l5N7ZlP0_9Hwg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxsoSRIj3Erg8-SgaGEakqV41E9eKGULmnQLutxXoFomJLj5niYc7YPX72PuWWG0Jg6mw/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1708,7 +1708,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">Central de Projetos Be Solution · v14.2 · Última atualização: —</footer>
+  <footer id="app-footer">Central de Projetos Be Solution · v14.3 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1805,47 +1805,54 @@ function showDataBadge(mode){
   if(mode==='live'){ el.textContent='🟢 Dados ao vivo (Google Sheets)'; el.style.background='#0EA5E9'; el.style.color='#fff'; }
   else { el.textContent='⚠️ Snapshot local (sem conexão com a planilha)'; el.style.background='#f59e0b'; el.style.color='#1a1a1a'; }
 }
-// v14.1: REVERTIDO o transporte por iframe (v14.0) — quebrou o login por
-// completo em produção. Evidência nova: a URL "echo?user_content_key=..."
-// (destino do redirecionamento exec→echo) passou a falhar com HTTP 403 e o
-// Console mostrou "Cross-Origin-Opener-Policy policy would block the
-// window.postMessage call" — ou seja, o próprio Google bloqueia o EMBED em
-// iframe desse conteúdo (X-Frame-Options/COOP do domínio
-// script.googleusercontent.com, fora do nosso controle — o
-// setXFrameOptionsMode(ALLOWALL) no doGet só afeta a resposta de /exec
-// ANTES do redirecionamento, não o destino do redirect em si). Resultado:
-// nem fetch() (404, confirmado em v13.2) nem iframe (403, confirmado agora)
-// conseguem ler esse conteúdo de forma cross-origin — só uma navegação de
-// verdade (endereço/aba nova) funciona, confirmado nos testes manuais.
-// Voltando à implementação fetch() de v13.2 (idêntica) até definirmos, com
-// calma, um caminho que não dependa de ler a resposta cross-origin via
-// JS (ex: navegação de página inteira, ou outro mecanismo de entrega).
-// Mantido o nome "loadDataJSONP" — nenhum ponto que já chama esta função
+// v14.3: VOLTA AO JSONP (tag <script>) — a pedido explícito do usuário,
+// ciente do risco (ver changelog completo em AppsScript_Code.gs v14.3).
+// Contexto: v13.2 confirmou que fetch() cross-site (index.html no GitHub
+// Pages, API no Apps Script) leva HTTP 404 na entrega exec→echo; v14.0
+// confirmou que um <iframe> cross-site leva HTTP 403/COOP. JSONP via
+// <script src> é um MECANISMO DIFERENTE dos dois (Sec-Fetch-Dest: script,
+// Sec-Fetch-Mode: no-cors) — não sabemos ainda se ele também esbarra nesse
+// mesmo bloqueio; sabemos, sim (changelog v12.8), que esse MESMO padrão já
+// foi abandonado uma vez porque o Chrome passou a bloqueá-lo com
+// net::ERR_BLOCKED_BY_ORB. Ou seja: pode resolver o 404 atual e esbarrar de
+// novo no ORB — só o teste em produção vai confirmar. O backend (doGet)
+// já aceita "callback" desde sempre (nunca foi removido, só parou de ser
+// usado em v12.8) — nenhuma mudança necessária no AppsScript_Code.gs.
+// Mantido o nome "loadDataJSONP" e a mesma assinatura (Promise que resolve
+// com o JSON ou rejeita com Error) — nenhum ponto que já chama esta função
 // precisou mudar.
+let _dashJsonpSeq=0;
 function loadDataJSONP(url){
   return new Promise((resolve,reject)=>{
-    const controller=new AbortController();
+    const cbName='_dashJsonpCb'+(++_dashJsonpSeq)+'_'+Date.now();
+    const script=document.createElement('script');
+    let terminou=false;
+    let timeoutId;
+    function limpar(){
+      if(terminou) return;
+      terminou=true;
+      clearTimeout(timeoutId);
+      try{ delete window[cbName]; }catch(eDelCb){ window[cbName]=undefined; }
+      if(script.parentNode) script.parentNode.removeChild(script);
+    }
+    window[cbName]=function(data){
+      limpar();
+      resolve(data);
+    };
+    script.onerror=function(){
+      limpar();
+      reject(new Error('Falha ao carregar script JSONP (rede ou bloqueio do navegador — ver Console/Network)'));
+    };
     // 100s — mesma margem de antes, pra uma requisição enfileirada no Apps
     // Script (ex: acionador agendado rodando ao mesmo tempo) ainda conseguir
     // responder, em vez de desistir cedo demais.
-    const timeoutId=setTimeout(()=>controller.abort(),100000);
-    fetch(url,{signal:controller.signal,cache:'no-store'})
-      .then(resp=>{
-        if(!resp.ok) throw new Error('HTTP '+resp.status);
-        // v13.2 — DIAGNÓSTICO: resp.json() pode falhar mesmo com resp.ok
-        // (200), se a entrega do Apps Script vier cortada/corrompida no meio
-        // (instabilidade observada na infraestrutura de entrega exec→echo do
-        // Google). Antes esse erro de parse caía no catch genérico com uma
-        // mensagem confusa (tipo "Unexpected end of JSON input"); agora fica
-        // explícito que é isso, não um problema de rede/servidor.
-        return resp.json().catch(()=>{ throw new Error('JSON inválido/incompleto na resposta (entrega cortada)'); });
-      })
-      .then(data=>{ clearTimeout(timeoutId); resolve(data); })
-      .catch(err=>{
-        clearTimeout(timeoutId);
-        if(err && err.name==='AbortError') reject(new Error('Timeout (100s) aguardando resposta do Apps Script'));
-        else reject(err instanceof Error ? err : new Error(String(err)));
-      });
+    timeoutId=setTimeout(()=>{
+      limpar();
+      reject(new Error('Timeout (100s) aguardando resposta do Apps Script (JSONP)'));
+    },100000);
+    const sepJsonp=url.indexOf('?')!==-1?'&':'?';
+    script.src=url+sepJsonp+'callback='+encodeURIComponent(cbName);
+    document.head.appendChild(script);
   });
 }
 // ============================================================
@@ -1910,7 +1917,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v14.2';
+const APP_VERSION='v14.3';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
