@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycby_5Yo_83oUufQ1kgW-vs8bpmZdBrjnff3o1K_xlln4r7DpMP2sUEVruw2mB-AGTXV7oA/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzFY3P-HP7tr4wtKLtfktqhrpj3frX30RO9qeQaa5M1BQn_vr6E_WV6PoHW2Ym448F3hA/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1708,7 +1708,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">Central de Projetos Be Solution · v13.0 · Última atualização: —</footer>
+  <footer id="app-footer">Central de Projetos Be Solution · v13.1 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1884,7 +1884,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v13.0';
+const APP_VERSION='v13.1';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2021,7 +2021,14 @@ async function attemptLoadWithToken(token, viewAsEmail){
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const urlAuth=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(token)+'&action=auth';
-    const authResp=await loadDataJSONPComRetry(urlAuth,1);
+    // v13.1: 2 tentativas extras (3 no total) — antes era só 1 extra. Ver
+    // changelog v13.1: a entrega de conteúdo do Apps Script (redirecionamento
+    // exec→echo) tem se mostrado intermitentemente instável mesmo com o
+    // backend concluindo toda execução sem erro (confirmado no log de
+    // Execuções) — mais tentativas é a única mitigação possível do lado do
+    // cliente, já que a causa raiz está na infraestrutura de entrega do
+    // Google, fora do nosso controle.
+    const authResp=await loadDataJSONPComRetry(urlAuth,2);
     if(!authResp || !authResp.ok){
       LOGIN_2FASES_EM_ANDAMENTO=false; // v12.7: libera pra permitir nova tentativa
       setLoginLoading(false);
@@ -2112,7 +2119,10 @@ async function carregarDadosCore(token){
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(token)+'&action=core';
-    const j=await loadDataJSONPComRetry(url,1);
+    // v13.1: 2 tentativas extras (3 no total) — ver comentário em
+    // attemptLoadWithToken sobre a instabilidade da entrega de conteúdo do
+    // Apps Script.
+    const j=await loadDataJSONPComRetry(url,2);
     if(!j || j.error || !j._core){
       // Resposta inesperada (ou o backend não reconheceu action=core, ex:
       // versão mais antiga do .gs) — completa com o fluxo de sempre, que
@@ -2238,10 +2248,13 @@ async function carregarDadosCompletos(token, semBannerTopo){
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(token);
-    // 2 tentativas extras (3 no total) — essa é a chamada mais crítica do
-    // fluxo (sem ela o dashboard não abre de jeito nenhum), então vale
-    // insistir mais antes de mostrar erro pro usuário.
-    const j=await loadDataJSONPComRetry(url,2);
+    // v13.1: 3 tentativas extras (4 no total, era 2 extras/3 no total) —
+    // essa é a chamada mais crítica do fluxo (sem ela o dashboard não abre
+    // de jeito nenhum), então vale insistir mais antes de mostrar erro pro
+    // usuário. Ver comentário em attemptLoadWithToken sobre a instabilidade
+    // da entrega de conteúdo do Apps Script (exec→echo), que pode exigir
+    // mais de uma nova execução completa até uma entrega bem-sucedida.
+    const j=await loadDataJSONPComRetry(url,3);
     if(j && j.error){
       mostrarErroLoadingGlobal(j.message||'Erro ao carregar os dados. Tente novamente.', ()=>carregarDadosCompletos(token, semBannerTopo));
       return;
