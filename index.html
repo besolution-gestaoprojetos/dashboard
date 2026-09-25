@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzscwcuc7rG6zWKMc5NacQf_PTITDQxsit618siJkAyElPaUFfNiMRygE3HmEuRU0_2sQ/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwF0LfWe-9Q_k7Pkebh_FbFy5QkNDC1RiIu6TejjzHshpLXSoby4pWp2gB0Fo-04cSoxg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1708,7 +1708,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">Central de Projetos Be Solution · v13.2 · Última atualização: —</footer>
+  <footer id="app-footer">Central de Projetos Be Solution · v14.0 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1805,41 +1805,67 @@ function showDataBadge(mode){
   if(mode==='live'){ el.textContent='🟢 Dados ao vivo (Google Sheets)'; el.style.background='#0EA5E9'; el.style.color='#fff'; }
   else { el.textContent='⚠️ Snapshot local (sem conexão com a planilha)'; el.style.background='#f59e0b'; el.style.color='#1a1a1a'; }
 }
-// v12.8: trocado de JSONP (tag <script src>) para fetch() nativo. Motivo:
-// o Chrome passou a bloquear as respostas do Apps Script com
-// net::ERR_BLOCKED_BY_ORB (Opaque Response Blocking) nesse tipo de
-// carregamento, mesmo com o Content-Type correto — problema documentado do
-// lado do navegador, não algo que dava pra contornar só re-tentando. O
-// Apps Script já responde JSON puro (sem precisar de callback) quando a URL
-// não tem o parâmetro "callback" — o backend não precisou mudar nada. Mantido
-// o nome "loadDataJSONP" pra não mexer em nenhum dos pontos que já chamam
-// esta função (o comportamento pra quem chama é idêntico: uma Promise que
-// resolve com o JSON ou rejeita com Error).
+// v14.0: TROCA DE TRANSPORTE — de fetch() para iframe oculto + postMessage.
+// Causa raiz do 404 persistente (exec→echo) confirmada por teste direto: um
+// fetch() cru digitado no Console (sem nenhum código nosso) já retorna 404;
+// a MESMA URL aberta por navegação direta sempre funcionou. Ou seja, o
+// Google trata fetch()/XHR diferente de uma navegação real nessa camada de
+// entrega — não tinha nada a ver com nosso código, token, tamanho de dado
+// ou concorrência (tudo isso já tinha sido descartado em v13.0/v13.1/v13.2).
+// A correção é fazer a chamada se PARECER uma navegação: carrega a URL
+// dentro de um <iframe> oculto (com "&modo=iframe&rid=..." — ver
+// doGet/AppsScript_Code.gs v14.0); o backend devolve uma página HTML mínima
+// que manda o payload de volta via postMessage, e este front escuta essa
+// mensagem, valida o "rid" (evita pegar mensagem de outra chamada em
+// paralelo ou de outra origem) e resolve a Promise. Diferente do JSONP
+// antigo (removido em v12.8, que usava <script src> e caía no bloqueio de
+// ORB do Chrome): aqui é uma navegação completa de iframe, fora do escopo
+// do ORB. Mantido o nome "loadDataJSONP" e a mesma assinatura (Promise que
+// resolve com o JSON ou rejeita com Error) — nenhum dos pontos que já
+// chamam esta função precisou mudar.
+let _dashIframeSeq=0;
 function loadDataJSONP(url){
   return new Promise((resolve,reject)=>{
-    const controller=new AbortController();
-    // 100s — mesma margem de antes, pra uma requisição enfileirada no Apps
-    // Script (ex: acionador agendado rodando ao mesmo tempo) ainda conseguir
-    // responder, em vez de desistir cedo demais.
-    const timeoutId=setTimeout(()=>controller.abort(),100000);
-    fetch(url,{signal:controller.signal,cache:'no-store'})
-      .then(resp=>{
-        if(!resp.ok) throw new Error('HTTP '+resp.status);
-        // v13.2 — DIAGNÓSTICO: resp.json() pode falhar mesmo com resp.ok
-        // (200), se a entrega do Apps Script vier cortada/corrompida no meio
-        // (instabilidade observada na infraestrutura de entrega exec→echo do
-        // Google — ver changelog v13.2). Antes esse erro de parse caía no
-        // catch genérico com uma mensagem confusa (tipo "Unexpected end of
-        // JSON input"); agora fica explícito que é isso, não um problema de
-        // rede/servidor.
-        return resp.json().catch(()=>{ throw new Error('JSON inválido/incompleto na resposta (entrega cortada)'); });
-      })
-      .then(data=>{ clearTimeout(timeoutId); resolve(data); })
-      .catch(err=>{
-        clearTimeout(timeoutId);
-        if(err && err.name==='AbortError') reject(new Error('Timeout (100s) aguardando resposta do Apps Script'));
-        else reject(err instanceof Error ? err : new Error(String(err)));
-      });
+    const rid='r'+Date.now()+'_'+(++_dashIframeSeq);
+    const sepFrame=url.indexOf('?')!==-1?'&':'?';
+    const urlFrame=url+sepFrame+'modo=iframe&rid='+encodeURIComponent(rid);
+    const iframe=document.createElement('iframe');
+    iframe.style.display='none';
+    iframe.setAttribute('aria-hidden','true');
+    let terminou=false;
+    let timeoutId;
+    function limpar(){
+      if(terminou) return;
+      terminou=true;
+      clearTimeout(timeoutId);
+      window.removeEventListener('message',onMsg);
+      if(iframe.parentNode) iframe.parentNode.removeChild(iframe);
+    }
+    function onMsg(ev){
+      const d=ev && ev.data;
+      // Ignora qualquer mensagem que não seja exatamente a resposta desta
+      // chamada — tanto de outra chamada loadDataJSONP em paralelo (cada
+      // uma tem seu próprio "rid") quanto de qualquer outro script/origem
+      // que eventualmente mande postMessage na página (ex: bibliotecas do
+      // Google Identity Services).
+      if(!d || d.__dashIframeMsg!==true || d.rid!==rid) return;
+      if(ev.source && iframe.contentWindow && ev.source!==iframe.contentWindow) return;
+      limpar();
+      resolve(d.payload);
+    }
+    window.addEventListener('message',onMsg);
+    // 100s — mesma margem de antes (v13.x), pra uma requisição enfileirada
+    // no Apps Script ainda conseguir responder antes de desistir.
+    timeoutId=setTimeout(()=>{
+      limpar();
+      reject(new Error('Timeout (100s) aguardando resposta do Apps Script (iframe)'));
+    },100000);
+    iframe.onerror=function(){
+      limpar();
+      reject(new Error('Falha ao carregar o iframe de dados'));
+    };
+    iframe.src=urlFrame;
+    document.body.appendChild(iframe);
   });
 }
 // ============================================================
@@ -1904,7 +1930,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v13.2';
+const APP_VERSION='v14.0';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
