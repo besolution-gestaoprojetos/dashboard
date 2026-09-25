@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyEkrYNQmE5hym65hCVPxezVvXWUmysYpQoJP3129znmzB3WCiKuOA9lW0pw3f3-a-HgA/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycby_5Yo_83oUufQ1kgW-vs8bpmZdBrjnff3o1K_xlln4r7DpMP2sUEVruw2mB-AGTXV7oA/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1266,6 +1266,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
         <button class="nav-cat-trigger" type="button">Visão Geral<svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-cat-panel">
           <button class="nav-tab" data-page="futuristic">Central de Comando</button>
+          <button class="nav-tab" data-page="novidades">Novidades</button>
         </div>
       </div>
       <div class="nav-cat cat-active" data-cat="portfolio">
@@ -1707,7 +1708,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">Central de Projetos Be Solution · v12.8 · Última atualização: —</footer>
+  <footer id="app-footer">Central de Projetos Be Solution · v13.0 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1883,7 +1884,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v12.8';
+const APP_VERSION='v13.0';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -1934,6 +1935,31 @@ function initGoogleAuth(){
 function handleCredentialResponse(response){
   const token=response.credential;
   sessionStorage.setItem('dash_id_token',token);
+  // v13.0 — CORREÇÃO: o Google Identity Services pode chamar este callback
+  // de novo, silenciosamente, bem depois do login já ter sido aceito (não é
+  // ação da pessoa — é reemissão de credencial da própria biblioteca). O
+  // guard LOGIN_2FASES_EM_ANDAMENTO (v12.7) só cobre reentrância ENQUANTO a
+  // Fase 1 ainda está rodando (tela de login ainda visível); depois que ela
+  // já sumiu, uma nova chamada aqui caía direto em
+  // attemptLoadWithTokenClassico(), que recarrega TUDO do zero sem nenhuma
+  // proteção — disparando um carregamento completo concorrente com o que já
+  // estava em andamento (fase pesada em segundo plano, ou até outro
+  // recarregamento completo anterior). Diagnosticado via o log de Execuções
+  // do Apps Script (nenhuma execução com erro) + Network (7 chamadas "exec"
+  // para um único login, espalhadas ao longo de minutos — não uma rajada
+  // simultânea) + o Initiator da chamada que falhou apontando pra este
+  // callback: sintoma consistente com múltiplos recarregamentos completos
+  // concorrentes colidindo no redirecionamento exec→echo do Apps Script
+  // (algumas tentativas voltam 404 mesmo com a execução concluída com
+  // sucesso no backend). Se o login já foi aceito (overlay já escondido),
+  // não há nada de novo a fazer além de guardar o token renovado — um
+  // recarregamento completo só deve acontecer por ação explícita da pessoa
+  // ("Visualizar como"/"Voltar para meu acesso", que chamam
+  // attemptLoadWithToken() diretamente, sem passar por este callback).
+  if(document.getElementById('login-overlay').classList.contains('hidden')){
+    console.warn('Credencial do Google reemitida com o dashboard já aberto — token atualizado, ignorando novo carregamento automático.');
+    return;
+  }
   attemptLoadWithToken(token);
 }
 // PERFORMANCE/CORREÇÃO (v12.7): a biblioteca do Google Identity Services às
@@ -2893,7 +2919,7 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','permissoes','pessoasadmin'],
+  'Administrador':  ['cliente','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','permissoes','pessoasadmin','novidades'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
@@ -2932,7 +2958,7 @@ const PERM_MENU = {
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Visão do Portfólio',alocacoes:'Alocações',inteligencia:'Inteligência de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Administração de Permissões',pessoasadmin:'Administração de Pessoas'};
+const PAGE_LABELS = {cliente:'Visão do Portfólio',alocacoes:'Alocações',inteligencia:'Inteligência de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho',area:'Áreas',lider:'Liderança',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências',ociosos:'Disponibilidade',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão Setorial',transversal:'Gestão Transversal',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Administração de Permissões',pessoasadmin:'Administração de Pessoas',novidades:'Novidades'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 // EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
 // PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
@@ -2947,7 +2973,10 @@ let EFFECTIVE_EXCECOES={add:[],remove:[]};
 // automático, não é uma página de menu de verdade) e "permissoes" (a
 // própria tela de administração, sempre exclusiva do perfil Administrador,
 // nunca liberável por exceção, pra não abrir brecha de auto-promoção).
-const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin');
+// "novidades" também fica fora: é a tela de entrada exclusiva do
+// Administrador (ver #shell-novidades-placeholder), não uma página de
+// dados com escopo por perfil — não faz sentido liberá-la por exceção.
+const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='novidades');
 
 function paginasPermitidas(){
   const base = PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido'];
@@ -3048,17 +3077,30 @@ function goToPage(name){
     cat.classList.toggle('cat-active', !!cat.querySelector('.nav-tab.active'));
   });
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  const el=document.getElementById('page-'+name);
-  if(el) el.classList.add('active');
-  // F1 — Lazy-init: na primeira vez que a pessoa navega até esta página nesta
-  // sessão, inicializa/renderiza ela agora (boot() só cuida da página inicial
-  // de cada fase de carregamento — ver PAGES_INITIALIZED). Em navegações
-  // seguintes pra mesma página, não reinicializa (comportamento já existente:
-  // o conteúdo permanece o que foi renderizado da última vez que os dados
-  // globais mudaram).
-  if(!PAGES_INITIALIZED.has(name) && PAGE_INIT_MAP[name]){
-    PAGE_INIT_MAP[name]();
-    PAGES_INITIALIZED.add(name);
+  // "Novidades" não é uma .page comum — é o placeholder de entrada do
+  // Administrador (#shell-novidades-placeholder, controlado pela classe
+  // "mostrando-novidades" em #main-shell). Reaberta pelo menu (fora do fluxo
+  // de login), os dados pesados já estão prontos (garantido pelo check de
+  // HEAVY_DATA_READY acima, que vale pra "novidades" como pra qualquer
+  // outra página), então mostra direto o estado "concluído".
+  if(name==='novidades'){
+    renderNovidades();
+    const novStatusEl=document.getElementById('nov-loading-status');
+    if(novStatusEl) novStatusEl.innerHTML='<p>✓ Dados atualizados — use o menu acima para navegar</p>';
+    if(mainShellNav) mainShellNav.classList.add('mostrando-novidades');
+  } else {
+    const el=document.getElementById('page-'+name);
+    if(el) el.classList.add('active');
+    // F1 — Lazy-init: na primeira vez que a pessoa navega até esta página nesta
+    // sessão, inicializa/renderiza ela agora (boot() só cuida da página inicial
+    // de cada fase de carregamento — ver PAGES_INITIALIZED). Em navegações
+    // seguintes pra mesma página, não reinicializa (comportamento já existente:
+    // o conteúdo permanece o que foi renderizado da última vez que os dados
+    // globais mudaram).
+    if(!PAGES_INITIALIZED.has(name) && PAGE_INIT_MAP[name]){
+      PAGE_INIT_MAP[name]();
+      PAGES_INITIALIZED.add(name);
+    }
   }
   // O botão global de "← Voltar" fica oculto só em "Detalhamento do Projeto",
   // que já tem seu próprio botão de voltar contextual (#proj-voltar, com rótulo
