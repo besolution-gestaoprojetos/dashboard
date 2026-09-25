@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzFY3P-HP7tr4wtKLtfktqhrpj3frX30RO9qeQaa5M1BQn_vr6E_WV6PoHW2Ym448F3hA/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzscwcuc7rG6zWKMc5NacQf_PTITDQxsit618siJkAyElPaUFfNiMRygE3HmEuRU0_2sQ/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1708,7 +1708,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">Central de Projetos Be Solution · v13.1 · Última atualização: —</footer>
+  <footer id="app-footer">Central de Projetos Be Solution · v13.2 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1824,13 +1824,20 @@ function loadDataJSONP(url){
     const timeoutId=setTimeout(()=>controller.abort(),100000);
     fetch(url,{signal:controller.signal,cache:'no-store'})
       .then(resp=>{
-        if(!resp.ok) throw new Error('Resposta HTTP '+resp.status+' do Apps Script');
-        return resp.json();
+        if(!resp.ok) throw new Error('HTTP '+resp.status);
+        // v13.2 — DIAGNÓSTICO: resp.json() pode falhar mesmo com resp.ok
+        // (200), se a entrega do Apps Script vier cortada/corrompida no meio
+        // (instabilidade observada na infraestrutura de entrega exec→echo do
+        // Google — ver changelog v13.2). Antes esse erro de parse caía no
+        // catch genérico com uma mensagem confusa (tipo "Unexpected end of
+        // JSON input"); agora fica explícito que é isso, não um problema de
+        // rede/servidor.
+        return resp.json().catch(()=>{ throw new Error('JSON inválido/incompleto na resposta (entrega cortada)'); });
       })
       .then(data=>{ clearTimeout(timeoutId); resolve(data); })
       .catch(err=>{
         clearTimeout(timeoutId);
-        if(err && err.name==='AbortError') reject(new Error('Timeout aguardando resposta do Apps Script'));
+        if(err && err.name==='AbortError') reject(new Error('Timeout (100s) aguardando resposta do Apps Script'));
         else reject(err instanceof Error ? err : new Error(String(err)));
       });
   });
@@ -1872,19 +1879,32 @@ function mostrarErroLoadingGlobal(mensagem, onRetry){
 // nesses casos); uma resposta que CHEGOU mas indica erro de permissão/dados
 // não é reenviada, já que repetir não mudaria o resultado.
 async function loadDataJSONPComRetry(url, tentativas=1){
-  let ultimoErro;
+  // v13.2 — DIAGNÓSTICO: acumula o motivo de CADA tentativa (não só da
+  // última) e o tempo que cada uma levou. Investigações anteriores (v13.0/
+  // v13.1) mostraram tentativas com tempos de resposta muito variáveis
+  // (10-40s+) mesmo com o backend concluindo rápido — esse detalhe por
+  // tentativa é o que faltava pra diferenciar "toda tentativa deu HTTP 404",
+  // "demorou e deu timeout" ou "respondeu 200 mas o JSON veio corrompido",
+  // em vez de só ver a mensagem da última tentativa.
+  const tentativasLog=[];
   for(let i=0;i<=tentativas;i++){
+    const t0=Date.now();
     try{ return await loadDataJSONP(url); }
-    catch(e){ ultimoErro=e; if(i<tentativas) await new Promise(r=>setTimeout(r,800*(i+1))); }
+    catch(e){
+      tentativasLog.push('#'+(i+1)+' ('+(Date.now()-t0)+'ms): '+(e&&e.message||e));
+      if(i<tentativas) await new Promise(r=>setTimeout(r,800*(i+1)));
+    }
   }
-  throw ultimoErro;
+  const erroFinal=new Error('Falhou após '+(tentativas+1)+' tentativa(s) — '+tentativasLog.join(' | '));
+  erroFinal.tentativasLog=tentativasLog;
+  throw erroFinal;
 }
 
 // REGRA DE VERSIONAMENTO: versão menor vai de .1 até .9; depois de .9, a
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v13.1';
+const APP_VERSION='v13.2';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2071,7 +2091,8 @@ async function attemptLoadWithToken(token, viewAsEmail){
     LOGIN_2FASES_EM_ANDAMENTO=false; // v12.7: libera pra permitir nova tentativa
     setLoginLoading(false);
     console.warn('Falha ao verificar credenciais.',e);
-    showLoginError('Não foi possível contatar o servidor. Verifique sua conexão e tente novamente.');
+    const detalheAuth=(e&&e.message)?' ('+e.message+')':'';
+    showLoginError('Não foi possível contatar o servidor. Verifique sua conexão e tente novamente.'+detalheAuth);
   }
 }
 
@@ -2303,7 +2324,11 @@ async function carregarDadosCompletos(token, semBannerTopo){
     boot(paginaAlvo);
   }catch(e){
     console.warn('Falha ao carregar dados completos.',e);
-    mostrarErroLoadingGlobal('Não foi possível carregar os dados. Verifique sua conexão.', ()=>carregarDadosCompletos(token, semBannerTopo));
+    // v13.2 — mostra o detalhe técnico (por tentativa) na própria tela, não
+    // só no console, pra não depender de quem está testando saber abrir o
+    // DevTools — ajuda a diagnosticar de primeira se acontecer de novo.
+    const detalhe=(e&&e.message)?' ('+e.message+')':'';
+    mostrarErroLoadingGlobal('Não foi possível carregar os dados. Verifique sua conexão.'+detalhe, ()=>carregarDadosCompletos(token, semBannerTopo));
   }
 }
 
@@ -2374,7 +2399,8 @@ async function attemptLoadWithTokenClassico(token, viewAsEmail){
     setLoginLoading(false);
     if(toast) toast.classList.remove('show');
     console.warn('Falha ao contatar o Apps Script.',e);
-    showLoginError('Não foi possível contatar o servidor. Verifique sua conexão e tente novamente.');
+    const detalheClassico=(e&&e.message)?' ('+e.message+')':'';
+    showLoginError('Não foi possível contatar o servidor. Verifique sua conexão e tente novamente.'+detalheClassico);
   }
 }
 function addLogoutControl(userLabel,perfil){
