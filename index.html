@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxWbWN-8QocauJEmpVn1V5CqitD33kfeW5zGQqFV48qsN4dovuOfztVsnD-ShhCRPWjBw/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxqANaM23BfxKemghKf5TqGF4iSk8RNTLshbmkoC27C2yCtjnD__u9Nh8ONI2gv9gSIBg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1707,7 +1707,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
       <div id="projdetail-content"></div>
     </section>
   </main>
-  <footer id="app-footer">Central de Projetos Be Solution · v12.6 · Última atualização: —</footer>
+  <footer id="app-footer">Central de Projetos Be Solution · v12.7 · Última atualização: —</footer>
 </div>
 <div id="viewas-loading-toast" class="viewas-loading-toast">
   <div class="login-spinner" style="width:16px;height:16px;border-width:2px;"></div>
@@ -1876,7 +1876,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v12.6';
+const APP_VERSION='v12.7';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 // F14 — guarda os últimos valores passados pra updateFooter (fora da função,
@@ -2060,6 +2060,21 @@ function handleCredentialResponse(response){
   sessionStorage.setItem('dash_id_token',token);
   attemptLoadWithToken(token);
 }
+// PERFORMANCE/CORREÇÃO (v12.7): a biblioteca do Google Identity Services às
+// vezes chama handleCredentialResponse mais de uma vez pro mesmo login (ex:
+// re-emissão silenciosa de credencial enquanto a aba fica esperando dados
+// pesados por mais tempo que o normal) — cada chamada reentrava no fluxo de
+// 2 fases inteiro, disparando um NOVO action=auth + action=core em paralelo
+// com o anterior (ainda em andamento), empilhando requisições concorrentes
+// contra o mesmo Apps Script. Isso explicava os múltiplos action=core
+// simultâneos vistos no Network (alguns terminando em net::ERR_* por
+// disputa de cota de execução do Apps Script), mesmo com o backend já
+// rápido depois da correção de hoursFromVal_ (v12.6). Este trava evita
+// entrar de novo na fase 1 (auth) enquanto uma tentativa anterior ainda não
+// chegou a esconder a tela de login — não afeta "Visualizar como"/"Voltar"
+// (attemptLoadWithTokenClassico) nem um novo login de verdade após logout
+// (location.reload() zera esta flag).
+let LOGIN_2FASES_EM_ANDAMENTO=false;
 let VIEW_AS_STATE=null;   // {email,nome,perfil} quando "Visualizar como" está ativo, senão null
 let CURRENT_USER_NOME=null, CURRENT_USER_EMAIL=null; // identidade de quem preenche (Status Report usa isso pra "Gerente")
 let STATUS_REPORTS=[];
@@ -2095,6 +2110,17 @@ async function attemptLoadWithToken(token, viewAsEmail){
   const dashboardJaAberto=document.getElementById('login-overlay').classList.contains('hidden') && !previewAtivoAgora;
   if(viewAsEmail!==undefined || dashboardJaAberto) return attemptLoadWithTokenClassico(token, viewAsEmail);
 
+  // v12.7: se uma fase 1 (auth) de uma chamada anterior ainda está em
+  // andamento (tela de login ainda visível), ignora esta reentrada — ver
+  // comentário de LOGIN_2FASES_EM_ANDAMENTO acima. Não há "await" entre esta
+  // checagem e o "= true" logo abaixo, então nenhuma outra chamada pode
+  // passar por aqui no meio (JS de thread única).
+  if(LOGIN_2FASES_EM_ANDAMENTO){
+    console.warn('Login já em andamento — ignorando nova credencial recebida em paralelo.');
+    return;
+  }
+  LOGIN_2FASES_EM_ANDAMENTO=true;
+
   // ---------- LOGIN NORMAL: fluxo em 2 fases ----------
   // Fase 1 (rápida, action=auth): só confirma identidade/perfil, sem montar o
   // dataset completo — libera a navegação quase imediatamente.
@@ -2107,6 +2133,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
     const urlAuth=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(token)+'&action=auth';
     const authResp=await loadDataJSONPComRetry(urlAuth,1);
     if(!authResp || !authResp.ok){
+      LOGIN_2FASES_EM_ANDAMENTO=false; // v12.7: libera pra permitir nova tentativa
       setLoginLoading(false);
       // F14: se essa falha veio logo depois de um preview do cache local, o
       // preview não é mais confiável (a validação real da sessão falhou) —
@@ -2138,6 +2165,12 @@ async function attemptLoadWithToken(token, viewAsEmail){
     aplicarMenuDinamico();
     setLoginLoading(false);
     hideLoginOverlay();
+    // v12.7: a partir daqui o overlay de login já está escondido — qualquer
+    // nova chamada de handleCredentialResponse/attemptLoadWithToken que
+    // chegue depois disso vai ser reconhecida como "dashboardJaAberto" e cai
+    // no fluxo clássico isolado (attemptLoadWithTokenClassico), então a
+    // trava não precisa mais cobrir o restante desta função.
+    LOGIN_2FASES_EM_ANDAMENTO=false;
     // F14: se um preview do cache local já está na tela (previewAtivoAgora),
     // NÃO esconde o conteúdo atrás do placeholder de carregamento de tela
     // cheia (#main-shell.aguardando-dados) nem mostra o banner bloqueante —
@@ -2152,6 +2185,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
     document.getElementById('voltar-strip').classList.add('hidden');
     carregarDadosCore(token);
   }catch(e){
+    LOGIN_2FASES_EM_ANDAMENTO=false; // v12.7: libera pra permitir nova tentativa
     setLoginLoading(false);
     console.warn('Falha ao verificar credenciais.',e);
     showLoginError('Não foi possível contatar o servidor. Verifique sua conexão e tente novamente.');
