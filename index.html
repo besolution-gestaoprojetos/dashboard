@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxsoSRIj3Erg8-SgaGEakqV41E9eKGULmnQLutxXoFomJLj5niYc7YPX72PuWWG0Jg6mw/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxc61RvUzTsuPORrnMsw8w8XsVDUdDe6N29ynmz9jMU5iZakU7nBhCjQTiyrw49m8pw7w/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -630,6 +630,13 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
 .ia-th-sort{user-select:none;}
 .ia-th-sort:hover{color:var(--primary);}
 
+/* Motor global de ordenação de tabelas */
+.th-sortable{cursor:pointer;user-select:none;white-space:nowrap;}
+.th-sortable:hover{color:var(--primary);}
+.sort-arrow{font-size:10px;color:var(--text-faint);opacity:.55;}
+.sort-arrow-active{color:var(--primary);opacity:1;font-size:11px;}
+@media (max-width:768px){ .sort-arrow{font-size:9px;} }
+
 /* Timeline dos 4 marcos de data do projeto (Detalhamento do Projeto) */
 .pd-timeline-datas{display:flex; align-items:flex-start; gap:0; overflow-x:auto; padding:8px 0;}
 .pd-timeline-step{display:flex; flex-direction:column; align-items:center; text-align:center; min-width:130px; flex-shrink:0;}
@@ -1183,11 +1190,6 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .nov-card p{font-size:12.5px;color:var(--text-muted);line-height:1.55;margin:0;}
 .nov-tag{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:999px;margin-left:auto;flex-shrink:0;white-space:nowrap;}
 .nov-chevron{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--text-faint);font-size:16px;}
-.nov-loading{text-align:center;padding-top:8px;}
-.nov-loading .login-spinner{width:22px;height:22px;border-width:2.5px;margin:0 auto 10px;}
-.nov-loading p{font-size:12.5px;color:var(--text-faint);margin:0;}
-.nov-progress-track{width:220px;height:3px;border-radius:999px;background:var(--surface-alt);margin:14px auto 0;overflow:hidden;position:relative;}
-.nov-progress-fill{position:absolute;top:0;left:0;height:100%;width:35%;border-radius:999px;background:var(--primary);animation:loading-global-indeterminado 1.3s ease-in-out infinite;}
 @media (max-width:980px){.nov-grid{grid-template-columns:1fr 1fr;}}
 @media (max-width:640px){.nov-grid{grid-template-columns:1fr;} .nov-hero{padding:22px;} .nov-hero-illus{display:none;} .nov-update-pill{width:100%;}}
 #main-shell.aguardando-dados #global-voltar-btn{display:none !important;}
@@ -1393,11 +1395,6 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
         </div>
       </div>
       <div class="nov-grid" id="nov-grid"></div>
-      <div class="nov-loading" id="nov-loading-status">
-        <div class="login-spinner"></div>
-        <p>Carregando os dados completos…</p>
-        <div class="nov-progress-track"><div class="nov-progress-fill"></div></div>
-      </div>
     </div>
     <!-- PAGE CLIENTE -->
     <section class="page active" id="page-cliente">
@@ -1955,7 +1952,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v14.4';
+const APP_VERSION='v14.6';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2140,15 +2137,18 @@ async function attemptLoadWithToken(token, viewAsEmail){
     // (auth) confirma o perfil — nem espera a etapa "core" terminar. A tela
     // é conteúdo 100% estático (array NOVIDADES, sem depender de nenhum dado
     // da planilha), então não havia motivo real pra esperar mais uma
-    // chamada de rede só pra mostrar isso; o indicador de carregamento
-    // próprio dela (#nov-loading-status, já com spinner por padrão no HTML)
-    // cobre o tempo até os dados de verdade chegarem via carregarDadosCore
-    // logo abaixo.
+    // chamada de rede só pra mostrar isso. v14.5: o tempo até os dados de
+    // verdade chegarem (via carregarDadosCore logo abaixo) agora é coberto
+    // pela mesma faixa fina fixa no topo (#loading-global) usada no resto
+    // do app — antes era um indicador embutido no fim da grade de cards
+    // (#nov-loading-status, removido), que ficava fora da área visível sem
+    // rolar a tela numa lista longa de novidades.
     if(authResp.perfil==='Administrador'){
       document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
       document.getElementById('page-futuristic')?.classList.add('active');
       renderNovidades();
       document.getElementById('main-shell').classList.add('mostrando-novidades');
+      mostrarLoadingGlobal('Carregando dados do dashboard…');
     }else{
       mostrarLoadingGlobal('Carregando dados essenciais…');
     }
@@ -2181,8 +2181,10 @@ async function attemptLoadWithToken(token, viewAsEmail){
 //
 // Atualize esta data junto com qualquer alteração no array abaixo — ela
 // aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='25/09/2026';
+const NOVIDADES_ATUALIZADO_EM='29/09/2026';
 const NOVIDADES=[
+  {icone:'↕️', bg:'#eff6ff', cor:'#2563eb', titulo:'Ordenação em todas as listas', descricao:'Agora dá pra ordenar por qualquer coluna em praticamente todas as tabelas do dashboard — clique no cabeçalho pra alternar entre crescente, decrescente e a ordem original. Funciona junto com os filtros já aplicados, sem recarregar dados.', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'⏳', bg:'#eff6ff', cor:'#2563eb', titulo:'Indicador de carregamento no topo', descricao:'Depois do login, o aviso de "carregando dados" agora aparece fixo no topo da tela, visível na hora — antes ficava embaixo da lista de novidades e exigia rolar a tela.', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🎨', bg:'#faf5ff', cor:'#9333ea', titulo:'Novo layout da tela de Novidades', descricao:'Banner de destaque no topo e cards em 3 colunas com categorias mais claras (Melhoria, Mudança, Nova, Nova página).', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'⚡', bg:'#fff7ed', cor:'#ea580c', titulo:'Dashboard mais rápido', descricao:'Reduzimos o trabalho feito no login (só a página que você abre é carregada, não todas de uma vez), otimizamos buscas, filtros e o carregamento do Log de Alterações, e o F5 agora mostra os dados da última sessão na hora enquanto atualiza por trás.', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🏷️', bg:'#faf5ff', cor:'#9333ea', titulo:'Nome oficial: Central de Projetos Be Solution', descricao:'O dashboard agora tem nome oficial — Central de Projetos Be Solution. Você vai ver o nome no título da aba, na tela de login e no rodapé.', tag:'Novidade', tagCor:'nova'},
@@ -2251,7 +2253,10 @@ async function carregarDadosCore(token){
         renderNovidades();
         document.getElementById('main-shell').classList.add('mostrando-novidades');
       }
-      esconderLoadingGlobal(); // a tela de Novidades já tem seu próprio indicador de carregamento
+      // v14.5: não esconde mais a faixa fixa do topo aqui — ela é o único
+      // indicador de carregamento da tela de Novidades agora (ver comentário
+      // em attemptLoadWithToken), então precisa continuar visível até os
+      // dados pesados chegarem via carregarDadosCompletos logo abaixo.
       carregarDadosCompletos(token, true);
       return;
     }
@@ -2394,10 +2399,9 @@ async function carregarDadosCompletos(token, semBannerTopo){
     if(permaneceEmNovidades){
       // Administrador: dados completos prontos, mas a pessoa continua na
       // tela de Novidades (não redireciona mais sozinho pra Central de
-      // Comando) — só troca o indicador de "carregando" por uma confirmação
-      // de que o menu já está liberado pra navegar.
-      const statusEl=document.getElementById('nov-loading-status');
-      if(statusEl) statusEl.innerHTML='<p>✓ Dados atualizados — use o menu acima para navegar</p>';
+      // Comando). v14.5: nenhuma confirmação própria aqui — o esconderLoadingGlobal()
+      // logo acima já faz a faixa do topo sumir, mesmo sinal de "concluído"
+      // usado no resto do app.
     } else {
       mainShellEl.classList.remove('mostrando-novidades');
     }
@@ -2579,6 +2583,119 @@ let COK=typeof Chart!=='undefined';let ch={};
 
 function fN(n){return(n||0).toLocaleString('pt-BR');}
 function fH(n){return(n||0).toLocaleString('pt-BR',{maximumFractionDigits:1})+'h';}
+
+// ============================================================
+// MOTOR GLOBAL DE ORDENAÇÃO DE TABELAS (reutilizável em todas as páginas)
+// SORT_STATE[tableId] = {col, dir} — dir: 0=sem ordenação,1=asc,2=desc
+// SORT_RERENDER[tableId] = fn() que re-renderiza aquela tabela/página
+// ============================================================
+const SORT_STATE={};
+const SORT_RERENDER={};
+
+function sortParseNum_(v){
+  if(v===null||v===undefined||v==='') return NaN;
+  if(typeof v==='number') return v;
+  let s=String(v).trim();
+  if(s==='' || s==='—' || s==='-') return NaN;
+  s=s.replace(/[%h]/gi,'').trim();
+  // remove thousand separators pt-BR (.) e usa vírgula como decimal
+  if(/^-?\d{1,3}(\.\d{3})*(,\d+)?$/.test(s)){
+    s=s.replace(/\./g,'').replace(',','.');
+  }else{
+    s=s.replace(',','.');
+  }
+  const n=parseFloat(s);
+  return isNaN(n)?NaN:n;
+}
+function sortParseDateBR_(v){
+  if(v===null||v===undefined||v==='') return NaN;
+  if(v instanceof Date) return isNaN(v.getTime())?NaN:v.getTime();
+  const s=String(v).trim();
+  if(s==='' || s==='—' || s==='-') return NaN;
+  let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+  if(m){
+    let dd=parseInt(m[1],10), mm=parseInt(m[2],10), yy=parseInt(m[3],10);
+    if(yy<100) yy+=2000;
+    const d=new Date(yy,mm-1,dd);
+    return isNaN(d.getTime())?NaN:d.getTime();
+  }
+  m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if(m){
+    const d=new Date(parseInt(m[1],10),parseInt(m[2],10)-1,parseInt(m[3],10));
+    return isNaN(d.getTime())?NaN:d.getTime();
+  }
+  const t=Date.parse(s);
+  return isNaN(t)?NaN:t;
+}
+function sortValor_(row,coluna){
+  let raw;
+  try{ raw=coluna.get(row); }catch(e){ raw=null; }
+  let v, isEmpty;
+  if(coluna.tipo==='numero'||coluna.tipo==='percentual'||coluna.tipo==='horas'){
+    v=sortParseNum_(raw);
+    isEmpty=(raw===null||raw===undefined||raw===''||isNaN(v));
+  }else if(coluna.tipo==='data'){
+    v=sortParseDateBR_(raw);
+    isEmpty=(raw===null||raw===undefined||raw===''||isNaN(v));
+  }else{
+    isEmpty=(raw===null||raw===undefined||raw==='');
+    v=isEmpty?'':String(raw);
+  }
+  return {v,isEmpty};
+}
+function ordenarLinhas_(linhas,coluna,dir){
+  if(!dir||!coluna) return linhas;
+  const decorado=linhas.map((row,i)=>({row,i,val:sortValor_(row,coluna)}));
+  decorado.sort((a,b)=>{
+    if(a.val.isEmpty&&b.val.isEmpty) return a.i-b.i;
+    if(a.val.isEmpty) return 1;
+    if(b.val.isEmpty) return -1;
+    let cmp;
+    if(coluna.tipo==='texto'){
+      cmp=String(a.val.v).localeCompare(String(b.val.v),'pt-BR');
+    }else{
+      cmp=a.val.v-b.val.v;
+    }
+    if(cmp===0) cmp=a.i-b.i;
+    return dir===2?-cmp:cmp;
+  });
+  return decorado.map(d=>d.row);
+}
+function sortArrowHtml_(tableId,key){
+  const st=SORT_STATE[tableId];
+  if(st&&st.col===key){
+    return st.dir===1?' <span class="sort-arrow sort-arrow-active">▲</span>':' <span class="sort-arrow sort-arrow-active">▼</span>';
+  }
+  return ' <span class="sort-arrow">⇅</span>';
+}
+function theadOrdenavel_(tableId,colunas,extraTrAttrs){
+  let h='<thead><tr'+(extraTrAttrs?(' '+extraTrAttrs):'')+'>';
+  colunas.forEach(c=>{
+    if(!c||c.key===undefined||c.key===null){
+      h+='<th'+(c&&c.thStyle?(' style="'+c.thStyle+'"'):'')+'>'+(c&&c.label||'')+'</th>';
+      return;
+    }
+    const cls=('th-sortable'+(c.thClass?(' '+c.thClass):'')).trim();
+    h+='<th class="'+cls+'" data-sort-table="'+tableId+'" data-sort-key="'+c.key+'" data-sort-tipo="'+(c.tipo||'texto')+'"'+(c.thStyle?(' style="'+c.thStyle+'"'):'')+'>'+c.label+sortArrowHtml_(tableId,c.key)+'</th>';
+  });
+  h+='</tr></thead>';
+  return h;
+}
+document.addEventListener('click',function(e){
+  const th=e.target.closest('.th-sortable');
+  if(!th) return;
+  const tableId=th.dataset.sortTable, key=th.dataset.sortKey;
+  if(!tableId||!key) return;
+  const st=SORT_STATE[tableId]||{col:null,dir:0};
+  if(st.col===key){
+    st.dir=(st.dir+1)%3;
+    if(st.dir===0) st.col=null;
+  }else{
+    st.col=key; st.dir=1;
+  }
+  SORT_STATE[tableId]=st;
+  if(typeof SORT_RERENDER[tableId]==='function') SORT_RERENDER[tableId]();
+});
 
 // ============================================================
 // KPIs — biblioteca de ícones (linha fina, neutro) + função geradora, usada
@@ -2835,6 +2952,7 @@ function and_barraTarefasHtml(pct, cor, semDados){
 // A cor da barra reflete a relação execução x prazo (o risco já calculado),
 // não o percentual absoluto isolado — pedido explícito.
 function renderAndamento(){
+  SORT_RERENDER['andamento']=()=>renderAndamento();
   const fCliente=document.getElementById('f-and-cliente').value;
   const fProjeto=document.getElementById('f-and-projeto').value;
   const fStatus=document.getElementById('f-and-status').value;
@@ -2866,8 +2984,20 @@ function renderAndamento(){
   if(linhas.length===0){
     h+='<div class="empty-state" style="padding:50px 20px"><p>Nenhum projeto encontrado com esses filtros.</p></div>';
   }else{
-    h+='<div class="table-wrap" style="max-height:640px"><table><thead><tr><th>Projeto</th><th>Cliente</th><th style="min-width:130px">Prazo ('+(AND_REFERENCIA_PRAZO==='pei'?'Inicial':'Atual')+')</th><th style="min-width:130px">Tarefas</th><th>GAP</th><th>Ritmo Necessário</th><th>Risco</th><th>Tendência</th></tr></thead><tbody>';
-    linhas.forEach(a=>{
+    const colunasAnd=[
+      {key:'projeto',label:'Projeto',tipo:'texto',get:a=>a.p.pj},
+      {key:'cliente',label:'Cliente',tipo:'texto',get:a=>a.p.cl},
+      {key:'prazo',label:'Prazo ('+(AND_REFERENCIA_PRAZO==='pei'?'Inicial':'Atual')+')',tipo:'percentual',get:a=>a.prazoInfo.semDados?null:a.prazoInfo.pct,thStyle:'min-width:130px'},
+      {key:'tarefas',label:'Tarefas',tipo:'percentual',get:a=>a.tarefasInfo.semDados?null:a.tarefasInfo.pct,thStyle:'min-width:130px'},
+      {key:'gap',label:'GAP',tipo:'numero',get:a=>a.gap},
+      {key:'ritmo',label:'Ritmo Necessário',tipo:'texto',get:a=>a.ritmo.status},
+      {key:'risco',label:'Risco',tipo:'texto',get:a=>a.risco.nivel},
+      {key:'tendencia',label:'Tendência',tipo:'texto',get:a=>a.tendencia.label}
+    ];
+    const stAnd=SORT_STATE['andamento']||{col:null,dir:0};
+    const linhasOrdAnd=stAnd.col?ordenarLinhas_(linhas,colunasAnd.find(c=>c.key===stAnd.col),stAnd.dir):linhas;
+    h+='<div class="table-wrap" style="max-height:640px"><table>'+theadOrdenavel_('andamento',colunasAnd)+'<tbody>';
+    linhasOrdAnd.forEach(a=>{
       const gapTxt=a.gap===null?'—':((a.gap>=0?'+':'')+a.gap+'pp');
       const gapCor=a.gap===null?'#94a3b8':(a.gap>=0?'#16a34a':(a.gap<=AND_LIMIARES.gapRisco?'#dc2626':'#f59e0b'));
       h+='<tr class="and-row-clicavel" data-projeto="'+a.p.pj.replace(/"/g,'&quot;')+'" style="cursor:pointer">'+
@@ -3213,8 +3343,9 @@ function goToPage(name){
   // outra página), então mostra direto o estado "concluído".
   if(name==='novidades'){
     renderNovidades();
-    const novStatusEl=document.getElementById('nov-loading-status');
-    if(novStatusEl) novStatusEl.innerHTML='<p>✓ Dados atualizados — use o menu acima para navegar</p>';
+    // v14.5: reaberta pelo menu, os dados já estão prontos (garantido pelo
+    // check de HEAVY_DATA_READY acima) — não há indicador de carregamento
+    // próprio pra atualizar aqui (removido; ver attemptLoadWithToken).
     if(mainShellNav) mainShellNav.classList.add('mostrando-novidades');
   } else {
     const el=document.getElementById('page-'+name);
@@ -3755,6 +3886,7 @@ function initAlocacoes(){
 }
 let ALOC_LINHAS_BASE=[];
 function renderAlocacoes(){
+  SORT_RERENDER['alocacoes']=()=>renderAlocacoes();
   const fPessoa=document.getElementById('f-aloc-pessoa').value;
   const fQtdProj=document.getElementById('f-aloc-qtdproj').value;
   const fStatus=document.getElementById('f-aloc-status').value;
@@ -3777,8 +3909,19 @@ function renderAlocacoes(){
     kpiHtml({label:'Pessoas (com os filtros)',value:linhas.length,icon:'pessoas',bg:'#eff6ff',color:'#2563eb'})+
     kpiHtml({label:'Sem Nenhum Projeto',value:semProjeto,icon:'alerta',bg:semProjeto>0?'#fef2f2':'#eff6ff',color:semProjeto>0?'#dc2626':'#2563eb',valueColor:semProjeto>0?'var(--st-bloqueado)':'var(--text)'});
 
-  let h='<div class="card"><div class="card-title"><h3>Alocações por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:600px"><table><thead><tr><th>Pessoa</th><th>Qtd. Projetos</th><th>Projetos Vinculados</th><th>Qtd. Tarefas</th><th>Gestor</th><th>Horas Previstas</th><th>Horas Apontadas</th></tr></thead><tbody>';
-  linhas.forEach(l=>{
+  const colunasAloc=[
+    {key:'pessoa',label:'Pessoa',tipo:'texto',get:l=>l.p.a},
+    {key:'qtdprojetos',label:'Qtd. Projetos',tipo:'numero',get:l=>l.projetosVinculados.length},
+    {label:'Projetos Vinculados'},
+    {key:'qtdtarefas',label:'Qtd. Tarefas',tipo:'numero',get:l=>l.qtdTarefas},
+    {key:'gestor',label:'Gestor',tipo:'texto',get:l=>l.p.gestor},
+    {key:'horasprev',label:'Horas Previstas',tipo:'horas',get:l=>l.horasPrevistas},
+    {key:'horasapo',label:'Horas Apontadas',tipo:'horas',get:l=>l.horasApontadas}
+  ];
+  const stAloc=SORT_STATE['alocacoes']||{col:null,dir:0};
+  const linhasOrdAloc=stAloc.col?ordenarLinhas_(linhas,colunasAloc.find(c=>c.key===stAloc.col),stAloc.dir):linhas;
+  let h='<div class="card"><div class="card-title"><h3>Alocações por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:600px"><table>'+theadOrdenavel_('alocacoes',colunasAloc)+'<tbody>';
+  linhasOrdAloc.forEach(l=>{
     // Cada projeto vinculado vira um "mini-card" com Nome/Complexidade/Prioridade
     // sempre visíveis e rotulados — evita que Complexidade/Prioridade fiquem
     // escondidas atrás de um hover ou se percam junto ao nome do projeto.
@@ -3847,12 +3990,12 @@ function initInteligenciaAlocacao(){
     ['f-ia-pessoa','f-ia-gestor','f-ia-qtdproj','f-ia-situacao','f-ia-complexidade','f-ia-prioridade','f-ia-status'].forEach(id=>{ document.getElementById(id).value=''; });
     renderInteligenciaAlocacao();
   };
-  IA_SORT_STATE={col:'score',dir:'desc'};
+  SORT_STATE['ia']={col:'score',dir:2};
   renderInteligenciaAlocacao();
 }
 
-let IA_SORT_STATE={col:'score',dir:'desc'};
 function renderInteligenciaAlocacao(){
+  SORT_RERENDER['ia']=()=>renderInteligenciaAlocacao();
   const fPessoa=document.getElementById('f-ia-pessoa').value;
   const fGestor=document.getElementById('f-ia-gestor').value;
   const fQtdProj=document.getElementById('f-ia-qtdproj').value;
@@ -3874,17 +4017,22 @@ function renderInteligenciaAlocacao(){
     linhas=linhas.filter(l=>eksComStatus.has(l.pessoa.a));
   }
 
-  const sorters={
-    pessoa:(l)=>l.pessoa.a, projetos:(l)=>l.qtdProjetos, tarefas:(l)=>l.qtdTarefasTotal,
-    horasPrevistas:(l)=>l.horasPrevistas, horasApontadas:(l)=>l.horasApontadas, score:(l)=>l.score,
-    entrega:(l)=>l.proximaEntrega?l.proximaEntrega.diasRestantes??999999:999999
-  };
-  const sortFn=sorters[IA_SORT_STATE.col]||sorters.score;
-  linhas=[...linhas].sort((a,b)=>{
-    const va=sortFn(a), vb=sortFn(b);
-    const cmp=typeof va==='string'?va.localeCompare(vb,'pt-BR'):va-vb;
-    return IA_SORT_STATE.dir==='asc'?cmp:-cmp;
-  });
+  const colunasIA=[
+    {key:'pessoa',label:'Pessoa',tipo:'texto',get:l=>l.pessoa.a},
+    {key:'cargo',label:'Cargo',tipo:'texto',get:l=>l.pessoa.cargo},
+    {key:'nivel',label:'Nível',tipo:'texto',get:l=>l.pessoa.nv},
+    {key:'projetos',label:'Projetos',tipo:'numero',get:l=>l.qtdProjetos},
+    {key:'complexidade',label:'Complexidade',tipo:'texto',get:l=>l.complexidadeMax==='—'?'':l.complexidadeMax},
+    {key:'prioridade',label:'Prioridade',tipo:'texto',get:l=>l.prioridadeMax==='—'?'':l.prioridadeMax},
+    {key:'entrega',label:'Próxima Entrega',tipo:'data',get:l=>l.proximaEntrega?l.proximaEntrega.data:''},
+    {key:'tarefas',label:'Tarefas',tipo:'numero',get:l=>l.qtdTarefasTotal},
+    {key:'horasPrevistas',label:'H. Previstas',tipo:'horas',get:l=>l.horasPrevistas},
+    {key:'horasApontadas',label:'H. Apontadas',tipo:'horas',get:l=>l.horasApontadas},
+    {key:'score',label:'Score',tipo:'numero',get:l=>l.score},
+    {key:'situacao',label:'Situação',tipo:'texto',get:l=>l.faixa.label}
+  ];
+  const stIA=SORT_STATE['ia']||{col:null,dir:0};
+  linhas=stIA.col?ordenarLinhas_(linhas,colunasIA.find(c=>c.key===stIA.col),stIA.dir):linhas;
 
   const contagemFaixas={}; IA_FAIXAS_SCORE.forEach(f=>contagemFaixas[f.label]=0);
   IA_ANALISES_CACHE.forEach(l=>{ contagemFaixas[l.faixa.label]++; });
@@ -3892,17 +4040,8 @@ function renderInteligenciaAlocacao(){
     ${kpiHtml({label:'Pessoas Analisadas',value:IA_ANALISES_CACHE.length,icon:'pessoas',bg:'#eff6ff',color:'#2563eb'})}
     ${IA_FAIXAS_SCORE.map(f=>kpiHtml({label:f.emoji+' '+f.label,value:contagemFaixas[f.label]})).join('')}`;
 
-  const setaCol=(col)=>IA_SORT_STATE.col===col?(IA_SORT_STATE.dir==='asc'?' ▲':' ▼'):'';
-  let h='<div class="card"><div class="card-title"><h3>Análise por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:620px"><table><thead><tr>'+
-    '<th class="ia-th-sort" data-col="pessoa">Pessoa'+setaCol('pessoa')+'</th>'+
-    '<th>Cargo</th><th>Nível</th>'+
-    '<th class="ia-th-sort" data-col="projetos">Projetos'+setaCol('projetos')+'</th>'+
-    '<th>Complexidade</th><th>Prioridade</th>'+
-    '<th class="ia-th-sort" data-col="entrega">Próxima Entrega'+setaCol('entrega')+'</th>'+
-    '<th class="ia-th-sort" data-col="tarefas">Tarefas'+setaCol('tarefas')+'</th>'+
-    '<th class="ia-th-sort" data-col="horasPrevistas">H. Previstas'+setaCol('horasPrevistas')+'</th>'+
-    '<th class="ia-th-sort" data-col="horasApontadas">H. Apontadas'+setaCol('horasApontadas')+'</th>'+
-    '<th class="ia-th-sort" data-col="score">Score'+setaCol('score')+'</th><th>Situação</th></tr></thead><tbody>';
+  let h='<div class="card"><div class="card-title"><h3>Análise por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:620px"><table>'+
+    theadOrdenavel_('ia',colunasIA)+'<tbody>';
   if(linhas.length===0){
     h+='<tr><td colspan="12" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
   }else{
@@ -3927,15 +4066,6 @@ function renderInteligenciaAlocacao(){
   h+='</tbody></table></div></div>';
   document.getElementById('inteligencia-content').innerHTML=h;
 
-  document.querySelectorAll('#inteligencia-content .ia-th-sort').forEach(th=>{
-    th.style.cursor='pointer';
-    th.onclick=()=>{
-      const col=th.dataset.col;
-      if(IA_SORT_STATE.col===col) IA_SORT_STATE.dir=IA_SORT_STATE.dir==='asc'?'desc':'asc';
-      else IA_SORT_STATE={col,dir: col==='score'?'desc':'asc'};
-      renderInteligenciaAlocacao();
-    };
-  });
   document.querySelectorAll('#inteligencia-content .ia-row').forEach(row=>{
     row.addEventListener('click',(e)=>{ if(e.target.closest('.person-link')) return; iaAbrirModalDetalhe(row.dataset.iaPessoa); });
   });
@@ -4064,19 +4194,29 @@ async function carregarListaPortfolio(){
   }
 }
 function renderListaPortfolio(termoBusca){
+  SORT_RERENDER['portfolio']=()=>renderListaPortfolio(termoBusca);
   const termo=peNormalizarHeader(termoBusca);
   const filtrados=!termo?PE_LISTA_CACHE:PE_LISTA_CACHE.filter(p=>
     peNormalizarHeader(p.projeto).includes(termo) || peNormalizarHeader(p.cliente).includes(termo) ||
     peNormalizarHeader(p.status).includes(termo) || peNormalizarHeader(p.gp).includes(termo)
   );
+  const colunasPort=[
+    {key:'projeto',label:'Projeto',tipo:'texto',get:p=>p.projeto},
+    {key:'cliente',label:'Cliente',tipo:'texto',get:p=>p.cliente},
+    {key:'status',label:'Status',tipo:'texto',get:p=>p.status},
+    {key:'gp',label:'Gerente do Projeto',tipo:'texto',get:p=>p.gp},
+    {label:''}
+  ];
+  const stPort=SORT_STATE['portfolio']||{col:null,dir:0};
+  const filtradosOrd=stPort.col?ordenarLinhas_(filtrados,colunasPort.find(c=>c.key===stPort.col),stPort.dir):filtrados;
   let h='<div class="card"><div class="card-title"><h3>Projetos ('+PE_LISTA_CACHE.length+')</h3>'+
     '<button type="button" class="sr-btn sr-btn-primary" id="pe-novo-btn" style="padding:7px 16px">+ Novo Projeto</button></div>'+
     '<input type="text" id="pe-busca" placeholder="Buscar por nome, cliente, status ou GP…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13.5px;margin-bottom:14px;box-sizing:border-box">'+
-    '<div class="table-wrap" style="max-height:560px"><table><thead><tr><th>Projeto</th><th>Cliente</th><th>Status</th><th>Gerente do Projeto</th><th></th></tr></thead><tbody>';
-  if(filtrados.length===0){
+    '<div class="table-wrap" style="max-height:560px"><table>'+theadOrdenavel_('portfolio',colunasPort)+'<tbody>';
+  if(filtradosOrd.length===0){
     h+='<tr><td colspan="5" style="text-align:center;color:var(--text-faint);padding:30px">Nenhum projeto encontrado'+(termo?' com esse termo de busca':'')+'.</td></tr>';
   }else{
-    filtrados.forEach(p=>{
+    filtradosOrd.forEach(p=>{
       h+='<tr style="cursor:pointer" class="pe-lista-row" data-pe-projeto="'+p.projeto.replace(/"/g,'&quot;')+'">'+
         '<td><strong>'+p.projeto+'</strong></td><td>'+(p.cliente||'—')+'</td>'+
         '<td>'+(p.status?'<span class="status-pill">'+p.status+'</span>':'—')+'</td><td>'+(p.gp||'—')+'</td>'+
@@ -4509,20 +4649,34 @@ async function carregarListaPessoasAdmin(){
   }
 }
 function renderListaPessoasAdmin(termoBusca){
+  SORT_RERENDER['pessoasadmin']=()=>renderListaPessoasAdmin(termoBusca);
   const termo=peNormalizarHeader(termoBusca);
   const filtrados=!termo?PA_LISTA_CACHE:PA_LISTA_CACHE.filter(p=>
     peNormalizarHeader(p.nome).includes(termo) || peNormalizarHeader(p.nome_completo).includes(termo) || peNormalizarHeader(p.email).includes(termo) ||
     peNormalizarHeader(p.cargo).includes(termo) || peNormalizarHeader(p.area).includes(termo) || peNormalizarHeader(p.perfil).includes(termo) ||
     peNormalizarHeader(p.status).includes(termo)
   );
+  const colunasPessoasAdmin=[
+    {key:'status',label:'Status',tipo:'texto',get:p=>peNormalizarHeader(p.status)==='inativo'?'Inativo':'Ativo'},
+    {key:'nome',label:'Nome',tipo:'texto',get:p=>p.nome},
+    {key:'nomecompleto',label:'Nome Completo',tipo:'texto',get:p=>p.nome_completo},
+    {key:'email',label:'E-mail',tipo:'texto',get:p=>p.email},
+    {key:'cargo',label:'Cargo',tipo:'texto',get:p=>p.cargo},
+    {key:'area',label:'Área',tipo:'texto',get:p=>p.area},
+    {key:'perfil',label:'Perfil de Acesso',tipo:'texto',get:p=>p.perfil},
+    {key:'ultimoacesso',label:'Último Acesso',tipo:'data',get:p=>p.ultimo_acesso},
+    {label:''}
+  ];
+  const stPA=SORT_STATE['pessoasadmin']||{col:null,dir:0};
+  const filtradosOrd=stPA.col?ordenarLinhas_(filtrados,colunasPessoasAdmin.find(c=>c.key===stPA.col),stPA.dir):filtrados;
   let h='<div class="card"><div class="card-title"><h3>Pessoas ('+PA_LISTA_CACHE.length+')</h3>'+
     '<button type="button" class="sr-btn sr-btn-primary" id="pa-novo-btn" style="padding:7px 16px">+ Nova Pessoa</button></div>'+
     '<input type="text" id="pa-busca" placeholder="Buscar por nome, e-mail, cargo, área, perfil ou status…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13.5px;margin-bottom:14px;box-sizing:border-box">'+
-    '<div class="table-wrap" style="max-height:560px"><table><thead><tr><th>Status</th><th>Nome</th><th>Nome Completo</th><th>E-mail</th><th>Cargo</th><th>Área</th><th>Perfil de Acesso</th><th>Último Acesso</th><th></th></tr></thead><tbody>';
-  if(filtrados.length===0){
+    '<div class="table-wrap" style="max-height:560px"><table>'+theadOrdenavel_('pessoasadmin',colunasPessoasAdmin)+'<tbody>';
+  if(filtradosOrd.length===0){
     h+='<tr><td colspan="9" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada'+(termo?' com esse termo de busca':'')+'.</td></tr>';
   }else{
-    filtrados.forEach(p=>{
+    filtradosOrd.forEach(p=>{
       const statusInativo=peNormalizarHeader(p.status)==='inativo';
       h+='<tr style="cursor:pointer" class="pa-lista-row" data-pa-pessoa="'+p.nome.replace(/"/g,'&quot;')+'">'+
         '<td>'+(statusInativo?'<span class="status-pill" style="background:var(--surface-alt);color:var(--text-muted)">Inativo</span>':'<span class="status-pill">Ativo</span>')+'</td>'+
@@ -4821,6 +4975,9 @@ function renderPessoa(){
   const emailKey=(info.email||'').toLowerCase();
   el.dataset.emailKey=emailKey;
   el.dataset.nomePessoa=info.a;
+  SORT_RERENDER['pessoa-status']=()=>renderPessoa();
+  SORT_RERENDER['pessoa-semanas']=()=>renderPessoa();
+  SORT_RERENDER['pessoa-projetos']=()=>renderPessoa();
   const[de,ate]=getDateRange('f-pes-de','f-pes-ate');
   const periodoAtivoPes=!!(de||ate);
   const pmD=PM[emailKey]||{};let fH2=0,fT=0;
@@ -5002,6 +5159,30 @@ function renderPessoa(){
     }
   }
 
+  const colunasPesStatus=[{key:'status',label:'Status',tipo:'texto',get:r=>r[0]},{key:'qtd',label:'Qtd',tipo:'numero',get:r=>r[1]}];
+  const stPesStatus=SORT_STATE['pessoa-status']||{col:null,dir:0};
+  const statusRowsOrd=stPesStatus.col?ordenarLinhas_(statusRows,colunasPesStatus.find(c=>c.key===stPesStatus.col),stPesStatus.dir):statusRows;
+
+  const semanasParaTabela=semanasDetalhe.slice().reverse();
+  const colunasPesSemanas=[
+    {key:'semana',label:'Semana',tipo:'data',get:s=>s.monday},
+    {key:'estimado',label:'Estimado',tipo:'horas',get:s=>s.prev},
+    {key:'executado',label:'Executado',tipo:'horas',get:s=>s.exec},
+    {key:'vsestimado',label:'vs. Estimado',tipo:'numero',get:s=>s.exec-s.prev},
+    {key:'vs40',label:'vs. 40h/semana',tipo:'numero',get:s=>s.exec-40}
+  ];
+  const stPesSemanas=SORT_STATE['pessoa-semanas']||{col:null,dir:0};
+  const semanasParaTabelaOrd=stPesSemanas.col?ordenarLinhas_(semanasParaTabela,colunasPesSemanas.find(c=>c.key===stPesSemanas.col),stPesSemanas.dir):semanasParaTabela;
+
+  const colunasPesProjetos=[
+    {key:'projeto',label:'Projeto',tipo:'texto',get:p=>p.n},
+    {key:'tarefas',label:'Tarefas',tipo:'numero',get:p=>p.t},
+    {key:'horas',label:'Horas',tipo:'horas',get:p=>p.h},
+    {key:'pct',label:'%',tipo:'percentual',get:p=>p.semApontamento?null:p.pct}
+  ];
+  const stPesProjetos=SORT_STATE['pessoa-projetos']||{col:null,dir:0};
+  const pLOrd=stPesProjetos.col?ordenarLinhas_(pL,colunasPesProjetos.find(c=>c.key===stPesProjetos.col),stPesProjetos.dir):pL;
+
   el.innerHTML=`
   <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Perfil</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;font-size:13px"><div><span style="font-size:11px;color:var(--text-faint);display:block">Nome</span><strong>${info.a}</strong></div><div><span style="font-size:11px;color:var(--text-faint);display:block">Cargo</span>${info.cargo||'—'} · ${info.nv||'—'}</div><div><span style="font-size:11px;color:var(--text-faint);display:block">Área</span>${info.area||'—'}</div><div><span style="font-size:11px;color:var(--text-faint);display:block">Gestor</span>${personLinkHtml(info.gestor)}</div><div><span style="font-size:11px;color:var(--text-faint);display:block">E-mail</span><span style="color:var(--primary)">${info.email||'—'}</span></div><div><span style="font-size:11px;color:var(--text-faint);display:block">GPs</span>${[...ger].map(g=>personLinkHtml(g)).join(', ')||'—'}</div></div></div>
 
@@ -5024,7 +5205,7 @@ function renderPessoa(){
   </div><div style="font-size:11px;color:var(--text-faint);margin-top:10px">Comparado com ${allHorasArr.length} pessoa(s) com atividade no mesmo período.</div></div>
 
   <div class="grid grid-2b" style="margin-bottom:16px">
-    <div class="card"><div class="card-title"><h3>Tarefas por Status</h3></div><div class="table-wrap" style="max-height:260px"><table><thead><tr><th>Status</th><th>Qtd</th></tr></thead><tbody>${statusRows.map(([s,c])=>'<tr class="task-link" data-status-row="'+s.replace(/"/g,'&quot;')+'" style="cursor:pointer"><td><span class="status-pill" style="border-left:3px solid '+(STATUS_COLOR[s]||'#64748b')+'">'+s+'</span></td><td><strong>'+c+'</strong></td></tr>').join('')||'<tr><td colspan="2" style="color:var(--text-faint)">Sem tarefas</td></tr>'}</tbody></table></div></div>
+    <div class="card"><div class="card-title"><h3>Tarefas por Status</h3></div><div class="table-wrap" style="max-height:260px"><table>${theadOrdenavel_('pessoa-status',colunasPesStatus)}<tbody>${statusRowsOrd.map(([s,c])=>'<tr class="task-link" data-status-row="'+s.replace(/"/g,'&quot;')+'" style="cursor:pointer"><td><span class="status-pill" style="border-left:3px solid '+(STATUS_COLOR[s]||'#64748b')+'">'+s+'</span></td><td><strong>'+c+'</strong></td></tr>').join('')||'<tr><td colspan="2" style="color:var(--text-faint)">Sem tarefas</td></tr>'}</tbody></table></div></div>
     <div class="card"><div class="card-title"><h3>Estimado x Executado${infoTip(TIP_ESTIMADO_EXECUTADO)}<span class="sub">${periodoAtivoPes?' (no período)':' (geral)'}</span></h3></div><div style="padding:10px 0">
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:14px">
         <div><span style="font-size:11px;color:var(--text-faint)">Horas Estimadas</span><div style="font-size:22px;font-weight:700;color:var(--text)">${fH(hEst)}</div></div>
@@ -5042,8 +5223,8 @@ function renderPessoa(){
     <div style="padding:12px 4px 4px">
       ${semanasDetalhe.length===0?'<div class="empty-state" style="padding:30px"><p>Sem dados nesse intervalo.</p></div>':`
       <div style="height:260px;margin-bottom:18px"><canvas id="chSemanal"></canvas></div>
-      <div class="table-wrap" style="max-height:320px"><table><thead><tr><th>Semana</th><th>Estimado</th><th>Executado</th><th>vs. Estimado</th><th>vs. 40h/semana</th></tr></thead><tbody>
-        ${semanasDetalhe.slice().reverse().map(s=>{
+      <div class="table-wrap" style="max-height:320px"><table>${theadOrdenavel_('pessoa-semanas',colunasPesSemanas)}<tbody>
+        ${semanasParaTabelaOrd.map(s=>{
           const semanaLabel=s.monday.slice(8,10)+'/'+s.monday.slice(5,7)+' a '+s.sunday.slice(8,10)+'/'+s.sunday.slice(5,7)+' (S'+isoWeekNum(s.monday)+')';
           let vsEstimadoHtml;
           if(s.prev===0&&s.exec===0) vsEstimadoHtml='<span style="color:var(--text-faint)">—</span>';
@@ -5061,7 +5242,7 @@ function renderPessoa(){
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Detalhamento por Projeto<span class="sub">${periodoAtivoPes?' (no período)':' (geral)'}</span></h3><span class="sub">${pL.length}</span></div><div class="table-wrap"><table><thead><tr><th>Projeto</th><th>Tarefas</th><th>Horas</th><th>%</th></tr></thead><tbody>${pL.map(p=>'<tr'+(p.semApontamento?' style="opacity:.75"':'')+'><td>'+projetoLinkHtml(p.n,p.n.length>35?p.n.slice(0,35)+'…':p.n)+'</td><td><strong>'+p.t+'</strong></td><td>'+fH(p.h)+'</td><td>'+(p.semApontamento?'<span class="status-pill" title="Alocado na equipe do projeto, mas sem nenhuma hora ou tarefa registrada ainda">Sem apontamento</span>':'<div class="bullet-row" style="grid-template-columns:1fr 36px"><div class="bullet-track"><div class="bullet-fill" style="width:'+p.pct+'%"></div></div><div class="bullet-pct">'+p.pct+'%</div></div>')+'</td></tr>').join('')||'<tr><td colspan="4" style="color:var(--text-faint);text-align:center;padding:20px">Nenhuma atividade nesse período.</td></tr>'}</tbody></table></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Detalhamento por Projeto<span class="sub">${periodoAtivoPes?' (no período)':' (geral)'}</span></h3><span class="sub">${pL.length}</span></div><div class="table-wrap"><table>${theadOrdenavel_('pessoa-projetos',colunasPesProjetos)}<tbody>${pLOrd.map(p=>'<tr'+(p.semApontamento?' style="opacity:.75"':'')+'><td>'+projetoLinkHtml(p.n,p.n.length>35?p.n.slice(0,35)+'…':p.n)+'</td><td><strong>'+p.t+'</strong></td><td>'+fH(p.h)+'</td><td>'+(p.semApontamento?'<span class="status-pill" title="Alocado na equipe do projeto, mas sem nenhuma hora ou tarefa registrada ainda">Sem apontamento</span>':'<div class="bullet-row" style="grid-template-columns:1fr 36px"><div class="bullet-track"><div class="bullet-fill" style="width:'+p.pct+'%"></div></div><div class="bullet-pct">'+p.pct+'%</div></div>')+'</td></tr>').join('')||'<tr><td colspan="4" style="color:var(--text-faint);text-align:center;padding:20px">Nenhuma atividade nesse período.</td></tr>'}</tbody></table></div></div>
 
   <div class="card"><div class="card-title"><h3>Horas Trabalhadas por Mês</h3><span class="sub">comparativo mensal · fonte: Data de Apontamento</span></div><div style="height:280px">${monthsSorted.length>0?'<canvas id="chPM"></canvas>':'<div class="empty-state"><p>Sem dados no período selecionado.</p></div>'}</div></div>`;
 
@@ -5188,8 +5369,17 @@ function renderArea(){
     h+='</div><div style="font-size:11px;color:var(--text-faint);margin-top:10px">Comparado com '+Object.keys(AREAS).length+' áreas do portfólio.</div></div>';
     h+='<div class="grid grid-2b">';
     if(monthsA.length>0)h+='<div class="card"><div class="card-title"><h3>Horas por Mês</h3><span class="sub">fonte: Data de Apontamento</span></div><div style="height:220px"><canvas id="chA_'+area.replace(/[^a-zA-Z]/g,'')+'"></canvas></div></div>';
-    h+='<div class="card"><div class="card-title"><h3>Equipe</h3><span class="sub">'+d.ps+'</span></div><div class="table-wrap" style="max-height:220px"><table><thead><tr><th>Nome</th><th>Cargo</th><th>Nível</th></tr></thead><tbody>';
-    d.team.forEach(t=>{h+='<tr><td><strong>'+t.a+'</strong></td><td>'+t.c+'</td><td>'+(t.n||'—')+'</td></tr>';});
+    const equipeTableId='equipe-'+area;
+    SORT_RERENDER[equipeTableId]=()=>renderArea();
+    const colunasEquipe=[
+      {key:'nome',label:'Nome',tipo:'texto',get:t=>t.a},
+      {key:'cargo',label:'Cargo',tipo:'texto',get:t=>t.c},
+      {key:'nivel',label:'Nível',tipo:'texto',get:t=>t.n}
+    ];
+    const stEquipe=SORT_STATE[equipeTableId]||{col:null,dir:0};
+    const teamOrd=stEquipe.col?ordenarLinhas_(d.team,colunasEquipe.find(c=>c.key===stEquipe.col),stEquipe.dir):d.team;
+    h+='<div class="card"><div class="card-title"><h3>Equipe</h3><span class="sub">'+d.ps+'</span></div><div class="table-wrap" style="max-height:220px"><table>'+theadOrdenavel_(equipeTableId,colunasEquipe)+'<tbody>';
+    teamOrd.forEach(t=>{h+='<tr><td><strong>'+t.a+'</strong></td><td>'+t.c+'</td><td>'+(t.n||'—')+'</td></tr>';});
     h+='</tbody></table></div></div></div>';
 
     // Ociosidade semanal agregada da área
@@ -5260,10 +5450,23 @@ function renderPend(){
   list.forEach(t=>{if(!byGerente[t.gerente])byGerente[t.gerente]=[];byGerente[t.gerente].push(t);});
 
   let h='';
+  const colunasPend=[
+    {key:'cliente',label:'Cliente',tipo:'texto',get:t=>t.cl},
+    {key:'projeto',label:'Projeto',tipo:'texto',get:t=>t.pj},
+    {key:'tarefa',label:'Tarefa',tipo:'texto',get:t=>t.tarefa},
+    {key:'status',label:'Status',tipo:'texto',get:t=>t.status},
+    {key:'responsavel',label:'Responsável',tipo:'texto',get:t=>t.resp==='Unassigned'?'':t.resp},
+    {key:'faltainicio',label:'Falta Início',tipo:'texto',get:t=>t.falta_inicio?'Sim':'Não'},
+    {key:'faltavenc',label:'Falta Vencimento',tipo:'texto',get:t=>t.falta_venc?'Sim':'Não'}
+  ];
   for(const[g,tasks] of Object.entries(byGerente).sort((a,b)=>b[1].length-a[1].length)){
+    const pendTableId='pend-'+g;
+    SORT_RERENDER[pendTableId]=()=>renderPend();
+    const stPend=SORT_STATE[pendTableId]||{col:null,dir:0};
+    const tasksOrd=stPend.col?ordenarLinhas_(tasks,colunasPend.find(c=>c.key===stPend.col),stPend.dir):tasks;
     h+='<div style="margin-bottom:20px"><h2 style="font-size:17px;margin-bottom:10px">'+g+' <span style="font-size:13px;color:var(--text-faint);font-weight:400">'+tasks.length+' tarefa'+(tasks.length>1?'s':'')+'</span></h2>';
-    h+='<div class="card"><div class="table-wrap" style="max-height:400px"><table><thead><tr><th>Cliente</th><th>Projeto</th><th>Tarefa</th><th>Status</th><th>Responsável</th><th>Falta Início</th><th>Falta Vencimento</th></tr></thead><tbody>';
-    tasks.forEach(t=>{
+    h+='<div class="card"><div class="table-wrap" style="max-height:400px"><table>'+theadOrdenavel_(pendTableId,colunasPend)+'<tbody>';
+    tasksOrd.forEach(t=>{
       const pidx=t.tarefa?tarefaIndicePorNome(t.pj,t.tarefa):-1;
       h+='<tr><td>'+t.cl+'</td><td>'+projetoLinkHtml(t.pj,t.pj.length>25?t.pj.slice(0,25)+'…':t.pj)+'</td><td>'+(t.tarefa?taskLinkHtml(t.pj,pidx,t.tarefa.length>40?t.tarefa.slice(0,40)+'…':t.tarefa):'—')+'</td><td><span class="status-pill">'+(t.status||'—')+'</span></td><td>'+(t.resp==='Unassigned'?'—':taskRespCellHtml(t))+'</td><td>'+(t.falta_inicio?'<span style="color:var(--st-bloqueado)">⚠ Sim</span>':'Não')+'</td><td>'+(t.falta_venc?'<span style="color:var(--st-bloqueado)">⚠ Sim</span>':'Não')+'</td></tr>';
     });
@@ -5668,13 +5871,21 @@ function coletarTarefasDaPessoa(emailKey, nomePessoa){
 // KPI/gráfico (tasksStatusBloco), garantindo que a listagem bata exatamente
 // com o número mostrado, sem recalcular nada diferente.
 function abrirListaTarefasPorStatusDoProjeto(pjName, status, listaFiltrada){
+  SORT_RERENDER['modal-tarefas-status-proj']=()=>abrirListaTarefasPorStatusDoProjeto(pjName,status,listaFiltrada);
   const itens=listaFiltrada.filter(t=>(t.status||'Sem status')===status);
   let h='<div style="margin-bottom:10px;font-size:12px;color:var(--text-faint)">'+itens.length+' tarefa(s) de <strong>'+pjName+'</strong> com status <strong>'+status+'</strong></div>';
   if(itens.length===0){
     h+='<div class="empty-state" style="padding:30px 10px"><p>Nenhuma tarefa encontrada.</p></div>';
   }else{
-    h+='<div class="table-wrap" style="max-height:400px"><table><thead><tr><th>Tarefa</th><th>Responsável</th><th>Vencimento</th></tr></thead><tbody>';
-    itens.forEach(t=>{ const idx=tarefaIndicePorRef(pjName,t); h+='<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>45?t.tarefa.slice(0,45)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td>'+(t.dt_venc||'—')+'</td></tr>'; });
+    const colunasModalStatusProj=[
+      {key:'tarefa',label:'Tarefa',tipo:'texto',get:t=>t.tarefa},
+      {key:'resp',label:'Responsável',tipo:'texto',get:t=>t.resp},
+      {key:'venc',label:'Vencimento',tipo:'data',get:t=>t.dt_venc}
+    ];
+    const stModalSP=SORT_STATE['modal-tarefas-status-proj']||{col:null,dir:0};
+    const itensOrd=stModalSP.col?ordenarLinhas_(itens,colunasModalStatusProj.find(c=>c.key===stModalSP.col),stModalSP.dir):itens;
+    h+='<div class="table-wrap" style="max-height:400px"><table>'+theadOrdenavel_('modal-tarefas-status-proj',colunasModalStatusProj)+'<tbody>';
+    itensOrd.forEach(t=>{ const idx=tarefaIndicePorRef(pjName,t); h+='<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>45?t.tarefa.slice(0,45)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td>'+(t.dt_venc||'—')+'</td></tr>'; });
     h+='</tbody></table></div>';
   }
   document.getElementById('task-modal-title').textContent='Tarefas — '+status;
@@ -5682,13 +5893,21 @@ function abrirListaTarefasPorStatusDoProjeto(pjName, status, listaFiltrada){
   document.getElementById('task-modal-overlay').classList.add('show');
 }
 function abrirListaTarefasPorStatus(emailKey, nomePessoa, status){
+  SORT_RERENDER['modal-tarefas-status-pessoa']=()=>abrirListaTarefasPorStatus(emailKey,nomePessoa,status);
   const itens=coletarTarefasDaPessoa(emailKey,nomePessoa).filter(x=>(x.t.status||'Sem status')===status);
   let h='<div style="margin-bottom:10px;font-size:12px;color:var(--text-faint)">'+itens.length+' tarefa(s) com status <strong>'+status+'</strong></div>';
   if(itens.length===0){
     h+='<div class="empty-state" style="padding:30px 10px"><p>Nenhuma tarefa encontrada.</p></div>';
   }else{
-    h+='<div class="table-wrap" style="max-height:400px"><table><thead><tr><th>Tarefa</th><th>Projeto</th><th>Vencimento</th></tr></thead><tbody>';
-    itens.forEach(({pj,idx,t})=>{
+    const colunasModalStatusPessoa=[
+      {key:'tarefa',label:'Tarefa',tipo:'texto',get:x=>x.t.tarefa},
+      {key:'projeto',label:'Projeto',tipo:'texto',get:x=>x.pj},
+      {key:'venc',label:'Vencimento',tipo:'data',get:x=>x.t.dt_venc}
+    ];
+    const stModalSPessoa=SORT_STATE['modal-tarefas-status-pessoa']||{col:null,dir:0};
+    const itensOrd=stModalSPessoa.col?ordenarLinhas_(itens,colunasModalStatusPessoa.find(c=>c.key===stModalSPessoa.col),stModalSPessoa.dir):itens;
+    h+='<div class="table-wrap" style="max-height:400px"><table>'+theadOrdenavel_('modal-tarefas-status-pessoa',colunasModalStatusPessoa)+'<tbody>';
+    itensOrd.forEach(({pj,idx,t})=>{
       h+='<tr><td>'+taskLinkHtml(pj,idx,t.tarefa.length>45?t.tarefa.slice(0,45)+'…':t.tarefa)+'</td><td>'+pj+'</td><td>'+(t.dt_venc||'—')+'</td></tr>';
     });
     h+='</tbody></table></div>';
@@ -5796,6 +6015,10 @@ function ultimoStatusReportDoProjeto(pjName){
   return reports.slice().sort((a,b)=>(b.semana_fim||'').localeCompare(a.semana_fim||''))[0];
 }
 function renderProjDetail(pjName){
+  SORT_RERENDER['pd-semana']=()=>renderProjDetail(pjName);
+  SORT_RERENDER['pd-bloqueadas']=()=>renderProjDetail(pjName);
+  SORT_RERENDER['pd-atrasadas']=()=>renderProjDetail(pjName);
+  SORT_RERENDER['pd-faltando']=()=>renderProjDetail(pjName);
   const p = D.pj.find(x=>x.pj===pjName);
   if(!p){ document.getElementById('projdetail-content').innerHTML='<div class="empty-state"><p>Projeto não encontrado.</p></div>'; return; }
   const ultimoSR=ultimoStatusReportDoProjeto(pjName);
@@ -5953,8 +6176,15 @@ function renderProjDetail(pjName){
   h += '<div class="grid grid-2b" style="margin-bottom:16px">';
   h += '<div class="pd-section"><h3>🔴 Tarefas em Destaque'+(tarefasSemana.length>0?' <span class="sub" style="color:var(--st-bloqueado)">'+tarefasSemana.length+' vencendo esta semana</span>':'')+'</h3><div class="table-wrap" style="max-height:280px">';
   if(tarefasSemana.length>0){
-    h += '<table><thead><tr><th>Tarefa</th><th>Responsável</th><th>Vencimento</th></tr></thead><tbody>';
-    tarefasSemana.forEach(t=>{ const idx=tarefaIndicePorRef(pjName,t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>40?t.tarefa.slice(0,40)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td>'+t.dt_venc+'</td></tr>'; });
+    const colunasPdSemana=[
+      {key:'tarefa',label:'Tarefa',tipo:'texto',get:t=>t.tarefa},
+      {key:'resp',label:'Responsável',tipo:'texto',get:t=>t.resp},
+      {key:'venc',label:'Vencimento',tipo:'data',get:t=>t.dt_venc}
+    ];
+    const stPdSemana=SORT_STATE['pd-semana']||{col:null,dir:0};
+    const tarefasSemanaOrd=stPdSemana.col?ordenarLinhas_(tarefasSemana,colunasPdSemana.find(c=>c.key===stPdSemana.col),stPdSemana.dir):tarefasSemana;
+    h += '<table>'+theadOrdenavel_('pd-semana',colunasPdSemana)+'<tbody>';
+    tarefasSemanaOrd.forEach(t=>{ const idx=tarefaIndicePorRef(pjName,t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>40?t.tarefa.slice(0,40)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td>'+t.dt_venc+'</td></tr>'; });
     h += '</tbody></table>';
   } else { h += '<div class="empty-state"><p>Nenhuma tarefa vencendo esta semana.</p></div>'; }
   h += '</div></div>';
@@ -5962,16 +6192,31 @@ function renderProjDetail(pjName){
   h += '<div style="display:flex;flex-direction:column;gap:16px">';
   h += '<div class="pd-section" style="margin:0"><h3>🚫 Tarefas Bloqueadas <span class="sub">'+bloqueadas.length+'</span></h3><div class="table-wrap" style="max-height:130px">';
   if(bloqueadas.length>0){
-    h += '<table><thead><tr><th>Tarefa</th><th>Responsável</th><th>Vencimento</th></tr></thead><tbody>';
-    bloqueadas.forEach(t=>{ const idx=tarefaIndicePorRef(pjName,t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>45?t.tarefa.slice(0,45)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td>'+(t.dt_venc||'—')+'</td></tr>'; });
+    const colunasPdBloq=[
+      {key:'tarefa',label:'Tarefa',tipo:'texto',get:t=>t.tarefa},
+      {key:'resp',label:'Responsável',tipo:'texto',get:t=>t.resp},
+      {key:'venc',label:'Vencimento',tipo:'data',get:t=>t.dt_venc}
+    ];
+    const stPdBloq=SORT_STATE['pd-bloqueadas']||{col:null,dir:0};
+    const bloqueadasOrd=stPdBloq.col?ordenarLinhas_(bloqueadas,colunasPdBloq.find(c=>c.key===stPdBloq.col),stPdBloq.dir):bloqueadas;
+    h += '<table>'+theadOrdenavel_('pd-bloqueadas',colunasPdBloq)+'<tbody>';
+    bloqueadasOrd.forEach(t=>{ const idx=tarefaIndicePorRef(pjName,t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>45?t.tarefa.slice(0,45)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td>'+(t.dt_venc||'—')+'</td></tr>'; });
     h += '</tbody></table>';
   } else { h += '<div class="empty-state" style="padding:16px"><p>Nenhuma tarefa bloqueada.</p></div>'; }
   h += '</div></div>';
 
   h += '<div class="pd-section" style="margin:0"><h3>⏰ Tarefas Atrasadas <span class="sub">'+atrasadas.length+'</span></h3><div class="table-wrap" style="max-height:130px">';
   if(atrasadas.length>0){
-    h += '<table><thead><tr><th>Tarefa</th><th>Responsável</th><th>Status</th><th>Venceu em</th></tr></thead><tbody>';
-    atrasadas.forEach(t=>{ const idx=tarefaIndicePorRef(pjName,t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>40?t.tarefa.slice(0,40)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td><span class="status-pill">'+t.status+'</span></td><td style="color:var(--st-bloqueado)">'+t.dt_venc+'</td></tr>'; });
+    const colunasPdAtr=[
+      {key:'tarefa',label:'Tarefa',tipo:'texto',get:t=>t.tarefa},
+      {key:'resp',label:'Responsável',tipo:'texto',get:t=>t.resp},
+      {key:'status',label:'Status',tipo:'texto',get:t=>t.status},
+      {key:'venc',label:'Venceu em',tipo:'data',get:t=>t.dt_venc}
+    ];
+    const stPdAtr=SORT_STATE['pd-atrasadas']||{col:null,dir:0};
+    const atrasadasOrd=stPdAtr.col?ordenarLinhas_(atrasadas,colunasPdAtr.find(c=>c.key===stPdAtr.col),stPdAtr.dir):atrasadas;
+    h += '<table>'+theadOrdenavel_('pd-atrasadas',colunasPdAtr)+'<tbody>';
+    atrasadasOrd.forEach(t=>{ const idx=tarefaIndicePorRef(pjName,t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>40?t.tarefa.slice(0,40)+'…':t.tarefa)+'</td><td>'+taskRespCellHtml(t)+'</td><td><span class="status-pill">'+t.status+'</span></td><td style="color:var(--st-bloqueado)">'+t.dt_venc+'</td></tr>'; });
     h += '</tbody></table>';
   } else { h += '<div class="empty-state" style="padding:16px"><p>Nenhuma tarefa atrasada.</p></div>'; }
   h += '</div></div>';
@@ -5990,8 +6235,18 @@ function renderProjDetail(pjName){
   const faltandoFiltrado = PD_INCOMPLETO_STATUS_FILTER ? faltando.filter(t=>t.status===PD_INCOMPLETO_STATUS_FILTER) : faltando;
   h += '<div class="table-wrap" style="max-height:320px">';
   if(faltandoFiltrado.length>0){
-    h += '<table><thead><tr><th>Tarefa</th><th>Status</th><th>Data de Cadastro</th><th>Falta Início</th><th>Falta Vencimento</th><th>Falta Responsável</th></tr></thead><tbody>';
-    faltandoFiltrado.forEach(t=>{
+    const colunasPdFaltando=[
+      {key:'tarefa',label:'Tarefa',tipo:'texto',get:t=>t.tarefa},
+      {key:'status',label:'Status',tipo:'texto',get:t=>t.status},
+      {key:'cadastro',label:'Data de Cadastro',tipo:'data',get:t=>t.dt_cadastro_iso},
+      {key:'faltainicio',label:'Falta Início',tipo:'texto',get:t=>!t.dt_inicio?'Sim':'Não'},
+      {key:'faltavenc',label:'Falta Vencimento',tipo:'texto',get:t=>!t.dt_venc?'Sim':'Não'},
+      {key:'faltaresp',label:'Falta Responsável',tipo:'texto',get:t=>!t.resp?'Sim':'Não'}
+    ];
+    const stPdFaltando=SORT_STATE['pd-faltando']||{col:null,dir:0};
+    const faltandoOrd=stPdFaltando.col?ordenarLinhas_(faltandoFiltrado,colunasPdFaltando.find(c=>c.key===stPdFaltando.col),stPdFaltando.dir):faltandoFiltrado;
+    h += '<table>'+theadOrdenavel_('pd-faltando',colunasPdFaltando)+'<tbody>';
+    faltandoOrd.forEach(t=>{
       const idx=tarefaIndicePorRef(pjName,t); h += '<tr><td>'+taskLinkHtml(pjName,idx,t.tarefa.length>40?t.tarefa.slice(0,40)+'…':t.tarefa)+'</td><td><span class="status-pill" style="border-left:3px solid '+(STATUS_COLOR[t.status]||'#64748b')+'">'+(t.status||'—')+'</span></td><td>'+srFmtBr(t.dt_cadastro_iso)+'</td><td>'+(!t.dt_inicio?'<span style="color:var(--st-bloqueado)">⚠ Sim</span>':'Não')+'</td><td>'+(!t.dt_venc?'<span style="color:var(--st-bloqueado)">⚠ Sim</span>':'Não')+'</td><td>'+(!t.resp?'<span style="color:var(--st-bloqueado)">⚠ Sim</span>':'Não')+'</td></tr>';
     });
     h += '</tbody></table>';
@@ -6051,6 +6306,10 @@ function initOciosos(){
   renderOciosos();
 }
 function renderOciosos(){
+  SORT_RERENDER['ociosos-comtarefa']=()=>renderOciosos();
+  SORT_RERENDER['ociosos-semtarefa']=()=>renderOciosos();
+  SORT_RERENDER['ociosos-semana']=()=>renderOciosos();
+  SORT_RERENDER['ociosos-semapont']=()=>renderOciosos();
   const semAlocNamesSet=new Set(SEM_ALOC.map(o=>o.a));
   const alocSemApontNamesSet=new Set(ALOC_SEM_APONT.map(o=>o.a));
   const [ocMon,ocSun]=getMondaySunday(new Date());
@@ -6096,12 +6355,17 @@ function renderOciosos(){
   if(periodoAtivo){
     h+='<div class="pd-section" style="margin-bottom:16px"><h3>📅 Atribuição de Tarefas no Período Selecionado</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Considera a data de vencimento das tarefas de cada pessoa dentro do período ('+(pDe||'início')+' a '+(pAte||'hoje')+').</span>';
     h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">';
-    h+='<div><div style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--primary)">✓ Com tarefa atribuída ('+comTarefaPeriodo.length+')</div><div class="table-wrap" style="max-height:280px"><table><thead><tr><th>Nome</th><th>Área</th></tr></thead><tbody>';
-    comTarefaPeriodo.forEach(p=>{ h+='<tr><td><strong>'+personLinkHtml(p.a)+'</strong></td><td>'+(p.area||'—')+'</td></tr>'; });
+    const colunasOcNomeArea=[{key:'nome',label:'Nome',tipo:'texto',get:p=>p.a},{key:'area',label:'Área',tipo:'texto',get:p=>p.area}];
+    const stOcCom=SORT_STATE['ociosos-comtarefa']||{col:null,dir:0};
+    const comTarefaOrd=stOcCom.col?ordenarLinhas_(comTarefaPeriodo,colunasOcNomeArea.find(c=>c.key===stOcCom.col),stOcCom.dir):comTarefaPeriodo;
+    const stOcSem=SORT_STATE['ociosos-semtarefa']||{col:null,dir:0};
+    const semTarefaOrd=stOcSem.col?ordenarLinhas_(semTarefaPeriodo,colunasOcNomeArea.find(c=>c.key===stOcSem.col),stOcSem.dir):semTarefaPeriodo;
+    h+='<div><div style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--primary)">✓ Com tarefa atribuída ('+comTarefaPeriodo.length+')</div><div class="table-wrap" style="max-height:280px"><table>'+theadOrdenavel_('ociosos-comtarefa',colunasOcNomeArea)+'<tbody>';
+    comTarefaOrd.forEach(p=>{ h+='<tr><td><strong>'+personLinkHtml(p.a)+'</strong></td><td>'+(p.area||'—')+'</td></tr>'; });
     if(comTarefaPeriodo.length===0) h+='<tr><td colspan="2" style="text-align:center;color:var(--text-faint)">Ninguém.</td></tr>';
     h+='</tbody></table></div></div>';
-    h+='<div><div style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--st-bloqueado)">✗ Sem tarefa atribuída ('+semTarefaPeriodo.length+')</div><div class="table-wrap" style="max-height:280px"><table><thead><tr><th>Nome</th><th>Área</th></tr></thead><tbody>';
-    semTarefaPeriodo.forEach(p=>{ h+='<tr><td><strong>'+personLinkHtml(p.a)+'</strong></td><td>'+(p.area||'—')+'</td></tr>'; });
+    h+='<div><div style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--st-bloqueado)">✗ Sem tarefa atribuída ('+semTarefaPeriodo.length+')</div><div class="table-wrap" style="max-height:280px"><table>'+theadOrdenavel_('ociosos-semtarefa',colunasOcNomeArea)+'<tbody>';
+    semTarefaOrd.forEach(p=>{ h+='<tr><td><strong>'+personLinkHtml(p.a)+'</strong></td><td>'+(p.area||'—')+'</td></tr>'; });
     if(semTarefaPeriodo.length===0) h+='<tr><td colspan="2" style="text-align:center;color:var(--text-faint)">Ninguém.</td></tr>';
     h+='</tbody></table></div></div>';
     h+='</div></div>';
@@ -6110,8 +6374,16 @@ function renderOciosos(){
 
   // Seção 0: alocados normalmente, mas com ociosidade alta NESSA semana específica
   if(ociososSemanaList.length>0){
-    h+='<div class="pd-section" style="margin-bottom:16px"><h3>🟡 Alocados, mas com Ociosidade Alta Esta Semana ('+ociososSemanaList.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Têm alocação normal (tarefas/horas no Zoho), mas nesta semana específica executaram bem menos do que o previsto pelas tarefas com vencimento nesse período.</span><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Área</th><th>Ociosidade</th><th>Previsto x Executado</th></tr></thead><tbody>';
-    ociososSemanaList.forEach(x=>{
+    const colunasOcSemana=[
+      {key:'nome',label:'Nome',tipo:'texto',get:x=>x.p.a},
+      {key:'area',label:'Área',tipo:'texto',get:x=>x.p.area},
+      {key:'ociosidade',label:'Ociosidade',tipo:'percentual',get:x=>x.pct},
+      {key:'previstoexec',label:'Previsto x Executado',tipo:'horas',get:x=>x.hExec}
+    ];
+    const stOcSemana=SORT_STATE['ociosos-semana']||{col:null,dir:0};
+    const ociososSemanaOrd=stOcSemana.col?ordenarLinhas_(ociososSemanaList,colunasOcSemana.find(c=>c.key===stOcSemana.col),stOcSemana.dir):ociososSemanaList;
+    h+='<div class="pd-section" style="margin-bottom:16px"><h3>🟡 Alocados, mas com Ociosidade Alta Esta Semana ('+ociososSemanaList.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Têm alocação normal (tarefas/horas no Zoho), mas nesta semana específica executaram bem menos do que o previsto pelas tarefas com vencimento nesse período.</span><div class="table-wrap"><table>'+theadOrdenavel_('ociosos-semana',colunasOcSemana)+'<tbody>';
+    ociososSemanaOrd.forEach(x=>{
       h+='<tr><td><strong>'+x.p.a+'</strong><br><span style="font-size:11px;color:var(--text-faint)">'+(x.p.cargo||'—')+'</span></td><td>'+(x.p.area||'—')+'</td><td><span style="color:'+(x.pct>=75?'var(--st-bloqueado)':'#f59e0b')+';font-weight:700">'+x.pct+'%</span></td><td>'+fH(x.hExec)+' de '+fH(x.hPrev)+'</td></tr>';
     });
     h+='</tbody></table></div></div>';
@@ -6119,8 +6391,15 @@ function renderOciosos(){
 
   // Seção 1: alocados no Portifolio mas sem tarefas/horas no Zoho (validado contra Portifolio)
   if(ALOC_SEM_APONT.length>0){
-    h+='<div class="pd-section" style="margin-bottom:16px"><h3>⚠️ Alocados em Projeto, mas sem Apontamento no Zoho ('+ALOC_SEM_APONT.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Estas pessoas aparecem na equipe de um projeto ativo (Portifolio), mas não têm nenhuma tarefa ou hora registrada no Zoho.</span><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Área</th><th>Projetos (Portifolio)</th></tr></thead><tbody>';
-    ALOC_SEM_APONT.forEach(o=>{
+    const colunasOcSemApont=[
+      {key:'nome',label:'Nome',tipo:'texto',get:o=>o.a},
+      {key:'area',label:'Área',tipo:'texto',get:o=>o.area},
+      {label:'Projetos (Portifolio)'}
+    ];
+    const stOcSemApont=SORT_STATE['ociosos-semapont']||{col:null,dir:0};
+    const alocSemApontOrd=stOcSemApont.col?ordenarLinhas_(ALOC_SEM_APONT,colunasOcSemApont.find(c=>c.key===stOcSemApont.col),stOcSemApont.dir):ALOC_SEM_APONT;
+    h+='<div class="pd-section" style="margin-bottom:16px"><h3>⚠️ Alocados em Projeto, mas sem Apontamento no Zoho ('+ALOC_SEM_APONT.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Estas pessoas aparecem na equipe de um projeto ativo (Portifolio), mas não têm nenhuma tarefa ou hora registrada no Zoho.</span><div class="table-wrap"><table>'+theadOrdenavel_('ociosos-semapont',colunasOcSemApont)+'<tbody>';
+    alocSemApontOrd.forEach(o=>{
       h+='<tr><td><strong>'+personLinkHtml(o.a)+'</strong><br><span style="font-size:11px;color:var(--text-faint)">'+(o.cargo||'—')+'</span></td><td>'+(o.area||'—')+'</td><td>'+(o.projetos||[]).map(p=>'<span class="status-pill">'+p+'</span>').join(' ')+'</td></tr>';
     });
     h+='</tbody></table></div></div>';
@@ -6130,9 +6409,19 @@ function renderOciosos(){
   h+='<div class="pd-section"><h3>🔴 Disponibilidade Confirmada ('+SEM_ALOC.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Validado contra a aba Portifolio: não aparecem em nenhuma equipe de projeto ativo, nem possuem tarefas/horas no Zoho.</span>';
   const byArea = {};
   SEM_ALOC.forEach(o=>{ const a=o.area||'Sem área'; if(!byArea[a])byArea[a]=[]; byArea[a].push(o); });
+  const colunasOcArea=[
+    {key:'nome',label:'Nome',tipo:'texto',get:o=>o.a},
+    {key:'cargo',label:'Cargo',tipo:'texto',get:o=>o.cargo},
+    {key:'gestor',label:'Gestor',tipo:'texto',get:o=>o.gestor},
+    {key:'email',label:'E-mail',tipo:'texto',get:o=>o.email}
+  ];
   for(const [area,list] of Object.entries(byArea).sort((a,b)=>b[1].length-a[1].length)){
-    h+='<div style="margin-top:14px"><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">'+area+' <span style="font-weight:400;color:var(--text-faint)">('+list.length+')</span></div><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Cargo</th><th>Gestor</th><th>E-mail</th></tr></thead><tbody>';
-    list.forEach(o=>{ h+='<tr><td><strong>'+personLinkHtml(o.a)+'</strong></td><td>'+(o.cargo||'—')+'</td><td>'+personLinkHtml(o.gestor)+'</td><td style="color:var(--primary)">'+(o.email||'—')+'</td></tr>'; });
+    const ocAreaTableId='ociosos-'+area;
+    SORT_RERENDER[ocAreaTableId]=()=>renderOciosos();
+    const stOcArea=SORT_STATE[ocAreaTableId]||{col:null,dir:0};
+    const listOrd=stOcArea.col?ordenarLinhas_(list,colunasOcArea.find(c=>c.key===stOcArea.col),stOcArea.dir):list;
+    h+='<div style="margin-top:14px"><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">'+area+' <span style="font-weight:400;color:var(--text-faint)">('+list.length+')</span></div><div class="table-wrap"><table>'+theadOrdenavel_(ocAreaTableId,colunasOcArea)+'<tbody>';
+    listOrd.forEach(o=>{ h+='<tr><td><strong>'+personLinkHtml(o.a)+'</strong></td><td>'+(o.cargo||'—')+'</td><td>'+personLinkHtml(o.gestor)+'</td><td style="color:var(--primary)">'+(o.email||'—')+'</td></tr>'; });
     h+='</tbody></table></div></div>';
   }
   h+='</div>';
@@ -6567,9 +6856,16 @@ function renderFuturistic(firstLoad){
             let h=0; Object.entries(d.ad||{}).forEach(([dt,v])=>{ if(dt.slice(0,7)===mesClicado) h+=v[0]; });
             return {n,h};
           }).filter(a=>a.h>0).sort((a,b)=>b.h-a.h);
-          document.getElementById('task-modal-title').textContent='Horas Executadas — '+(ML[mesClicado.split('-')[1]]+'/'+mesClicado.split('-')[0]);
-          document.getElementById('task-modal-body').innerHTML='<div style="margin-bottom:10px;font-size:13px;color:var(--text-faint)">Total do mês: <strong>'+fH(totalMes)+'</strong></div>'+
-            (linhas.length===0?'<div class="empty-state" style="padding:20px"><p>Sem detalhamento por área.</p></div>':'<div class="table-wrap"><table><thead><tr><th>Área</th><th>Horas</th></tr></thead><tbody>'+linhas.map(a=>'<tr><td>'+a.n+'</td><td>'+fH(a.h)+'</td></tr>').join('')+'</tbody></table></div>');
+          const colunasFutAreaMes=[{key:'area',label:'Área',tipo:'texto',get:a=>a.n},{key:'horas',label:'Horas',tipo:'horas',get:a=>a.h}];
+          const renderFutAreaMesModal=()=>{
+            const stFutAreaMes=SORT_STATE['fut-modal-area-mes']||{col:null,dir:0};
+            const linhasOrd=stFutAreaMes.col?ordenarLinhas_(linhas,colunasFutAreaMes.find(c=>c.key===stFutAreaMes.col),stFutAreaMes.dir):linhas;
+            document.getElementById('task-modal-title').textContent='Horas Executadas — '+(ML[mesClicado.split('-')[1]]+'/'+mesClicado.split('-')[0]);
+            document.getElementById('task-modal-body').innerHTML='<div style="margin-bottom:10px;font-size:13px;color:var(--text-faint)">Total do mês: <strong>'+fH(totalMes)+'</strong></div>'+
+              (linhas.length===0?'<div class="empty-state" style="padding:20px"><p>Sem detalhamento por área.</p></div>':'<div class="table-wrap"><table>'+theadOrdenavel_('fut-modal-area-mes',colunasFutAreaMes)+'<tbody>'+linhasOrd.map(a=>'<tr><td>'+a.n+'</td><td>'+fH(a.h)+'</td></tr>').join('')+'</tbody></table></div>');
+          };
+          SORT_RERENDER['fut-modal-area-mes']=renderFutAreaMesModal;
+          renderFutAreaMesModal();
           document.getElementById('task-modal-overlay').classList.add('show');
         },
         plugins:{legend:{display:false},tooltip:{backgroundColor:'#0a1a2c',borderColor:'#38BDF8',borderWidth:1,titleColor:'#BAE6FD',bodyColor:'#fff',
@@ -6607,10 +6903,22 @@ function renderFuturistic(firstLoad){
             const pct=hPrev>0?Math.max(0,Math.round((1-hExec/hPrev)*100)):null;
             return {p,pct,hPrev,hExec};
           }).filter(x=>x.pct!==null).sort((a,b)=>b.pct-a.pct);
-          document.getElementById('task-modal-title').textContent='Ociosidade da Semana — '+sem.label;
-          document.getElementById('task-modal-body').innerHTML=linhas.length===0?'<div class="empty-state" style="padding:20px"><p>Nenhuma tarefa vencendo nesta semana.</p></div>':
-            '<div class="table-wrap"><table><thead><tr><th>Nome</th><th>% Ociosidade</th><th>Previsto</th><th>Executado</th></tr></thead><tbody>'+
-            linhas.map(x=>'<tr><td>'+personLinkHtml(x.p.a)+'</td><td>'+x.pct+'%</td><td>'+fH(x.hPrev)+'</td><td>'+fH(x.hExec)+'</td></tr>').join('')+'</tbody></table></div>';
+          const colunasFutOciosSemana=[
+            {key:'nome',label:'Nome',tipo:'texto',get:x=>x.p.a},
+            {key:'ociosidade',label:'% Ociosidade',tipo:'percentual',get:x=>x.pct},
+            {key:'previsto',label:'Previsto',tipo:'horas',get:x=>x.hPrev},
+            {key:'executado',label:'Executado',tipo:'horas',get:x=>x.hExec}
+          ];
+          const renderFutOciosSemanaModal=()=>{
+            const stFutOcios=SORT_STATE['fut-modal-ocios-semana']||{col:null,dir:0};
+            const linhasOrd=stFutOcios.col?ordenarLinhas_(linhas,colunasFutOciosSemana.find(c=>c.key===stFutOcios.col),stFutOcios.dir):linhas;
+            document.getElementById('task-modal-title').textContent='Ociosidade da Semana — '+sem.label;
+            document.getElementById('task-modal-body').innerHTML=linhas.length===0?'<div class="empty-state" style="padding:20px"><p>Nenhuma tarefa vencendo nesta semana.</p></div>':
+              '<div class="table-wrap"><table>'+theadOrdenavel_('fut-modal-ocios-semana',colunasFutOciosSemana)+'<tbody>'+
+              linhasOrd.map(x=>'<tr><td>'+personLinkHtml(x.p.a)+'</td><td>'+x.pct+'%</td><td>'+fH(x.hPrev)+'</td><td>'+fH(x.hExec)+'</td></tr>').join('')+'</tbody></table></div>';
+          };
+          SORT_RERENDER['fut-modal-ocios-semana']=renderFutOciosSemanaModal;
+          renderFutOciosSemanaModal();
           document.getElementById('task-modal-overlay').classList.add('show');
         },
         plugins:{legend:{display:false},tooltip:{backgroundColor:'#0a1a2c',borderColor:'#ffb300',borderWidth:1,titleColor:'#BAE6FD',bodyColor:'#fff',
@@ -6651,18 +6959,38 @@ function renderFuturistic(firstLoad){
 // dos registros reais já existentes que compõem o indicador clicado.
 // ============================================================
 function buildListaProjetosModal(lista){
+  SORT_RERENDER['fut-modal-projetos']=()=>{ const el=document.getElementById('task-modal-body'); if(el) el.innerHTML=buildListaProjetosModal(lista); };
   if(lista.length===0) return '<div class="empty-state" style="padding:30px 10px"><p>Nenhum projeto encontrado.</p></div>';
-  let h='<div class="table-wrap" style="max-height:420px"><table><thead><tr><th>Projeto</th><th>Cliente</th><th>GP</th><th>Status</th><th>Ritmo</th></tr></thead><tbody>';
-  lista.forEach(p=>{
+  const colunasFutProj=[
+    {key:'projeto',label:'Projeto',tipo:'texto',get:p=>p.pj},
+    {key:'cliente',label:'Cliente',tipo:'texto',get:p=>p.cl},
+    {key:'gp',label:'GP',tipo:'texto',get:p=>p.gp},
+    {key:'status',label:'Status',tipo:'texto',get:p=>p.st},
+    {label:'Ritmo'}
+  ];
+  const stFutProj=SORT_STATE['fut-modal-projetos']||{col:null,dir:0};
+  const listaOrd=stFutProj.col?ordenarLinhas_(lista,colunasFutProj.find(c=>c.key===stFutProj.col),stFutProj.dir):lista;
+  let h='<div class="table-wrap" style="max-height:420px"><table>'+theadOrdenavel_('fut-modal-projetos',colunasFutProj)+'<tbody>';
+  listaOrd.forEach(p=>{
     h+='<tr><td><strong>'+projetoLinkHtml(p.pj)+'</strong></td><td>'+p.cl+'</td><td>'+personLinkHtml(p.gp)+'</td><td>'+statusChipHtml(p.st)+'</td><td>'+(ritmoBadgeHtml(p)||'—')+'</td></tr>';
   });
   h+='</tbody></table></div>';
   return h;
 }
 function buildListaTarefasModal(lista){
+  SORT_RERENDER['fut-modal-tarefas']=()=>{ const el=document.getElementById('task-modal-body'); if(el) el.innerHTML=buildListaTarefasModal(lista); };
   if(lista.length===0) return '<div class="empty-state" style="padding:30px 10px"><p>Nenhuma tarefa encontrada.</p></div>';
-  let h='<div class="table-wrap" style="max-height:420px"><table><thead><tr><th>Tarefa</th><th>Projeto</th><th>Status</th><th>Responsável</th><th>Vencimento</th></tr></thead><tbody>';
-  lista.forEach(t=>{
+  const colunasFutTarefas=[
+    {key:'tarefa',label:'Tarefa',tipo:'texto',get:t=>t.tarefa},
+    {key:'projeto',label:'Projeto',tipo:'texto',get:t=>t.pj},
+    {key:'status',label:'Status',tipo:'texto',get:t=>t.status},
+    {key:'resp',label:'Responsável',tipo:'texto',get:t=>t.resp},
+    {key:'venc',label:'Vencimento',tipo:'data',get:t=>t.dt_venc}
+  ];
+  const stFutTarefas=SORT_STATE['fut-modal-tarefas']||{col:null,dir:0};
+  const listaOrd=stFutTarefas.col?ordenarLinhas_(lista,colunasFutTarefas.find(c=>c.key===stFutTarefas.col),stFutTarefas.dir):lista;
+  let h='<div class="table-wrap" style="max-height:420px"><table>'+theadOrdenavel_('fut-modal-tarefas',colunasFutTarefas)+'<tbody>';
+  listaOrd.forEach(t=>{
     const idx=tarefaIndicePorRef(t.pj,t);
     h+='<tr><td>'+taskLinkHtml(t.pj,idx,t.tarefa)+'</td><td>'+projetoLinkHtml(t.pj)+'</td><td><span class="status-pill">'+(t.status||'—')+'</span></td><td>'+taskRespCellHtml(t)+'</td><td>'+(t.dt_venc||'—')+'</td></tr>';
   });
@@ -6685,15 +7013,26 @@ function abrirDetalheFuturista(tipo, el){
       let h=0; Object.entries(d.ad||{}).forEach(([dt,v])=>{ if(dt.slice(0,7)===S.mes) h+=v[0]; });
       return {n,h};
     }).filter(a=>a.h>0).sort((a,b)=>b.h-a.h);
+    const colunasFutHorasMes=[{key:'area',label:'Área',tipo:'texto',get:a=>a.n},{key:'horas',label:'Horas',tipo:'horas',get:a=>a.h}];
+    SORT_RERENDER['fut-modal-horas-mes']=()=>abrirDetalheFuturista(tipo,el);
+    const stFutHorasMes=SORT_STATE['fut-modal-horas-mes']||{col:null,dir:0};
+    const linhasOrd=stFutHorasMes.col?ordenarLinhas_(linhas,colunasFutHorasMes.find(c=>c.key===stFutHorasMes.col),stFutHorasMes.dir):linhas;
     corpo=linhas.length===0?'<div class="empty-state" style="padding:30px 10px"><p>Nenhuma hora registrada neste mês.</p></div>':
-      '<div class="table-wrap"><table><thead><tr><th>Área</th><th>Horas</th></tr></thead><tbody>'+linhas.map(a=>'<tr><td>'+a.n+'</td><td>'+fH(a.h)+'</td></tr>').join('')+'</tbody></table></div>';
+      '<div class="table-wrap"><table>'+theadOrdenavel_('fut-modal-horas-mes',colunasFutHorasMes)+'<tbody>'+linhasOrd.map(a=>'<tr><td>'+a.n+'</td><td>'+fH(a.h)+'</td></tr>').join('')+'</tbody></table></div>';
   }else if(tipo==='pessoas-alocadas'){
     titulo='Pessoas Alocadas x Sem Alocação (atual)';
     const semAlocSet=new Set(SEM_ALOC.map(o=>o.a));
     const alocadas=D.p.filter(p=>p.a && !semAlocSet.has(p.a));
+    const colunasFutPessoas=[{key:'nome',label:'Nome',tipo:'texto',get:p=>p.a},{key:'area',label:'Área',tipo:'texto',get:p=>p.area}];
+    SORT_RERENDER['fut-modal-alocadas']=()=>abrirDetalheFuturista(tipo,el);
+    SORT_RERENDER['fut-modal-semaloc']=()=>abrirDetalheFuturista(tipo,el);
+    const stFutAlocadas=SORT_STATE['fut-modal-alocadas']||{col:null,dir:0};
+    const alocadasOrd=stFutAlocadas.col?ordenarLinhas_(alocadas,colunasFutPessoas.find(c=>c.key===stFutAlocadas.col),stFutAlocadas.dir):alocadas;
+    const stFutSemAloc=SORT_STATE['fut-modal-semaloc']||{col:null,dir:0};
+    const semAlocOrd=stFutSemAloc.col?ordenarLinhas_(SEM_ALOC,colunasFutPessoas.find(c=>c.key===stFutSemAloc.col),stFutSemAloc.dir):SEM_ALOC;
     corpo='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'+
-      '<div><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--st-feito)">✓ Alocadas ('+alocadas.length+')</div><div class="table-wrap" style="max-height:380px"><table><thead><tr><th>Nome</th><th>Área</th></tr></thead><tbody>'+alocadas.map(p=>'<tr><td>'+personLinkHtml(p.a)+'</td><td>'+(p.area||'—')+'</td></tr>').join('')+'</tbody></table></div></div>'+
-      '<div><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--st-bloqueado)">✗ Sem Alocação ('+SEM_ALOC.length+')</div><div class="table-wrap" style="max-height:380px"><table><thead><tr><th>Nome</th><th>Área</th></tr></thead><tbody>'+SEM_ALOC.map(o=>'<tr><td>'+personLinkHtml(o.a)+'</td><td>'+(o.area||'—')+'</td></tr>').join('')+'</tbody></table></div></div>'+
+      '<div><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--st-feito)">✓ Alocadas ('+alocadas.length+')</div><div class="table-wrap" style="max-height:380px"><table>'+theadOrdenavel_('fut-modal-alocadas',colunasFutPessoas)+'<tbody>'+alocadasOrd.map(p=>'<tr><td>'+personLinkHtml(p.a)+'</td><td>'+(p.area||'—')+'</td></tr>').join('')+'</tbody></table></div></div>'+
+      '<div><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--st-bloqueado)">✗ Sem Alocação ('+SEM_ALOC.length+')</div><div class="table-wrap" style="max-height:380px"><table>'+theadOrdenavel_('fut-modal-semaloc',colunasFutPessoas)+'<tbody>'+semAlocOrd.map(o=>'<tr><td>'+personLinkHtml(o.a)+'</td><td>'+(o.area||'—')+'</td></tr>').join('')+'</tbody></table></div></div>'+
     '</div>';
   }else if(tipo==='portfolio-ritmo'){
     titulo='Ritmo dos Projetos Ativos';
@@ -6713,12 +7052,20 @@ function abrirDetalheFuturista(tipo, el){
     titulo='Alertas Críticos — Clientes em Risco e Projetos Zumbi';
     let h='';
     if(EXECTOP.negativos.cli_risco.length>0){
-      h+='<div style="font-weight:700;font-size:13px;margin-bottom:8px">⚠️ Clientes em Risco</div><div class="table-wrap" style="margin-bottom:16px"><table><thead><tr><th>Cliente</th><th>Projetos Atrasados</th><th>Conclusão Média</th></tr></thead><tbody>'+
-        EXECTOP.negativos.cli_risco.map(x=>'<tr><td>'+x.n+'</td><td>'+x.atraso_count+'</td><td>'+x.avg_pct+'%</td></tr>').join('')+'</tbody></table></div>';
+      const colunasFutCliRisco=[{key:'cliente',label:'Cliente',tipo:'texto',get:x=>x.n},{key:'atrasados',label:'Projetos Atrasados',tipo:'numero',get:x=>x.atraso_count},{key:'conclusao',label:'Conclusão Média',tipo:'percentual',get:x=>x.avg_pct}];
+      SORT_RERENDER['fut-modal-clirisco']=()=>abrirDetalheFuturista(tipo,el);
+      const stFutCliRisco=SORT_STATE['fut-modal-clirisco']||{col:null,dir:0};
+      const cliRiscoOrd=stFutCliRisco.col?ordenarLinhas_(EXECTOP.negativos.cli_risco,colunasFutCliRisco.find(c=>c.key===stFutCliRisco.col),stFutCliRisco.dir):EXECTOP.negativos.cli_risco;
+      h+='<div style="font-weight:700;font-size:13px;margin-bottom:8px">⚠️ Clientes em Risco</div><div class="table-wrap" style="margin-bottom:16px"><table>'+theadOrdenavel_('fut-modal-clirisco',colunasFutCliRisco)+'<tbody>'+
+        cliRiscoOrd.map(x=>'<tr><td>'+x.n+'</td><td>'+x.atraso_count+'</td><td>'+x.avg_pct+'%</td></tr>').join('')+'</tbody></table></div>';
     }
     if(EXECTOP.negativos.zumbi.length>0){
-      h+='<div style="font-weight:700;font-size:13px;margin-bottom:8px">🧟 Projetos Zumbi</div><div class="table-wrap"><table><thead><tr><th>Projeto</th><th>Cliente</th><th>Situação</th></tr></thead><tbody>'+
-        EXECTOP.negativos.zumbi.map(x=>'<tr><td>'+x.pj+'</td><td>'+x.cl+'</td><td>'+(x.nunca?'Nunca apontado':x.dias_sem+' dias sem apontamento')+'</td></tr>').join('')+'</tbody></table></div>';
+      const colunasFutZumbi=[{key:'projeto',label:'Projeto',tipo:'texto',get:x=>x.pj},{key:'cliente',label:'Cliente',tipo:'texto',get:x=>x.cl},{label:'Situação'}];
+      SORT_RERENDER['fut-modal-zumbi']=()=>abrirDetalheFuturista(tipo,el);
+      const stFutZumbi=SORT_STATE['fut-modal-zumbi']||{col:null,dir:0};
+      const zumbiOrd=stFutZumbi.col?ordenarLinhas_(EXECTOP.negativos.zumbi,colunasFutZumbi.find(c=>c.key===stFutZumbi.col),stFutZumbi.dir):EXECTOP.negativos.zumbi;
+      h+='<div style="font-weight:700;font-size:13px;margin-bottom:8px">🧟 Projetos Zumbi</div><div class="table-wrap"><table>'+theadOrdenavel_('fut-modal-zumbi',colunasFutZumbi)+'<tbody>'+
+        zumbiOrd.map(x=>'<tr><td>'+x.pj+'</td><td>'+x.cl+'</td><td>'+(x.nunca?'Nunca apontado':x.dias_sem+' dias sem apontamento')+'</td></tr>').join('')+'</tbody></table></div>';
     }
     corpo=h||'<div class="empty-state" style="padding:30px 10px"><p>Nenhum alerta crítico no momento.</p></div>';
   }else if(tipo==='area-mes'){
@@ -6730,8 +7077,12 @@ function abrirDetalheFuturista(tipo, el){
       let h=0; Object.entries(HM[ek]||{}).forEach(([d,v])=>{ if(d.slice(0,7)===S.mes) h+=v; });
       return {p,h};
     }).filter(x=>x.h>0).sort((a,b)=>b.h-a.h);
+    const colunasFutAreaMesModal=[{key:'nome',label:'Nome',tipo:'texto',get:x=>x.p.a},{key:'horas',label:'Horas no mês',tipo:'horas',get:x=>x.h}];
+    SORT_RERENDER['fut-modal-area-mes-2']=()=>abrirDetalheFuturista(tipo,el);
+    const stFutAreaMes2=SORT_STATE['fut-modal-area-mes-2']||{col:null,dir:0};
+    const linhasOrd=stFutAreaMes2.col?ordenarLinhas_(linhas,colunasFutAreaMesModal.find(c=>c.key===stFutAreaMes2.col),stFutAreaMes2.dir):linhas;
     corpo=linhas.length===0?'<div class="empty-state" style="padding:30px 10px"><p>Nenhuma hora registrada nesta área neste mês.</p></div>':
-      '<div class="table-wrap"><table><thead><tr><th>Nome</th><th>Horas no mês</th></tr></thead><tbody>'+linhas.map(x=>'<tr><td>'+personLinkHtml(x.p.a)+'</td><td>'+fH(x.h)+'</td></tr>').join('')+'</tbody></table></div>';
+      '<div class="table-wrap"><table>'+theadOrdenavel_('fut-modal-area-mes-2',colunasFutAreaMesModal)+'<tbody>'+linhasOrd.map(x=>'<tr><td>'+personLinkHtml(x.p.a)+'</td><td>'+fH(x.h)+'</td></tr>').join('')+'</tbody></table></div>';
   }else if(tipo==='projeto-single'){
     const pj=el.dataset.futPj;
     const p=D.pj.find(x=>x.pj===pj);
@@ -7200,6 +7551,9 @@ function initSetorial(){
   renderSetorial();
 }
 function renderSetorial(){
+  SORT_RERENDER['setorial-pessoas']=()=>renderSetorial();
+  SORT_RERENDER['setorial-semaloc']=()=>renderSetorial();
+  SORT_RERENDER['setorial-semapo']=()=>renderSetorial();
   const area=document.getElementById('f-setorial').value;
   const kpiEl=document.getElementById('kpi-setorial');
   const contentEl=document.getElementById('setorial-content');
@@ -7236,21 +7590,35 @@ function renderSetorial(){
     +'Pré-Venda (estimativa de esforço), Desenvolvimento de Carreira (agenda/aceleração) e Contratação &amp; Demissão não têm nenhuma fonte de dado no dashboard hoje — por isso não aparecem aqui. Se quiser passar a acompanhar isso, precisamos definir de onde viria essa informação (ex: uma aba nova na planilha).'
     +'</div></div>';
 
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>👥 Gestão de Pessoas — '+area+'</h3></div><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Cargo</th><th>Nível</th><th>Gestor</th></tr></thead><tbody>';
-  pessoas.forEach(p=>{
+  const colunasSetPessoas=[
+    {key:'nome',label:'Nome',tipo:'texto',get:p=>p.a},
+    {key:'cargo',label:'Cargo',tipo:'texto',get:p=>p.cargo},
+    {key:'nivel',label:'Nível',tipo:'texto',get:p=>p.nv},
+    {key:'gestor',label:'Gestor',tipo:'texto',get:p=>p.gestor}
+  ];
+  const stSetPessoas=SORT_STATE['setorial-pessoas']||{col:null,dir:0};
+  const pessoasOrd=stSetPessoas.col?ordenarLinhas_(pessoas,colunasSetPessoas.find(c=>c.key===stSetPessoas.col),stSetPessoas.dir):pessoas;
+  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>👥 Gestão de Pessoas — '+area+'</h3></div><div class="table-wrap"><table>'+theadOrdenavel_('setorial-pessoas',colunasSetPessoas)+'<tbody>';
+  pessoasOrd.forEach(p=>{
     h+='<tr><td><strong>'+personLinkHtml(p.a)+'</strong></td><td>'+(p.cargo||'—')+'</td><td>'+(p.nv||'—')+'</td><td>'+personLinkHtml(p.gestor)+'</td></tr>';
   });
   if(pessoas.length===0) h+='<tr><td colspan="4" style="text-align:center;color:var(--text-faint)">Nenhuma pessoa cadastrada nessa área.</td></tr>';
   h+='</tbody></table></div></div>';
 
   if(semAloc.length>0){
-    h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>🔴 Sem Alocação ('+semAloc.length+')</h3></div><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Cargo</th></tr></thead><tbody>';
-    semAloc.forEach(o=>{ h+='<tr><td><strong>'+personLinkHtml(o.a)+'</strong></td><td>'+(o.cargo||'—')+'</td></tr>'; });
+    const colunasSetSemAloc=[{key:'nome',label:'Nome',tipo:'texto',get:o=>o.a},{key:'cargo',label:'Cargo',tipo:'texto',get:o=>o.cargo}];
+    const stSetSemAloc=SORT_STATE['setorial-semaloc']||{col:null,dir:0};
+    const semAlocOrd=stSetSemAloc.col?ordenarLinhas_(semAloc,colunasSetSemAloc.find(c=>c.key===stSetSemAloc.col),stSetSemAloc.dir):semAloc;
+    h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>🔴 Sem Alocação ('+semAloc.length+')</h3></div><div class="table-wrap"><table>'+theadOrdenavel_('setorial-semaloc',colunasSetSemAloc)+'<tbody>';
+    semAlocOrd.forEach(o=>{ h+='<tr><td><strong>'+personLinkHtml(o.a)+'</strong></td><td>'+(o.cargo||'—')+'</td></tr>'; });
     h+='</tbody></table></div></div>';
   }
   if(alocSemApo.length>0){
-    h+='<div class="card"><div class="card-title"><h3>⚠️ Alocados, sem Apontamento no Zoho ('+alocSemApo.length+')</h3></div><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Projetos</th></tr></thead><tbody>';
-    alocSemApo.forEach(o=>{ h+='<tr><td><strong>'+personLinkHtml(o.a)+'</strong></td><td>'+(o.projetos||[]).map(pj=>'<span class="status-pill">'+pj+'</span>').join(' ')+'</td></tr>'; });
+    const colunasSetSemApo=[{key:'nome',label:'Nome',tipo:'texto',get:o=>o.a},{label:'Projetos'}];
+    const stSetSemApo=SORT_STATE['setorial-semapo']||{col:null,dir:0};
+    const alocSemApoOrd=stSetSemApo.col?ordenarLinhas_(alocSemApo,colunasSetSemApo.find(c=>c.key===stSetSemApo.col),stSetSemApo.dir):alocSemApo;
+    h+='<div class="card"><div class="card-title"><h3>⚠️ Alocados, sem Apontamento no Zoho ('+alocSemApo.length+')</h3></div><div class="table-wrap"><table>'+theadOrdenavel_('setorial-semapo',colunasSetSemApo)+'<tbody>';
+    alocSemApoOrd.forEach(o=>{ h+='<tr><td><strong>'+personLinkHtml(o.a)+'</strong></td><td>'+(o.projetos||[]).map(pj=>'<span class="status-pill">'+pj+'</span>').join(' ')+'</td></tr>'; });
     h+='</tbody></table></div></div>';
   }
   contentEl.innerHTML=h;
@@ -7602,6 +7970,11 @@ async function srAtualizarHistorico(btn){
   }
 }
 function buildHistoricoStatusReportHtml(projeto, modoView, containerId){
+  const histTableId='hist-sr-'+(containerId||'default');
+  SORT_RERENDER[histTableId]=()=>{
+    const alvo=document.getElementById(containerId||'');
+    if(alvo) alvo.innerHTML=buildHistoricoStatusReportHtml(projeto,modoView,containerId);
+  };
   const historico=STATUS_REPORTS.filter(r=>r.projeto===projeto).sort((a,b)=>b.semana_inicio.localeCompare(a.semana_inicio));
   let h='<div class="card"><div class="card-title"><h3>📜 Histórico de Status Reports — '+projeto+'</h3>'+
     '<button type="button" class="filter-clear sr-hist-atualizar-btn" data-projeto="'+projeto.replace(/"/g,'&quot;')+'" data-modo-view="'+(modoView?'1':'0')+'" data-container-id="'+(containerId||'')+'" style="padding:5px 12px;font-size:12px">🔄 Atualizar</button>'+
@@ -7609,8 +7982,18 @@ function buildHistoricoStatusReportHtml(projeto, modoView, containerId){
   if(historico.length===0){
     h+='<div class="empty-state" style="padding:30px 10px"><p>Nenhum Status Report registrado ainda para este projeto.</p></div>';
   }else{
-    h+='<div class="table-wrap"><table><thead><tr><th>Semana</th><th>Criticidade</th><th>Status</th><th>Atualizado em</th><th>Responsável</th><th></th></tr></thead><tbody>';
-    historico.forEach(r=>{
+    const colunasHist=[
+      {key:'semana',label:'Semana',tipo:'data',get:r=>r.semana_inicio},
+      {key:'criticidade',label:'Criticidade',tipo:'texto',get:r=>r.criticidade},
+      {key:'status',label:'Status',tipo:'texto',get:r=>r.status_preenchimento},
+      {key:'atualizado',label:'Atualizado em',tipo:'data',get:r=>r.data_atualizacao?(r.data_atualizacao+'').slice(0,10):''},
+      {key:'responsavel',label:'Responsável',tipo:'texto',get:r=>r.gerente_nome},
+      {label:''}
+    ];
+    const stHist=SORT_STATE[histTableId]||{col:null,dir:0};
+    const historicoOrd=stHist.col?ordenarLinhas_(historico,colunasHist.find(c=>c.key===stHist.col),stHist.dir):historico;
+    h+='<div class="table-wrap"><table>'+theadOrdenavel_(histTableId,colunasHist)+'<tbody>';
+    historicoOrd.forEach(r=>{
       const btnCls=modoView?'sr-ver-btn-view':'sr-ver-btn-edit';
       const btnLabel=modoView?'Ver':('Ver'+(r.status_preenchimento!=='Finalizado'?'/Editar':''));
       h+='<tr><td>'+srFmtBr(r.semana_inicio)+' – '+srFmtBr(r.semana_fim)+'</td>'+
@@ -7860,6 +8243,7 @@ function initLogAlteracoes(){
 const LOG_ALT_PAGE_SIZE=100;
 let LOG_ALT_PAGINA=1;
 function renderLogAlteracoes(manterPagina){
+  SORT_RERENDER['logalteracoes']=()=>renderLogAlteracoes(true);
   if(!manterPagina) LOG_ALT_PAGINA=1;
   const fTabela=document.getElementById('f-log-tabela').value;
   const fTipo=document.getElementById('f-log-tipo').value;
@@ -7875,13 +8259,25 @@ function renderLogAlteracoes(manterPagina){
   if(fAte) linhas=linhas.filter(l=>l.data_hora.slice(0,10)<=fAte);
 
   const TIPO_COR={'Criação':'#16a34a','Alteração':'#2563eb','Exclusão':'#dc2626'};
-  const qtdVisivel=Math.min(linhas.length, LOG_ALT_PAGINA*LOG_ALT_PAGE_SIZE);
-  const linhasVisiveis=linhas.slice(0, qtdVisivel);
+  const colunasLog=[
+    {key:'datahora',label:'Data/Hora',tipo:'data',get:l=>l.data_hora},
+    {key:'usuario',label:'Usuário',tipo:'texto',get:l=>l.usuario_nome||l.usuario_email},
+    {key:'tabela',label:'Tabela',tipo:'texto',get:l=>l.tabela},
+    {key:'identificador',label:'Identificador',tipo:'texto',get:l=>l.identificador},
+    {key:'operacao',label:'Operação',tipo:'texto',get:l=>l.tipo_operacao},
+    {key:'campo',label:'Campo',tipo:'texto',get:l=>l.campo},
+    {key:'antes',label:'Antes',tipo:'texto',get:l=>l.valor_anterior},
+    {key:'depois',label:'Depois',tipo:'texto',get:l=>l.valor_novo}
+  ];
+  const stLog=SORT_STATE['logalteracoes']||{col:null,dir:0};
+  const linhasOrd=stLog.col?ordenarLinhas_(linhas,colunasLog.find(c=>c.key===stLog.col),stLog.dir):linhas;
+  const qtdVisivel=Math.min(linhasOrd.length, LOG_ALT_PAGINA*LOG_ALT_PAGE_SIZE);
+  const linhasVisiveis=linhasOrd.slice(0, qtdVisivel);
   let h='<div class="card"><div class="card-title"><h3>Registros</h3><span class="sub">'+linhas.length+'</span></div>';
   if(linhas.length===0){
     h+='<div class="empty-state" style="padding:50px 20px"><p>Nenhum registro encontrado com esses filtros.</p></div>';
   }else{
-    h+='<div class="table-wrap" style="max-height:640px"><table><thead><tr><th>Data/Hora</th><th>Usuário</th><th>Tabela</th><th>Identificador</th><th>Operação</th><th>Campo</th><th>Antes</th><th>Depois</th></tr></thead><tbody>';
+    h+='<div class="table-wrap" style="max-height:640px"><table>'+theadOrdenavel_('logalteracoes',colunasLog)+'<tbody>';
     linhasVisiveis.forEach(l=>{
       h+='<tr><td style="white-space:nowrap">'+formatarDataHoraLog_(l.data_hora)+'</td><td>'+(l.usuario_nome||l.usuario_email||'—')+'</td><td>'+l.tabela+'</td><td>'+l.identificador+'</td>'+
         '<td><span class="status-pill" style="border-left:3px solid '+(TIPO_COR[l.tipo_operacao]||'#64748b')+'">'+l.tipo_operacao+'</span></td>'+
@@ -8042,6 +8438,7 @@ function initStatusReportPainel(){
   renderStatusReportPainel();
 }
 function renderStatusReportPainel(){
+  SORT_RERENDER['srp']=()=>renderStatusReportPainel();
   const fProj=document.getElementById('f-srp-projeto').value;
   const fGer=document.getElementById('f-srp-gerente').value;
   const fStatus=document.getElementById('f-srp-status').value;
@@ -8077,8 +8474,20 @@ function renderStatusReportPainel(){
   if(linhas.length===0){
     h+='<div class="empty-state" style="padding:40px 20px"><p>Nenhum Status Report encontrado com esses filtros.</p></div>';
   }else{
-    h+='<div class="table-wrap"><table><thead><tr><th>Projeto</th><th>Criticidade</th><th>Status do Projeto</th><th>Última Semana</th><th>Status do Report</th><th>Gerente</th><th>Atualizado em</th><th></th></tr></thead><tbody>';
-    linhas.forEach(r=>{
+    const colunasSrp=[
+      {key:'projeto',label:'Projeto',tipo:'texto',get:r=>r.projeto},
+      {key:'criticidade',label:'Criticidade',tipo:'texto',get:r=>r.criticidade},
+      {key:'statusprojeto',label:'Status do Projeto',tipo:'texto',get:r=>r.status_projeto},
+      {key:'semana',label:'Última Semana',tipo:'data',get:r=>r.semana_inicio},
+      {key:'statusreport',label:'Status do Report',tipo:'texto',get:r=>r.status_preenchimento},
+      {key:'gerente',label:'Gerente',tipo:'texto',get:r=>r.gerente_nome},
+      {key:'atualizado',label:'Atualizado em',tipo:'data',get:r=>r.data_atualizacao?(r.data_atualizacao+'').slice(0,10):''},
+      {label:''}
+    ];
+    const stSrp=SORT_STATE['srp']||{col:null,dir:0};
+    const linhasOrd=stSrp.col?ordenarLinhas_(linhas,colunasSrp.find(c=>c.key===stSrp.col),stSrp.dir):linhas;
+    h+='<div class="table-wrap"><table>'+theadOrdenavel_('srp',colunasSrp)+'<tbody>';
+    linhasOrd.forEach(r=>{
       h+='<tr><td><strong>'+projetoLinkHtml(r.projeto)+'</strong></td>'+
         '<td>'+srCriticidadeBadge(r.criticidade)+'</td>'+
         '<td>'+(r.status_projeto||'—')+'</td>'+
