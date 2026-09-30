@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxc61RvUzTsuPORrnMsw8w8XsVDUdDe6N29ynmz9jMU5iZakU7nBhCjQTiyrw49m8pw7w/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyke0WcOxR8GqdqIFNRKXnXFyYPOIWe4xllgxikl7FCAkYoJuf65Bz4nPMkULiwZPZ_RA/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1952,7 +1952,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v14.6';
+const APP_VERSION='v14.8';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2183,6 +2183,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
 // aparece no card "Última atualização" no topo da tela de Novidades.
 const NOVIDADES_ATUALIZADO_EM='29/09/2026';
 const NOVIDADES=[
+  {icone:'🚀', bg:'#fff7ed', cor:'#ea580c', titulo:'Páginas abrem mais rápido', descricao:'Depois do login, o dashboard não busca mais TODOS os dados de uma vez em segundo plano — cada página agora busca só o que ela precisa, na primeira vez que você abre ela na sessão (as próximas vezes são instantâneas). Resultado: bem menos dado trafegado logo após entrar.', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'↕️', bg:'#eff6ff', cor:'#2563eb', titulo:'Ordenação em todas as listas', descricao:'Agora dá pra ordenar por qualquer coluna em praticamente todas as tabelas do dashboard — clique no cabeçalho pra alternar entre crescente, decrescente e a ordem original. Funciona junto com os filtros já aplicados, sem recarregar dados.', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'⏳', bg:'#eff6ff', cor:'#2563eb', titulo:'Indicador de carregamento no topo', descricao:'Depois do login, o aviso de "carregando dados" agora aparece fixo no topo da tela, visível na hora — antes ficava embaixo da lista de novidades e exigia rolar a tela.', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🎨', bg:'#faf5ff', cor:'#9333ea', titulo:'Novo layout da tela de Novidades', descricao:'Banner de destaque no topo e cards em 3 colunas com categorias mais claras (Melhoria, Mudança, Nova, Nova página).', tag:'Melhoria', tagCor:'melhoria'},
@@ -2216,6 +2217,108 @@ function renderNovidades(){
     const tc=TAG_CORES[n.tag]||TAG_CORES['Melhoria'];
     return '<div class="nov-card"><div class="nov-card-top"><div class="nov-icon" style="background:'+n.bg+';color:'+n.cor+'">'+n.icone+'</div><h3>'+n.titulo+'</h3><span class="nov-tag" style="background:'+tc.bg+';color:'+tc.cor+'">'+n.tag+'</span></div><p>'+n.descricao+'</p><span class="nov-chevron">›</span></div>';
   }).join('');
+}
+// ============================================================
+// CARREGAMENTO SOB DEMANDA POR CAMPO — v14.7. Decisão confirmada ("Sob
+// demanda completo" + "Tudo de uma vez"): o antigo carregamento automático
+// de TODOS os campos pesados logo após action=core (ver
+// carregarDadosPesadosEmSegundoPlano, mantida abaixo só como fallback do
+// fluxo clássico) foi substituído por busca por página — cada página busca
+// só os campos que ela mesma usa, na primeira vez que é aberta nesta sessão.
+// Reaproveita a MESMA função de transporte de sempre (loadDataJSONPComRetry)
+// — só muda a URL, que ganha "&campos=A,B,C" (ver suporte a esse parâmetro
+// em doGet, AppsScript_Code.gs). NÃO mexe em action=auth, action=core, nem
+// no fluxo clássico (attemptLoadWithTokenClassico) — nenhum deles chama
+// nada do que está aqui.
+// Nome do campo no payload = mesmo nome já usado nas variáveis globais
+// atribuídas em carregarDadosCompletos/carregarDadosPesadosEmSegundoPlano —
+// só que aquelas variáveis são locais ao IIFE deste arquivo (não estão em
+// "window"), então a atribuição genérica por campo precisa passar por
+// atribuirCampoGlobal_ (switch explícito) em vez de "window[campo]=valor".
+const CAMPOS_CARREGADOS = new Set(); // nomes de campo já obtidos nesta sessão — nunca buscados de novo
+const CAMPOS_EM_VOO = new Map();     // campo -> Promise em andamento (dedupe de pedidos concorrentes pelo mesmo campo)
+// Valor "vazio" de cada campo pesado — mesmo padrão de fallback já usado em
+// carregarDadosCore/Completos, usado aqui só se o backend por algum motivo
+// não mandar um campo que foi pedido.
+const CAMPOS_DEFAULT_VAZIO = {
+  HM:{}, PM:{}, PM_PROJ:{}, CD:{}, CTOK:{}, EXECTOP:{positivos:{saude:[],ger_prazo:[],aderencia:[],area_prod:[],cli_saude:[]},negativos:{atrasados:[],estouro:[],zumbi:[],overload:[],ger_atraso:[],bloqueados:[],cli_risco:[]}},
+  PSTAT:{}, PHEST:{}, PHAP:{}, PVENC:{}, PPREVISTO:{}, PEND:[], PROJ_TASKS:{}, SEM_ALOC:[], ALOC_SEM_APONT:[]
+};
+// Mesma associação campo→variável global já usada em carregarDadosCompletos —
+// centralizada aqui pra não duplicar essa lista em cada chamador novo.
+function atribuirCampoGlobal_(campo, valor){
+  const v = (valor!==undefined && valor!==null) ? valor : CAMPOS_DEFAULT_VAZIO[campo];
+  switch(campo){
+    case 'HM': HM=v; break;
+    case 'PM': PM=v; break;
+    case 'PM_PROJ': PM_PROJ=v; break;
+    case 'CD': CD=v; break;
+    case 'CTOK': CTOK=v; break;
+    case 'EXECTOP': EXECTOP=v; break;
+    case 'PSTAT': PSTAT=v; break;
+    case 'PHEST': PHEST=v; break;
+    case 'PHAP': PHAP=v; break;
+    case 'PVENC': PVENC=v; break;
+    case 'PPREVISTO': PPREVISTO=v; break;
+    case 'PEND': PEND=v; break;
+    case 'PROJ_TASKS': PROJ_TASKS=v; break;
+    case 'SEM_ALOC': SEM_ALOC=v; break;
+    case 'ALOC_SEM_APONT': ALOC_SEM_APONT=v; break;
+    // D/AREAS/AREA_CL/STATUS_REPORTS já chegam inteiros em action=core —
+    // nunca passam por aqui (ver marcarCamposDoCoreComoCarregados_ abaixo),
+    // mas ficam listados só por completude/documentação.
+    case 'D': D=v; break;
+    case 'AREAS': AREAS=v; break;
+    case 'AREA_CL': AREA_CL=v; break;
+    case 'STATUS_REPORTS': STATUS_REPORTS=v; break;
+  }
+  invalidarCachesDeDadosGlobais();
+}
+// Chamada logo após action=core (que já entrega D/AREAS/AREA_CL/STATUS_REPORTS
+// completos) e logo após qualquer carregamento COMPLETO (carregarDadosCompletos,
+// attemptLoadWithTokenClassico) — marca os campos já em memória como
+// "carregados", pra garantirCampos_ nunca refazer uma busca desnecessária.
+function marcarCamposDoCoreComoCarregados_(){
+  ['D','AREAS','AREA_CL','STATUS_REPORTS'].forEach(c=>CAMPOS_CARREGADOS.add(c));
+}
+function marcarTodosCamposComoCarregados_(){
+  marcarCamposDoCoreComoCarregados_();
+  Object.keys(CAMPOS_DEFAULT_VAZIO).forEach(c=>CAMPOS_CARREGADOS.add(c));
+}
+// Garante que os campos pedidos estejam em memória antes de a página que os
+// chamou continuar montando seu HTML. Se todos já estiverem carregados,
+// resolve na hora, sem nenhuma chamada de rede nem flash de loading. Se
+// outra página já pediu um campo em comum e a busca ainda está em voo,
+// espera essa MESMA Promise em vez de duplicar a chamada de rede.
+async function garantirCampos_(camposNecessarios){
+  const faltando=(camposNecessarios||[]).filter(c=>!CAMPOS_CARREGADOS.has(c));
+  if(faltando.length===0) return; // nada a buscar — instantâneo
+
+  const emVooExistente=faltando.filter(c=>CAMPOS_EM_VOO.has(c)).map(c=>CAMPOS_EM_VOO.get(c));
+  const novos=faltando.filter(c=>!CAMPOS_EM_VOO.has(c));
+
+  let promessaNova=null;
+  if(novos.length>0){
+    promessaNova=(async()=>{
+      const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+      const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&campos='+novos.map(encodeURIComponent).join(',');
+      // Mesma função de transporte/retry já usada em todo o resto do login —
+      // nenhum mecanismo novo de rede criado aqui.
+      const j=await loadDataJSONPComRetry(url,2);
+      if(!j || j.error) throw new Error((j&&j.message)||'Erro ao carregar dados.');
+      novos.forEach(campo=>{ atribuirCampoGlobal_(campo, j[campo]); CAMPOS_CARREGADOS.add(campo); });
+      if(j._ultimaAtualizacaoPlanilha) updateFooter(j._ultimaAtualizacaoPlanilha, j._backendVersion);
+    })();
+    novos.forEach(c=>CAMPOS_EM_VOO.set(c,promessaNova));
+    promessaNova = promessaNova.finally(()=>{ novos.forEach(c=>{ if(CAMPOS_EM_VOO.get(c)) CAMPOS_EM_VOO.delete(c); }); });
+  }
+
+  mostrarLoadingGlobal('Carregando dados...');
+  try{
+    await Promise.all([promessaNova,...emVooExistente].filter(Boolean));
+  } finally {
+    esconderLoadingGlobal();
+  }
 }
 async function carregarDadosCore(token){
   HEAVY_DATA_READY=false;
@@ -2253,19 +2356,45 @@ async function carregarDadosCore(token){
         renderNovidades();
         document.getElementById('main-shell').classList.add('mostrando-novidades');
       }
-      // v14.5: não esconde mais a faixa fixa do topo aqui — ela é o único
-      // indicador de carregamento da tela de Novidades agora (ver comentário
-      // em attemptLoadWithToken), então precisa continuar visível até os
-      // dados pesados chegarem via carregarDadosCompletos logo abaixo.
-      carregarDadosCompletos(token, true);
+      // v14.7 — SOB DEMANDA POR CAMPO: a tela de Novidades é 100% conteúdo
+      // estático (array NOVIDADES) e não lê nenhum campo pesado — por isso
+      // não dispara mais nenhum carregamento completo em segundo plano
+      // (antes: carregarDadosCompletos(token,true)). D/AREAS/AREA_CL/
+      // STATUS_REPORTS já chegaram por completo nesta mesma resposta de
+      // "core" (ver marcarCamposDoCoreComoCarregados_ abaixo); os campos
+      // pesados só são buscados quando o Administrador navegar pra uma
+      // página de verdade pelo menu (ver garantirCampos_ em cada init/render).
+      marcarCamposDoCoreComoCarregados_();
+      D=j.D; AREAS=j.AREAS; AREA_CL=j.AREA_CL||{}; STATUS_REPORTS=j.STATUS_REPORTS||[];
+      HM={}; PM={}; PM_PROJ={}; CD={}; CTOK={}; EXECTOP=CAMPOS_DEFAULT_VAZIO.EXECTOP; PSTAT={}; PHEST={}; PHAP={};
+      PVENC={}; PPREVISTO={}; PEND=[]; PROJ_TASKS={}; SEM_ALOC=[]; ALOC_SEM_APONT=[];
+      invalidarCachesDeDadosGlobais();
+      CURRENT_USER_NOME=j._usuarioNome||j._usuario; CURRENT_USER_EMAIL=j._usuario;
+      showDataBadge('live');
+      updateFooter(j._ultimaAtualizacaoPlanilha, j._backendVersion);
+      VIEW_AS_STATE=null; TODOS_USUARIOS=j._todosUsuarios||[];
+      EFFECTIVE_PERFIL=j._perfil; EFFECTIVE_EXCECOES=j._excecoesPermissao||{add:[],remove:[]};
+      const viewasWrapAdmin=document.getElementById('viewas-wrap');
+      if(viewasWrapAdmin) viewasWrapAdmin.style.display='';
+      addLogoutControl(j._usuarioNome||j._usuario, j._perfil);
+      atualizarFaixaVisualizarComo();
+      aplicarMenuDinamico();
+      document.getElementById('main-shell').classList.remove('aguardando-dados');
+      HEAVY_DATA_READY=true;
+      esconderLoadingGlobal();
       return;
     }
     D=j.D; AREAS=j.AREAS; AREA_CL=j.AREA_CL||{}; STATUS_REPORTS=j.STATUS_REPORTS||[];
-    // Campos pesados começam vazios — só ficam prontos quando a etapa de
-    // segundo plano completar. Páginas que dependem deles ficam bloqueadas
-    // na navegação até lá (ver goToPage/HEAVY_DATA_READY), então nunca
-    // chegam a ler esses valores vazios por engano.
-    HM={}; PM={}; PM_PROJ={}; CD={}; CTOK={}; EXECTOP=[]; PSTAT={}; PHEST={}; PHAP={};
+    // v14.7 — SOB DEMANDA POR CAMPO: D/AREAS/AREA_CL/STATUS_REPORTS já
+    // chegaram inteiros nesta resposta (action=core nunca os poda) — marca
+    // como "carregados" pra garantirCampos_ nunca refazer essa busca. Os
+    // campos pesados (PROJ_TASKS e afins) começam com um valor vazio só como
+    // proteção defensiva (nenhuma página deveria lê-los antes de chamar
+    // garantirCampos_, mas um valor vazio é mais seguro que "undefined" se
+    // isso um dia acontecer por engano) — cada um só fica marcado como
+    // carregado (CAMPOS_CARREGADOS) quando realmente buscado sob demanda.
+    marcarCamposDoCoreComoCarregados_();
+    HM={}; PM={}; PM_PROJ={}; CD={}; CTOK={}; EXECTOP=CAMPOS_DEFAULT_VAZIO.EXECTOP; PSTAT={}; PHEST={}; PHAP={};
     PVENC={}; PPREVISTO={}; PEND=[]; PROJ_TASKS={}; SEM_ALOC=[]; ALOC_SEM_APONT=[];
     invalidarCachesDeDadosGlobais();
     CURRENT_USER_NOME=j._usuarioNome||j._usuario; CURRENT_USER_EMAIL=j._usuario;
@@ -2297,8 +2426,16 @@ async function carregarDadosCore(token){
     document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
     document.getElementById('page-cliente')?.classList.add('active');
     document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.page==='cliente'));
+    // v14.7 — SOB DEMANDA POR CAMPO: não dispara mais a busca automática de
+    // TODOS os campos pesados em segundo plano (carregarDadosPesadosEmSegundoPlano,
+    // mantida abaixo só como parte do fluxo de fallback antigo — não é mais
+    // chamada daqui). Cada página busca só o que precisa, na hora que é
+    // aberta (ver garantirCampos_, chamado de dentro de boot()/PAGE_INIT_MAP
+    // abaixo). A navegação nunca mais fica bloqueada esperando um
+    // carregamento completo em segundo plano — por isso libera aqui.
+    HEAVY_DATA_READY=true;
+    esconderLoadingGlobal();
     boot('cliente');
-    carregarDadosPesadosEmSegundoPlano(token);
   }catch(e){
     console.warn('Falha na etapa "core" do carregamento, caindo pro fluxo completo.',e);
     carregarDadosCompletos(token);
@@ -2379,6 +2516,11 @@ async function carregarDadosCompletos(token, semBannerTopo){
     PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
     invalidarCachesDeDadosGlobais();
     STATUS_REPORTS=j.STATUS_REPORTS||[];
+    // v14.7 — SOB DEMANDA POR CAMPO: esta chamada já trouxe TUDO de uma vez
+    // (fluxo de fallback/contingência, sem "campos") — marca todos os campos
+    // como carregados pra garantirCampos_ nunca refazer nenhuma dessas
+    // buscas depois, em nenhuma página.
+    marcarTodosCamposComoCarregados_();
     CURRENT_USER_NOME=j._usuarioNome||j._usuario; CURRENT_USER_EMAIL=j._usuario;
     showDataBadge('live');
     updateFooter(j._ultimaAtualizacaoPlanilha, j._backendVersion);
@@ -2456,6 +2598,11 @@ async function attemptLoadWithTokenClassico(token, viewAsEmail){
     PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
     invalidarCachesDeDadosGlobais();
     STATUS_REPORTS=j.STATUS_REPORTS||[];
+    // v14.7 — fluxo clássico preservado tal como era: continua buscando TUDO
+    // numa chamada só. Marca todos os campos como carregados pra
+    // garantirCampos_ não refazer nenhuma busca sob demanda depois (ex: ao
+    // navegar pra uma página pesada logo após "Visualizar como").
+    marcarTodosCamposComoCarregados_();
     CURRENT_USER_NOME=j._usuarioNome||j._usuario; CURRENT_USER_EMAIL=j._usuario;
     showDataBadge('live');
     updateFooter(j._ultimaAtualizacaoPlanilha, j._backendVersion);
@@ -5484,7 +5631,7 @@ let PD_GANTT_ATE = '';
 let PD_GANTT_BASE_TASKS = [];
 let PD_CURRENT_PJ = '';
 let PD_ORIGIN_PAGE = 'cliente';
-function openProjDetail(pjName){
+async function openProjDetail(pjName){
   const activePage=document.querySelector('.page.active');
   if(activePage && activePage.id==='page-lider') PD_ORIGIN_PAGE='lider';
   else if(activePage && activePage.id==='page-gerente') PD_ORIGIN_PAGE='gerente';
@@ -5500,6 +5647,17 @@ function openProjDetail(pjName){
   PD_GANTT_DE = '';
   PD_GANTT_ATE = '';
   PD_CURRENT_PJ = pjName;
+  // v14.7 — SOB DEMANDA POR CAMPO: Detalhamento do Projeto precisa de
+  // PROJ_TASKS (D/STATUS_REPORTS já vêm completos desde "core") — busca só
+  // na primeira vez que alguém abre esta tela na sessão (ver garantirCampos_).
+  try{
+    await garantirCampos_(['PROJ_TASKS']);
+  }catch(e){
+    console.warn('Falha ao carregar dados do Detalhamento do Projeto.',e);
+    const detalhe=(e&&e.message)?' ('+e.message+')':'';
+    mostrarErroLoadingGlobal('Não foi possível carregar os dados deste projeto.'+detalhe, ()=>openProjDetail(pjName));
+    return;
+  }
   renderProjDetail(pjName);
 }
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -6527,9 +6685,26 @@ function computeTopExecPeriod(de,ate){
 
   return{saude:saude.slice(0,5),area_prod:areaProd.slice(0,5),cli_saude:cliSaude.slice(0,5),overload:overload.slice(0,5)};
 }
-function renderTopExec(){
+async function renderTopExec(){
   const[de,ate]=getDateRange('f-topexec-de','f-topexec-ate');
   const periodoAtivo = !!(de||ate);
+  // v14.7 — SOB DEMANDA POR CAMPO: EXECTOP, PM e PPREVISTO são necessários
+  // sempre que esta página é aberta (o ranking "Ociosidade Semanal" mais
+  // abaixo usa PM/PPREVISTO mesmo sem nenhum período selecionado — achado ao
+  // auditar a função linha por linha, não fazia parte da lista original de
+  // campos por página). PROJ_TASKS só é buscado quando um período é
+  // efetivamente selecionado (computeTopExecPeriod), nunca na abertura
+  // simples da página — igual pedido. Campos já carregados não geram nova
+  // chamada de rede (ver garantirCampos_).
+  const camposTopExec=['EXECTOP','PM','PPREVISTO'].concat(periodoAtivo?['PROJ_TASKS']:[]);
+  try{
+    await garantirCampos_(camposTopExec);
+  }catch(e){
+    console.warn('Falha ao carregar dados de Destaques/Top Executivo.',e);
+    const detalhe=(e&&e.message)?' ('+e.message+')':'';
+    mostrarErroLoadingGlobal('Não foi possível carregar os dados desta página.'+detalhe, ()=>renderTopExec());
+    return;
+  }
   const P=EXECTOP.positivos, N=EXECTOP.negativos;
   const PP = periodoAtivo ? computeTopExecPeriod(de,ate) : null;
   const tagPeriodo = periodoAtivo ? ' (no período)' : ' (geral)';
@@ -8513,14 +8688,76 @@ function renderStatusReportPainel(){
 // resto (que ela não está olhando ainda) sem bloquear a thread principal —
 // principalmente relevante ao trocar de perfil em "Visualizar como", quando o
 // dashboard inteiro (12 páginas) recarrega de uma vez.
+// v14.7 — SOB DEMANDA POR CAMPO: campos pesados (além de D/AREAS/AREA_CL/
+// STATUS_REPORTS, já entregues por completo em action=core) que cada página
+// precisa buscar antes de montar seu HTML — lista tirada da análise de uso
+// campo-a-campo já feita (ver claude/analise-carregamento-sob-demanda-por-
+// pagina.md no projeto). Páginas do PAGE_INIT_MAP que não aparecem aqui não
+// precisam de nada: ou só leem D/AREAS/AREA_CL/STATUS_REPORTS (Liderança,
+// Meus Projetos, Gestão Transversal, Status Report, Painel de Status
+// Report), ou têm ações dedicadas próprias e nunca leem fullData (Edição do
+// Portfólio, Log de Alterações, Permissões, Administração de Pessoas).
+// "topexec" (Destaques/Top Executivo) NÃO está aqui de propósito: os campos
+// que precisa dependem de um filtro de período aplicado em tempo real (não
+// só de abrir a página) — tratado direto dentro de renderTopExec, não por
+// este mapa (ver comentário lá).
+const PAGINA_CAMPOS_NECESSARIOS={
+  cliente:['PROJ_TASKS'],
+  alocacoes:['PROJ_TASKS','PSTAT','PHEST','PHAP'],
+  inteligencia:['PROJ_TASKS','PSTAT','PHEST','PHAP'],
+  pessoa:['PM','PM_PROJ','PROJ_TASKS','CD','CTOK','PSTAT','PPREVISTO','PHEST','PHAP','HM','PVENC'],
+  area:['PPREVISTO','PM'],
+  // DESVIO da lista original (achado ao auditar chamadas fora das páginas
+  // listadas — ver instrução de auditoria): Pendências também precisa de
+  // PROJ_TASKS, não só PEND. Motivo: cada linha da tabela chama
+  // taskLinkHtml()/tarefaIndicePorNome(), que consultam PROJ_TASKS pra
+  // montar o link clicável da tarefa (abre o modal de detalhe). Sem
+  // PROJ_TASKS em memória, taskLinkHtml() degrada silenciosamente pro nome
+  // em texto puro (sem link) — no fluxo antigo isso nunca acontecia porque
+  // PROJ_TASKS já vinha carregado por completo em segundo plano antes de
+  // qualquer navegação fora de "cliente" ser liberada (HEAVY_DATA_READY);
+  // no carregamento sob demanda isso deixou de ser garantido.
+  pend:['PEND','PROJ_TASKS'],
+  ociosos:['SEM_ALOC','ALOC_SEM_APONT','PPREVISTO','PM','PVENC'],
+  futuristic:['PROJ_TASKS','HM','PPREVISTO','PM','EXECTOP','SEM_ALOC'],
+  equipe:['PM','PPREVISTO','PHAP','PHEST','PSTAT','SEM_ALOC','ALOC_SEM_APONT','PVENC'],
+  setorial:['SEM_ALOC','ALOC_SEM_APONT','PPREVISTO','PM'],
+  andamento:['PROJ_TASKS']
+};
+// Embrulha um init/render de página: garante os campos necessários (busca só
+// os que ainda faltam, sem custo se já estiverem em memória) ANTES de rodar
+// a função original — nenhuma linha da função original é alterada. Em caso
+// de falha na busca, mostra o erro global de sempre (mostrarErroLoadingGlobal)
+// com um "Tentar novamente" que refaz exatamente este mesmo passo; também
+// desmarca a página em PAGES_INITIALIZED, pra uma nova navegação até ela
+// (sem usar o botão de retry) tentar de novo automaticamente, em vez de
+// ficar "presa" como inicializada sem dados.
+function comCamposNecessarios_(nomePagina, fnOriginal){
+  const wrapped=async function(...args){
+    const campos=PAGINA_CAMPOS_NECESSARIOS[nomePagina];
+    if(campos && campos.length){
+      try{
+        await garantirCampos_(campos);
+      }catch(e){
+        console.warn('Falha ao carregar dados da página "'+nomePagina+'".',e);
+        PAGES_INITIALIZED.delete(nomePagina);
+        const detalhe=(e&&e.message)?' ('+e.message+')':'';
+        mostrarErroLoadingGlobal('Não foi possível carregar os dados desta página.'+detalhe, ()=>wrapped(...args));
+        return;
+      }
+    }
+    return fnOriginal(...args);
+  };
+  return wrapped;
+}
 const PAGE_INIT_MAP={
-  cliente:initCliente, alocacoes:initAlocacoes, inteligencia:initInteligenciaAlocacao, portfolioedit:initPortfolioEdit, pessoa:initPessoa, area:initArea, pend:initPend,
-  ociosos:initOciosos, topexec:initTopExec, futuristic:renderFuturistic,
-  lider:initLider, gerente:initGerente, equipe:initEquipe,
-  setorial:initSetorial, transversal:initTransversal, statusreport:initStatusReport,
+  cliente:comCamposNecessarios_('cliente',initCliente), alocacoes:comCamposNecessarios_('alocacoes',initAlocacoes), inteligencia:comCamposNecessarios_('inteligencia',initInteligenciaAlocacao), portfolioedit:initPortfolioEdit, pessoa:comCamposNecessarios_('pessoa',initPessoa), area:comCamposNecessarios_('area',initArea), pend:comCamposNecessarios_('pend',initPend),
+  ociosos:comCamposNecessarios_('ociosos',initOciosos), topexec:initTopExec, futuristic:comCamposNecessarios_('futuristic',renderFuturistic),
+  lider:initLider, gerente:initGerente, equipe:comCamposNecessarios_('equipe',initEquipe),
+  setorial:comCamposNecessarios_('setorial',initSetorial), transversal:initTransversal, statusreport:initStatusReport,
   statusreportpainel:initStatusReportPainel,
   logalteracoes:initLogAlteracoes,
-  andamento:initAndamento,
+  andamento:comCamposNecessarios_('andamento',initAndamento),
   permissoes:initPermissoes,
   pessoasadmin:initPessoasAdmin
 };
