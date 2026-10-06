@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwMeSf_ZEzFAapkDkk4ZMkOmW2_1ZVZwotUtj0ZDXSxmJoMCAC6VaKHNz5tG2uxerd7QA/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwlddjO8TBwCtpSehGkLo3ODHB5EtTVHeMK87iiRbl3Hp-pdGU6DZ4vGDeNUoNXqJ5O9w/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -101,7 +101,10 @@ html[data-theme="dark"]{
 }
 
 *{box-sizing:border-box;}
-html,body{margin:0;padding:0;overflow-x:hidden;max-width:100%;}
+/* v15.6: body com overflow-x:hidden vira contêiner de rolagem e QUEBRA o
+   position:sticky da topbar; overflow-x:clip corta o excesso sem criar contêiner. */
+html{margin:0;padding:0;overflow-x:hidden;max-width:100%;}
+body{margin:0;padding:0;overflow-x:clip;max-width:100%;}
 body{
   background:var(--bg);
   color:var(--text);
@@ -283,6 +286,8 @@ a{color:inherit;}
 .cal-pj-link{color:var(--primary); font-weight:700; cursor:pointer; border-bottom:1px dashed var(--border-strong); background:none; border-top:0; border-left:0; border-right:0; padding:0; font-family:inherit; font-size:inherit; text-align:left;}
 .cal-pj-link:hover{border-bottom-style:solid;}
 .cal-vazio{color:var(--text-faint);}
+/* v15.6: no Detalhamento do Projeto a barra com o botão "← Voltar" também fica fixa sob a topbar */
+#page-projdetail>.page-header{position:sticky; top:var(--topbar-h); z-index:9980; background:var(--bg); padding:8px 0 2px; margin-bottom:10px;}
 .cal-table-wrap{max-height:none;}
 @media (max-width:700px){
   #page-calendario .cal-sort-mobile{display:flex;}
@@ -377,7 +382,7 @@ main{flex:1; padding:22px 24px 60px; max-width:1520px; width:100%; margin:0 auto
 
 /* Faixa de voltar — fina, discreta, logo abaixo do menu (não mais colada no
    título da página, que ocupava uma linha inteira só pra isso). */
-.voltar-strip{display:flex; align-items:center; padding:5px 24px; background:var(--surface-alt); border-bottom:1px solid var(--border);}
+.voltar-strip{display:flex; align-items:center; padding:5px 24px; background:var(--surface-alt); border-bottom:1px solid var(--border); position:sticky; top:var(--topbar-h); z-index:9980;}
 .voltar-strip.hidden{display:none;}
 .voltar-strip-btn{display:flex; align-items:center; gap:5px; background:transparent; color:var(--primary); border:1px solid var(--border); border-radius:6px; padding:3px 9px; font-size:11.5px; font-weight:600; cursor:pointer; font-family:var(--font-body);}
 .voltar-strip-btn:hover{background:var(--surface); border-color:var(--primary);}
@@ -1276,7 +1281,24 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .nov-card h3{font-size:14.5px;font-weight:700;color:var(--text);margin:0;flex:1;min-width:0;}
 .nov-card p{font-size:12.5px;color:var(--text-muted);line-height:1.55;margin:0;}
 .nov-tag{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:999px;margin-left:auto;flex-shrink:0;white-space:nowrap;}
-.nov-chevron{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--text-faint);font-size:16px;}
+.nov-chevron{display:none;}
+.nov-card{padding:18px 20px;display:flex;flex-direction:column;gap:2px;}
+.nov-card.is-new{border-color:#93c5fd;box-shadow:0 0 0 3px rgba(147,197,253,.35);}
+.nov-new{position:absolute;top:-1px;right:14px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;border-radius:0 0 8px 8px;padding:2px 9px;letter-spacing:.04em;}
+.nov-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:10px;}
+.nov-pg{font-size:11.5px;color:var(--text-faint);} .nov-pg b{color:var(--text-muted);}
+.nov-lnk{border:1px solid var(--border);background:var(--surface-alt);border-radius:8px;padding:4px 10px;font:700 12px var(--font-body);color:var(--primary);cursor:pointer;}
+.nov-lnk:hover{border-color:var(--primary);}
+.nov-prof{display:inline-block;margin-top:10px;background:var(--surface);border-radius:999px;padding:3px 11px;font-size:12px;font-weight:700;color:var(--primary);}
+.nov-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px;}
+.nov-chip{border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:6px 13px;font:600 12.5px var(--font-body);color:var(--text-muted);cursor:pointer;}
+.nov-chip.on{background:var(--primary);color:#fff;border-color:var(--primary);}
+.nov-sp{flex:1;} .nov-cnt{font-size:12.5px;color:var(--text-faint);}
+.nov-go{background:var(--primary);color:#fff;border:0;border-radius:9px;padding:8px 14px;font:700 13px var(--font-body);cursor:pointer;}
+.nov-scope{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.4);color:var(--text-muted);border-radius:12px;padding:10px 14px;margin-bottom:16px;font-size:12.5px;}
+.nov-empty{grid-column:1/-1;text-align:center;color:var(--text-faint);padding:50px 10px;background:var(--surface);border:1px dashed var(--border);border-radius:16px;}
+.nav-nov-badge{margin-left:auto;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:10.5px;font-weight:800;text-align:center;line-height:18px;padding:0 5px;}
+body.nav-collapsed .nav-nov-badge{display:none;}
 @media (max-width:980px){.nov-grid{grid-template-columns:1fr 1fr;}}
 @media (max-width:640px){.nov-grid{grid-template-columns:1fr;} .nov-hero{padding:22px;} .nov-hero-illus{display:none;} .nov-update-pill{width:100%;}}
 #main-shell.aguardando-dados #global-voltar-btn{display:none !important;}
@@ -1469,7 +1491,8 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
           <div class="nov-hero-text">
             <p class="nov-eyebrow">Novidades do dashboard</p>
             <h1>Fique por dentro das últimas atualizações</h1>
-            <p>Veja o que mudou recentemente — use o menu acima para navegar pelo dashboard.</p>
+            <p>Mostramos só o que mudou nas páginas e funcionalidades a que você tem acesso — use o menu para navegar pelo dashboard.</p>
+            <span class="nov-prof" id="nov-prof"></span>
           </div>
           <div class="nov-hero-illus">
             <div class="nhi-win">
@@ -1488,6 +1511,8 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
           </div>
         </div>
       </div>
+      <div class="nov-toolbar" id="nov-toolbar"></div>
+      <div class="nov-scope" id="nov-scope" style="display:none"></div>
       <div class="nov-grid" id="nov-grid"></div>
     </div>
     <!-- PAGE CLIENTE -->
@@ -2062,7 +2087,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v15.5';
+const APP_VERSION='v15.7';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2253,15 +2278,13 @@ async function attemptLoadWithToken(token, viewAsEmail){
     // do app — antes era um indicador embutido no fim da grade de cards
     // (#nov-loading-status, removido), que ficava fora da área visível sem
     // rolar a tela numa lista longa de novidades.
-    if(authResp.perfil==='Administrador'){
-      document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-      document.getElementById('page-futuristic')?.classList.add('active');
-      renderNovidades();
-      document.getElementById('main-shell').classList.add('mostrando-novidades');
-      mostrarLoadingGlobal('Carregando dados do dashboard…');
-    }else{
-      mostrarLoadingGlobal('Carregando dados essenciais…');
-    }
+    // v15.7: vale pra TODOS os perfis (antes só Administrador).
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+    document.getElementById('page-futuristic')?.classList.add('active');
+    document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.page==='novidades'));
+    renderNovidades();
+    document.getElementById('main-shell').classList.add('mostrando-novidades');
+    mostrarLoadingGlobal('Carregando dados do dashboard…');
     carregarDadosCore(token);
   }catch(e){
     LOGIN_2FASES_EM_ANDAMENTO=false; // v12.7: libera pra permitir nova tentativa
@@ -2293,28 +2316,66 @@ async function attemptLoadWithToken(token, viewAsEmail){
 // aparece no card "Última atualização" no topo da tela de Novidades.
 const NOVIDADES_ATUALIZADO_EM='06/10/2026';
 const NOVIDADES=[
-  {icone:'🗓️', bg:'#eff6ff', cor:'#2563eb', titulo:'Calendário de Projetos', descricao:'Nova página em Portfólio com Cliente, Projeto, Data de Início, Prev. Entrega Atual e Data de Entrega de cada projeto. Filtre por cliente, projeto e status, ordene por qualquer coluna e exporte para Excel o que estiver na tela. Clique no projeto para abrir o detalhamento. Exclusiva do perfil Administrador.', tag:'Nova página', tagCor:'nova'},
-  {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo menu lateral', descricao:'O menu agora é lateral e organizado por assunto: Visão Executiva, Portfólio, Projetos, Pessoas e Capacidade e Administração. Algumas páginas mudaram de grupo e de nome (ex.: Desempenho por Pessoa, Carga e Risco de Alocação, Projetos por Líder, Entrega e Produtividade). Dá para recolher o menu, e no celular ele abre como gaveta.', tag:'Mudança', tagCor:'melhoria'},
-  {icone:'👔', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo perfil: Gestor', descricao:'O perfil Gestor enxerga ele mesmo, os liderados diretos (coluna Gestor da aba Pessoas_Area) e os projetos em que eles atuam, com o mesmo menu do perfil Head.', tag:'Nova', tagCor:'nova'},
-  {icone:'🎯', bg:'#eff6ff', cor:'#2563eb', titulo:'Filtro de projetos Concluídos / Não Concluídos', descricao:'Inteligência de Alocação e Desempenho ganharam o filtro "Projetos: Todos · Concluídos · Não Concluídos". Em Inteligência de Alocação, projetos, score, situação, tarefas e horas apontadas são recalculados só com os projetos do filtro; em Desempenho, a página abre em "Não Concluídos" (todo projeto com status diferente de Concluído) e o filtro vale para projetos, horas, tarefas, tarefas por status, carga semanal e horas por mês, com os percentuais recalculados só sobre os projetos visíveis. Horas estimadas, percentis e Claude Code continuam sendo o total da pessoa.', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'🚀', bg:'#fff7ed', cor:'#ea580c', titulo:'Páginas abrem mais rápido', descricao:'Depois do login, o dashboard não busca mais TODOS os dados de uma vez em segundo plano — cada página agora busca só o que ela precisa, na primeira vez que você abre ela na sessão (as próximas vezes são instantâneas). Resultado: bem menos dado trafegado logo após entrar.', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'↕️', bg:'#eff6ff', cor:'#2563eb', titulo:'Ordenação em todas as listas', descricao:'Agora dá pra ordenar por qualquer coluna em praticamente todas as tabelas do dashboard — clique no cabeçalho pra alternar entre crescente, decrescente e a ordem original. Funciona junto com os filtros já aplicados, sem recarregar dados.', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'⏳', bg:'#eff6ff', cor:'#2563eb', titulo:'Indicador de carregamento no topo', descricao:'Depois do login, o aviso de "carregando dados" agora aparece fixo no topo da tela, visível na hora — antes ficava embaixo da lista de novidades e exigia rolar a tela.', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'🎨', bg:'#faf5ff', cor:'#9333ea', titulo:'Novo layout da tela de Novidades', descricao:'Banner de destaque no topo e cards em 3 colunas com categorias mais claras (Melhoria, Mudança, Nova, Nova página).', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'⚡', bg:'#fff7ed', cor:'#ea580c', titulo:'Dashboard mais rápido', descricao:'Reduzimos o trabalho feito no login (só a página que você abre é carregada, não todas de uma vez), otimizamos buscas, filtros e o carregamento do Log de Alterações, e o F5 agora mostra os dados da última sessão na hora enquanto atualiza por trás.', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'🏷️', bg:'#faf5ff', cor:'#9333ea', titulo:'Nome oficial: Central de Projetos Be Solution', descricao:'O dashboard agora tem nome oficial — Central de Projetos Be Solution. Você vai ver o nome no título da aba, na tela de login e no rodapé.', tag:'Novidade', tagCor:'nova'},
-  {icone:'🔒', bg:'#fef2f2', cor:'#dc2626', titulo:'Login exige Perfil de Acesso', descricao:'Quem não tiver um Perfil de Acesso cadastrado em Pessoas_Area não consegue mais entrar no dashboard — cadastre o perfil da pessoa em Administração de Pessoas antes dela tentar logar.', tag:'Mudança', tagCor:'melhoria'},
-  {icone:'🟢', bg:'#f0fdf4', cor:'#16a34a', titulo:'Status Ativo/Inativo e Nome Completo', descricao:'Pessoas_Area ganhou os campos Status (Ativo/Inativo) e Nome Completo. Gente Inativa some dos seletores de pessoa (Alocações, Equipe etc.), mas continua nas listas de conteúdo já existentes.', tag:'Nova', tagCor:'nova'},
-  {icone:'📰', bg:'#f1f5f9', cor:'#64748b', titulo:'Entrada direto em Novidades', descricao:'O perfil Administrador agora entra direto nesta tela ao logar, em vez de ser redirecionado pra Central de Comando — navegue pelo menu quando quiser.', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'👥', bg:'#eff6ff', cor:'#2563eb', titulo:'Administração de Pessoas', descricao:'Cadastre, edite e consulte todo mundo em um só lugar — nome, cargo, área, perfil de acesso e último login.', tag:'Nova página', tagCor:'nova'},
-  {icone:'⏸️', bg:'#f1f5f9', cor:'#64748b', titulo:'Situação de Paralisação', descricao:'Projetos com Status "Pausado" no Portfólio agora aparecem como "Paralisado" em vez de "Atrasado", e a contagem de atraso fica suspensa enquanto durar a pausa.', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'🟢', bg:'#f0fdf4', cor:'#16a34a', titulo:'Inteligência de Alocação mais limpa', descricao:'A tabela agora mostra só o ícone de situação (passe o mouse pra ver o nome completo), deixando a leitura mais rápida.', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'🔐', bg:'#eff6ff', cor:'#2563eb', titulo:'Administração de Permissões', descricao:'Libere ou remova páginas específicas para um usuário, além do que o perfil dele já dá por padrão.', tag:'Nova página', tagCor:'nova'},
-  {icone:'📊', bg:'#eff6ff', cor:'#2563eb', titulo:'Andamento dos Projetos', descricao:'Visão executiva com % de prazo, GAP e risco calculado automaticamente pra cada projeto.', tag:'Nova página', tagCor:'nova'},
-  {icone:'📜', bg:'#f0fdf4', cor:'#16a34a', titulo:'Log de Alterações', descricao:'Auditoria completa de criações, edições e exclusões no Portfólio e Status Reports.', tag:'Nova página', tagCor:'nova'},
-  {icone:'⚡', bg:'#fff7ed', cor:'#ea580c', titulo:'Carregamento mais rápido', descricao:'Reduzimos o tamanho dos dados carregados em até 75%, tornando o acesso mais ágil.', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'✅', bg:'#faf5ff', cor:'#9333ea', titulo:'Status Report', descricao:'Confirmação clara ao salvar e botão de atualização no histórico de relatórios.', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'📣', bg:'#eff6ff', cor:'#2563eb', titulo:'Novidades é a página inicial de todos os perfis', descricao:'Depois do login, todo mundo cai direto nesta tela. Você vê só o que mudou nas páginas que o seu perfil acessa (mais as novidades gerais), com o selo NOVO no que saiu depois do seu último acesso, filtro por categoria e atalho pra abrir a página citada.', paginas:[], data:'2026-10-06', tag:'Mudança', tagCor:'melhoria'},
+  {icone:'🛠️', bg:'#f0fdf4', cor:'#16a34a', titulo:'Edição do Portfólio: mesmo projeto, clientes diferentes', descricao:'Projetos com o mesmo nome em clientes diferentes (ex.: Migração da Arco e da CNI) agora abrem, salvam e excluem o registro certo — o projeto é identificado por Cliente + Projeto. Ao criar um projeto novo, o cliente também é informado.', paginas:['portfolioedit'], data:'2026-10-06', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'📌', bg:'#eff6ff', cor:'#2563eb', titulo:'Barra superior e botão Voltar fixos', descricao:'A barra do topo e o botão "← Voltar" agora ficam visíveis enquanto você rola a página, inclusive no Detalhamento do Projeto.', paginas:[], data:'2026-10-06', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🗓️', bg:'#eff6ff', cor:'#2563eb', titulo:'Calendário de Projetos', descricao:'Nova página em Portfólio (exclusiva do Administrador) com Cliente, Projeto, Criticidade, Complexidade, Data de Início, Prev. Entrega Inicial, Prev. Entrega Atual e Data de Entrega de cada projeto. Filtre por cliente, projeto e status, ordene por qualquer coluna e exporte para Excel o que estiver na tela. Clique no projeto para abrir o detalhamento. Exclusiva do perfil Administrador.', paginas:['calendario'], data:'2026-10-06', tag:'Nova página', tagCor:'nova'},
+  {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo menu lateral', descricao:'O menu agora é lateral e organizado por assunto: Visão Executiva, Portfólio, Projetos, Pessoas e Capacidade e Administração. Algumas páginas mudaram de grupo e de nome (ex.: Desempenho por Pessoa, Carga e Risco de Alocação, Projetos por Líder, Entrega e Produtividade). Dá para recolher o menu, e no celular ele abre como gaveta.', paginas:[], data:'2026-10-05', tag:'Mudança', tagCor:'melhoria'},
+  {icone:'👔', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo perfil: Gestor', descricao:'O perfil Gestor enxerga ele mesmo, os liderados diretos (coluna Gestor da aba Pessoas_Area) e os projetos em que eles atuam, com o mesmo menu do perfil Head.', paginas:['pessoasadmin','equipe'], data:'2026-10-05', tag:'Nova', tagCor:'nova'},
+  {icone:'🎯', bg:'#eff6ff', cor:'#2563eb', titulo:'Filtro de projetos Concluídos / Não Concluídos', descricao:'Inteligência de Alocação e Desempenho ganharam o filtro "Projetos: Todos · Concluídos · Não Concluídos". Em Inteligência de Alocação, projetos, score, situação, tarefas e horas apontadas são recalculados só com os projetos do filtro; em Desempenho, a página abre em "Não Concluídos" (todo projeto com status diferente de Concluído) e o filtro vale para projetos, horas, tarefas, tarefas por status, carga semanal e horas por mês, com os percentuais recalculados só sobre os projetos visíveis. Horas estimadas, percentis e Claude Code continuam sendo o total da pessoa.', paginas:['inteligencia','pessoa'], data:'2026-10-04', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🚀', bg:'#fff7ed', cor:'#ea580c', titulo:'Páginas abrem mais rápido', descricao:'Depois do login, o dashboard não busca mais TODOS os dados de uma vez em segundo plano — cada página agora busca só o que ela precisa, na primeira vez que você abre ela na sessão (as próximas vezes são instantâneas). Resultado: bem menos dado trafegado logo após entrar.', paginas:[], data:'2026-10-02', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'↕️', bg:'#eff6ff', cor:'#2563eb', titulo:'Ordenação em todas as listas', descricao:'Agora dá pra ordenar por qualquer coluna em praticamente todas as tabelas do dashboard — clique no cabeçalho pra alternar entre crescente, decrescente e a ordem original. Funciona junto com os filtros já aplicados, sem recarregar dados.', paginas:[], data:'2026-10-01', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'⏳', bg:'#eff6ff', cor:'#2563eb', titulo:'Indicador de carregamento no topo', descricao:'Depois do login, o aviso de "carregando dados" agora aparece fixo no topo da tela, visível na hora — antes ficava embaixo da lista de novidades e exigia rolar a tela.', paginas:[], data:'2026-09-30', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🎨', bg:'#faf5ff', cor:'#9333ea', titulo:'Novo layout da tela de Novidades', descricao:'Banner de destaque no topo e cards em 3 colunas com categorias mais claras (Melhoria, Mudança, Nova, Nova página).', paginas:[], data:'2026-09-29', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'⚡', bg:'#fff7ed', cor:'#ea580c', titulo:'Dashboard mais rápido', descricao:'Reduzimos o trabalho feito no login (só a página que você abre é carregada, não todas de uma vez), otimizamos buscas, filtros e o carregamento do Log de Alterações, e o F5 agora mostra os dados da última sessão na hora enquanto atualiza por trás.', paginas:[], data:'2026-09-28', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🏷️', bg:'#faf5ff', cor:'#9333ea', titulo:'Nome oficial: Central de Projetos Be Solution', descricao:'O dashboard agora tem nome oficial — Central de Projetos Be Solution. Você vai ver o nome no título da aba, na tela de login e no rodapé.', paginas:[], data:'2026-09-24', tag:'Novidade', tagCor:'nova'},
+  {icone:'🔒', bg:'#fef2f2', cor:'#dc2626', titulo:'Login exige Perfil de Acesso', descricao:'Quem não tiver um Perfil de Acesso cadastrado em Pessoas_Area não consegue mais entrar no dashboard — cadastre o perfil da pessoa em Administração de Pessoas antes dela tentar logar.', paginas:['pessoasadmin'], data:'2026-09-23', tag:'Mudança', tagCor:'melhoria'},
+  {icone:'🟢', bg:'#f0fdf4', cor:'#16a34a', titulo:'Status Ativo/Inativo e Nome Completo', descricao:'Pessoas_Area ganhou os campos Status (Ativo/Inativo) e Nome Completo. Gente Inativa some dos seletores de pessoa (Alocações, Equipe etc.), mas continua nas listas de conteúdo já existentes.', paginas:['pessoasadmin','alocacoes','equipe'], data:'2026-09-22', tag:'Nova', tagCor:'nova'},
+  {icone:'📰', bg:'#f1f5f9', cor:'#64748b', titulo:'Entrada direto em Novidades', descricao:'O perfil Administrador entra direto nesta tela ao logar, em vez de ser redirecionado pra Central de Comando — navegue pelo menu quando quiser. A partir da v15.7 isso vale para todos os perfis.', paginas:[], data:'2026-09-21', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'👥', bg:'#eff6ff', cor:'#2563eb', titulo:'Administração de Pessoas', descricao:'Cadastre, edite e consulte todo mundo em um só lugar — nome, cargo, área, perfil de acesso e último login.', paginas:['pessoasadmin'], data:'2026-09-20', tag:'Nova página', tagCor:'nova'},
+  {icone:'⏸️', bg:'#f1f5f9', cor:'#64748b', titulo:'Situação de Paralisação', descricao:'Projetos com Status "Pausado" no Portfólio agora aparecem como "Paralisado" em vez de "Atrasado", e a contagem de atraso fica suspensa enquanto durar a pausa.', paginas:['cliente','gerente'], data:'2026-09-18', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🟢', bg:'#f0fdf4', cor:'#16a34a', titulo:'Inteligência de Alocação mais limpa', descricao:'A tabela agora mostra só o ícone de situação (passe o mouse pra ver o nome completo), deixando a leitura mais rápida.', paginas:['inteligencia'], data:'2026-09-17', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🔐', bg:'#eff6ff', cor:'#2563eb', titulo:'Administração de Permissões', descricao:'Libere ou remova páginas específicas para um usuário, além do que o perfil dele já dá por padrão.', paginas:['permissoes'], data:'2026-09-15', tag:'Nova página', tagCor:'nova'},
+  {icone:'📊', bg:'#eff6ff', cor:'#2563eb', titulo:'Andamento dos Projetos', descricao:'Visão executiva com % de prazo, GAP e risco calculado automaticamente pra cada projeto.', paginas:['andamento'], data:'2026-09-12', tag:'Nova página', tagCor:'nova'},
+  {icone:'📜', bg:'#f0fdf4', cor:'#16a34a', titulo:'Log de Alterações', descricao:'Auditoria completa de criações, edições e exclusões no Portfólio e Status Reports.', paginas:['logalteracoes'], data:'2026-09-10', tag:'Nova página', tagCor:'nova'},
+  {icone:'⚡', bg:'#fff7ed', cor:'#ea580c', titulo:'Carregamento mais rápido', descricao:'Reduzimos o tamanho dos dados carregados em até 75%, tornando o acesso mais ágil.', paginas:[], data:'2026-09-08', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'✅', bg:'#faf5ff', cor:'#9333ea', titulo:'Status Report', descricao:'Confirmação clara ao salvar e botão de atualização no histórico de relatórios.', paginas:['statusreport'], data:'2026-09-05', tag:'Melhoria', tagCor:'melhoria'},
 ];
+// ---------- NOVIDADES (v15.7) — página inicial de todos os perfis ----------
+// Cada item de NOVIDADES pode ter `paginas` (chaves de página a que se refere)
+// e `data` (AAAA-MM-DD). Item sem `paginas` (ou vazio) é GERAL: aparece pra
+// todos. Item com `paginas` só aparece se o perfil/exceções da pessoa dão
+// acesso a pelo menos uma delas (paginasPermitidas). O "visto em" fica só no
+// navegador (localStorage) — nenhuma tabela/fonte nova.
+let NOV_FILTRO_CAT='Todas';
+let NOV_VISTO_REF=null;      // referência de "novo" fixada no início da sessão
+let NOV_UI_LIGADA=false;
+function novChaveVisto_(){ return 'novVisto_'+(CURRENT_USER_EMAIL||''); }
+function novVistoArmazenado_(){ try{ return localStorage.getItem(novChaveVisto_())||''; }catch(e){ return ''; } }
+function novDataMaxima_(){ return NOVIDADES.reduce((m,n)=>(n.data&&n.data>m)?n.data:m,''); }
+function novMarcarVisto_(){ try{ localStorage.setItem(novChaveVisto_(), novDataMaxima_()); }catch(e){} atualizarBadgeNovidades_(); }
+function novVisiveis_(){
+  const ac=paginasPermitidas();
+  return NOVIDADES.filter(n=>!n.paginas||!n.paginas.length||n.paginas.some(p=>ac.includes(p)));
+}
+function novReferenciaNova_(){
+  if(NOV_VISTO_REF===null){
+    NOV_VISTO_REF=novVistoArmazenado_()||new Date(Date.now()-14*86400000).toISOString().slice(0,10);
+  }
+  return NOV_VISTO_REF;
+}
+function atualizarBadgeNovidades_(){
+  const tab=document.querySelector('.nav-tab[data-page="novidades"]'); if(!tab) return;
+  let b=tab.querySelector('.nav-nov-badge');
+  const ref=novVistoArmazenado_()||new Date(Date.now()-14*86400000).toISOString().slice(0,10);
+  const qtd=(CURRENT_USER_EMAIL||EFFECTIVE_PERFIL)?novVisiveis_().filter(n=>n.data&&n.data>ref).length:0;
+  if(!qtd){ if(b) b.remove(); return; }
+  if(!b){ b=document.createElement('span'); b.className='nav-nov-badge'; tab.appendChild(b); }
+  b.textContent=qtd;
+}
+function novPrimeiraPaginaDoPerfil_(){
+  return paginasPermitidas().find(p=>p!=='novidades'&&p!=='projdetail')||null;
+}
 function renderNovidades(){
   const dateEl=document.getElementById('nov-update-date');
   if(dateEl) dateEl.textContent=NOVIDADES_ATUALIZADO_EM;
@@ -2327,10 +2388,53 @@ function renderNovidades(){
     'Novidade':{bg:'#ecfeff',cor:'#0891b2'},
     'Nova página':{bg:'#faf5ff',cor:'#9333ea'}
   };
-  document.getElementById('nov-grid').innerHTML=NOVIDADES.map(n=>{
+  const ac=paginasPermitidas();
+  const vis=novVisiveis_();
+  const ref=novReferenciaNova_();
+  const profEl=document.getElementById('nov-prof'); if(profEl) profEl.textContent='Perfil: '+EFFECTIVE_PERFIL;
+  const ocultas=NOVIDADES.length-vis.length;
+  const scope=document.getElementById('nov-scope');
+  if(scope){
+    scope.style.display=ocultas>0?'':'none';
+    scope.innerHTML='🔎 <b>'+ocultas+' novidade(s) oculta(s)</b> por tratarem de páginas fora do seu acesso ('+EFFECTIVE_PERFIL+'). Novidades gerais aparecem para todos.';
+  }
+  const cats=['Todas','Nova página','Nova','Melhoria','Mudança'];
+  if(!cats.includes(NOV_FILTRO_CAT)) NOV_FILTRO_CAT='Todas';
+  const lista=vis.filter(n=>NOV_FILTRO_CAT==='Todas'||n.tag===NOV_FILTRO_CAT||(NOV_FILTRO_CAT==='Nova'&&n.tag==='Novidade'));
+  const primeira=novPrimeiraPaginaDoPerfil_();
+  const chipsEl=document.getElementById('nov-toolbar');
+  if(chipsEl){
+    chipsEl.innerHTML=cats.map(c=>'<button type="button" class="nov-chip'+(c===NOV_FILTRO_CAT?' on':'')+'" data-cat="'+c+'">'+c+'</button>').join('')+
+      '<span class="nov-sp"></span><span class="nov-cnt">'+lista.length+' novidade(s)</span>'+
+      (primeira?'<button type="button" class="nov-go" data-go="'+primeira+'">Ir para '+(PAGE_LABELS[primeira]||primeira)+' →</button>':'');
+  }
+  document.getElementById('nov-grid').innerHTML=lista.length?lista.map(n=>{
     const tc=TAG_CORES[n.tag]||TAG_CORES['Melhoria'];
-    return '<div class="nov-card"><div class="nov-card-top"><div class="nov-icon" style="background:'+n.bg+';color:'+n.cor+'">'+n.icone+'</div><h3>'+n.titulo+'</h3><span class="nov-tag" style="background:'+tc.bg+';color:'+tc.cor+'">'+n.tag+'</span></div><p>'+n.descricao+'</p><span class="nov-chevron">›</span></div>';
-  }).join('');
+    const nova=!!(n.data&&n.data>ref);
+    const meusPg=(n.paginas||[]).filter(p=>ac.includes(p));
+    const alvo=meusPg.find(p=>p!=='novidades'&&p!=='projdetail');
+    const dt=n.data?n.data.slice(8,10)+'/'+n.data.slice(5,7):'';
+    return '<div class="nov-card'+(nova?' is-new':'')+'">'+(nova?'<span class="nov-new">NOVO</span>':'')+
+      '<div class="nov-card-top"><div class="nov-icon" style="background:'+n.bg+';color:'+n.cor+'">'+n.icone+'</div><h3>'+n.titulo+'</h3><span class="nov-tag" style="background:'+tc.bg+';color:'+tc.cor+'">'+n.tag+'</span></div>'+
+      '<p>'+n.descricao+'</p>'+
+      '<div class="nov-foot"><span class="nov-pg">'+(meusPg.length?'Página: <b>'+meusPg.map(p=>PAGE_LABELS[p]||p).join(', ')+'</b>':'<b>Geral</b> · todos os perfis')+(dt?' · '+dt:'')+'</span>'+
+      (alvo?'<button type="button" class="nov-lnk" data-go="'+alvo+'">Abrir página →</button>':'')+'</div></div>';
+  }).join(''):'<div class="nov-empty">Nenhuma novidade nesta categoria para o seu perfil.</div>';
+  if(!NOV_UI_LIGADA){
+    NOV_UI_LIGADA=true;
+    const wrap=document.getElementById('shell-novidades-placeholder');
+    wrap.addEventListener('click',e=>{
+      const chip=e.target.closest('.nov-chip');
+      if(chip){ NOV_FILTRO_CAT=chip.dataset.cat; renderNovidades(); return; }
+      const go=e.target.closest('[data-go]');
+      if(go) goToPage(go.dataset.go);
+    });
+    window.addEventListener('pagehide',()=>{
+      const sh=document.getElementById('main-shell');
+      if(sh&&sh.classList.contains('mostrando-novidades')) novMarcarVisto_();
+    });
+  }
+  atualizarBadgeNovidades_();
 }
 // ============================================================
 // CARREGAMENTO SOB DEMANDA POR CAMPO — v14.7. Decisão confirmada ("Sob
@@ -2460,13 +2564,14 @@ async function carregarDadosCore(token){
     // um indicador de progresso; quando terminam, o indicador vira uma
     // confirmação e a pessoa permanece em Novidades até escolher outra
     // página pelo menu (ver goToPage).
-    if(j._perfil==='Administrador' && !j._viewingAs){
+    if(!j._viewingAs){ // v15.7: todos os perfis entram em Novidades (antes só Administrador)
       // v14.2: normalmente já foi mostrada logo após "auth" (ver
       // attemptLoadWithToken) — este bloco só garante que está visível
       // (ex: em algum caminho que não passou por lá) sem reexibir nada.
       if(!document.getElementById('main-shell').classList.contains('mostrando-novidades')){
         document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
         document.getElementById('page-futuristic')?.classList.add('active');
+        document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.page==='novidades'));
         renderNovidades();
         document.getElementById('main-shell').classList.add('mostrando-novidades');
       }
@@ -2489,10 +2594,11 @@ async function carregarDadosCore(token){
       VIEW_AS_STATE=null; TODOS_USUARIOS=j._todosUsuarios||[];
       EFFECTIVE_PERFIL=j._perfil; EFFECTIVE_EXCECOES=j._excecoesPermissao||{add:[],remove:[]};
       const viewasWrapAdmin=document.getElementById('viewas-wrap');
-      if(viewasWrapAdmin) viewasWrapAdmin.style.display='';
+      if(viewasWrapAdmin) viewasWrapAdmin.style.display=(j._perfil==='Administrador')?'':'none';
       addLogoutControl(j._usuarioNome||j._usuario, j._perfil);
       atualizarFaixaVisualizarComo();
       aplicarMenuDinamico();
+      renderNovidades(); // perfil/exceções definitivos já chegaram — reaplica o filtro por acesso
       document.getElementById('main-shell').classList.remove('aguardando-dados');
       HEAVY_DATA_READY=true;
       esconderLoadingGlobal();
@@ -2653,6 +2759,7 @@ async function carregarDadosCompletos(token, semBannerTopo){
     const permaneceEmNovidades=mainShellEl.classList.contains('mostrando-novidades');
     mainShellEl.classList.remove('aguardando-dados');
     if(permaneceEmNovidades){
+      renderNovidades(); // ex.: "Visualizar como" trocou o perfil efetivo
       // Administrador: dados completos prontos, mas a pessoa continua na
       // tela de Novidades (não redireciona mais sozinho pra Central de
       // Comando). v14.5: nenhuma confirmação própria aqui — o esconderLoadingGlobal()
@@ -3500,7 +3607,13 @@ let EFFECTIVE_EXCECOES={add:[],remove:[]};
 // dados com escopo por perfil — não faz sentido liberá-la por exceção.
 const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='novidades' && p!=='calendario');
 
+// v15.7: "novidades" é página inicial de TODOS os perfis — sempre liberada
+// (não é gerenciável em Permissões e nenhuma exceção a remove).
 function paginasPermitidas(){
+  const r=paginasPermitidasBase_();
+  return r.includes('novidades')?r:r.concat('novidades');
+}
+function paginasPermitidasBase_(){
   const base = PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido'];
   // Administrador sempre tem acesso total por definição do perfil — exceções
   // não se aplicam a ele (não faz sentido restringir/ampliar quem já vê tudo).
@@ -3510,7 +3623,7 @@ function paginasPermitidas(){
   if(!add.length && !remove.length) return base;
   let efetivo=base.slice();
   add.forEach(p=>{ if(PAGE_LABELS[p] && !efetivo.includes(p)) efetivo.push(p); });
-  if(remove.length) efetivo=efetivo.filter(p=>!remove.includes(p));
+  if(remove.length) efetivo=efetivo.filter(p=>!remove.includes(p) || p==='novidades');
   return efetivo;
 }
 
@@ -3525,6 +3638,7 @@ function aplicarMenuDinamico(){
     const temVisivel = Array.from(cat.querySelectorAll('.nav-tab')).some(t=>t.style.display!=='none');
     cat.style.display = temVisivel ? '' : 'none';
   });
+  atualizarBadgeNovidades_();
 }
 
 function mostrarAcessoNegado(pagina){
@@ -3578,7 +3692,7 @@ function goToPage(name){
   // dados pesados (PROJ_TASKS e afins) — se a pessoa tentar navegar pra
   // qualquer outra página antes desses dados chegarem em segundo plano, só
   // avisa e mantém onde está, em vez de deixar a página quebrada/vazia.
-  if(!HEAVY_DATA_READY && name!=='cliente'){
+  if(!HEAVY_DATA_READY && name!=='cliente' && name!=='novidades'){
     mostrarToastCarregandoAinda();
     return;
   }
@@ -3586,10 +3700,12 @@ function goToPage(name){
   // qualquer página de verdade pelo menu — esconde o placeholder de
   // Novidades, já que a partir daqui é a página escolhida que manda.
   const mainShellNav=document.getElementById('main-shell');
+  const vindoDeNovidades=!!(mainShellNav && mainShellNav.classList.contains('mostrando-novidades'));
   if(mainShellNav) mainShellNav.classList.remove('mostrando-novidades');
+  if(vindoDeNovidades && name!=='novidades') novMarcarVisto_(); // v15.7: saiu de Novidades = viu o que havia
   const paginaAtualEl=document.querySelector('.page.active');
-  if(paginaAtualEl && !PAGE_NAV_GOING_BACK){
-    const nomeAtual=paginaAtualEl.id.replace('page-','');
+  if((paginaAtualEl||vindoDeNovidades) && !PAGE_NAV_GOING_BACK){
+    const nomeAtual=vindoDeNovidades?'novidades':paginaAtualEl.id.replace('page-','');
     if(nomeAtual!==name) PAGE_NAV_STACK.push(nomeAtual);
   }
   PAGE_NAV_GOING_BACK=false;
@@ -9098,16 +9214,37 @@ const PAGE_INIT_MAP={
 // ordenarLinhas_). Exportação: .xlsx gerado no navegador (ExcelJS carregado
 // só no clique), a partir da lista já filtrada/ordenada na tela.
 // ============================================================
+// v15.6: Criticidade vem do Status Report mais recente do projeto (mesma regra
+// do Detalhamento do Projeto: ultimoStatusReportDoProjeto) — não existe no
+// cadastro do Portifolio. Mapa montado 1x por renderização, sem nova consulta.
+let CAL_CRIT_MAPA=null;
+function calMontarCriticidade_(){
+  const ult={};
+  (STATUS_REPORTS||[]).forEach(r=>{
+    const a=ult[r.projeto];
+    if(!a || (r.semana_fim||'').localeCompare(a.semana_fim||'')>0) ult[r.projeto]=r;
+  });
+  CAL_CRIT_MAPA={};
+  Object.keys(ult).forEach(k=>{ CAL_CRIT_MAPA[k]=ult[k].criticidade||''; });
+}
+function calCriticidade_(p){
+  if(!CAL_CRIT_MAPA) calMontarCriticidade_();
+  return CAL_CRIT_MAPA[p.pj]||'';
+}
 const CAL_COLUNAS=[
   {key:'cliente',label:'Cliente',tipo:'texto',get:p=>p.cl},
   {key:'projeto',label:'Projeto',tipo:'texto',get:p=>p.pj},
+  {key:'criticidade',label:'Criticidade',tipo:'texto',get:p=>calCriticidade_(p)},
+  {key:'complexidade',label:'Complexidade',tipo:'texto',get:p=>p.cx},
   {key:'inicio',label:'Data de Início',tipo:'data',get:p=>p.di},
+  {key:'previnicial',label:'Prev. Entrega Inicial',tipo:'data',get:p=>p.pei},
   {key:'prevatual',label:'Prev. Entrega Atual',tipo:'data',get:p=>p.pea},
   {key:'entrega',label:'Data de Entrega',tipo:'data',get:p=>p.de}
 ];
 function calEsc_(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function initCalendarioProjetos(){
   SORT_RERENDER['calendario']=renderCalendarioProjetos;
+  CAL_CRIT_MAPA=null;
   const clis=[...new Set(D.pj.map(p=>p.cl).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'pt-BR'));
   const sts=[...new Set(D.pj.map(p=>p.st).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'pt-BR'));
   document.getElementById('f-cal-cli').innerHTML='<option value="">Todos</option>'+clis.map(c=>'<option value="'+calEsc_(c)+'">'+calEsc_(c)+'</option>').join('');
@@ -9155,6 +9292,7 @@ function calLinhasVisiveis_(){
   return stS.col?ordenarLinhas_(linhas,CAL_COLUNAS.find(c=>c.key===stS.col),stS.dir):linhas;
 }
 function renderCalendarioProjetos(){
+  CAL_CRIT_MAPA=null; // recalcula a partir de STATUS_REPORTS atual
   const linhas=calLinhasVisiveis_();
   const stS=SORT_STATE['calendario']||{col:null,dir:0};
   const selSort=document.getElementById('f-cal-sort');
@@ -9163,12 +9301,15 @@ function renderCalendarioProjetos(){
   const val=v=>v?calEsc_(v):'<span class="cal-vazio">—</span>';
   let h='<table>'+theadOrdenavel_('calendario',CAL_COLUNAS)+'<tbody>';
   if(!linhas.length){
-    h+='<tr><td colspan="5" style="text-align:center;padding:36px 10px;color:var(--text-faint)">Nenhum projeto encontrado com os filtros atuais.</td></tr>';
+    h+='<tr><td colspan="8" style="text-align:center;padding:36px 10px;color:var(--text-faint)">Nenhum projeto encontrado com os filtros atuais.</td></tr>';
   }else{
     linhas.forEach(p=>{
       h+='<tr><td data-label="Cliente">'+val(p.cl)+'</td>'+
         '<td class="cal-td-pj" data-label="Projeto"><button type="button" class="cal-pj-link" data-pj="'+calEsc_(p.pj)+'">'+calEsc_(p.pj)+'</button></td>'+
+        '<td data-label="Criticidade">'+val(calCriticidade_(p))+'</td>'+
+        '<td data-label="Complexidade">'+val(p.cx)+'</td>'+
         '<td data-label="Início">'+val(p.di)+'</td>'+
+        '<td data-label="Prev. Entrega Inicial">'+val(p.pei)+'</td>'+
         '<td data-label="Prev. Entrega Atual">'+val(p.pea)+'</td>'+
         '<td data-label="Entrega">'+val(p.de)+'</td></tr>';
     });
@@ -9201,11 +9342,13 @@ async function exportarCalendarioExcel_(){
     const ws=wb.addWorksheet('Calendário de Projetos');
     ws.columns=[
       {header:'Cliente',key:'cl',width:28},{header:'Projeto',key:'pj',width:46},
+      {header:'Criticidade',key:'cr',width:16},{header:'Complexidade',key:'cx',width:16},
       {header:'Data de Início',key:'di',width:16,style:{numFmt:'dd/mm/yyyy'}},
+      {header:'Prev. Entrega Inicial',key:'pei',width:22,style:{numFmt:'dd/mm/yyyy'}},
       {header:'Prev. Entrega Atual',key:'pea',width:20,style:{numFmt:'dd/mm/yyyy'}},
       {header:'Data de Entrega',key:'de',width:16,style:{numFmt:'dd/mm/yyyy'}}
     ];
-    linhas.forEach(p=>ws.addRow({cl:p.cl||'',pj:p.pj||'',di:calDataBrParaDate_(p.di),pea:calDataBrParaDate_(p.pea),de:calDataBrParaDate_(p.de)}));
+    linhas.forEach(p=>ws.addRow({cl:p.cl||'',pj:p.pj||'',cr:calCriticidade_(p),cx:p.cx||'',di:calDataBrParaDate_(p.di),pei:calDataBrParaDate_(p.pei),pea:calDataBrParaDate_(p.pea),de:calDataBrParaDate_(p.de)}));
     const hdr=ws.getRow(1);
     hdr.height=22;
     hdr.eachCell(c=>{
@@ -9214,7 +9357,7 @@ async function exportarCalendarioExcel_(){
       c.alignment={vertical:'middle',horizontal:'left'};
     });
     ws.views=[{state:'frozen',ySplit:1}];
-    ws.autoFilter={from:{row:1,column:1},to:{row:1,column:5}};
+    ws.autoFilter={from:{row:1,column:1},to:{row:1,column:8}};
     const buf=await wb.xlsx.writeBuffer();
     const hoje=new Date(); const iso=hoje.getFullYear()+'-'+String(hoje.getMonth()+1).padStart(2,'0')+'-'+String(hoje.getDate()).padStart(2,'0');
     const blob=new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
@@ -9268,6 +9411,16 @@ document.addEventListener('DOMContentLoaded',()=>{
   const vEl=document.getElementById('login-version-info');
   if(vEl) vEl.innerHTML='Versão '+APP_VERSION+'<br>A data de atualização dos dados aparece após o login';
 });
+// v15.6: --topbar-h acompanha a altura REAL da topbar (que quebra de linha em telas
+// estreitas) — usada pela faixa "← Voltar" sticky e pela sidebar.
+function sincronizarAlturaTopbar_(){
+  const tb=document.querySelector('header.topbar');
+  if(!tb) return;
+  const ajusta=()=>{ const h=tb.offsetHeight; if(h>0) document.documentElement.style.setProperty('--topbar-h',h+'px'); };
+  ajusta();
+  if(window.ResizeObserver) new ResizeObserver(ajusta).observe(tb); else window.addEventListener('resize',ajusta);
+}
+document.addEventListener('DOMContentLoaded',sincronizarAlturaTopbar_);
 document.addEventListener('DOMContentLoaded',initGoogleAuth);
 })();
 </script></body></html>
