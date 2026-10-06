@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwlddjO8TBwCtpSehGkLo3ODHB5EtTVHeMK87iiRbl3Hp-pdGU6DZ4vGDeNUoNXqJ5O9w/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzaZ9Xng7Jl_GA2y_X2e-rNOjV3K7O1rg9Xn_JbtnCxAvmh2BvDIhSy6cf4af-lNu7Gyw/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1282,6 +1282,14 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .nov-card p{font-size:12.5px;color:var(--text-muted);line-height:1.55;margin:0;}
 .nov-tag{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:999px;margin-left:auto;flex-shrink:0;white-space:nowrap;}
 .nov-chevron{display:none;}
+.pa-chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px;border:1px solid var(--border);border-radius:10px;background:var(--surface);min-height:44px;align-items:center;}
+.pa-chip{display:inline-flex;align-items:center;gap:6px;background:var(--primary-100,#e0f2fe);color:var(--primary);border-radius:999px;padding:4px 6px 4px 11px;font-size:12.5px;font-weight:600;}
+.pa-chip.ext{background:rgba(245,158,11,.2);color:var(--text);}
+.pa-chip b{cursor:pointer;width:18px;height:18px;border-radius:50%;background:rgba(15,23,42,.14);text-align:center;line-height:18px;font-size:12px;}
+.pa-chips input{border:0;flex:1;min-width:180px;padding:4px;background:transparent;color:var(--text);outline:none;}
+.pa-sugg{border:1px solid var(--border);border-radius:10px;margin-top:6px;background:var(--surface);box-shadow:0 8px 20px rgba(15,23,42,.14);max-height:190px;overflow:auto;}
+.pa-sugg div{padding:8px 12px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;font-size:13px;}
+.pa-sugg div:hover{background:var(--surface-alt);} .pa-sugg small{color:var(--text-faint);}
 .nov-card{padding:18px 20px;display:flex;flex-direction:column;gap:2px;}
 .nov-card.is-new{border-color:#93c5fd;box-shadow:0 0 0 3px rgba(147,197,253,.35);}
 .nov-new{position:absolute;top:-1px;right:14px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;border-radius:0 0 8px 8px;padding:2px 9px;letter-spacing:.04em;}
@@ -2087,7 +2095,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v15.7';
+const APP_VERSION='v15.8';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2316,6 +2324,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
 // aparece no card "Última atualização" no topo da tela de Novidades.
 const NOVIDADES_ATUALIZADO_EM='06/10/2026';
 const NOVIDADES=[
+  {icone:'✉️', bg:'#eff6ff', cor:'#2563eb', titulo:'E-mail "[News] - Novo Contratado"', descricao:'Em Pessoas e Perfis, "+ Nova Pessoa" agora abre o formulário completo e, ao cadastrar, envia um e-mail com todos os dados aos destinatários que você escolher (pessoas do cadastro ou e-mails externos), com prévia antes de enviar.', paginas:['pessoasadmin'], data:'2026-10-06', tag:'Nova', tagCor:'nova'},
   {icone:'📣', bg:'#eff6ff', cor:'#2563eb', titulo:'Novidades é a página inicial de todos os perfis', descricao:'Depois do login, todo mundo cai direto nesta tela. Você vê só o que mudou nas páginas que o seu perfil acessa (mais as novidades gerais), com o selo NOVO no que saiu depois do seu último acesso, filtro por categoria e atalho pra abrir a página citada.', paginas:[], data:'2026-10-06', tag:'Mudança', tagCor:'melhoria'},
   {icone:'🛠️', bg:'#f0fdf4', cor:'#16a34a', titulo:'Edição do Portfólio: mesmo projeto, clientes diferentes', descricao:'Projetos com o mesmo nome em clientes diferentes (ex.: Migração da Arco e da CNI) agora abrem, salvam e excluem o registro certo — o projeto é identificado por Cliente + Projeto. Ao criar um projeto novo, o cliente também é informado.', paginas:['portfolioedit'], data:'2026-10-06', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'📌', bg:'#eff6ff', cor:'#2563eb', titulo:'Barra superior e botão Voltar fixos', descricao:'A barra do topo e o botão "← Voltar" agora ficam visíveis enquanto você rola a página, inclusive no Detalhamento do Projeto.', paginas:[], data:'2026-10-06', tag:'Melhoria', tagCor:'melhoria'},
@@ -5168,14 +5177,14 @@ function initPessoasAdmin(){
   PA_MODO='lista';
   carregarListaPessoasAdmin();
 }
-function paFeedback(msg,ok){
+function paFeedback(msg,ok,ms){
   const el=document.getElementById('pa-feedback');
   el.textContent=msg;
   el.style.background=ok?'rgba(22,163,74,.12)':'rgba(220,38,38,.12)';
   el.style.color=ok?'var(--st-feito)':'var(--st-bloqueado)';
   el.style.display='block';
   clearTimeout(window.__paFeedbackTimeout);
-  window.__paFeedbackTimeout=setTimeout(()=>{ el.style.display='none'; },5000);
+  window.__paFeedbackTimeout=setTimeout(()=>{ el.style.display='none'; },ms||5000);
 }
 function paMostrarView(modo){
   PA_MODO=modo;
@@ -5256,24 +5265,168 @@ function renderListaPessoasAdmin(termoBusca){
   });
 }
 
-// ---------- CRIAR ----------
+// ---------- CRIAR (v15.8: formulário completo + e-mail "[News] - Novo Contratado") ----------
+let PA_NOVA_CAMPOS=[];      // campos (cabeçalho real de Pessoas_Area) do formulário de nova pessoa
+let PA_DEST_SEL=[];         // destinatários escolhidos: [{nome,email,externo}]
+const PA_DEST_LS_KEY='paDestNovoContratado';
+const PA_ASSUNTO_NOVO_CONTRATADO='[News] - Novo Contratado';
+function paEscHtml_(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function paDestinatariosDisponiveis_(){
+  return (PA_LISTA_CACHE||[]).filter(p=>p.email && peNormalizarHeader(p.status)!=='inativo').map(p=>({nome:p.nome,email:p.email}));
+}
+function paRestaurarDestinatarios_(){
+  let salvos=[]; try{ salvos=JSON.parse(localStorage.getItem(PA_DEST_LS_KEY)||'[]'); }catch(e){}
+  const disp=paDestinatariosDisponiveis_();
+  PA_DEST_SEL=(Array.isArray(salvos)?salvos:[]).filter(x=>typeof x==='string').map(em=>{
+    const p=disp.find(d=>d.email.toLowerCase()===em.toLowerCase());
+    return p?{nome:p.nome,email:p.email,externo:false}:{nome:em,email:em,externo:true};
+  });
+}
+function paSalvarDestinatarios_(){ try{ localStorage.setItem(PA_DEST_LS_KEY,JSON.stringify(PA_DEST_SEL.map(x=>x.email))); }catch(e){} }
+function paDesenharChips_(){
+  const box=document.getElementById('pa-dest-chips'); if(!box) return;
+  box.innerHTML=PA_DEST_SEL.map((x,i)=>'<span class="pa-chip'+(x.externo?' ext':'')+'" title="'+paEscHtml_(x.email)+'">'+paEscHtml_(x.nome)+(x.externo?' · externo':'')+'<b data-i="'+i+'">×</b></span>').join('')+
+    '<input type="text" id="pa-dest-q" placeholder="Adicionar destinatário…" autocomplete="off">';
+  const q=document.getElementById('pa-dest-q');
+  q.oninput=paSugerir_; q.onfocus=paSugerir_;
+  q.onkeydown=e=>{
+    if(e.key==='Enter'){ e.preventDefault(); const v=q.value.trim(); if(/^[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+$/.test(v)) paAdicionarDest_({nome:v,email:v,externo:true}); }
+  };
+  box.querySelectorAll('b[data-i]').forEach(b=>b.onclick=()=>{ PA_DEST_SEL.splice(parseInt(b.dataset.i,10),1); paSalvarDestinatarios_(); paDesenharChips_(); });
+}
+function paSugerir_(){
+  const q=(document.getElementById('pa-dest-q').value||'').toLowerCase(), box=document.getElementById('pa-dest-sugg');
+  const ja=new Set(PA_DEST_SEL.map(x=>x.email.toLowerCase()));
+  const lista=paDestinatariosDisponiveis_().filter(p=>!ja.has(p.email.toLowerCase()) && (p.nome+' '+p.email).toLowerCase().includes(q)).slice(0,30);
+  box.style.display=lista.length?'block':'none';
+  box.innerHTML=lista.map((p,i)=>'<div data-k="'+i+'">'+paEscHtml_(p.nome)+'<small>'+paEscHtml_(p.email)+'</small></div>').join('');
+  box.querySelectorAll('div').forEach(d=>d.onclick=()=>{ const p=lista[parseInt(d.dataset.k,10)]; paAdicionarDest_({nome:p.nome,email:p.email,externo:false}); });
+}
+function paAdicionarDest_(x){
+  if(PA_DEST_SEL.some(y=>y.email.toLowerCase()===x.email.toLowerCase())) return;
+  PA_DEST_SEL.push(x); paSalvarDestinatarios_(); paDesenharChips_();
+  document.getElementById('pa-dest-sugg').style.display='none';
+  document.getElementById('pa-dest-q').focus();
+}
+function paLerValoresNovaPessoa_(){
+  const valores=PA_NOVA_CAMPOS.map(()=> '');
+  document.querySelectorAll('#pa-form-view .pa-campo').forEach(el=>{
+    const idx=parseInt(el.dataset.paIdx,10);
+    valores[idx]=(el.type==='checkbox')?el.checked:el.value;
+  });
+  return valores;
+}
+function paMontarPreviaEmail_(){
+  const valores=paLerValoresNovaPessoa_();
+  const linhas=PA_NOVA_CAMPOS.map((c,i)=>({c,i})).filter(x=>peNormalizarHeader(x.c.header)!=='ultimo acesso').map(x=>{
+    const v=valores[x.i]; return '<tr><td style="padding:6px 10px;border:1px solid var(--border);background:var(--surface-alt);font-weight:700;width:34%">'+paEscHtml_(x.c.header)+'</td><td style="padding:6px 10px;border:1px solid var(--border)">'+(v===''||v==null?'—':paEscHtml_(v))+'</td></tr>';
+  }).join('');
+  return '<div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface)"><div style="background:var(--surface-alt);padding:10px 14px;font-size:13px;line-height:1.7"><b>De:</b> Central de Projetos Be Solution<br><b>Para:</b> '+(PA_DEST_SEL.map(x=>paEscHtml_(x.nome)+' &lt;'+paEscHtml_(x.email)+'&gt;').join(', ')||'(nenhum destinatário)')+'<br><b>Assunto:</b> <strong>'+PA_ASSUNTO_NOVO_CONTRATADO+'</strong></div>'+
+    '<div style="padding:14px 16px"><p style="margin-top:0">Um novo colaborador foi cadastrado na Central de Projetos Be Solution por <b>'+paEscHtml_(CURRENT_USER_NOME||'um administrador')+'</b>.</p><table style="border-collapse:collapse;width:100%;font-size:13px">'+linhas+'</table></div></div>';
+}
 async function abrirFormularioNovaPessoa(){
-  const nome=prompt('Nome da nova pessoa (Assinatura — esse será o identificador único dela no dashboard, usado pra casar com a equipe dos projetos):');
-  if(!nome || !nome.trim()) return;
-  paFeedback('Cadastrando pessoa…',true);
+  document.getElementById('pa-form-view').innerHTML=loadingInlineHtml('Carregando formulário…');
+  paMostrarView('form');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
-    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=criarPessoaAdmin&pessoa='+encodeURIComponent(nome.trim());
-    const r=await loadDataJSONPComRetry(url,1);
+    const r=await loadDataJSONPComRetry(DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=novaPessoaFormAdmin',1);
+    if(!r || !r.ok){
+      paMostrarView('lista'); paFeedback((r&&r.message)||'Não foi possível abrir o formulário de nova pessoa.',false); return;
+    }
+    if(r.perfisValidos) PA_PERFIS_VALIDOS=r.perfisValidos;
+    PA_NOVA_CAMPOS=r.campos;
+    PA_ULTIMA_LEITURA=null; // evita salvar/editar a pessoa anterior por engano
+    paRestaurarDestinatarios_();
+    renderFormularioNovaPessoa_();
+  }catch(e){
+    paMostrarView('lista'); paFeedback('Falha ao contatar o servidor. Tente novamente.',false);
+  }
+}
+function renderFormularioNovaPessoa_(){
+  let h='<button type="button" class="filter-clear" id="pa-voltar-btn" style="margin-bottom:14px">← Voltar para a lista</button>';
+  h+='<div class="page-header" style="padding:0 0 16px"><h2 style="font-size:20px;font-weight:800">Nova pessoa</h2></div>';
+  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Dados</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">';
+  PA_NOVA_CAMPOS.forEach((c,i)=>{
+    const hn=peNormalizarHeader(c.header);
+    const rot=(hn==='assinatura')?c.header+' *':c.header;
+    h+='<div class="sr-field"><label>'+paEscHtml_(rot)+'</label>'+paConstruirInputHtml(c,i)+'</div>';
+  });
+  h+='</div></div>';
+  h+='<div class="card pa-email-card" style="margin-bottom:16px"><div class="card-title"><h3>✉️ Aviso por e-mail</h3></div>'+
+    '<label style="display:flex;align-items:center;gap:10px;font-weight:700;margin-bottom:12px;cursor:pointer"><input type="checkbox" id="pa-enviar-email" checked style="width:18px;height:18px"> Enviar e-mail ao cadastrar</label>'+
+    '<div id="pa-email-bloco"><div class="sr-field" style="max-width:420px;margin-bottom:12px"><label>Assunto (fixo)</label><input type="text" value="'+PA_ASSUNTO_NOVO_CONTRATADO+'" readonly disabled></div>'+
+    '<div class="sr-field"><label>Para quem enviar? (pode escolher mais de uma pessoa)</label><div class="pa-chips" id="pa-dest-chips"></div><div class="pa-sugg" id="pa-dest-sugg" style="display:none"></div>'+
+    '<div style="font-size:12px;color:var(--text-faint);margin-top:6px">Busque entre as pessoas ativas com e-mail cadastrado, ou digite um e-mail e tecle Enter para um destinatário externo. A última seleção fica lembrada neste navegador.</div></div>'+
+    '<button type="button" class="filter-clear" id="pa-previa-btn" style="margin-top:12px">👁 Ver prévia do e-mail</button><div id="pa-previa" style="display:none;margin-top:12px"></div></div></div>';
+  h+='<div class="sr-actions"><button type="button" class="sr-btn sr-btn-primary" id="pa-btn-cadastrar">💾 Cadastrar e enviar e-mail</button></div>';
+  document.getElementById('pa-form-view').innerHTML=h;
+  document.getElementById('pa-voltar-btn').onclick=carregarListaPessoasAdmin;
+  paDesenharChips_();
+  document.addEventListener('click',paFecharSugestoes_);
+  const chk=document.getElementById('pa-enviar-email');
+  const atualizaRotulo=()=>{ document.getElementById('pa-email-bloco').style.display=chk.checked?'':'none'; document.getElementById('pa-btn-cadastrar').textContent=chk.checked?'💾 Cadastrar e enviar e-mail':'💾 Cadastrar'; };
+  chk.onchange=atualizaRotulo; atualizaRotulo();
+  document.getElementById('pa-previa-btn').onclick=()=>{ const pv=document.getElementById('pa-previa'); pv.innerHTML=paMontarPreviaEmail_(); pv.style.display=''; };
+  document.getElementById('pa-btn-cadastrar').onclick=cadastrarNovaPessoaCompleta_;
+}
+function paFecharSugestoes_(e){
+  const box=document.getElementById('pa-dest-sugg');
+  if(!box){ document.removeEventListener('click',paFecharSugestoes_); return; }
+  if(!e.target.closest('#pa-dest-chips') && !e.target.closest('#pa-dest-sugg')) box.style.display='none';
+}
+async function cadastrarNovaPessoaCompleta_(){
+  const valores=paLerValoresNovaPessoa_();
+  const idxAss=PA_NOVA_CAMPOS.findIndex(c=>peNormalizarHeader(c.header)==='assinatura');
+  if(idxAss===-1 || !String(valores[idxAss]||'').trim()){ paFeedback('Informe o nome (Assinatura) da pessoa.',false); return; }
+  const enviar=document.getElementById('pa-enviar-email').checked;
+  if(enviar && !PA_DEST_SEL.length){ paFeedback('Selecione pelo menos um destinatário — ou desmarque "Enviar e-mail ao cadastrar".',false); return; }
+  const emails=enviar?PA_DEST_SEL.map(x=>x.email):[];
+  const btn=document.getElementById('pa-btn-cadastrar'); btn.disabled=true;
+  mostrarLoadingGlobal(enviar?'Cadastrando e enviando e-mail…':'Cadastrando pessoa…');
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=criarPessoaCompletaAdmin&payload='+encodeURIComponent(JSON.stringify({valores:valores,destinatarios:emails}));
+    const r=await loadDataJSONPComRetry(url,0);
+    esconderLoadingGlobal();
     if(r && r.ok){
-      paFeedback('Pessoa cadastrada com sucesso. Preencha os demais dados abaixo.',true);
-      carregarPessoaParaEdicao(nome.trim());
+      document.removeEventListener('click',paFecharSugestoes_);
+      if(r.email && r.email.ok){
+        paFeedback('Pessoa cadastrada com sucesso. '+r.email.message,true,9000);
+        carregarListaPessoasAdmin();
+      }else if(r.email){
+        paFeedback('Pessoa cadastrada, mas o e-mail NÃO foi enviado: '+r.email.message,false,14000);
+        await carregarPessoaParaEdicao(r.nome);
+        paBannerReenvio_(r.nome,emails);
+      }else{
+        paFeedback('Pessoa cadastrada com sucesso.',true);
+        carregarListaPessoasAdmin();
+      }
     }else{
       paFeedback((r&&r.message)||'Não foi possível cadastrar a pessoa.',false);
+      btn.disabled=false;
     }
   }catch(e){
-    paFeedback('Falha ao contatar o servidor. Tente novamente.',false);
+    esconderLoadingGlobal();
+    // Sem retry automático aqui (retries=0): repetir poderia cadastrar/enviar em duplicidade. Confira a lista antes de tentar de novo.
+    paFeedback('Falha ao contatar o servidor. Confira na lista se a pessoa já foi cadastrada antes de tentar de novo.',false,10000);
+    btn.disabled=false;
   }
+}
+function paBannerReenvio_(nome,emails){
+  const v=document.getElementById('pa-form-view'); if(!v) return;
+  const d=document.createElement('div');
+  d.style.cssText='margin-bottom:14px;padding:12px 16px;border-radius:10px;background:rgba(245,158,11,.14);border:1px solid rgba(245,158,11,.45);font-size:13px;font-weight:600;display:flex;gap:12px;align-items:center;flex-wrap:wrap';
+  d.innerHTML='<span>⚠️ O e-mail "'+PA_ASSUNTO_NOVO_CONTRATADO+'" não foi enviado para '+emails.length+' destinatário(s).</span><button type="button" class="filter-clear" id="pa-reenviar-btn">Tentar enviar novamente</button>';
+  v.insertBefore(d,v.firstChild);
+  document.getElementById('pa-reenviar-btn').onclick=async()=>{
+    const b=document.getElementById('pa-reenviar-btn'); b.disabled=true; mostrarLoadingGlobal('Enviando e-mail…');
+    try{
+      const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+      const r=await loadDataJSONPComRetry(DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=reenviarEmailPessoaAdmin&pessoa='+encodeURIComponent(nome)+'&payload='+encodeURIComponent(JSON.stringify({destinatarios:emails})),0);
+      esconderLoadingGlobal();
+      if(r&&r.ok){ d.remove(); paFeedback(r.message,true,9000); } else { paFeedback((r&&r.message)||'Não foi possível enviar o e-mail.',false,12000); b.disabled=false; }
+    }catch(e){ esconderLoadingGlobal(); paFeedback('Falha ao contatar o servidor.',false); b.disabled=false; }
+  };
 }
 
 // ---------- LER / EDITAR ----------
