@@ -743,6 +743,10 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .and-toggle-prazo{display:inline-flex; background:var(--surface-alt); border-radius:8px; padding:3px; gap:2px;}
 .and-toggle-btn{padding:6px 14px; border-radius:6px; border:none; background:transparent; font-size:12px; font-weight:600; color:var(--text-faint); cursor:pointer; font-family:var(--font-body);}
 .and-toggle-btn.active{background:var(--surface); box-shadow:var(--shadow-sm); color:var(--primary); font-weight:700;}
+.projstatus-wrap{display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; margin:0 0 12px;}
+.projstatus-wrap>label{font-size:12px; font-weight:600; color:var(--text-muted);}
+.projstatus-wrap .and-toggle-prazo{flex-wrap:wrap; max-width:100%;}
+.ia-nota-previstas{font-size:11.5px; color:var(--text-faint); margin:-4px 0 10px;}
 /* Status Report — visualização executiva (imita um documento/apresentação
    formal, com logos, cards e hierarquia visual clara). */
 .sr-exec-card{max-width:920px;}
@@ -1445,6 +1449,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
     <!-- PAGE INTELIGÊNCIA DE ALOCAÇÃO -->
     <section class="page" id="page-inteligencia">
       <div class="page-header"><div><h1>🧠 Inteligência de Alocação</h1><p>Indicador de carga/risco por pessoa, combinando quantidade de projetos, complexidade, prioridade e proximidade de prazos — a partir dos mesmos dados de Alocações. É um apoio à decisão, não uma afirmação automática.</p></div></div>
+      <div id="ia-projstatus-wrap"></div>
       <div class="filter-bar">
         <div class="filter-field"><label>Pessoa</label><select id="f-ia-pessoa"><option value="">Todas</option></select></div>
         <div class="filter-field"><label>Gestor</label><select id="f-ia-gestor"><option value="">Todos</option></select></div>
@@ -1462,6 +1467,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
     <!-- PAGE PESSOA -->
     <section class="page" id="page-pessoa">
       <div class="page-header"><div><h1>Desempenho</h1><p>Perfil, projetos, horas e insights por colaborador.</p></div></div>
+      <div id="pes-projstatus-wrap"></div>
       <div class="filter-bar">
         <div class="filter-field"><label>Pessoa</label><select id="f-pes"></select></div>
         <div class="filter-field" style="justify-content:flex-end;">
@@ -1952,7 +1958,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v14.8';
+const APP_VERSION='v14.9';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2181,8 +2187,9 @@ async function attemptLoadWithToken(token, viewAsEmail){
 //
 // Atualize esta data junto com qualquer alteração no array abaixo — ela
 // aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='29/09/2026';
+const NOVIDADES_ATUALIZADO_EM='05/10/2026';
 const NOVIDADES=[
+  {icone:'🎯', bg:'#eff6ff', cor:'#2563eb', titulo:'Filtro de projetos Concluídos / Não Concluídos', descricao:'Inteligência de Alocação e Desempenho ganharam o filtro "Projetos: Todos · Concluídos · Não Concluídos". Em Inteligência de Alocação, projetos, score, situação, tarefas e horas apontadas são recalculados só com os projetos do filtro; em Desempenho, o Detalhamento por Projeto recalcula os percentuais só sobre os projetos visíveis (Não Concluídos = todo projeto com status diferente de Concluído).', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🚀', bg:'#fff7ed', cor:'#ea580c', titulo:'Páginas abrem mais rápido', descricao:'Depois do login, o dashboard não busca mais TODOS os dados de uma vez em segundo plano — cada página agora busca só o que ela precisa, na primeira vez que você abre ela na sessão (as próximas vezes são instantâneas). Resultado: bem menos dado trafegado logo após entrar.', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'↕️', bg:'#eff6ff', cor:'#2563eb', titulo:'Ordenação em todas as listas', descricao:'Agora dá pra ordenar por qualquer coluna em praticamente todas as tabelas do dashboard — clique no cabeçalho pra alternar entre crescente, decrescente e a ordem original. Funciona junto com os filtros já aplicados, sem recarregar dados.', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'⏳', bg:'#eff6ff', cor:'#2563eb', titulo:'Indicador de carregamento no topo', descricao:'Depois do login, o aviso de "carregando dados" agora aparece fixo no topo da tela, visível na hora — antes ficava embaixo da lista de novidades e exigia rolar a tela.', tag:'Melhoria', tagCor:'melhoria'},
@@ -3724,6 +3731,69 @@ const noTooltip={enabled:false};
 // filtro quanto pra calcular as linhas da tabela — evita duas implementações
 // da "mesma" conta desalinharem uma da outra (foi exatamente isso que causou
 // a divergência de números entre Alocações e Desempenho reportada).
+// ============================================================
+// FILTRO "STATUS DO PROJETO" (Todos / Concluídos / Não Concluídos) —
+// helper ÚNICO reaproveitado por Inteligência de Alocação e Desempenho.
+// Regra: Concluídos = só projetos cujo status (D.pj[].st) é "Concluído";
+// Não Concluídos = TODO projeto com status diferente de Concluído (inclui
+// status vazio/desconhecido). Comparação normalizada (sem acento/caixa).
+// ============================================================
+const PROJ_STATUS_MODOS=[{v:'todos',l:'Todos'},{v:'concluidos',l:'Concluídos'},{v:'naoConcluidos',l:'Não Concluídos'}];
+const PROJ_STATUS_MODO_ATUAL={ia:'todos',pessoa:'todos'};
+function projStatusModo_(chave){ return PROJ_STATUS_MODO_ATUAL[chave]||'todos'; }
+function projStatusRotulo_(modo){ const m=PROJ_STATUS_MODOS.find(x=>x.v===modo); return m?m.l:'Todos'; }
+function projetoConcluidoStatus_(st){ return peNormalizarHeader(st)==='concluido'; }
+function projetoPassaFiltroStatus_(proj, modo){
+  if(!modo || modo==='todos') return true;
+  const concluido=projetoConcluidoStatus_(proj&&proj.st);
+  return modo==='concluidos'?concluido:!concluido;
+}
+// Mapa nome do projeto -> concluído?, pra telas que só têm o NOME do projeto
+// (ex: D.tpe/PM_PROJ). Se houver mais de uma entrada com o mesmo nome em
+// D.pj (clientes diferentes), só conta como Concluído se TODAS forem Concluído.
+// Nome que não existe em D.pj fica sem entrada = tratado como Não Concluído.
+function projMapaConcluidoPorNome_(){
+  const mapa={};
+  (D.pj||[]).forEach(proj=>{
+    const c=projetoConcluidoStatus_(proj.st);
+    mapa[proj.pj]= mapa[proj.pj]===undefined ? c : (mapa[proj.pj] && c);
+  });
+  return mapa;
+}
+function projetoNomePassaFiltroStatus_(nome, modo, mapa){
+  if(!modo || modo==='todos') return true;
+  const concluido=mapa[nome]===true;
+  return modo==='concluidos'?concluido:!concluido;
+}
+// Re-normaliza o % de cada projeto SÓ sobre as horas dos projetos da lista
+// recebida (projetos "sem apontamento" ficam fora da conta e sem %).
+function recalcularPctProjetos_(lista){
+  const total=lista.reduce((s,p)=>s+(p.semApontamento?0:p.h),0);
+  return lista.map(p=>p.semApontamento?p:Object.assign({},p,{pct: total>0?Math.round(p.h/total*100):0}));
+}
+function projStatusSegHtml_(chave){
+  const atual=projStatusModo_(chave);
+  return '<div class="projstatus-wrap"><label>Projetos:</label><div class="and-toggle-prazo" id="projstatus-'+chave+'" role="group" aria-label="Status do Projeto">'+
+    PROJ_STATUS_MODOS.map(m=>'<button type="button" class="and-toggle-btn'+(m.v===atual?' active':'')+'" data-modo="'+m.v+'">'+m.l+'</button>').join('')+
+  '</div></div>';
+}
+function projStatusSegAtualizar_(chave){
+  const atual=projStatusModo_(chave);
+  document.querySelectorAll('#projstatus-'+chave+' .and-toggle-btn').forEach(b=>b.classList.toggle('active',b.dataset.modo===atual));
+}
+function initProjStatusSeg_(chave, wrapId, onChange){
+  const wrap=document.getElementById(wrapId);
+  if(wrap) wrap.innerHTML=projStatusSegHtml_(chave);
+  document.querySelectorAll('#projstatus-'+chave+' .and-toggle-btn').forEach(btn=>{
+    btn.onclick=()=>{
+      if(btn.dataset.modo===projStatusModo_(chave)) return;
+      PROJ_STATUS_MODO_ATUAL[chave]=btn.dataset.modo;
+      projStatusSegAtualizar_(chave);
+      onChange(btn.dataset.modo);
+    };
+  });
+}
+
 // F9 — Cache compartilhado: alocProjetosDaPessoa já é a função ÚNICA
 // reaproveitada pelas páginas Alocações e Inteligência de Alocação (ver
 // comentário acima), mas antes recalculava do zero (full-scan de D.pj) a
@@ -3833,11 +3903,21 @@ function iaClassificarScore_(score){
 
 // Calcula a análise completa de UMA pessoa. mapaComplexidade/mapaPrioridade
 // já vêm prontos (calculados uma vez só pra todo mundo, não por pessoa).
-function iaCalcularAnalisePessoa_(pessoa, mapaComplexidade, mapaPrioridade, maxProjetosObservado){
+// Projetos vinculados da pessoa já filtrados pelo modo de Status do Projeto.
+// Modo 'todos' devolve o MESMO array do cache de alocProjetosDaPessoa
+// (comportamento idêntico ao de antes); nos demais modos devolve um array
+// NOVO — nunca altera o cache compartilhado.
+function iaProjetosDaPessoaNoModo_(pessoa, modoStatus){
+  const base=alocProjetosDaPessoa(pessoa);
+  if(!modoStatus || modoStatus==='todos') return base;
+  return base.filter(proj=>projetoPassaFiltroStatus_(proj,modoStatus));
+}
+function iaCalcularAnalisePessoa_(pessoa, mapaComplexidade, mapaPrioridade, maxProjetosObservado, modoStatus){
   const ek=(pessoa.email||'').toLowerCase();
+  const filtrado=!!modoStatus && modoStatus!=='todos';
   // Mesma fonte de "projetos vinculados" já usada em Alocações — evita
   // qualquer duplicidade ou divergência entre as duas páginas.
-  const projetos=alocProjetosDaPessoa(pessoa);
+  const projetos=iaProjetosDaPessoaNoModo_(pessoa, modoStatus);
   const projetosInfo=projetos.map(proj=>{
     const prazo=iaPrazoInfoProjeto_(proj);
     return {
@@ -3871,7 +3951,30 @@ function iaCalcularAnalisePessoa_(pessoa, mapaComplexidade, mapaPrioridade, maxP
   // Tarefas — informação complementar (não entra na conta do score), já
   // deduplicada e com a mesma regra de "Blocked não é Atrasada" do resto do
   // dashboard (PSTAT já reflete os status reais das tarefas, um por tarefa única).
-  const statusPessoa=PSTAT[ek]||{};
+  // Modo 'todos': totais por pessoa (PSTAT), exatamente como antes. Com o
+  // filtro de Status do Projeto ativo: conta só as tarefas da pessoa DENTRO
+  // dos projetos filtrados (PROJ_TASKS, mesma regra de "responsável" usada em
+  // qtdAtrasadas abaixo) — um projeto por nome, sem contar duas vezes.
+  let statusPessoa=PSTAT[ek]||{};
+  let horasApontadasFiltro=0;
+  const statusesTarefas=new Set();
+  if(filtrado){
+    statusPessoa={};
+    const nomesVistos=new Set();
+    projetos.forEach(proj=>{
+      if(nomesVistos.has(proj.pj)) return;
+      nomesVistos.add(proj.pj);
+      (PROJ_TASKS[proj.pj]||[]).forEach(t=>{
+        const respondeisPorMim=(t.responsaveis||[]).some(r=>r.email===ek) || (t.email===ek);
+        if(!respondeisPorMim) return;
+        const stt=t.status||'';
+        statusPessoa[stt]=(statusPessoa[stt]||0)+1;
+        if(stt) statusesTarefas.add(stt);
+      });
+      const apont=(D.tpe[ek]||{})[proj.pj];
+      horasApontadasFiltro+=(apont&&apont[0])||0;
+    });
+  }
   const qtdTarefasTotal=Object.values(statusPessoa).reduce((s,v)=>s+v,0);
   const qtdBloqueadas=Object.entries(statusPessoa).filter(([s])=>s.toLowerCase()==='blocked').reduce((s,[,v])=>s+v,0);
   const qtdEmAndamento=Object.entries(statusPessoa).filter(([s])=>{ const sl=s.toLowerCase(); return sl!=='done' && sl!=='blocked' && sl!=='cancelado' && sl!=='backlog'; }).reduce((s,[,v])=>s+v,0);
@@ -3888,9 +3991,13 @@ function iaCalcularAnalisePessoa_(pessoa, mapaComplexidade, mapaPrioridade, maxP
     });
   });
 
+  // H. Previstas (PHEST) só existe como total da pessoa (sem quebra por
+  // projeto) — fica o total em qualquer modo. Com filtro ativo, H. Apontadas
+  // = soma de D.tpe[ek][projeto] só dos projetos filtrados, e a % de execução
+  // (apontadas filtradas / previstas totais) deixa de fazer sentido -> null.
   const horasPrevistas=PHEST[ek]||0;
-  const horasApontadas=PHAP[ek]||0;
-  const percentualExecucao=horasPrevistas>0?Math.round(horasApontadas/horasPrevistas*100):null;
+  const horasApontadas=filtrado?horasApontadasFiltro:(PHAP[ek]||0);
+  const percentualExecucao=(!filtrado && horasPrevistas>0)?Math.round(horasApontadas/horasPrevistas*100):null;
 
   // Próxima entrega (pra exibir na tabela) — a mais próxima entre os projetos ativos.
   const proximaEntrega=projetosAtivos.filter(pi=>pi.prazo.data).sort((a,b)=>(a.prazo.diasRestantes??999999)-(b.prazo.diasRestantes??999999))[0];
@@ -3902,6 +4009,7 @@ function iaCalcularAnalisePessoa_(pessoa, mapaComplexidade, mapaPrioridade, maxP
     proximaEntrega: proximaEntrega?proximaEntrega.prazo:null,
     qtdTarefasTotal, qtdEmAndamento, qtdBloqueadas, qtdAtrasadas,
     horasPrevistas, horasApontadas, percentualExecucao,
+    modoStatus: filtrado?modoStatus:'todos', statusesTarefas,
     composicao: {
       qtdProjetos: Math.round(qtdProjetosScore*IA_PESOS.qtdProjetos*100),
       complexidade: Math.round(complexidadeScore*IA_PESOS.complexidade*100),
@@ -3948,7 +4056,21 @@ function iaGerarRecomendacao_(analise){
   return 'Alocação saudável no momento.';
 }
 
-let IA_ANALISES_CACHE=null; // recalculado a cada render (dados já estão em memória, custo desprezível)
+// Cache de análises POR MODO do filtro de Status do Projeto, calculado sob
+// demanda na primeira vez que cada modo é usado e invalidado em
+// initInteligenciaAlocacao (a cada abertura/recarga de dados).
+let IA_ANALISES_POR_MODO={};
+// Alias para as análises do modo ATIVO (mantido por compatibilidade).
+let IA_ANALISES_CACHE=null;
+function iaAnalisesDoModo_(modo){
+  const m=modo||'todos';
+  if(!IA_ANALISES_POR_MODO[m]) IA_ANALISES_POR_MODO[m]=iaCalcularTodasAnalises_(m);
+  return IA_ANALISES_POR_MODO[m];
+}
+function iaAnalisesAtivas_(){
+  IA_ANALISES_CACHE=iaAnalisesDoModo_(projStatusModo_('ia'));
+  return IA_ANALISES_CACHE;
+}
 // Identifica quem é Head de QUALQUER área, pela fonte oficial já usada em
 // todo o resto do dashboard (AREAS[area].head) — nunca por nome/área
 // específica hardcoded. Restrito só a esta página: não altera D.p nem
@@ -3966,7 +4088,7 @@ function iaNomesHeads_(){
   const peloCargo=(D.p||[]).filter(p=>(p.cargo||'').toLowerCase().includes('head')).map(p=>peNormalizarHeader(p.a));
   return new Set([...porVotacao,...peloCargo]);
 }
-function iaCalcularTodasAnalises_(){
+function iaCalcularTodasAnalises_(modoStatus){
   const heads=iaNomesHeads_();
   // Exclusão feita AQUI, na fonte da lista — assim tabela, KPIs, rankings,
   // filtros (que leem as opções a partir dessas análises) e modal de
@@ -3974,9 +4096,10 @@ function iaCalcularTodasAnalises_(){
   const pessoas=D.p.filter(p=>p.a && !heads.has(peNormalizarHeader(p.a)));
   const mapaComplexidade=iaConstruirMapaNiveis_(D.pj.map(p=>p.cx));
   const mapaPrioridade=iaConstruirMapaNiveis_(D.pj.map(p=>p.pr));
-  const qtdsPorPessoa=pessoas.map(p=>alocProjetosDaPessoa(p).length);
+  // maxProjetosObservado calculado sobre as MESMAS contagens (já filtradas pelo modo).
+  const qtdsPorPessoa=pessoas.map(p=>iaProjetosDaPessoaNoModo_(p, modoStatus).length);
   const maxProjetosObservado=qtdsPorPessoa.length>0?Math.max(...qtdsPorPessoa):0;
-  return pessoas.map(p=>iaCalcularAnalisePessoa_(p, mapaComplexidade, mapaPrioridade, maxProjetosObservado));
+  return pessoas.map(p=>iaCalcularAnalisePessoa_(p, mapaComplexidade, mapaPrioridade, maxProjetosObservado, modoStatus));
 }
 
 function initAlocacoes(){
@@ -4094,6 +4217,20 @@ function renderAlocacoes(){
 // exatamente os mesmos dados/estrutura de Alocações (nenhuma consulta nova
 // ao servidor — tudo já está em memória desde o login).
 // ============================================================
+// Opções de "Qtd. de Projetos": 0 até o máximo observado NO MODO ATIVO do
+// filtro de Status do Projeto (em 'todos' = igual ao comportamento anterior).
+function iaPopularQtdProj_(){
+  const sel=document.getElementById('f-ia-qtdproj');
+  const prev=sel.value;
+  const heads=iaNomesHeads_();
+  const modo=projStatusModo_('ia');
+  const qtds=D.p.filter(p=>p.a && !heads.has(peNormalizarHeader(p.a))).map(p=>iaProjetosDaPessoaNoModo_(p,modo).length);
+  const maxQtd=qtds.length>0?Math.max(...qtds):0;
+  let opcoesQtdHtml='<option value="">Qualquer quantidade</option>';
+  for(let i=0;i<=maxQtd;i++) opcoesQtdHtml+='<option value="'+i+'">'+i+'</option>';
+  sel.innerHTML=opcoesQtdHtml;
+  if(prev!=='' && parseInt(prev)<=maxQtd) sel.value=prev;
+}
 function initInteligenciaAlocacao(){
   // Cálculo do score de TODAS as pessoas feito aqui, uma vez só (ao abrir a
   // página) — não mais dentro de renderInteligenciaAlocacao, que roda a cada
@@ -4101,7 +4238,11 @@ function initInteligenciaAlocacao(){
   // clique de filtro e outro na mesma sessão, então recalcular tudo de novo a
   // cada filtro era trabalho repetido sem necessidade — só refiltrar/reordenar
   // o resultado já calculado é suficiente e muito mais rápido.
-  IA_ANALISES_CACHE=iaCalcularTodasAnalises_();
+  // Cache por modo invalidado aqui (nova abertura/recarga de dados); o filtro
+  // de Status do Projeto volta a Todos, igual aos demais filtros desta página.
+  IA_ANALISES_POR_MODO={};
+  PROJ_STATUS_MODO_ATUAL.ia='todos';
+  IA_ANALISES_CACHE=iaAnalisesDoModo_('todos');
   // Mesma exclusão de Heads aplicada em iaCalcularTodasAnalises_ — precisa
   // valer também aqui, senão o filtro de Pessoa ainda ofereceria o nome de um
   // Head como opção (mesmo que selecioná-lo não trouxesse nenhum resultado).
@@ -4126,17 +4267,17 @@ function initInteligenciaAlocacao(){
 
   document.getElementById('f-ia-situacao').innerHTML='<option value="">Todas</option>'+IA_FAIXAS_SCORE.map(f=>'<option value="'+f.label+'">'+f.emoji+' '+f.label+'</option>').join('');
 
-  const qtdsPorPessoa=pessoasSemHead.map(p=>alocProjetosDaPessoa(p).length);
-  const maxQtd=qtdsPorPessoa.length>0?Math.max(...qtdsPorPessoa):0;
-  let opcoesQtdHtml='<option value="">Qualquer quantidade</option>';
-  for(let i=0;i<=maxQtd;i++) opcoesQtdHtml+='<option value="'+i+'">'+i+'</option>';
-  document.getElementById('f-ia-qtdproj').innerHTML=opcoesQtdHtml;
+  iaPopularQtdProj_();
 
   ['f-ia-pessoa','f-ia-gestor','f-ia-qtdproj','f-ia-situacao','f-ia-complexidade','f-ia-prioridade','f-ia-status'].forEach(id=>{ document.getElementById(id).onchange=renderInteligenciaAlocacao; });
   document.getElementById('f-ia-clear').onclick=()=>{
     ['f-ia-pessoa','f-ia-gestor','f-ia-qtdproj','f-ia-situacao','f-ia-complexidade','f-ia-prioridade','f-ia-status'].forEach(id=>{ document.getElementById(id).value=''; });
+    PROJ_STATUS_MODO_ATUAL.ia='todos';
+    projStatusSegAtualizar_('ia');
+    iaPopularQtdProj_();
     renderInteligenciaAlocacao();
   };
+  initProjStatusSeg_('ia','ia-projstatus-wrap',()=>{ iaPopularQtdProj_(); renderInteligenciaAlocacao(); });
   SORT_STATE['ia']={col:'score',dir:2};
   renderInteligenciaAlocacao();
 }
@@ -4151,7 +4292,9 @@ function renderInteligenciaAlocacao(){
   const fPrioridade=document.getElementById('f-ia-prioridade').value;
   const fStatus=document.getElementById('f-ia-status').value;
 
-  let linhas=IA_ANALISES_CACHE;
+  const modoStatusIA=projStatusModo_('ia');
+  const analisesAtivas=iaAnalisesAtivas_();
+  let linhas=analisesAtivas;
 
   if(fPessoa) linhas=linhas.filter(l=>l.pessoa.a===fPessoa);
   if(fGestor) linhas=linhas.filter(l=>l.pessoa.gestor===fGestor);
@@ -4160,8 +4303,13 @@ function renderInteligenciaAlocacao(){
   if(fComplexidade) linhas=linhas.filter(l=>l.projetos.some(p=>p.cx===fComplexidade));
   if(fPrioridade) linhas=linhas.filter(l=>l.projetos.some(p=>p.pr===fPrioridade));
   if(fStatus){
-    const eksComStatus=new Set(D.p.filter(p=>Object.keys(PSTAT[(p.email||'').toLowerCase()]||{}).includes(fStatus)).map(p=>p.a));
-    linhas=linhas.filter(l=>eksComStatus.has(l.pessoa.a));
+    if(modoStatusIA==='todos'){
+      const eksComStatus=new Set(D.p.filter(p=>Object.keys(PSTAT[(p.email||'').toLowerCase()]||{}).includes(fStatus)).map(p=>p.a));
+      linhas=linhas.filter(l=>eksComStatus.has(l.pessoa.a));
+    }else{
+      // Com filtro de Status do Projeto: só tarefas dos projetos filtrados.
+      linhas=linhas.filter(l=>l.statusesTarefas && l.statusesTarefas.has(fStatus));
+    }
   }
 
   const colunasIA=[
@@ -4182,12 +4330,15 @@ function renderInteligenciaAlocacao(){
   linhas=stIA.col?ordenarLinhas_(linhas,colunasIA.find(c=>c.key===stIA.col),stIA.dir):linhas;
 
   const contagemFaixas={}; IA_FAIXAS_SCORE.forEach(f=>contagemFaixas[f.label]=0);
-  IA_ANALISES_CACHE.forEach(l=>{ contagemFaixas[l.faixa.label]++; });
+  analisesAtivas.forEach(l=>{ contagemFaixas[l.faixa.label]++; });
   document.getElementById('kpi-inteligencia').innerHTML=`
-    ${kpiHtml({label:'Pessoas Analisadas',value:IA_ANALISES_CACHE.length,icon:'pessoas',bg:'#eff6ff',color:'#2563eb'})}
+    ${kpiHtml({label:'Pessoas Analisadas',value:analisesAtivas.length,icon:'pessoas',bg:'#eff6ff',color:'#2563eb'})}
     ${IA_FAIXAS_SCORE.map(f=>kpiHtml({label:f.emoji+' '+f.label,value:contagemFaixas[f.label]})).join('')}`;
 
-  let h='<div class="card"><div class="card-title"><h3>Análise por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:620px"><table>'+
+  const sufixoModoIA=modoStatusIA!=='todos'?' · '+projStatusRotulo_(modoStatusIA):'';
+  let h='<div class="card"><div class="card-title"><h3>Análise por Pessoa'+(sufixoModoIA?'<span class="sub">'+sufixoModoIA+'</span>':'')+'</h3><span class="sub">'+linhas.length+'</span></div>'+
+    (modoStatusIA!=='todos'?'<div class="ia-nota-previstas">Filtro de projetos ativo ('+projStatusRotulo_(modoStatusIA)+'): Projetos, Tarefas, H. Apontadas, Score e Situação consideram só esses projetos. H. Previstas = total da pessoa (não há quebra por projeto).</div>':'')+
+    '<div class="table-wrap" style="max-height:620px"><table>'+
     theadOrdenavel_('ia',colunasIA)+'<tbody>';
   if(linhas.length===0){
     h+='<tr><td colspan="12" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
@@ -4203,7 +4354,7 @@ function renderInteligenciaAlocacao(){
         '<td>'+(l.prioridadeMax!=='—'?'<span class="status-pill">'+l.prioridadeMax+'</span>':'—')+'</td>'+
         '<td>'+entregaTxt+'</td>'+
         '<td>'+l.qtdTarefasTotal+'</td>'+
-        '<td>'+fH(l.horasPrevistas)+'</td>'+
+        '<td'+(modoStatusIA!=='todos'?' title="Total da pessoa (não há quebra por projeto)"':'')+'>'+fH(l.horasPrevistas)+'</td>'+
         '<td>'+fH(l.horasApontadas)+'</td>'+
         '<td><div class="ia-score-bar-track"><div class="ia-score-bar-fill" style="width:'+l.score+'%;background:'+iaCorFaixa_(l.faixa)+'"></div></div><span style="font-weight:700;font-size:12px">'+l.score+'</span></td>'+
         '<td>'+iaBadgeSituacaoHtml(l.faixa)+'</td>'+
@@ -4231,7 +4382,7 @@ function iaBadgeSituacaoHtml(faixa){
 }
 
 function iaAbrirModalDetalhe(nomePessoa){
-  const analise=(IA_ANALISES_CACHE||[]).find(l=>l.pessoa.a===nomePessoa);
+  const analise=iaAnalisesAtivas_().find(l=>l.pessoa.a===nomePessoa);
   if(!analise) return;
   document.getElementById('ia-modal-title').textContent='🧠 '+analise.pessoa.a;
   const projetosHtml=analise.projetosInfo.length===0?'<p style="color:var(--text-faint);font-size:13px">Nenhum projeto vinculado no momento.</p>':
@@ -4248,7 +4399,7 @@ function iaAbrirModalDetalhe(nomePessoa){
       ${iaBadgeSituacaoHtml(analise.faixa)}
       <p style="font-size:11.5px;color:var(--text-faint);margin-top:6px">${analise.faixa.texto} — indicador de apoio à decisão, não uma afirmação automática.</p>
     </div>
-    <div class="task-modal-section-title">Projetos (${analise.projetos.length})</div>
+    <div class="task-modal-section-title">Projetos (${analise.projetos.length})${analise.modoStatus!=='todos'?' · '+projStatusRotulo_(analise.modoStatus):''}</div>
     ${projetosHtml}
     <div class="task-modal-section-title" style="margin-top:16px">Composição do Score</div>
     <div style="font-size:12.5px;line-height:2">
@@ -4265,8 +4416,8 @@ function iaAbrirModalDetalhe(nomePessoa){
     </div>
     <div class="task-modal-section-title" style="margin-top:16px">Horas</div>
     <div style="font-size:12.5px;line-height:1.9">
-      Previstas: <strong>${fH(analise.horasPrevistas)}</strong> · Apontadas: <strong>${fH(analise.horasApontadas)}</strong> ·
-      Diferença: <strong>${fH(Math.abs(analise.horasPrevistas-analise.horasApontadas))}</strong>${analise.percentualExecucao!=null?' · Execução: <strong>'+analise.percentualExecucao+'%</strong>':''}
+      Previstas: <strong>${fH(analise.horasPrevistas)}</strong> · Apontadas: <strong>${fH(analise.horasApontadas)}</strong>${analise.modoStatus==='todos'?' ·\n      Diferença: <strong>'+fH(Math.abs(analise.horasPrevistas-analise.horasApontadas))+'</strong>':''}${analise.percentualExecucao!=null?' · Execução: <strong>'+analise.percentualExecucao+'%</strong>':''}
+      ${analise.modoStatus!=='todos'?'<div style="font-size:11.5px;color:var(--text-faint);margin-top:4px">Filtro de projetos: '+projStatusRotulo_(analise.modoStatus)+'. Apontadas só desses projetos; Previstas = total da pessoa (não há quebra por projeto).</div>':''}
     </div>
     <div class="task-modal-section-title" style="margin-top:16px">Explicação</div>
     <div style="font-size:12.5px;line-height:1.7;color:var(--text-muted)">${iaGerarExplicacao_(analise)}</div>
@@ -5104,6 +5255,8 @@ function initPessoa(){
   sel.onchange=renderPessoa;
   document.getElementById('f-pes-claude-only').onchange=()=>{populatePessoaOptions();renderPessoa();};
   initPeriodSeg('pes-periodo-seg','f-pes-de','f-pes-ate',renderPessoa);
+  // Filtro Status do Projeto (Todos/Concluídos/Não Concluídos): mantém o modo escolhido ao trocar pessoa/período.
+  initProjStatusSeg_('pessoa','pes-projstatus-wrap',renderPessoa);
 }
 function populatePessoaOptions(){
   const sel=document.getElementById('f-pes');
@@ -5321,6 +5474,18 @@ function renderPessoa(){
   const stPesSemanas=SORT_STATE['pessoa-semanas']||{col:null,dir:0};
   const semanasParaTabelaOrd=stPesSemanas.col?ordenarLinhas_(semanasParaTabela,colunasPesSemanas.find(c=>c.key===stPesSemanas.col),stPesSemanas.dir):semanasParaTabela;
 
+  // Filtro Status do Projeto: vale SÓ para o Detalhamento por Projeto. Filtra
+  // a lista e re-normaliza o % sobre as horas dos projetos visíveis (em Não
+  // Concluídos, projetos Concluídos ficam fora do denominador). Modo 'todos'
+  // usa pL e os % já calculados, sem nenhuma alteração. Os demais blocos
+  // (Resumo, KPIs, semanal, status etc.) continuam com o total da pessoa.
+  const modoStatusPes=projStatusModo_('pessoa');
+  let pLView=pL;
+  if(modoStatusPes!=='todos'){
+    const mapaConcl=projMapaConcluidoPorNome_();
+    pLView=recalcularPctProjetos_(pL.filter(x=>projetoNomePassaFiltroStatus_(x.n,modoStatusPes,mapaConcl)));
+  }
+  const sufixoModoPes=modoStatusPes!=='todos'?' · '+projStatusRotulo_(modoStatusPes):'';
   const colunasPesProjetos=[
     {key:'projeto',label:'Projeto',tipo:'texto',get:p=>p.n},
     {key:'tarefas',label:'Tarefas',tipo:'numero',get:p=>p.t},
@@ -5328,7 +5493,7 @@ function renderPessoa(){
     {key:'pct',label:'%',tipo:'percentual',get:p=>p.semApontamento?null:p.pct}
   ];
   const stPesProjetos=SORT_STATE['pessoa-projetos']||{col:null,dir:0};
-  const pLOrd=stPesProjetos.col?ordenarLinhas_(pL,colunasPesProjetos.find(c=>c.key===stPesProjetos.col),stPesProjetos.dir):pL;
+  const pLOrd=stPesProjetos.col?ordenarLinhas_(pLView,colunasPesProjetos.find(c=>c.key===stPesProjetos.col),stPesProjetos.dir):pLView;
 
   el.innerHTML=`
   <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Perfil</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;font-size:13px"><div><span style="font-size:11px;color:var(--text-faint);display:block">Nome</span><strong>${info.a}</strong></div><div><span style="font-size:11px;color:var(--text-faint);display:block">Cargo</span>${info.cargo||'—'} · ${info.nv||'—'}</div><div><span style="font-size:11px;color:var(--text-faint);display:block">Área</span>${info.area||'—'}</div><div><span style="font-size:11px;color:var(--text-faint);display:block">Gestor</span>${personLinkHtml(info.gestor)}</div><div><span style="font-size:11px;color:var(--text-faint);display:block">E-mail</span><span style="color:var(--primary)">${info.email||'—'}</span></div><div><span style="font-size:11px;color:var(--text-faint);display:block">GPs</span>${[...ger].map(g=>personLinkHtml(g)).join(', ')||'—'}</div></div></div>
@@ -5389,7 +5554,7 @@ function renderPessoa(){
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Detalhamento por Projeto<span class="sub">${periodoAtivoPes?' (no período)':' (geral)'}</span></h3><span class="sub">${pL.length}</span></div><div class="table-wrap"><table>${theadOrdenavel_('pessoa-projetos',colunasPesProjetos)}<tbody>${pLOrd.map(p=>'<tr'+(p.semApontamento?' style="opacity:.75"':'')+'><td>'+projetoLinkHtml(p.n,p.n.length>35?p.n.slice(0,35)+'…':p.n)+'</td><td><strong>'+p.t+'</strong></td><td>'+fH(p.h)+'</td><td>'+(p.semApontamento?'<span class="status-pill" title="Alocado na equipe do projeto, mas sem nenhuma hora ou tarefa registrada ainda">Sem apontamento</span>':'<div class="bullet-row" style="grid-template-columns:1fr 36px"><div class="bullet-track"><div class="bullet-fill" style="width:'+p.pct+'%"></div></div><div class="bullet-pct">'+p.pct+'%</div></div>')+'</td></tr>').join('')||'<tr><td colspan="4" style="color:var(--text-faint);text-align:center;padding:20px">Nenhuma atividade nesse período.</td></tr>'}</tbody></table></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Detalhamento por Projeto<span class="sub">${periodoAtivoPes?' (no período)':' (geral)'}${sufixoModoPes}</span></h3><span class="sub">${pLView.length}</span></div><div class="table-wrap"><table>${theadOrdenavel_('pessoa-projetos',colunasPesProjetos)}<tbody>${pLOrd.map(p=>'<tr'+(p.semApontamento?' style="opacity:.75"':'')+'><td>'+projetoLinkHtml(p.n,p.n.length>35?p.n.slice(0,35)+'…':p.n)+'</td><td><strong>'+p.t+'</strong></td><td>'+fH(p.h)+'</td><td>'+(p.semApontamento?'<span class="status-pill" title="Alocado na equipe do projeto, mas sem nenhuma hora ou tarefa registrada ainda">Sem apontamento</span>':'<div class="bullet-row" style="grid-template-columns:1fr 36px"><div class="bullet-track"><div class="bullet-fill" style="width:'+p.pct+'%"></div></div><div class="bullet-pct">'+p.pct+'%</div></div>')+'</td></tr>').join('')||'<tr><td colspan="4" style="color:var(--text-faint);text-align:center;padding:20px">Nenhuma atividade '+(modoStatusPes!=='todos'?'com esse filtro de projetos ':'')+'nesse período.</td></tr>'}</tbody></table></div></div>
 
   <div class="card"><div class="card-title"><h3>Horas Trabalhadas por Mês</h3><span class="sub">comparativo mensal · fonte: Data de Apontamento</span></div><div style="height:280px">${monthsSorted.length>0?'<canvas id="chPM"></canvas>':'<div class="empty-state"><p>Sem dados no período selecionado.</p></div>'}</div></div>`;
 
