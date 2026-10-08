@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzaZ9Xng7Jl_GA2y_X2e-rNOjV3K7O1rg9Xn_JbtnCxAvmh2BvDIhSy6cf4af-lNu7Gyw/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzltUBvfIzzAQ9hwbTkxwBv9pVLhqn_zF3C-MUjwXGUhN671x5_rvHQDNZ_rECe4XkVXQ/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1282,6 +1282,68 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .nov-card p{font-size:12.5px;color:var(--text-muted);line-height:1.55;margin:0;}
 .nov-tag{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:999px;margin-left:auto;flex-shrink:0;white-space:nowrap;}
 .nov-chevron{display:none;}
+/* ============ Feriados (v16.0) ============ */
+.fe-panel{background:var(--surface);border-radius:20px;padding:22px 24px;box-shadow:var(--shadow-sm);}
+.fe-head h2{font-size:18px;margin:0;} .fe-head p{margin:4px 0 0;color:var(--text-muted);font-size:13px;}
+.fe-form{background:var(--surface-alt);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin:18px 0;}
+.fe-form h4{margin:0 0 12px;font-size:12px;letter-spacing:.06em;}
+.fe-row{display:grid;grid-template-columns:200px 1fr 220px;gap:14px;align-items:end;}
+.fe-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;align-items:end;}
+.fe-panel label{display:block;font-size:11px;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:5px;}
+.fe-panel input[type=text],.fe-panel input[type=date],.fe-panel select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font:inherit;background:var(--surface);color:var(--text);}
+.fe-chk{display:flex !important;align-items:center;gap:8px;font-weight:700 !important;font-size:13px !important;text-transform:none !important;color:var(--text) !important;cursor:pointer;margin:0 !important;}
+.fe-chk input{width:18px;height:18px;}
+.fe-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:12px;}
+.fe-btn{background:#4f46e5;color:#fff;border:0;border-radius:12px;padding:11px 20px;font:800 13px var(--font-body);cursor:pointer;box-shadow:0 6px 14px rgba(79,70,229,.28);}
+.fe-btn:disabled{opacity:.6;cursor:wait;}
+.fe-btn-sec{background:var(--surface);color:var(--text-muted);border:1px solid var(--border);border-radius:12px;padding:11px 18px;font:700 13px var(--font-body);cursor:pointer;}
+.fe-list-head{display:flex;justify-content:space-between;align-items:center;margin:6px 0 10px;font-size:12.5px;letter-spacing:.04em;}
+.fe-cnt{background:#e0e7ff;color:#3730a3;border-radius:999px;padding:3px 11px;font-size:11.5px;font-weight:800;}
+.fe-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.fe-panel .fe-tools input,.fe-panel .fe-tools select{padding:9px 12px;border:1px solid var(--border);border-radius:10px;font:inherit;background:var(--surface);color:var(--text);width:auto;flex:0 1 240px;min-width:150px;}
+.fe-tp{border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800;white-space:nowrap;}
+.fe-tp.Nacional{background:#e0f2fe;color:#075985;} .fe-tp.Estadual{background:#fef3c7;color:#92400e;} .fe-tp.Municipal{background:#dcfce7;color:#166534;}
+.fe-acoes{display:flex;gap:6px;white-space:nowrap;}
+.fe-mini{border:1px solid var(--border);background:var(--surface-alt);color:var(--primary);border-radius:8px;padding:4px 10px;font:700 12px var(--font-body);cursor:pointer;}
+.fe-mini.del{background:rgba(220,38,38,.1);color:#dc2626;border-color:transparent;}
+.fe-msg{margin:12px 0 0;padding:10px 14px;border-radius:10px;font-weight:700;font-size:13px;}
+.fe-msg.ok{background:rgba(22,163,74,.12);color:var(--st-feito,#16a34a);} .fe-msg.er{background:rgba(220,38,38,.12);color:var(--st-bloqueado,#dc2626);}
+.fe-edit-row{outline:2px solid #4f46e5;outline-offset:-2px;}
+@media (max-width:820px){.fe-row,.fe-row2{grid-template-columns:1fr;} .fe-panel{padding:16px;}}
+.fe-imp-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 0;} .fe-imp-bar b{font-size:12px;letter-spacing:.06em;margin-right:4px;}
+.fe-modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;}
+.fe-modal{background:var(--surface);color:var(--text);border-radius:18px;width:min(860px,100%);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.35);}
+.fe-modal-h{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border);} .fe-modal-h h3{margin:0;font-size:16px;}
+.fe-modal-b{padding:16px 20px;overflow:auto;flex:1;} .fe-modal-f{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;align-items:center;flex-wrap:wrap;}
+.fe-modal-b table{width:100%;} .fe-imp-sum{font-size:13px;font-weight:700;margin:10px 0;color:var(--text-muted);}
+.fe-st{border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:800;white-space:nowrap;} .fe-st.ok{background:rgba(22,163,74,.14);color:#15803d;} .fe-st.dup{background:#f1f5f9;color:#64748b;} .fe-st.er{background:rgba(220,38,38,.12);color:#dc2626;}
+.fe-modal input[type=file],.fe-modal select{padding:9px 12px;border:1px solid var(--border);border-radius:10px;font:inherit;background:var(--surface);color:var(--text);}
+/* ============ Avisos (v16.2) ============ */
+.av-tabs{display:flex;gap:6px;margin:14px 0 4px;flex-wrap:wrap;}
+.av-tabs button{border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:9px 16px;font:700 13px var(--font-body);color:var(--text-muted);cursor:pointer;}
+.av-tabs button.on{background:var(--primary);color:#fff;border-color:var(--primary);}
+.av-g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;} .av-g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:12px;}
+.fe-panel textarea{width:100%;min-height:110px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font:inherit;background:var(--surface);color:var(--text);resize:vertical;}
+.av-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.av-chip{border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:4px 11px;font-size:12px;font-weight:700;cursor:pointer;user-select:none;color:var(--text);}
+.av-chip.on{background:#e0e7ff;border-color:#a5b4fc;color:#3730a3;}
+.av-sel{display:flex;flex-wrap:wrap;gap:6px;min-height:34px;padding:6px;border:1px dashed var(--border);border-radius:10px;margin-top:6px;background:var(--surface);}
+.av-sel span{background:#e0e7ff;color:#3730a3;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;cursor:pointer;}
+.av-tp{border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800;white-space:nowrap;}
+.av-tp.Informação{background:#e0f2fe;color:#075985;} .av-tp.Atenção{background:#fef3c7;color:#92400e;} .av-tp.Importante{background:#ffedd5;color:#9a3412;} .av-tp.Urgente{background:#fee2e2;color:#b91c1c;}
+.av-st{border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800;} .av-st.Ativo{background:#dcfce7;color:#166534;} .av-st.Rascunho,.av-st.Inativo{background:#f1f5f9;color:#64748b;} .av-st.Expirado,.av-st.Excluído{background:#fef2f2;color:#b91c1c;}
+.av-kp{display:flex;gap:6px;flex-wrap:wrap;font-size:12px;font-weight:700;} .av-kp span{background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:2px 8px;}
+.av-bar{height:6px;background:#e2e8f0;border-radius:99px;overflow:hidden;min-width:90px;margin-top:5px;} .av-bar i{display:block;height:100%;background:#16a34a;}
+.av-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0;} .av-card{background:var(--surface-alt);border:1px solid var(--border);border-radius:14px;padding:14px;} .av-card b{font-size:24px;display:block;} .av-card small{color:var(--text-muted);font-weight:700;}
+.av-view{color:#15803d;font-weight:800;} .av-pend{color:#b45309;font-weight:800;}
+.av-bg{position:fixed;inset:0;background:rgba(15,23,42,.7);z-index:100001;display:flex;align-items:center;justify-content:center;padding:16px;}
+.av-modal{background:var(--surface);color:var(--text);border-radius:20px;width:min(560px,100%);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.45);overflow:hidden;}
+.av-mh{padding:18px 22px;border-bottom:1px solid var(--border);} .av-mh .top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-faint);font-weight:700;margin-bottom:8px;gap:8px;flex-wrap:wrap;} .av-mh h3{margin:0;font-size:18px;}
+.av-mb{padding:18px 22px;overflow:auto;flex:1;color:var(--text-muted);line-height:1.6;word-break:break-word;}
+.av-mf{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface-alt);flex-wrap:wrap;}
+.av-lock{font-size:12px;color:var(--text-faint);} .av-err{color:#dc2626;font-weight:700;font-size:12.5px;width:100%;}
+.av-ok{background:#16a34a;color:#fff;border:0;border-radius:12px;padding:11px 20px;font:800 13px var(--font-body);cursor:pointer;box-shadow:0 6px 14px rgba(22,163,74,.3);} .av-ok:disabled{opacity:.6;cursor:wait;}
+@media (max-width:820px){.av-g2,.av-g3{grid-template-columns:1fr;} .av-cards{grid-template-columns:1fr 1fr;}}
 .pa-chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px;border:1px solid var(--border);border-radius:10px;background:var(--surface);min-height:44px;align-items:center;}
 .pa-chip{display:inline-flex;align-items:center;gap:6px;background:var(--primary-100,#e0f2fe);color:var(--primary);border-radius:999px;padding:4px 6px 4px 11px;font-size:12.5px;font-weight:600;}
 .pa-chip.ext{background:rgba(245,158,11,.2);color:var(--text);}
@@ -1460,6 +1522,8 @@ body.nav-collapsed .nav-nov-badge{display:none;}
         <div class="nav-cat-panel">
           <button class="nav-tab" data-page="pessoasadmin">Pessoas e Perfis</button>
           <button class="nav-tab" data-page="permissoes">Permissões</button>
+          <button class="nav-tab" data-page="feriados">Feriados</button>
+          <button class="nav-tab" data-page="avisos">Gestão de Avisos</button>
           <button class="nav-tab" data-page="logalteracoes">Log de Alterações</button>
         </div>
       </div>
@@ -1566,6 +1630,65 @@ body.nav-collapsed .nav-nov-badge{display:none;}
       <div id="pa-feedback" style="display:none;margin-bottom:14px;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600"></div>
       <div id="pa-lista-view"></div>
       <div id="pa-form-view" style="display:none"></div>
+    </section>
+
+    <!-- PAGE FERIADOS (v16.0) -->
+    <section class="page" id="page-feriados">
+      <div class="fe-panel">
+        <div class="fe-head"><h2>📅 Calendário de Feriados &amp; Pontos Facultativos</h2><p>Cadastre feriados nacionais, estaduais e municipais para o correto cálculo de horas extras e jornadas.</p></div>
+        <div id="fe-feedback" style="display:none"></div>
+        <div class="fe-imp-bar"><b>IMPORTAR FERIADOS</b>
+          <button type="button" class="fe-btn-sec" id="fe-imp-nac">🇧🇷 Importar feriados nacionais (BrasilAPI)</button>
+          <button type="button" class="fe-btn-sec" id="fe-imp-xls">📥 Importar planilha (estaduais / municipais)</button>
+          <button type="button" class="fe-btn-sec" id="fe-imp-modelo">⬇ Baixar modelo</button>
+        </div>
+        <div class="fe-form">
+          <h4 id="fe-form-titulo">＋ CADASTRAR NOVO FERIADO</h4>
+          <div class="fe-row">
+            <div><label>Data do feriado *</label><input type="date" id="fe-data"></div>
+            <div><label>Descrição / nome do feriado *</label><input type="text" id="fe-desc" maxlength="120" placeholder="Ex: Tiradentes, Confraternização Universal…"></div>
+            <div><label>Tipo *</label><select id="fe-tipo"><option>Nacional</option><option>Estadual</option><option>Municipal</option></select></div>
+          </div>
+          <div class="fe-row2">
+            <label class="fe-chk"><input type="checkbox" id="fe-rec" checked><span>🔁 Repete anualmente (fixo dia/mês — ex: 07/09, 25/12)</span></label>
+            <div id="fe-loc-wrap" style="display:none"><label id="fe-loc-lbl">Localidade</label><input type="text" id="fe-loc" maxlength="80" placeholder="Ex: SP"></div>
+          </div>
+          <div class="fe-actions"><button type="button" class="fe-btn-sec" id="fe-cancelar" style="display:none">Cancelar edição</button><button type="button" class="fe-btn" id="fe-salvar">+ Cadastrar Feriado</button></div>
+        </div>
+        <div class="fe-list-head"><b>FERIADOS CADASTRADOS</b><span class="fe-cnt" id="fe-cnt"></span></div>
+        <div class="fe-tools"><input type="text" id="fe-busca" placeholder="Buscar descrição ou localidade…"><select id="fe-ftipo"><option value="">Todos os tipos</option><option>Nacional</option><option>Estadual</option><option>Municipal</option></select><select id="fe-fano"></select></div>
+        <div class="table-wrap" id="fe-lista"></div>
+      </div>
+    </section>
+
+    <!-- PAGE AVISOS (v16.2) -->
+    <section class="page" id="page-avisos">
+      <div class="fe-panel">
+        <div class="fe-head"><h2>📣 Gestão de Avisos</h2><p>Cadastre avisos, escolha quem recebe (por perfil e/ou pessoa) e acompanhe quem já deu ciência. Avisos obrigatórios bloqueiam o acesso até o “Ciente / Lido”.</p></div>
+        <div id="av-feedback" style="display:none"></div>
+        <div class="av-tabs"><button type="button" class="on" data-av-tab="gestao">Avisos</button><button type="button" data-av-tab="controle">👁 Controle de Visualizações</button></div>
+        <div id="av-t-gestao">
+          <div class="fe-form">
+            <h4 id="av-form-titulo">＋ NOVO AVISO</h4>
+            <div class="av-g2"><div><label>Título *</label><input type="text" id="av-titulo" maxlength="120"></div>
+              <div class="av-g2" style="margin:0"><div><label>Tipo</label><select id="av-tipo"><option>Informação</option><option>Atenção</option><option>Importante</option><option>Urgente</option></select></div><div><label>Prioridade</label><select id="av-prio"><option>Normal</option><option>Alta</option></select></div></div></div>
+            <div style="margin-top:12px"><label>Mensagem * <span id="av-msg-cnt" style="text-transform:none;font-weight:600"></span></label><textarea id="av-msg" maxlength="1500"></textarea></div>
+            <div class="av-g3"><div><label>Status</label><select id="av-status"><option>Rascunho</option><option selected>Ativo</option><option>Inativo</option></select></div><div><label>Data de início *</label><input type="date" id="av-ini"></div><div><label>Expiração (opcional)</label><input type="date" id="av-exp"></div></div>
+            <div class="av-g2"><div><label>Enviar para · Perfis de acesso</label><div class="av-chips" id="av-perfis"></div></div>
+              <div><label>Enviar para · Pessoas específicas</label><input type="text" id="av-busca" placeholder="Buscar pessoa pelo nome…"><div class="av-chips" id="av-pes"></div><div class="av-sel" id="av-selp"></div></div></div>
+            <div class="av-g2" style="align-items:center"><label class="fe-chk"><input type="checkbox" id="av-obrig" checked><span>🔒 Obrigatório (bloqueia o acesso até “Ciente / Lido”)</span></label>
+              <div style="text-align:right"><span id="av-alc" style="color:var(--text-muted);font-size:12.5px;margin-right:10px"></span><button type="button" class="fe-btn-sec" id="av-cancelar" style="display:none">Cancelar edição</button> <button type="button" class="fe-btn" id="av-salvar">Salvar aviso</button></div></div>
+          </div>
+          <div class="fe-list-head"><b>AVISOS CADASTRADOS</b><span class="fe-cnt" id="av-cnt"></span></div>
+          <div class="fe-tools"><input type="text" id="av-lbusca" placeholder="Buscar aviso…"><select id="av-lstatus"><option value="">Todos os status</option><option>Ativo</option><option>Rascunho</option><option>Inativo</option><option>Expirado</option></select></div>
+          <div class="table-wrap" id="av-lista"></div>
+        </div>
+        <div id="av-t-controle" style="display:none">
+          <div class="fe-tools" style="margin-top:14px"><select id="av-c-aviso" style="flex:1 1 320px"></select><input type="text" id="av-c-user" placeholder="Usuário…"><select id="av-c-perfil"><option value="">Todos os perfis</option></select><select id="av-c-status"><option value="">Todos os status</option><option>Visualizado</option><option>Pendente</option></select><input type="date" id="av-c-de" title="Visualizado a partir de"><input type="date" id="av-c-ate" title="Visualizado até"></div>
+          <div class="av-cards"><div class="av-card"><b id="av-k1">—</b><small>Destinatários</small></div><div class="av-card"><b id="av-k2" style="color:#15803d">—</b><small>Visualizados</small></div><div class="av-card"><b id="av-k3" style="color:#b45309">—</b><small>Pendentes</small></div><div class="av-card"><b id="av-k4">—</b><small>% de visualização</small></div></div>
+          <div class="table-wrap" id="av-c-lista"></div>
+        </div>
+      </div>
     </section>
 
     <!-- PAGE ALOCAÇÕES -->
@@ -1704,7 +1827,7 @@ body.nav-collapsed .nav-nov-badge{display:none;}
     <section class="page" id="page-logalteracoes">
       <div class="page-header"><div><h1>Log de Alterações</h1><p>Auditoria de criações, alterações e exclusões no Portfólio e nos Status Reports — exclusivo do perfil Administrador.</p></div></div>
       <div class="filter-bar">
-        <div class="filter-field"><label>Tabela</label><select id="f-log-tabela"><option value="">Todas</option><option value="Portifolio">Portifolio</option><option value="Status_Report">Status_Report</option></select></div>
+        <div class="filter-field"><label>Tabela</label><select id="f-log-tabela"><option value="">Todas</option><option value="Portifolio">Portifolio</option><option value="Status_Report">Status_Report</option><option value="Feriados">Feriados</option><option value="Avisos">Avisos</option></select></div>
         <div class="filter-field"><label>Tipo de Operação</label><select id="f-log-tipo"><option value="">Todos</option><option value="Criação">Criação</option><option value="Alteração">Alteração</option><option value="Exclusão">Exclusão</option></select></div>
         <div class="filter-field"><label>Usuário</label><select id="f-log-usuario"><option value="">Todos</option></select></div>
         <div class="filter-field"><label>De</label><input type="date" id="f-log-de"></div>
@@ -2015,6 +2138,7 @@ function loadDataJSONP(url){
     }
     window[cbName]=function(data){
       limpar();
+      if(data&&data.avisoPendente&&!window.__avGate){ window.__avGate=true; setTimeout(()=>avGateMidSessao_(),0); } // v16.2
       resolve(data);
     };
     script.onerror=function(){
@@ -2095,7 +2219,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v15.8';
+const APP_VERSION='v16.2';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2267,6 +2391,9 @@ async function attemptLoadWithToken(token, viewAsEmail){
     addLogoutControl(authResp.nome, authResp.perfil);
     aplicarMenuDinamico();
     setLoginLoading(false);
+    // v16.2: avisos pendentes (modal por cima de tudo). O servidor já não entrega dados enquanto
+    // houver aviso OBRIGATÓRIO pendente; aqui a pessoa só vê o dashboard depois do "Ciente / Lido".
+    if(authResp.avisos&&authResp.avisos.length){ await avisosFluxo_(authResp.avisos); }
     hideLoginOverlay();
     // v12.7: a partir daqui o overlay de login já está escondido — qualquer
     // nova chamada de handleCredentialResponse/attemptLoadWithToken que
@@ -2322,8 +2449,12 @@ async function attemptLoadWithToken(token, viewAsEmail){
 //
 // Atualize esta data junto com qualquer alteração no array abaixo — ela
 // aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='06/10/2026';
+const NOVIDADES_ATUALIZADO_EM='08/10/2026';
 const NOVIDADES=[
+  {icone:'📣', bg:'#fff7ed', cor:'#ea580c', titulo:'Avisos e comunicados', descricao:'A partir de agora, comunicados importantes da gestão aparecem logo após o login. Quando o aviso for obrigatório, basta clicar em “Ciente / Lido” para continuar — a leitura fica registrada com data e hora.', paginas:[], data:'2026-10-08', tag:'Novo', tagCor:'nova'},
+  {icone:'🗂️', bg:'#fff7ed', cor:'#ea580c', titulo:'Gestão de Avisos', descricao:'Nova página em Administração para cadastrar avisos (tipo, prioridade, vigência, obrigatório), escolher destinatários por perfil e/ou pessoa e acompanhar no Controle de Visualizações quem já deu ciência.', paginas:['avisos'], data:'2026-10-08', tag:'Nova página', tagCor:'nova'},
+  {icone:'📥', bg:'#eef2ff', cor:'#4f46e5', titulo:'Importação de Feriados', descricao:'Na página Feriados: botão para importar os feriados nacionais de um ano (BrasilAPI), escolhendo quais entram, e importação por planilha (.xlsx ou .csv) para feriados estaduais e municipais, com prévia e sem duplicar o que já existe. Há também um modelo de planilha para baixar.', paginas:['feriados'], data:'2026-10-08', tag:'Novo', tagCor:'nova'},
+  {icone:'📅', bg:'#eef2ff', cor:'#4f46e5', titulo:'Cadastro de Feriados', descricao:'Nova página em Administração para cadastrar feriados nacionais, estaduais e municipais (com localidade), marcar se repetem todo ano, editar e excluir. Por enquanto é só o cadastro — os cálculos do dashboard ainda não usam essa lista.', paginas:['feriados'], data:'2026-10-08', tag:'Nova página', tagCor:'nova'},
   {icone:'✉️', bg:'#eff6ff', cor:'#2563eb', titulo:'E-mail "[News] - Novo Contratado"', descricao:'Em Pessoas e Perfis, "+ Nova Pessoa" agora abre o formulário completo e, ao cadastrar, envia um e-mail com todos os dados aos destinatários que você escolher (pessoas do cadastro ou e-mails externos), com prévia antes de enviar.', paginas:['pessoasadmin'], data:'2026-10-06', tag:'Nova', tagCor:'nova'},
   {icone:'📣', bg:'#eff6ff', cor:'#2563eb', titulo:'Novidades é a página inicial de todos os perfis', descricao:'Depois do login, todo mundo cai direto nesta tela. Você vê só o que mudou nas páginas que o seu perfil acessa (mais as novidades gerais), com o selo NOVO no que saiu depois do seu último acesso, filtro por categoria e atalho pra abrir a página citada.', paginas:[], data:'2026-10-06', tag:'Mudança', tagCor:'melhoria'},
   {icone:'🛠️', bg:'#f0fdf4', cor:'#16a34a', titulo:'Edição do Portfólio: mesmo projeto, clientes diferentes', descricao:'Projetos com o mesmo nome em clientes diferentes (ex.: Migração da Arco e da CNI) agora abrem, salvam e excluem o registro certo — o projeto é identificado por Cliente + Projeto. Ao criar um projeto novo, o cliente também é informado.', paginas:['portfolioedit'], data:'2026-10-06', tag:'Melhoria', tagCor:'melhoria'},
@@ -3554,7 +3685,7 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','calendario','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','permissoes','pessoasadmin','novidades'],
+  'Administrador':  ['cliente','calendario','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','permissoes','pessoasadmin','feriados','avisos','novidades'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
@@ -3596,7 +3727,7 @@ const PERM_MENU = {
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',alocacoes:'Alocações',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',transversal:'Entrega e Produtividade',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',novidades:'Novidades'};
+const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',alocacoes:'Alocações',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',transversal:'Entrega e Produtividade',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',novidades:'Novidades'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 // EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
 // PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
@@ -3614,7 +3745,7 @@ let EFFECTIVE_EXCECOES={add:[],remove:[]};
 // "novidades" também fica fora: é a tela de entrada exclusiva do
 // Administrador (ver #shell-novidades-placeholder), não uma página de
 // dados com escopo por perfil — não faz sentido liberá-la por exceção.
-const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='novidades' && p!=='calendario');
+const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='feriados' && p!=='avisos' && p!=='novidades' && p!=='calendario');
 
 // v15.7: "novidades" é página inicial de TODOS os perfis — sempre liberada
 // (não é gerenciável em Permissões e nenhuma exceção a remove).
@@ -9355,7 +9486,9 @@ const PAGE_INIT_MAP={
   logalteracoes:initLogAlteracoes,
   andamento:comCamposNecessarios_('andamento',initAndamento),
   permissoes:initPermissoes,
-  pessoasadmin:initPessoasAdmin
+  pessoasadmin:initPessoasAdmin,
+  feriados:initFeriados,
+  avisos:initAvisos
 };
 
 // ============================================================
@@ -9524,6 +9657,627 @@ async function exportarCalendarioExcel_(){
   }finally{
     btn.disabled=false; btn.textContent=txtOriginal;
   }
+}
+
+
+// ============================================================
+// FERIADOS (v16.0) — Administração › Feriados (só Administrador). Dados na aba
+// "Feriados" do Apps Script (listarFeriados/criarFeriado/atualizarFeriado/
+// excluirFeriado). Ordenação: motor global (SORT_STATE/theadOrdenavel_).
+// ============================================================
+let FE_LISTA=[];
+let FE_EDIT_ID=null;
+const FE_DIAS=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+function feEsc_(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function feBr_(iso){ const p=String(iso||'').split('-'); return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:''; }
+// Dia da semana: data única -> da própria data; "todo ano" -> da ocorrência no ano corrente.
+function feDiaSemana_(f){
+  const p=String(f.data||'').split('-'); if(p.length!==3) return '';
+  const ano=f.recorrente?new Date().getFullYear():parseInt(p[0],10);
+  const d=new Date(ano,parseInt(p[1],10)-1,parseInt(p[2],10));
+  if(d.getMonth()!==parseInt(p[1],10)-1) return '—'; // ex.: 29/02 em ano não bissexto
+  return FE_DIAS[d.getDay()];
+}
+function feFeedback_(msg,ok){
+  const el=document.getElementById('fe-feedback');
+  el.className='fe-msg '+(ok?'ok':'er'); el.textContent=msg; el.style.display='block';
+  clearTimeout(window.__feFbTimeout); window.__feFbTimeout=setTimeout(()=>{ el.style.display='none'; },5000);
+}
+function feUrl_(action,extra){
+  const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+  return DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action='+action+(extra||'');
+}
+function initFeriados(){
+  SORT_RERENDER['feriados']=renderListaFeriados;
+  const tipo=document.getElementById('fe-tipo');
+  tipo.onchange=feAtualizarLocalidade_;
+  document.getElementById('fe-busca').oninput=debounce(renderListaFeriados,200);
+  document.getElementById('fe-ftipo').onchange=renderListaFeriados;
+  document.getElementById('fe-fano').onchange=renderListaFeriados;
+  document.getElementById('fe-salvar').onclick=salvarFeriado_;
+  document.getElementById('fe-cancelar').onclick=feLimparFormulario_;
+  document.getElementById('fe-imp-nac').onclick=feAbrirImportNacional_;
+  document.getElementById('fe-imp-xls').onclick=feAbrirImportPlanilha_;
+  document.getElementById('fe-imp-modelo').onclick=feBaixarModelo_;
+  document.getElementById('fe-lista').addEventListener('click',e=>{
+    const b=e.target.closest('[data-fe-acao]'); if(!b) return;
+    if(b.dataset.feAcao==='editar') feEditar_(b.dataset.feId); else excluirFeriado_(b.dataset.feId);
+  });
+  feAtualizarLocalidade_();
+  carregarFeriados_();
+}
+function feAtualizarLocalidade_(){
+  const t=document.getElementById('fe-tipo').value;
+  document.getElementById('fe-loc-wrap').style.display=t==='Nacional'?'none':'';
+  document.getElementById('fe-loc-lbl').textContent=t==='Estadual'?'UF / Estado':'Município / UF';
+  document.getElementById('fe-loc').placeholder=t==='Estadual'?'Ex: SP':'Ex: São Paulo/SP';
+}
+async function carregarFeriados_(){
+  document.getElementById('fe-lista').innerHTML=loadingInlineHtml('Carregando feriados…');
+  try{
+    const r=await loadDataJSONPComRetry(feUrl_('listarFeriados'),1);
+    if(!r||!r.ok){
+      document.getElementById('fe-lista').innerHTML='<div class="empty-state" style="padding:30px"><p>'+feEsc_((r&&r.message)||'Não foi possível carregar os feriados.')+'</p><button type="button" class="filter-clear" id="fe-retry">Tentar novamente</button></div>';
+      document.getElementById('fe-retry').onclick=carregarFeriados_; return;
+    }
+    FE_LISTA=r.feriados||[];
+    feMontarFiltroAno_();
+    renderListaFeriados();
+  }catch(e){
+    document.getElementById('fe-lista').innerHTML='<div class="empty-state" style="padding:30px"><p>Falha ao contatar o servidor. Verifique sua conexão.</p><button type="button" class="filter-clear" id="fe-retry">Tentar novamente</button></div>';
+    document.getElementById('fe-retry').onclick=carregarFeriados_;
+  }
+}
+function feMontarFiltroAno_(){
+  const sel=document.getElementById('fe-fano'), atual=sel.value;
+  const anos=[...new Set(FE_LISTA.map(f=>f.data.slice(0,4)).concat([String(new Date().getFullYear())]))].sort();
+  sel.innerHTML='<option value="">Todos os anos</option>'+anos.map(a=>'<option>'+a+'</option>').join('');
+  if(anos.includes(atual)) sel.value=atual;
+}
+function renderListaFeriados(){
+  const q=peNormalizarHeader(document.getElementById('fe-busca').value), ft=document.getElementById('fe-ftipo').value, fa=document.getElementById('fe-fano').value;
+  // "Todo ano" vale em qualquer ano: aparece sob qualquer filtro de ano.
+  const linhas=FE_LISTA.filter(f=>(!ft||f.tipo===ft)&&(!fa||f.recorrente||f.data.slice(0,4)===fa)&&(!q||peNormalizarHeader(f.descricao+' '+f.localidade).includes(q)));
+  const cols=[
+    {key:'data',label:'Data / Dia-Mês',tipo:'data',get:f=>feBr_(f.data)},
+    {key:'dia',label:'Dia da semana',tipo:'texto',get:f=>feDiaSemana_(f)},
+    {key:'desc',label:'Descrição / Nome',tipo:'texto',get:f=>f.descricao},
+    {key:'tipo',label:'Tipo',tipo:'texto',get:f=>f.tipo},
+    {key:'loc',label:'Localidade',tipo:'texto',get:f=>f.localidade},
+    {key:'rec',label:'Recorrência',tipo:'texto',get:f=>f.recorrente?'Todo ano':'Única vez'},
+    {label:''}
+  ];
+  const st=SORT_STATE['feriados']||{col:null,dir:0};
+  // Ordem padrão (sem ordenação escolhida): dia/mês — fica natural pra feriados que repetem.
+  const base=linhas.slice().sort((a,b)=>a.data.slice(5).localeCompare(b.data.slice(5))||a.data.localeCompare(b.data));
+  const ord=st.col?ordenarLinhas_(base,cols.find(c=>c.key===st.col),st.dir):base;
+  document.getElementById('fe-cnt').textContent=ord.length+' Feriado(s)';
+  let h='<table>'+theadOrdenavel_('feriados',cols)+'<tbody>';
+  if(!ord.length){
+    h+='<tr><td colspan="7" style="text-align:center;color:var(--text-faint);font-weight:700;padding:28px">Nenhum feriado cadastrado até o momento.</td></tr>';
+  }else{
+    ord.forEach(f=>{
+      const dm=f.data.slice(8)+'/'+f.data.slice(5,7);
+      h+='<tr'+(f.id===FE_EDIT_ID?' class="fe-edit-row"':'')+'><td>'+(f.recorrente?'<b>'+dm+'</b> <small style="color:var(--text-faint)">(todo ano)</small>':feBr_(f.data))+'</td>'+
+        '<td>'+feDiaSemana_(f)+(f.recorrente?' <small style="color:var(--text-faint)">('+new Date().getFullYear()+')</small>':'')+'</td>'+
+        '<td><strong>'+feEsc_(f.descricao)+'</strong></td><td><span class="fe-tp '+feEsc_(f.tipo)+'">'+feEsc_(f.tipo)+'</span></td>'+
+        '<td>'+(f.localidade?feEsc_(f.localidade):'—')+'</td><td>'+(f.recorrente?'🔁 Todo ano':'Única vez')+'</td>'+
+        '<td><div class="fe-acoes"><button type="button" class="fe-mini" data-fe-acao="editar" data-fe-id="'+feEsc_(f.id)+'">Editar</button><button type="button" class="fe-mini del" data-fe-acao="excluir" data-fe-id="'+feEsc_(f.id)+'">Excluir</button></div></td></tr>';
+    });
+  }
+  h+='</tbody></table>';
+  document.getElementById('fe-lista').innerHTML=h;
+}
+function feLimparFormulario_(){
+  FE_EDIT_ID=null;
+  document.getElementById('fe-data').value=''; document.getElementById('fe-desc').value='';
+  document.getElementById('fe-tipo').value='Nacional'; document.getElementById('fe-loc').value='';
+  document.getElementById('fe-rec').checked=true;
+  document.getElementById('fe-form-titulo').textContent='＋ CADASTRAR NOVO FERIADO';
+  document.getElementById('fe-salvar').textContent='+ Cadastrar Feriado';
+  document.getElementById('fe-cancelar').style.display='none';
+  feAtualizarLocalidade_(); renderListaFeriados();
+}
+function feEditar_(id){
+  const f=FE_LISTA.find(x=>x.id===id); if(!f) return;
+  FE_EDIT_ID=id;
+  document.getElementById('fe-data').value=f.data; document.getElementById('fe-desc').value=f.descricao;
+  document.getElementById('fe-tipo').value=f.tipo; document.getElementById('fe-loc').value=f.localidade||'';
+  document.getElementById('fe-rec').checked=!!f.recorrente;
+  document.getElementById('fe-form-titulo').textContent='✎ EDITANDO FERIADO';
+  document.getElementById('fe-salvar').textContent='💾 Salvar alteração';
+  document.getElementById('fe-cancelar').style.display='';
+  feAtualizarLocalidade_(); renderListaFeriados();
+  document.getElementById('fe-data').scrollIntoView({behavior:'smooth',block:'center'});
+}
+async function salvarFeriado_(){
+  const data=document.getElementById('fe-data').value, desc=document.getElementById('fe-desc').value.trim();
+  const tipo=document.getElementById('fe-tipo').value;
+  if(!data||!desc){ feFeedback_('Informe a data e a descrição do feriado.',false); return; }
+  const payload={data:data,descricao:desc,tipo:tipo,localidade:tipo==='Nacional'?'':document.getElementById('fe-loc').value.trim(),recorrente:document.getElementById('fe-rec').checked};
+  const editando=FE_EDIT_ID;
+  const btn=document.getElementById('fe-salvar'); btn.disabled=true;
+  try{
+    const url=editando?feUrl_('atualizarFeriado','&id='+encodeURIComponent(editando)+'&payload='+encodeURIComponent(JSON.stringify(payload)))
+                      :feUrl_('criarFeriado','&payload='+encodeURIComponent(JSON.stringify(payload)));
+    // Sem retry automático (0): repetir uma gravação poderia duplicar o cadastro.
+    const r=await loadDataJSONPComRetry(url,0);
+    if(r&&r.ok){
+      feFeedback_(editando?'Feriado atualizado com sucesso.':'Feriado cadastrado com sucesso.',true);
+      FE_EDIT_ID=null; feLimparFormulario_();
+      await carregarFeriados_();
+    }else{
+      feFeedback_((r&&r.message)||'Não foi possível salvar o feriado.',false);
+    }
+  }catch(e){
+    feFeedback_('Falha ao contatar o servidor. Confira a lista antes de tentar de novo.',false);
+  }
+  btn.disabled=false;
+}
+async function excluirFeriado_(id){
+  const f=FE_LISTA.find(x=>x.id===id); if(!f) return;
+  if(!confirm('Excluir o feriado "'+f.descricao+'" ('+feBr_(f.data)+')?\n\nEsta ação não pode ser desfeita.')) return;
+  try{
+    const r=await loadDataJSONPComRetry(feUrl_('excluirFeriado','&id='+encodeURIComponent(id)),0);
+    if(r&&r.ok){
+      if(FE_EDIT_ID===id) FE_EDIT_ID=null, feLimparFormulario_();
+      feFeedback_('Feriado excluído.',true); await carregarFeriados_();
+    }else feFeedback_((r&&r.message)||'Não foi possível excluir o feriado.',false);
+  }catch(e){ feFeedback_('Falha ao contatar o servidor. Tente novamente.',false); }
+}
+
+// ============================================================
+// AVISOS E NOTIFICAÇÕES (v16.2)
+// (1) Modal pós-login: avisosFluxo_ — obrigatórios sem "X"/Esc/clique fora, um por vez.
+// (2) Administração › Gestão de Avisos (só Administrador) + Controle de Visualizações.
+// O bloqueio real é no servidor (sem "Ciente / Lido" nenhuma ação devolve dados).
+// ============================================================
+function avUrl_(action,extra){ return feUrl_(action,extra); }
+function avMsgHtml_(t){ return feEsc_(t).replace(/\n/g,'<br>'); }
+function avDataHoraBr_(s){ return String(s||''); }
+// Mostra UM aviso. Resolve {acao:'ciente',pendentes:[...]} ou {acao:'fechar'}.
+function avModal_(av,n,total){
+  return new Promise(resolve=>{
+    const obrig=!!av.obrigatorio;
+    const bg=document.createElement('div'); bg.className='av-bg'; bg.id='av-bg';
+    const pub=String(av.publicadoEm||'').slice(0,16).replace(/^(\d{4})-(\d{2})-(\d{2})/,'$3/$2/$1');
+    bg.innerHTML='<div class="av-modal" role="dialog" aria-modal="true" aria-labelledby="av-m-t"><div class="av-mh"><div class="top"><span><span class="av-tp '+feEsc_(av.tipo)+'">'+feEsc_(av.tipo)+'</span>'+(av.prioridade==='Alta'?' <b style="color:#b91c1c">· Prioridade alta</b>':'')+(pub?' · Publicado em '+feEsc_(pub):'')+'</span><span>Aviso '+n+' de '+total+'</span></div><h3 id="av-m-t">'+feEsc_(av.titulo)+'</h3></div>'+
+      '<div class="av-mb">'+avMsgHtml_(av.mensagem)+'</div><div class="av-mf"><span class="av-lock">'+(obrig?'🔒 Aviso obrigatório — confirme a leitura para continuar':'Aviso opcional')+'</span><span>'+(obrig?'':'<button type="button" class="fe-btn-sec" id="av-m-fechar">Fechar</button> ')+'<button type="button" class="av-ok" id="av-m-ok">✓ Ciente / Lido</button></span><div class="av-err" id="av-m-err" style="display:none"></div></div></div>';
+    document.body.appendChild(bg);
+    const prevOverflow=document.body.style.overflow; document.body.style.overflow='hidden';
+    const fim=r=>{ document.removeEventListener('keydown',onKey,true); document.body.style.overflow=prevOverflow; bg.remove(); resolve(r); };
+    function onKey(e){ if(e.key==='Escape'){ e.preventDefault(); if(!obrig) fim({acao:'fechar'}); } }
+    document.addEventListener('keydown',onKey,true);
+    if(!obrig){
+      bg.addEventListener('mousedown',e=>{ if(e.target===bg) fim({acao:'fechar'}); });
+      document.getElementById('av-m-fechar').onclick=()=>fim({acao:'fechar'});
+    }
+    const ok=document.getElementById('av-m-ok'), err=document.getElementById('av-m-err');
+    ok.onclick=async()=>{
+      ok.disabled=true; ok.textContent='Registrando…'; err.style.display='none';
+      try{
+        const r=await loadDataJSONPComRetry(avUrl_('confirmarAviso','&id='+encodeURIComponent(av.id)),1);
+        if(r&&r.ok) return fim({acao:'ciente',pendentes:r.pendentes||[]});
+        if(r&&/não está mais disponível/.test(r.message||'')) return fim({acao:'ciente',pendentes:null}); // expirou/inativado enquanto aberto
+        err.textContent=(r&&r.message)||'Não foi possível registrar a leitura. Tente novamente.';
+      }catch(e){ err.textContent='Falha ao contatar o servidor. Tente novamente.'; }
+      err.style.display=''; ok.disabled=false; ok.textContent='✓ Ciente / Lido';
+    };
+    setTimeout(()=>ok.focus(),50);
+  });
+}
+// Exibe a fila de avisos, um por vez, até acabar (obrigatórios sempre voltam do servidor enquanto pendentes).
+async function avisosFluxo_(lista){
+  let fila=(lista||[]).slice(), n=0; const total0=fila.length; const dispensados=new Set();
+  while(fila.length){
+    n++;
+    const av=fila[0];
+    const r=await avModal_(av,n,Math.max(total0,n-1+fila.length));
+    if(r.acao==='fechar'){ dispensados.add(av.id); fila=fila.filter(x=>x.id!==av.id); continue; }
+    fila=(r.pendentes===null?fila.slice(1):(r.pendentes||[]).filter(x=>!dispensados.has(x.id)));
+  }
+}
+// Resposta de "aviso pendente" no meio da sessão (aviso obrigatório publicado depois do login)
+async function avGateMidSessao_(){
+  try{
+    const r=await loadDataJSONPComRetry(avUrl_('avisosPendentes'),1);
+    if(r&&r.ok&&r.pendentes&&r.pendentes.length) await avisosFluxo_(r.pendentes);
+  }catch(e){ console.warn('Avisos: falha ao buscar pendentes.',e); }
+  location.reload();
+}
+
+// ----- Página: Gestão de Avisos -----
+let AV_LISTA=[], AV_TODOS=[], AV_PERFIS=[], AV_PESSOAS=[], AV_EDIT_ID=null, AV_CTRL=null;
+let AV_SEL_PERFIS=new Set(), AV_SEL_PESSOAS=new Set();
+function avFeedback_(msg,ok){
+  const el=document.getElementById('av-feedback');
+  el.className='fe-msg '+(ok?'ok':'er'); el.textContent=msg; el.style.display='block';
+  clearTimeout(window.__avFbTimeout); window.__avFbTimeout=setTimeout(()=>{ el.style.display='none'; },5000);
+}
+function initAvisos(){
+  document.querySelectorAll('[data-av-tab]').forEach(b=>b.onclick=()=>avAba_(b.dataset.avTab));
+  document.getElementById('av-salvar').onclick=avSalvar_;
+  document.getElementById('av-cancelar').onclick=avLimpar_;
+  document.getElementById('av-busca').oninput=debounce(avRenderPessoas_,150);
+  document.getElementById('av-msg').oninput=avContaMsg_;
+  document.getElementById('av-lbusca').oninput=debounce(avRenderLista_,200);
+  document.getElementById('av-lstatus').onchange=avRenderLista_;
+  document.getElementById('av-c-aviso').onchange=avCarregarControle_;
+  ['av-c-user'].forEach(i=>document.getElementById(i).oninput=debounce(avRenderControle_,150));
+  ['av-c-perfil','av-c-status','av-c-de','av-c-ate'].forEach(i=>document.getElementById(i).onchange=avRenderControle_);
+  document.getElementById('av-lista').addEventListener('click',e=>{
+    const b=e.target.closest('[data-av-acao]'); if(!b) return;
+    const id=b.dataset.avId, ac=b.dataset.avAcao;
+    if(ac==='editar') avEditar_(id); else if(ac==='excluir') avExcluir_(id); else if(ac==='controle') avAbrirControle_(id); else avMudarStatus_(id,ac==='ativar'?'Ativo':'Inativo');
+  });
+  document.getElementById('av-ini').value=avHojeIso_();
+  avContaMsg_();
+  avCarregar_();
+}
+function avHojeIso_(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function avContaMsg_(){ const n=document.getElementById('av-msg').value.length; document.getElementById('av-msg-cnt').textContent='('+n+'/1500)'; }
+function avAba_(t){
+  document.querySelectorAll('[data-av-tab]').forEach(b=>b.classList.toggle('on',b.dataset.avTab===t));
+  document.getElementById('av-t-gestao').style.display=t==='gestao'?'':'none';
+  document.getElementById('av-t-controle').style.display=t==='controle'?'':'none';
+  if(t==='controle') avMontarSeletorControle_();
+}
+async function avCarregar_(){
+  document.getElementById('av-lista').innerHTML=loadingInlineHtml('Carregando avisos…');
+  try{
+    const r=await loadDataJSONPComRetry(avUrl_('listarAvisosAdmin'),1);
+    if(!r||!r.ok){ document.getElementById('av-lista').innerHTML='<div class="empty-state" style="padding:30px"><p>'+feEsc_((r&&r.message)||'Não foi possível carregar os avisos.')+'</p><button type="button" class="filter-clear" id="av-retry">Tentar novamente</button></div>'; document.getElementById('av-retry').onclick=avCarregar_; return; }
+    AV_LISTA=r.avisos||[]; AV_TODOS=r.todos||[]; AV_PERFIS=r.perfis||[]; AV_PESSOAS=r.pessoas||[];
+    avRenderPerfis_(); avRenderPessoas_(); avRenderLista_(); avAlcance_();
+    const pf=document.getElementById('av-c-perfil'), v=pf.value;
+    pf.innerHTML='<option value="">Todos os perfis</option>'+AV_PERFIS.map(p=>'<option>'+feEsc_(p)+'</option>').join(''); pf.value=v;
+    if(document.getElementById('av-t-controle').style.display!=='none') avMontarSeletorControle_();
+  }catch(e){
+    document.getElementById('av-lista').innerHTML='<div class="empty-state" style="padding:30px"><p>Falha ao contatar o servidor.</p><button type="button" class="filter-clear" id="av-retry">Tentar novamente</button></div>'; document.getElementById('av-retry').onclick=avCarregar_;
+  }
+}
+function avRenderPerfis_(){
+  const box=document.getElementById('av-perfis'), todos=AV_SEL_PERFIS.has('*');
+  box.innerHTML='<span class="av-chip '+(todos?'on':'')+'" data-p="*">Todos os perfis</span>'+AV_PERFIS.map(p=>'<span class="av-chip '+(!todos&&AV_SEL_PERFIS.has(p)?'on':'')+'" data-p="'+feEsc_(p)+'">'+feEsc_(p)+'</span>').join('');
+  box.querySelectorAll('.av-chip').forEach(c=>c.onclick=()=>{
+    const p=c.dataset.p;
+    if(p==='*'){ AV_SEL_PERFIS=AV_SEL_PERFIS.has('*')?new Set():new Set(['*']); }
+    else{ AV_SEL_PERFIS.delete('*'); AV_SEL_PERFIS.has(p)?AV_SEL_PERFIS.delete(p):AV_SEL_PERFIS.add(p); }
+    avRenderPerfis_(); avAlcance_();
+  });
+}
+function avRenderPessoas_(){
+  const q=peNormalizarHeader(document.getElementById('av-busca').value), box=document.getElementById('av-pes');
+  const achados=q?AV_PESSOAS.filter(p=>peNormalizarHeader(p.nome+' '+p.assinatura).includes(q)).slice(0,24):[];
+  box.innerHTML=achados.map(p=>'<span class="av-chip '+(AV_SEL_PESSOAS.has(p.assinatura)?'on':'')+'" data-u="'+feEsc_(p.assinatura)+'">'+feEsc_(p.nome)+' <small>· '+feEsc_(p.perfil)+'</small></span>').join('')||(q?'<small style="color:var(--text-faint)">Ninguém encontrado.</small>':'<small style="color:var(--text-faint)">Digite um nome para buscar.</small>');
+  box.querySelectorAll('.av-chip').forEach(c=>c.onclick=()=>{ const u=c.dataset.u; AV_SEL_PESSOAS.has(u)?AV_SEL_PESSOAS.delete(u):AV_SEL_PESSOAS.add(u); avRenderPessoas_(); avAlcance_(); });
+  const sel=document.getElementById('av-selp');
+  sel.innerHTML=[...AV_SEL_PESSOAS].map(u=>{ const p=AV_PESSOAS.find(x=>x.assinatura===u); return '<span data-u="'+feEsc_(u)+'" title="Clique para remover">'+feEsc_(p?p.nome:u)+' ✕</span>'; }).join('')||'<em style="color:var(--text-faint)">Nenhuma pessoa específica</em>';
+  sel.querySelectorAll('span[data-u]').forEach(s=>s.onclick=()=>{ AV_SEL_PESSOAS.delete(s.dataset.u); avRenderPessoas_(); avAlcance_(); });
+}
+function avAlcance_(){
+  const todos=AV_SEL_PERFIS.has('*');
+  const n=AV_PESSOAS.filter(p=>todos||AV_SEL_PERFIS.has(p.perfil)||AV_SEL_PESSOAS.has(p.assinatura)).length;
+  document.getElementById('av-alc').textContent='Alcance estimado: '+n+' pessoa(s), sem duplicar';
+}
+function avDestinoTxt_(a){
+  const p=a.perfis.indexOf('*')!==-1?'Todos os perfis':a.perfis.join(', ');
+  const u=a.assinaturas.length?a.assinaturas.length+' pessoa(s)':'';
+  return feEsc_([p,u].filter(Boolean).join(' + '));
+}
+function avVigTxt_(a){ return a.inicio?feBr_(a.inicio)+(a.expiracao?' → '+feBr_(a.expiracao):' → sem expiração'):'—'; }
+function avRenderLista_(){
+  const q=peNormalizarHeader(document.getElementById('av-lbusca').value), fs=document.getElementById('av-lstatus').value;
+  const linhas=AV_LISTA.filter(a=>(!fs||a.status===fs)&&(!q||peNormalizarHeader(a.titulo+' '+a.mensagem).includes(q)));
+  document.getElementById('av-cnt').textContent=linhas.length+' Aviso(s)';
+  let h='<table><thead><tr><th>Aviso</th><th>Tipo</th><th>Status</th><th>Vigência</th><th>Destino</th><th>Leitura</th><th></th></tr></thead><tbody>';
+  if(!linhas.length) h+='<tr><td colspan="7" style="text-align:center;color:var(--text-faint);font-weight:700;padding:28px">Nenhum aviso cadastrado.</td></tr>';
+  linhas.forEach(a=>{
+    const ativo=a.statusGravado==='Ativo';
+    h+='<tr'+(a.id===AV_EDIT_ID?' class="fe-edit-row"':'')+'><td><strong>'+feEsc_(a.titulo)+'</strong><br><small style="color:var(--text-faint)">'+(a.obrigatorio?'🔒 Obrigatório':'Opcional')+'</small></td>'+
+      '<td><span class="av-tp '+feEsc_(a.tipo)+'">'+feEsc_(a.tipo)+'</span></td><td><span class="av-st '+feEsc_(a.status)+'">'+feEsc_(a.status)+'</span></td><td>'+avVigTxt_(a)+'</td><td>'+avDestinoTxt_(a)+'</td>'+
+      '<td><div class="av-kp"><span>'+a.destinatarios+' dest.</span><span class="av-view">'+a.visualizados+' ✓</span><span class="av-pend">'+a.pendentes+' ⏳</span><span>'+a.pct+'%</span></div><div class="av-bar"><i style="width:'+a.pct+'%"></i></div></td>'+
+      '<td><div class="fe-acoes" style="flex-wrap:wrap"><button type="button" class="fe-mini" data-av-acao="editar" data-av-id="'+feEsc_(a.id)+'">Editar</button><button type="button" class="fe-mini" data-av-acao="'+(ativo?'inativar':'ativar')+'" data-av-id="'+feEsc_(a.id)+'">'+(ativo?'Inativar':'Ativar')+'</button><button type="button" class="fe-mini" data-av-acao="controle" data-av-id="'+feEsc_(a.id)+'">Controle</button><button type="button" class="fe-mini del" data-av-acao="excluir" data-av-id="'+feEsc_(a.id)+'">Excluir</button></div></td></tr>';
+  });
+  document.getElementById('av-lista').innerHTML=h+'</tbody></table>';
+}
+function avLimpar_(){
+  AV_EDIT_ID=null; AV_SEL_PERFIS=new Set(); AV_SEL_PESSOAS=new Set();
+  ['av-titulo','av-msg','av-busca','av-exp'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('av-tipo').value='Informação'; document.getElementById('av-prio').value='Normal'; document.getElementById('av-status').value='Ativo';
+  document.getElementById('av-ini').value=avHojeIso_(); document.getElementById('av-obrig').checked=true;
+  document.getElementById('av-form-titulo').textContent='＋ NOVO AVISO'; document.getElementById('av-cancelar').style.display='none';
+  avContaMsg_(); avRenderPerfis_(); avRenderPessoas_(); avAlcance_(); avRenderLista_();
+}
+function avEditar_(id){
+  const a=AV_LISTA.find(x=>x.id===id); if(!a) return;
+  AV_EDIT_ID=id; AV_SEL_PERFIS=new Set(a.perfis); AV_SEL_PESSOAS=new Set(a.assinaturas);
+  document.getElementById('av-titulo').value=a.titulo; document.getElementById('av-msg').value=a.mensagem;
+  document.getElementById('av-tipo').value=a.tipo; document.getElementById('av-prio').value=a.prioridade;
+  document.getElementById('av-status').value=a.statusGravado; document.getElementById('av-ini').value=a.inicio; document.getElementById('av-exp').value=a.expiracao||'';
+  document.getElementById('av-obrig').checked=!!a.obrigatorio; document.getElementById('av-busca').value='';
+  document.getElementById('av-form-titulo').textContent='✎ EDITANDO AVISO'; document.getElementById('av-cancelar').style.display='';
+  avContaMsg_(); avRenderPerfis_(); avRenderPessoas_(); avAlcance_(); avRenderLista_();
+  document.getElementById('av-titulo').scrollIntoView({behavior:'smooth',block:'center'});
+}
+async function avSalvar_(){
+  const payload={titulo:document.getElementById('av-titulo').value.trim(),mensagem:document.getElementById('av-msg').value.trim(),tipo:document.getElementById('av-tipo').value,
+    prioridade:document.getElementById('av-prio').value,status:document.getElementById('av-status').value,inicio:document.getElementById('av-ini').value,expiracao:document.getElementById('av-exp').value,
+    perfis:[...AV_SEL_PERFIS],assinaturas:[...AV_SEL_PESSOAS],obrigatorio:document.getElementById('av-obrig').checked};
+  if(!payload.titulo||!payload.mensagem){ avFeedback_('Informe o título e a mensagem do aviso.',false); return; }
+  if(!payload.inicio){ avFeedback_('Informe a data de início.',false); return; }
+  if(!payload.perfis.length&&!payload.assinaturas.length){ avFeedback_('Escolha ao menos um perfil ou uma pessoa como destinatário.',false); return; }
+  const enc=encodeURIComponent(JSON.stringify(payload));
+  if(enc.length>7000){ avFeedback_('Mensagem/destinatários grandes demais para enviar. Reduza o texto ou o número de pessoas (prefira perfis).',false); return; }
+  const editando=AV_EDIT_ID, btn=document.getElementById('av-salvar'); btn.disabled=true;
+  try{
+    // retries 0: repetir uma gravação poderia duplicar o aviso
+    const r=await loadDataJSONPComRetry(avUrl_('salvarAviso',(editando?'&id='+encodeURIComponent(editando):'')+'&payload='+enc),0);
+    if(r&&r.ok){ avFeedback_(editando?'Aviso atualizado.':'Aviso salvo.',true); avLimpar_(); await avCarregar_(); }
+    else avFeedback_((r&&r.message)||'Não foi possível salvar o aviso.',false);
+  }catch(e){ avFeedback_('Falha ao contatar o servidor. Confira a lista antes de tentar de novo.',false); }
+  btn.disabled=false;
+}
+async function avMudarStatus_(id,st){
+  try{
+    const r=await loadDataJSONPComRetry(avUrl_('statusAviso','&id='+encodeURIComponent(id)+'&status='+st),0);
+    if(r&&r.ok){ avFeedback_('Aviso '+(st==='Ativo'?'ativado':'inativado')+'.',true); await avCarregar_(); } else avFeedback_((r&&r.message)||'Não foi possível alterar o status.',false);
+  }catch(e){ avFeedback_('Falha ao contatar o servidor.',false); }
+}
+async function avExcluir_(id){
+  const a=AV_LISTA.find(x=>x.id===id); if(!a) return;
+  if(!confirm('Excluir o aviso "'+a.titulo+'"?\n\nEle sai da lista e deixa de ser exibido; os registros de leitura são mantidos para auditoria.')) return;
+  try{
+    const r=await loadDataJSONPComRetry(avUrl_('excluirAviso','&id='+encodeURIComponent(id)),0);
+    if(r&&r.ok){ if(AV_EDIT_ID===id) avLimpar_(); avFeedback_('Aviso excluído.',true); await avCarregar_(); } else avFeedback_((r&&r.message)||'Não foi possível excluir.',false);
+  }catch(e){ avFeedback_('Falha ao contatar o servidor.',false); }
+}
+// ----- Controle de Visualizações -----
+function avMontarSeletorControle_(){
+  const sel=document.getElementById('av-c-aviso'), atual=sel.value;
+  sel.innerHTML='<option value="">Selecione um aviso…</option>'+AV_TODOS.map(a=>'<option value="'+feEsc_(a.id)+'">'+feEsc_(a.titulo)+' ('+feEsc_(a.status)+')</option>').join('');
+  if(AV_TODOS.some(a=>a.id===atual)) sel.value=atual;
+  if(!sel.value){ AV_CTRL=null; avRenderControle_(); }
+}
+function avAbrirControle_(id){ avAba_('controle'); document.getElementById('av-c-aviso').value=id; avCarregarControle_(); }
+async function avCarregarControle_(){
+  const id=document.getElementById('av-c-aviso').value;
+  if(!id){ AV_CTRL=null; avRenderControle_(); return; }
+  document.getElementById('av-c-lista').innerHTML=loadingInlineHtml('Carregando visualizações…');
+  try{
+    const r=await loadDataJSONPComRetry(avUrl_('controleAviso','&id='+encodeURIComponent(id)),1);
+    AV_CTRL=(r&&r.ok)?r:null;
+    if(!AV_CTRL){ document.getElementById('av-c-lista').innerHTML='<div class="empty-state" style="padding:24px"><p>'+feEsc_((r&&r.message)||'Não foi possível carregar.')+'</p></div>'; return; }
+    avRenderControle_();
+  }catch(e){ document.getElementById('av-c-lista').innerHTML='<div class="empty-state" style="padding:24px"><p>Falha ao contatar o servidor.</p></div>'; }
+}
+function avDataIsoDeBr_(s){ const m=String(s||'').match(/^(\d{2})\/(\d{2})\/(\d{4})/); return m?m[3]+'-'+m[2]+'-'+m[1]:''; }
+function avRenderControle_(){
+  const box=document.getElementById('av-c-lista');
+  if(!AV_CTRL){ ['av-k1','av-k2','av-k3','av-k4'].forEach(i=>document.getElementById(i).textContent='—'); box.innerHTML='<div class="empty-state" style="padding:24px"><p>Selecione um aviso para ver quem já deu ciência.</p></div>'; return; }
+  const u=peNormalizarHeader(document.getElementById('av-c-user').value), pf=document.getElementById('av-c-perfil').value, st=document.getElementById('av-c-status').value;
+  const de=document.getElementById('av-c-de').value, ate=document.getElementById('av-c-ate').value;
+  const linhas=AV_CTRL.linhas.filter(l=>(!u||peNormalizarHeader(l.nome+' '+l.assinatura).includes(u))&&(!pf||l.perfil===pf)&&(!st||(st==='Visualizado')===l.visualizado)&&
+    (!de&&!ate||(l.visualizado&&(!de||avDataIsoDeBr_(l.dataHora)>=de)&&(!ate||avDataIsoDeBr_(l.dataHora)<=ate))));
+  const v=linhas.filter(l=>l.visualizado).length;
+  document.getElementById('av-k1').textContent=linhas.length; document.getElementById('av-k2').textContent=v; document.getElementById('av-k3').textContent=linhas.length-v;
+  document.getElementById('av-k4').textContent=linhas.length?Math.round(v/linhas.length*100)+'%':'—';
+  let h='<table><thead><tr><th>Usuário</th><th>Perfil</th><th>Destino</th><th>Status</th><th>Data / hora da visualização</th></tr></thead><tbody>';
+  if(!linhas.length) h+='<tr><td colspan="5" style="text-align:center;color:var(--text-faint);font-weight:700;padding:24px">Nenhum registro com esses filtros.</td></tr>';
+  linhas.forEach(l=>{ h+='<tr><td><strong>'+feEsc_(l.nome)+'</strong></td><td>'+feEsc_(l.perfil)+'</td><td>'+feEsc_(l.destino)+'</td><td>'+(l.visualizado?'<span class="av-view">✓ Visualizado</span>':'<span class="av-pend">⏳ Pendente</span>')+'</td><td>'+(l.visualizado?feEsc_(avDataHoraBr_(l.dataHora)):'—')+'</td></tr>'; });
+  box.innerHTML=h+'</tbody></table>';
+}
+
+// ---------- v16.1 — Importação de feriados ----------
+const FE_UFS=['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'];
+let FE_IMP_ITENS=[];
+function feModal_(titulo){
+  feFecharModal_();
+  const bg=document.createElement('div'); bg.className='fe-modal-bg'; bg.id='fe-modal-bg';
+  bg.innerHTML='<div class="fe-modal" role="dialog" aria-modal="true"><div class="fe-modal-h"><h3>'+feEsc_(titulo)+'</h3><button type="button" class="fe-mini" id="fe-m-x">✕ Fechar</button></div><div class="fe-modal-b" id="fe-m-b"></div><div class="fe-modal-f" id="fe-m-f"></div></div>';
+  document.body.appendChild(bg);
+  bg.addEventListener('mousedown',e=>{ if(e.target===bg && !window.__feImpBusy) feFecharModal_(); });
+  document.getElementById('fe-m-x').onclick=()=>{ if(!window.__feImpBusy) feFecharModal_(); };
+  return bg;
+}
+function feFecharModal_(){ const m=document.getElementById('fe-modal-bg'); if(m) m.remove(); FE_IMP_ITENS=[]; }
+// Normaliza data: Date, dd/mm/aaaa, aaaa-mm-dd, dd/mm (sem ano -> ano corrente, só faz sentido p/ recorrente)
+function feNormData_(v){
+  if(v==null||v==='') return '';
+  if(v instanceof Date && !isNaN(v)) return v.getUTCFullYear()+'-'+String(v.getUTCMonth()+1).padStart(2,'0')+'-'+String(v.getUTCDate()).padStart(2,'0');
+  const t=String(v).trim(); let m;
+  if((m=t.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) return m[1]+'-'+m[2].padStart(2,'0')+'-'+m[3].padStart(2,'0');
+  if((m=t.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/))) return m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0');
+  if((m=t.match(/^(\d{1,2})\/(\d{1,2})$/))) return new Date().getFullYear()+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0');
+  return '';
+}
+function feDataValida_(iso){
+  const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso); if(!m) return false;
+  const d=new Date(+m[1],+m[2]-1,+m[3]); return d.getMonth()===+m[2]-1&&d.getDate()===+m[3];
+}
+function feDup_(it,lista){
+  return lista.some(x=>{
+    const mesma=x.data===it.data||((x.recorrente||it.recorrente)&&x.data.slice(5)===it.data.slice(5));
+    return mesma&&x.tipo===it.tipo&&peNormalizarHeader(x.descricao)===peNormalizarHeader(it.descricao)&&peNormalizarHeader(x.localidade||'')===peNormalizarHeader(it.localidade||'');
+  });
+}
+// Valida e marca status: ok | dup | er (+ motivo)
+function feClassificar_(brutos){
+  const vistos=[];
+  return brutos.map(b=>{
+    const it={linha:b.linha,data:b.data,descricao:String(b.descricao||'').trim().replace(/\s+/g,' '),tipo:b.tipo,localidade:b.tipo==='Nacional'?'':String(b.localidade||'').trim().replace(/\s+/g,' '),recorrente:!!b.recorrente,motivo:b.erro||''};
+    if(!it.motivo){
+      if(!feDataValida_(it.data)) it.motivo='Data inválida';
+      else if(!it.descricao) it.motivo='Descrição vazia';
+      else if(['Nacional','Estadual','Municipal'].indexOf(it.tipo)===-1) it.motivo='Tipo inválido (use Nacional, Estadual ou Municipal)';
+      else if(it.descricao.length>120) it.motivo='Descrição acima de 120 caracteres';
+      else if(it.localidade.length>80) it.motivo='Localidade acima de 80 caracteres';
+      else if(it.tipo!=='Nacional'&&!it.localidade) it.motivo='Localidade obrigatória para feriado '+it.tipo.toLowerCase();
+    }
+    if(it.motivo) it.status='er';
+    else if(feDup_(it,FE_LISTA)||feDup_(it,vistos)){ it.status='dup'; it.motivo='Já cadastrado'; }
+    else { it.status='ok'; vistos.push(it); }
+    return it;
+  });
+}
+function feTabelaPrevia_(itens,comCheck){
+  let h='<table><thead><tr>'+(comCheck?'<th></th>':'')+'<th>Linha</th><th>Data</th><th>Descrição</th><th>Tipo</th><th>Localidade</th><th>Recorrência</th><th>Situação</th></tr></thead><tbody>';
+  itens.forEach((it,i)=>{
+    const st=it.status==='ok'?'<span class="fe-st ok">Novo</span>':it.status==='dup'?'<span class="fe-st dup">Já cadastrado</span>':'<span class="fe-st er">'+feEsc_(it.motivo)+'</span>';
+    h+='<tr>'+(comCheck?'<td><input type="checkbox" data-fe-i="'+i+'"'+(it.status==='ok'?' checked':' disabled')+'></td>':'')+'<td>'+feEsc_(it.linha||i+1)+'</td><td>'+(feDataValida_(it.data)?feBr_(it.data):feEsc_(it.data||'—'))+'</td><td>'+feEsc_(it.descricao)+'</td><td>'+feEsc_(it.tipo||'—')+'</td><td>'+feEsc_(it.localidade||'—')+'</td><td>'+(it.recorrente?'Todo ano':'Única vez')+'</td><td>'+st+'</td></tr>';
+  });
+  return h+'</tbody></table>';
+}
+// Envia em lotes de 20; agrega o resultado. Para no primeiro lote que falhar e informa o progresso.
+async function feEnviarLotes_(itens,onProg){
+  const tot={criados:0,ignorados:0,invalidos:[],falhou:false,msg:'',enviados:0};
+  for(let i=0;i<itens.length;i+=20){
+    const lote=itens.slice(i,i+20).map(x=>({data:x.data,descricao:x.descricao,tipo:x.tipo,localidade:x.localidade,recorrente:!!x.recorrente}));
+    try{
+      const r=await loadDataJSONPComRetry(feUrl_('importarFeriadosLote','&payload='+encodeURIComponent(JSON.stringify({itens:lote}))),0);
+      if(!r||!r.ok){ tot.falhou=true; tot.msg=(r&&r.message)||'O servidor recusou o lote.'; break; }
+      tot.criados+=r.criados||0; tot.ignorados+=r.ignorados||0; tot.invalidos=tot.invalidos.concat(r.invalidos||[]);
+      tot.enviados=Math.min(i+20,itens.length);
+      if(onProg) onProg(tot.enviados,itens.length);
+    }catch(e){ tot.falhou=true; tot.msg='Falha ao contatar o servidor.'; break; }
+  }
+  return tot;
+}
+function feResumoImport_(tot,total){
+  let m=tot.criados+' feriado(s) importado(s), '+tot.ignorados+' já existiam';
+  if(tot.invalidos.length) m+=', '+tot.invalidos.length+' recusado(s) pelo servidor';
+  if(tot.falhou) m+='. Interrompido após '+tot.enviados+' de '+total+' ('+tot.msg+') — confira a lista e repita a importação: o que já foi cadastrado é ignorado.';
+  return m+(tot.falhou?'':'.');
+}
+async function feConfirmarImport_(itens,btn,prog){
+  window.__feImpBusy=true; btn.disabled=true;
+  const tot=await feEnviarLotes_(itens,(a,b)=>{ prog.textContent='Enviando… '+a+' de '+b; });
+  window.__feImpBusy=false;
+  feFecharModal_(); feFeedback_(feResumoImport_(tot,itens.length),!tot.falhou&&!tot.invalidos.length);
+  await carregarFeriados_();
+}
+// ----- Nacionais (BrasilAPI) -----
+function feAbrirImportNacional_(){
+  feModal_('Importar feriados nacionais (BrasilAPI)');
+  const b=document.getElementById('fe-m-b'), f=document.getElementById('fe-m-f');
+  const ay=new Date().getFullYear(); let opt='';
+  for(let a=ay-1;a<=ay+3;a++) opt+='<option'+(a===ay?' selected':'')+'>'+a+'</option>';
+  b.innerHTML='<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><label style="margin:0">Ano</label><select id="fe-n-ano">'+opt+'</select><button type="button" class="fe-btn" id="fe-n-buscar">Buscar feriados</button></div><p class="fe-imp-sum">Os feriados vêm da BrasilAPI. Confira a lista antes de importar. Os já cadastrados ficam desmarcados.</p><div id="fe-n-res"></div>';
+  f.innerHTML='<span id="fe-n-prog" class="fe-imp-sum" style="margin:0 auto 0 0"></span><button type="button" class="fe-btn-sec" id="fe-n-cancel">Cancelar</button><button type="button" class="fe-btn" id="fe-n-imp" disabled>Importar selecionados</button>';
+  document.getElementById('fe-n-cancel').onclick=feFecharModal_;
+  const res=document.getElementById('fe-n-res'), impBtn=document.getElementById('fe-n-imp');
+  const atualizaBtn=()=>{ const n=res.querySelectorAll('input[data-fe-i]:checked').length; impBtn.disabled=!n; impBtn.textContent='Importar selecionados ('+n+')'; };
+  res.addEventListener('change',atualizaBtn);
+  document.getElementById('fe-n-buscar').onclick=async function(){
+    const ano=document.getElementById('fe-n-ano').value; this.disabled=true; impBtn.disabled=true;
+    res.innerHTML=loadingInlineHtml('Buscando feriados de '+ano+'…');
+    try{
+      const r=await loadDataJSONPComRetry(feUrl_('previaFeriadosNacionais','&ano='+encodeURIComponent(ano)),1);
+      if(!r||!r.ok){ res.innerHTML='<div class="fe-msg er">'+feEsc_((r&&r.message)||'Não foi possível buscar os feriados.')+'</div>'; }
+      else{
+        FE_IMP_ITENS=(r.itens||[]).map((x,i)=>({linha:i+1,data:x.data,descricao:x.descricao,tipo:'Nacional',localidade:'',recorrente:!!x.recorrente,status:x.existe?'dup':'ok',motivo:x.existe?'Já cadastrado':''}));
+        res.innerHTML=FE_IMP_ITENS.length?feTabelaPrevia_(FE_IMP_ITENS,true):'<div class="fe-msg er">A BrasilAPI não devolveu feriados para '+feEsc_(ano)+'.</div>';
+        atualizaBtn();
+      }
+    }catch(e){ res.innerHTML='<div class="fe-msg er">Falha ao contatar o servidor.</div>'; }
+    this.disabled=false;
+  };
+  impBtn.onclick=function(){
+    const sel=[...res.querySelectorAll('input[data-fe-i]:checked')].map(c=>FE_IMP_ITENS[+c.dataset.feI]).filter(Boolean);
+    if(sel.length) feConfirmarImport_(sel,impBtn,document.getElementById('fe-n-prog'));
+  };
+}
+// ----- Planilha -----
+function feParseCSV_(txt){
+  txt=String(txt||'').replace(/^﻿/,'');
+  const primeira=txt.split(/\r?\n/)[0]||''; const delim=(primeira.split(';').length>=primeira.split(',').length)?';':',';
+  const rows=[]; let row=[],cur='',q=false;
+  for(let i=0;i<txt.length;i++){
+    const c=txt[i];
+    if(q){ if(c==='"'){ if(txt[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=c; }
+    else if(c==='"') q=true;
+    else if(c===delim){ row.push(cur); cur=''; }
+    else if(c==='\n'||c==='\r'){ if(c==='\r'&&txt[i+1]==='\n') i++; row.push(cur); cur=''; rows.push(row); row=[]; }
+    else cur+=c;
+  }
+  if(cur!==''||row.length){ row.push(cur); rows.push(row); }
+  return rows.filter(r=>r.some(c=>String(c).trim()!==''));
+}
+function feCelula_(v){
+  if(v==null) return '';
+  if(v instanceof Date) return v;
+  if(typeof v==='object'){ if(v.richText) return v.richText.map(x=>x.text).join(''); if(v.result!=null) return feCelula_(v.result); if(v.text!=null) return String(v.text); return ''; }
+  return v;
+}
+async function feLerArquivo_(file){
+  if(/\.csv$/i.test(file.name)){
+    return feParseCSV_(await file.text());
+  }
+  const ExcelJS=await calCarregarExcelJS_();
+  const wb=new ExcelJS.Workbook(); await wb.xlsx.load(await file.arrayBuffer());
+  const ws=wb.worksheets[0]; if(!ws) return [];
+  const rows=[]; ws.eachRow({includeEmpty:false},row=>{ const vals=[]; for(let c=1;c<=row.cellCount;c++) vals.push(feCelula_(row.getCell(c).value)); rows.push(vals); });
+  return rows.filter(r=>r.some(c=>String(c instanceof Date?'d':c).trim()!==''));
+}
+function feMapearLinhas_(rows){
+  if(!rows.length) return {erro:'A planilha está vazia.'};
+  const hd=rows[0].map(h=>peNormalizarHeader(String(h instanceof Date?'':h)));
+  const idx=nomes=>hd.findIndex(h=>nomes.indexOf(h)!==-1);
+  const iD=idx(['data','data do feriado','dia']), iDesc=idx(['descricao','descricao / nome do feriado','nome','feriado','descricao / nome','nome do feriado']);
+  const iT=idx(['tipo']), iL=idx(['localidade','uf','estado','municipio','cidade']), iR=idx(['recorrencia','repete','repete anualmente','recorrente']);
+  const falt=[]; if(iD<0) falt.push('Data'); if(iDesc<0) falt.push('Descrição'); if(iT<0) falt.push('Tipo');
+  if(falt.length) return {erro:'Coluna(s) obrigatória(s) não encontrada(s) na primeira linha: '+falt.join(', ')+'.'};
+  const out=[];
+  for(let r=1;r<rows.length;r++){
+    const lin=rows[r]; const get=i=>i<0?'':feCelula_(lin[i]);
+    const tipoRaw=peNormalizarHeader(String(get(iT)));
+    const tipo=({nacional:'Nacional',estadual:'Estadual',municipal:'Municipal'})[tipoRaw]||String(get(iT)).trim();
+    const recRaw=peNormalizarHeader(String(get(iR)));
+    const rec=['todo ano','sim','anual','anualmente','s','true','verdadeiro','1','x','repete'].indexOf(recRaw)!==-1;
+    const dRaw=get(iD); const data=feNormData_(dRaw);
+    out.push({linha:r+1,data:data||String(dRaw instanceof Date?'':dRaw).trim(),descricao:String(get(iDesc)),tipo:tipo,localidade:String(get(iL)),recorrente:rec});
+  }
+  return {itens:out};
+}
+function feAbrirImportPlanilha_(){
+  feModal_('Importar feriados por planilha');
+  const b=document.getElementById('fe-m-b'), f=document.getElementById('fe-m-f');
+  b.innerHTML='<p class="fe-imp-sum" style="margin-top:0">Arquivo .xlsx ou .csv com as colunas <b>Data, Descrição, Tipo, Localidade, Recorrência</b> (use “Todo ano” para feriados fixos; vazio = única vez). Estadual: informe a UF; Municipal: Município/UF. <a href="#" id="fe-p-modelo">Baixar modelo</a></p><input type="file" id="fe-p-file" accept=".xlsx,.csv"><div id="fe-p-res" style="margin-top:12px"></div>';
+  f.innerHTML='<span id="fe-p-prog" class="fe-imp-sum" style="margin:0 auto 0 0"></span><button type="button" class="fe-btn-sec" id="fe-p-cancel">Cancelar</button><button type="button" class="fe-btn" id="fe-p-imp" disabled>Importar</button>';
+  document.getElementById('fe-p-cancel').onclick=feFecharModal_;
+  document.getElementById('fe-p-modelo').onclick=e=>{ e.preventDefault(); feBaixarModelo_(); };
+  const res=document.getElementById('fe-p-res'), impBtn=document.getElementById('fe-p-imp');
+  document.getElementById('fe-p-file').onchange=async function(){
+    const file=this.files&&this.files[0]; if(!file) return;
+    impBtn.disabled=true; res.innerHTML=loadingInlineHtml('Lendo planilha…');
+    try{
+      const m=feMapearLinhas_(await feLerArquivo_(file));
+      if(m.erro){ res.innerHTML='<div class="fe-msg er">'+feEsc_(m.erro)+'</div>'; return; }
+      if(m.itens.length>2000){ res.innerHTML='<div class="fe-msg er">A planilha tem mais de 2.000 linhas. Divida em arquivos menores.</div>'; return; }
+      FE_IMP_ITENS=feClassificar_(m.itens);
+      const n={ok:0,dup:0,er:0}; FE_IMP_ITENS.forEach(x=>n[x.status]++);
+      res.innerHTML='<div class="fe-imp-sum">'+FE_IMP_ITENS.length+' linha(s): <span class="fe-st ok">'+n.ok+' novas</span> <span class="fe-st dup">'+n.dup+' já cadastradas</span> <span class="fe-st er">'+n.er+' com erro</span> — só as novas serão importadas.</div>'+feTabelaPrevia_(FE_IMP_ITENS,false);
+      impBtn.textContent='Importar '+n.ok+' novo(s)'; impBtn.disabled=!n.ok;
+    }catch(e){ res.innerHTML='<div class="fe-msg er">Não foi possível ler o arquivo: '+feEsc_((e&&e.message)||'formato inválido')+'.</div>'; }
+  };
+  impBtn.onclick=function(){
+    const ok=FE_IMP_ITENS.filter(x=>x.status==='ok'); if(ok.length) feConfirmarImport_(ok,impBtn,document.getElementById('fe-p-prog'));
+  };
+}
+async function feBaixarModelo_(){
+  try{
+    const ExcelJS=await calCarregarExcelJS_();
+    const wb=new ExcelJS.Workbook(); const ws=wb.addWorksheet('Feriados');
+    ws.columns=[{header:'Data',key:'d',width:14,style:{numFmt:'dd/mm/yyyy'}},{header:'Descrição',key:'ds',width:42},{header:'Tipo',key:'t',width:14},{header:'Localidade',key:'l',width:26},{header:'Recorrência',key:'r',width:16}];
+    ws.addRow({d:new Date(Date.UTC(2026,6,9)),ds:'Revolução Constitucionalista',t:'Estadual',l:'SP',r:'Todo ano'});
+    ws.addRow({d:new Date(Date.UTC(2026,0,25)),ds:'Aniversário de São Paulo',t:'Municipal',l:'São Paulo/SP',r:'Todo ano'});
+    ws.addRow({d:new Date(Date.UTC(2026,10,5)),ds:'Ponto facultativo (exemplo)',t:'Municipal',l:'Campinas/SP',r:'Única vez'});
+    ws.getRow(1).eachCell(c=>{ c.font={bold:true,color:{argb:'FFFFFFFF'}}; c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF4F46E5'}}; });
+    ws.views=[{state:'frozen',ySplit:1}];
+    const buf=await wb.xlsx.writeBuffer();
+    const url=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+    const a=document.createElement('a'); a.href=url; a.download='Modelo_Importacao_Feriados.xlsx'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),2000);
+  }catch(e){ alert('Não foi possível gerar o modelo: '+((e&&e.message)||'erro')); }
 }
 
 // F1 — Lazy-init de páginas: conjunto das páginas já inicializadas nesta
