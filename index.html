@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzltUBvfIzzAQ9hwbTkxwBv9pVLhqn_zF3C-MUjwXGUhN671x5_rvHQDNZ_rECe4XkVXQ/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzUMEC6IZKmOPq_2EsCxiUqx157GxMO3CyDFcpXi9aP1xnJEPXu5wqPR5gRftmf1K88EQ/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1379,6 +1379,55 @@ body.nav-collapsed .nav-nov-badge{display:none;}
   .login-shell{max-width:420px; min-height:0; border-radius:20px;}
   .login-card{padding:40px 30px;}
 }
+/* v16.5 — Gestão de Horas Apontadas */
+#page-horasapontadas .ha-note{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:8px 13px;font-size:12.5px;color:var(--text-muted);margin:8px 0;}
+#page-horasapontadas .ha-note.warn{background:#fffbeb;border-color:#fde68a;color:#92400e;}
+#page-horasapontadas .ha-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:9px;padding:7px 13px;font:600 12.5px var(--font-body);cursor:pointer;}
+#page-horasapontadas .ha-btn:hover{border-color:var(--primary);}
+#page-horasapontadas .ha-btn.sm{padding:3px 9px;font-size:12px;}
+#page-horasapontadas .ha-btn.pri,.ha-modal .ha-btn.pri{background:var(--primary);color:#fff;border-color:var(--primary);}
+#page-horasapontadas .ha-btn:disabled{opacity:.6;cursor:wait;}
+#page-horasapontadas button:focus-visible,#page-horasapontadas input:focus-visible,#page-horasapontadas select:focus-visible,#page-horasapontadas [tabindex]:focus-visible,.ha-modal button:focus-visible{outline:3px solid #818cf8;outline-offset:2px;}
+#page-horasapontadas .ha-kclick{cursor:pointer;}
+#page-horasapontadas .ha-kclick:hover{box-shadow:0 0 0 2px var(--primary-100);}
+#page-horasapontadas .ha-chk{flex-direction:row;align-items:center;gap:8px;min-width:0;padding-bottom:9px;}
+#page-horasapontadas .ha-chk label{margin:0;text-transform:none;letter-spacing:0;font-size:12.5px;}
+#page-horasapontadas .ha-chk input{width:auto;min-width:0;}
+#page-horasapontadas .ha-tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+#page-horasapontadas .ha-tab{border:0;background:none;padding:9px 14px;font:700 13px var(--font-body);color:var(--text-muted);border-bottom:3px solid transparent;cursor:pointer;}
+#page-horasapontadas .ha-tab[aria-selected=true]{color:var(--primary);border-color:var(--primary);}
+#page-horasapontadas .ha-exports{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-bottom:4px;}
+#page-horasapontadas .ha-exports small{color:var(--text-muted);font-weight:700;font-size:11.5px;}
+#page-horasapontadas .ha-n,.ha-modal .ha-n{text-align:right;font-variant-numeric:tabular-nums;}
+#page-horasapontadas .ha-mut,.ha-modal .ha-mut{color:var(--text-faint);}
+#page-horasapontadas .ha-sm{font-size:12.5px;}
+#page-horasapontadas .ha-hint{font-size:11.5px;color:#5b21b6;margin-top:2px;}
+#page-horasapontadas .ha-vazio,.ha-modal .ha-vazio{text-align:center;padding:26px;color:var(--text-faint);}
+#page-horasapontadas .ha-foot{font-size:12px;color:var(--text-muted);margin-top:8px;}
+#page-horasapontadas .ha-exp{width:24px;height:24px;padding:0;line-height:20px;text-align:center;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;font-weight:700;}
+#page-horasapontadas tr.ha-r-exc td{background:#fffbeb;}
+#page-horasapontadas tr.ha-r-nw td{background:#f5f3ff;}
+#page-horasapontadas tr.ha-r-exc.ha-r-nw td{background:#fdf4ff;}
+#page-horasapontadas tr.ha-sub td,.ha-modal tr.ha-sub td{background:var(--surface-alt);font-size:12.5px;color:var(--text-muted);}
+#page-horasapontadas tr.ha-sub td:first-child{padding-left:12px;}
+.ha-tg{display:inline-flex;gap:4px;align-items:center;border-radius:99px;padding:2px 9px;font-size:11.5px;font-weight:700;white-space:nowrap;}
+.ha-tg.exc{background:#fef3c7;color:#92400e;}.ha-tg.wk{background:#ede9fe;color:#5b21b6;}.ha-tg.hol{background:#ccfbf1;color:#115e59;}.ha-tg.info{background:#e0e7ff;color:#3730a3;}.ha-tg.g{background:#f1f5f9;color:#475569;}
+#page-horasapontadas .ha-sum,.ha-modal .ha-sum{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;}
+.ha-sum>div{background:var(--surface-alt);border-radius:12px;padding:8px 14px;}
+.ha-sum small{display:block;font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:700;}
+.ha-sum b{font-size:18px;}
+#page-horasapontadas .ha-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:14px;}
+#page-horasapontadas .ha-charts .card{margin:0;}
+#page-horasapontadas .ha-wide{grid-column:1/-1;}
+#page-horasapontadas .ha-quem{margin:0 0 10px;font-weight:700;}
+#page-horasapontadas .ha-leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--text-muted);margin-top:8px;}
+#page-horasapontadas .ha-leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px;}
+.ha-bg{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;z-index:100000;padding:16px;}
+.ha-modal{background:var(--surface);color:var(--text);border-radius:18px;max-width:1000px;width:100%;max-height:90vh;overflow:auto;padding:20px 22px;box-shadow:0 20px 50px rgba(15,23,42,.3);}
+.ha-modal h2{margin:0 0 4px;font-size:19px;}
+.ha-modal .ha-note{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:8px 13px;font-size:12.5px;color:var(--text-muted);margin:8px 0;}
+.ha-modal .ha-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:9px;padding:7px 13px;font:600 12.5px var(--font-body);cursor:pointer;}
+@media (max-width:760px){#page-horasapontadas .ha-charts{grid-template-columns:1fr;}#page-horasapontadas .ha-exports{margin-left:0;}}
 </style>
 </head>
 <body>
@@ -1515,6 +1564,12 @@ body.nav-collapsed .nav-nov-badge{display:none;}
           <button class="nav-tab" data-page="ociosos">Pessoas Disponíveis</button>
           <button class="nav-tab" data-page="area">Visão por Área</button>
           <button class="nav-tab" data-page="setorial">Gestão da Área</button>
+        </div>
+      </div>
+      <div class="nav-cat" data-cat="gestao">
+        <button class="nav-cat-trigger" type="button" title="Gestão"><span class="nav-cat-ic" aria-hidden="true">◔</span><span class="nav-cat-lbl">Gestão</span><svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav-cat-panel">
+          <button class="nav-tab" data-page="horasapontadas">Gestão de Horas Apontadas</button>
         </div>
       </div>
       <div class="nav-cat" data-cat="admin">
@@ -1821,6 +1876,36 @@ body.nav-collapsed .nav-nov-badge{display:none;}
       </div>
       <div class="grid grid-kpi" id="kpi-srp"></div>
       <div id="srp-content"></div>
+    </section>
+
+    <!-- PAGE GESTÃO DE HORAS APONTADAS (v16.5) -->
+    <section class="page" id="page-horasapontadas">
+      <div class="page-header"><div><h1>Gestão de Horas Apontadas</h1><p>Horas por usuário, dia e semana contra a jornada de referência (8h/dia · 40h/semana), com excedentes e horas fora da jornada. Fonte: apontamentos oficiais de horas.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label for="ha-ini">Período — início</label><input type="date" id="ha-ini"></div>
+        <div class="filter-field"><label for="ha-fim">Período — fim</label><input type="date" id="ha-fim"></div>
+        <div class="filter-field"><label for="ha-user">Usuário</label><input type="text" id="ha-user" list="ha-ul" placeholder="Todos os usuários — digite para buscar" autocomplete="off"><datalist id="ha-ul"></datalist></div>
+        <div class="filter-field"><label for="ha-proj">Projeto</label><select id="ha-proj"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label for="ha-tipo">Tipo de apontamento</label><select id="ha-tipo"><option value="">Todos</option><option value="T">Tarefas</option><option value="R">Reunião</option></select></div>
+        <div class="filter-field"><label for="ha-dia">Tipo de dia</label><select id="ha-dia"><option value="">Todos</option><option value="u">Dia útil</option><option value="w">Fim de semana</option><option value="h">Feriado</option></select></div>
+        <div class="filter-field"><label for="ha-view">Visualização</label><select id="ha-view"><option value="d">Diária</option><option value="s">Semanal</option></select></div>
+        <div class="filter-field ha-chk"><input type="checkbox" id="ha-soexc"><label for="ha-soexc">Só com excedente</label></div>
+        <button class="filter-clear" id="ha-limpar" type="button">Limpar filtros</button>
+      </div>
+      <div id="ha-status"></div>
+      <div id="ha-aviso"></div>
+      <div class="grid grid-kpi" id="ha-kpis"></div>
+      <div class="card">
+        <div class="ha-tabs" role="tablist">
+          <button type="button" class="ha-tab" role="tab" data-ha-t="d" aria-selected="true">Resumo diário</button>
+          <button type="button" class="ha-tab" role="tab" data-ha-t="s" aria-selected="false">Resumo semanal</button>
+          <button type="button" class="ha-tab" role="tab" data-ha-t="n" aria-selected="false">Fins de semana e feriados</button>
+          <button type="button" class="ha-tab" role="tab" data-ha-t="g" aria-selected="false">Análise gráfica</button>
+          <span class="ha-exports"><small>Exportar (respeita os filtros):</small>
+            <button type="button" class="ha-btn sm" data-ha-x="d">Resumo diário</button><button type="button" class="ha-btn sm" data-ha-x="s">Resumo semanal</button><button type="button" class="ha-btn sm" data-ha-x="r">Detalhamento</button><button type="button" class="ha-btn sm" data-ha-x="u">Análise por usuário</button></span>
+        </div>
+        <div id="ha-pane"></div>
+      </div>
     </section>
 
     <!-- PAGE LOG DE ALTERAÇÕES -->
@@ -2219,7 +2304,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v16.2';
+const APP_VERSION='v16.5';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2449,8 +2534,10 @@ async function attemptLoadWithToken(token, viewAsEmail){
 //
 // Atualize esta data junto com qualquer alteração no array abaixo — ela
 // aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='08/10/2026';
+const NOVIDADES_ATUALIZADO_EM='13/10/2026';
 const NOVIDADES=[
+  {icone:'⏱️', bg:'#e0f2fe', cor:'#0284c7', titulo:'Gestão de Horas Apontadas', descricao:'Nova página no menu Gestão: horas apontadas por usuário, dia e semana comparadas com a jornada de referência (8h/dia · 40h/semana), com horas excedentes, horas em fins de semana e feriados, separação Tarefas × Reunião, gráficos, detalhamento dos lançamentos e exportação para Excel. Perfis Administrador e Projetos veem todos os usuários; os demais veem as próprias horas. A jornada é só uma referência de controle, não hora extra legal.', paginas:['horasapontadas'], data:'2026-10-13', tag:'Nova página', tagCor:'nova'},
+  {icone:'📋', bg:'#eff6ff', cor:'#2563eb', titulo:'Painel de Status Report: todos os reports', descricao:'O painel agora lista todos os Status Reports já registrados, uma linha por semana de cada projeto (antes mostrava só o último de cada projeto), mantendo os filtros. Cada linha tem Ver, Histórico e Excluir.', paginas:['statusreportpainel'], data:'2026-10-13', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'📣', bg:'#fff7ed', cor:'#ea580c', titulo:'Avisos e comunicados', descricao:'A partir de agora, comunicados importantes da gestão aparecem logo após o login. Quando o aviso for obrigatório, basta clicar em “Ciente / Lido” para continuar — a leitura fica registrada com data e hora.', paginas:[], data:'2026-10-08', tag:'Novo', tagCor:'nova'},
   {icone:'🗂️', bg:'#fff7ed', cor:'#ea580c', titulo:'Gestão de Avisos', descricao:'Nova página em Administração para cadastrar avisos (tipo, prioridade, vigência, obrigatório), escolher destinatários por perfil e/ou pessoa e acompanhar no Controle de Visualizações quem já deu ciência.', paginas:['avisos'], data:'2026-10-08', tag:'Nova página', tagCor:'nova'},
   {icone:'📥', bg:'#eef2ff', cor:'#4f46e5', titulo:'Importação de Feriados', descricao:'Na página Feriados: botão para importar os feriados nacionais de um ano (BrasilAPI), escolhendo quais entram, e importação por planilha (.xlsx ou .csv) para feriados estaduais e municipais, com prévia e sem duplicar o que já existe. Há também um modelo de planilha para baixar.', paginas:['feriados'], data:'2026-10-08', tag:'Novo', tagCor:'nova'},
@@ -3723,11 +3810,13 @@ const PERM_MENU = {
   // (doGet) — este menu só entra em cena no preview de "Visualizar como".
   'Sem Perfil Definido': ['cliente','pessoa','projdetail'],
 };
+// v16.5: Gestão de Horas Apontadas — todos os perfis veem a página; o RECORTE vem do backend (Administrador e Projetos veem todos; os demais só as próprias horas).
+Object.keys(PERM_MENU).forEach(p=>{ if(!PERM_MENU[p].includes('horasapontadas')) PERM_MENU[p].push('horasapontadas'); });
 // "projdetail" (Detalhamento do Projeto) não é uma aba de menu — é uma página de
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',alocacoes:'Alocações',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',transversal:'Entrega e Produtividade',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',novidades:'Novidades'};
+const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',alocacoes:'Alocações',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',transversal:'Entrega e Produtividade',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',horasapontadas:'Gestão de Horas Apontadas',novidades:'Novidades'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 // EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
 // PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
@@ -9327,17 +9416,19 @@ function initStatusReportPainel(){
   document.getElementById('f-srp-projeto').innerHTML='<option value="">Todos</option>'+projetos.map(p=>'<option value="'+p.replace(/"/g,'&quot;')+'">'+p+'</option>').join('');
   document.getElementById('f-srp-gerente').innerHTML='<option value="">Todos</option>'+gerentes.map(g=>'<option value="'+g.replace(/"/g,'&quot;')+'">'+g+'</option>').join('');
   document.getElementById('f-srp-criticidade').innerHTML='<option value="">Todas</option>'+SR_CRITICIDADE_OPCOES.map(o=>'<option value="'+o.v+'">'+o.emoji+' '+o.v+'</option>').join('');
-  ['f-srp-projeto','f-srp-gerente','f-srp-status','f-srp-criticidade','f-srp-de'].forEach(id=>{ document.getElementById(id).onchange=renderStatusReportPainel; });
+  ['f-srp-projeto','f-srp-gerente','f-srp-status','f-srp-criticidade','f-srp-de'].forEach(id=>{ document.getElementById(id).onchange=()=>{ SRP_LIMITE=100; renderStatusReportPainel(); }; });
   document.getElementById('f-srp-clear').onclick=()=>{
     document.getElementById('f-srp-projeto').value='';
     document.getElementById('f-srp-gerente').value='';
     document.getElementById('f-srp-status').value='';
     document.getElementById('f-srp-criticidade').value='';
     document.getElementById('f-srp-de').value='';
+    SRP_LIMITE=100;
     renderStatusReportPainel();
   };
   renderStatusReportPainel();
 }
+let SRP_LIMITE=100; // linhas exibidas por vez no Painel de Status Report (v16.4)
 function renderStatusReportPainel(){
   SORT_RERENDER['srp']=()=>renderStatusReportPainel();
   const fProj=document.getElementById('f-srp-projeto').value;
@@ -9353,14 +9444,10 @@ function renderStatusReportPainel(){
   if(fCriticidade) reports=reports.filter(r=>r.criticidade===fCriticidade);
   if(fDe) reports=reports.filter(r=>r.semana_inicio>=fDe);
 
-  // Uma linha por PROJETO, com o report mais recente (dentro do filtro aplicado)
-  const porProjeto={};
-  reports.forEach(r=>{
-    if(!porProjeto[r.projeto] || r.semana_inicio>porProjeto[r.projeto].semana_inicio) porProjeto[r.projeto]=r;
-  });
-  const linhas=Object.values(porProjeto).sort((a,b)=>b.semana_inicio.localeCompare(a.semana_inicio));
+  // v16.4: UMA LINHA POR REPORT (semana) — antes só o último de cada projeto. Ordem padrão: semana mais recente, depois projeto.
+  const linhas=reports.slice().sort((a,b)=>String(b.semana_inicio).localeCompare(String(a.semana_inicio))||String(a.projeto).localeCompare(String(b.projeto)));
 
-  const totalProjetosComReport=Object.keys(porProjeto).length;
+  const totalProjetosComReport=new Set(reports.map(r=>r.projeto)).size;
   const finalizados=reports.filter(r=>r.status_preenchimento==='Finalizado').length;
   const pendentes=reports.filter(r=>r.status_preenchimento==='Rascunho').length;
   const totalProjetos=[...new Set(D.pj.map(p=>p.pj))].length;
@@ -9371,7 +9458,7 @@ function renderStatusReportPainel(){
     kpiHtml({label:'Reports em Rascunho',value:pendentes,icon:'relatorio',bg:'#fff7ed',color:'#f59e0b',valueColor:'#f59e0b'})+
     kpiHtml({label:'Sem Nenhum Report',value:(totalProjetos-totalProjetosComReport),icon:'alerta',bg:(totalProjetos-totalProjetosComReport>0?'#fef2f2':'#f8fafc'),color:(totalProjetos-totalProjetosComReport>0?'#dc2626':'#64748b'),valueColor:(totalProjetos-totalProjetosComReport>0?'var(--st-bloqueado)':'var(--text)')});
 
-  let h='<div class="card"><div class="card-title"><h3>Último Status Report por Projeto</h3></div>';
+  let h='<div class="card"><div class="card-title"><h3>Status Reports registrados</h3><span class="fe-cnt">'+linhas.length+' report(s)</span></div>';
   if(linhas.length===0){
     h+='<div class="empty-state" style="padding:40px 20px"><p>Nenhum Status Report encontrado com esses filtros.</p></div>';
   }else{
@@ -9388,8 +9475,10 @@ function renderStatusReportPainel(){
     const stSrp=SORT_STATE['srp']||{col:null,dir:0};
     const linhasOrd=stSrp.col?ordenarLinhas_(linhas,colunasSrp.find(c=>c.key===stSrp.col),stSrp.dir):linhas;
     h+='<div class="table-wrap"><table>'+theadOrdenavel_('srp',colunasSrp)+'<tbody>';
-    linhasOrd.forEach(r=>{
-      h+='<tr><td><strong>'+projetoLinkHtml(r.projeto)+'</strong></td>'+
+    let projAnterior=null;
+    linhasOrd.slice(0,SRP_LIMITE).forEach(r=>{
+      const repetido=projAnterior===r.projeto; projAnterior=r.projeto; // nome esmaecido nas semanas seguintes do mesmo projeto
+      h+='<tr><td'+(repetido?' style="opacity:.55"':'')+'><strong>'+projetoLinkHtml(r.projeto)+'</strong></td>'+
         '<td>'+srCriticidadeBadge(r.criticidade)+'</td>'+
         '<td>'+(r.status_projeto||'—')+'</td>'+
         '<td>'+srFmtBr(r.semana_inicio)+' – '+srFmtBr(r.semana_fim)+'</td>'+
@@ -9397,16 +9486,44 @@ function renderStatusReportPainel(){
         '<td>'+personLinkHtml(r.gerente_nome)+'</td>'+
         '<td>'+(r.data_atualizacao?srFmtBr((r.data_atualizacao+'').slice(0,10)):'—')+'</td>'+
         '<td style="display:flex;gap:6px"><button type="button" class="filter-clear sr-ver-btn-view" data-report-id="'+r.id+'" style="padding:5px 10px">Ver</button>'+
-        '<button type="button" class="filter-clear srp-hist-btn" data-projeto="'+r.projeto.replace(/"/g,'&quot;')+'" style="padding:5px 10px">Histórico</button></td></tr>';
+        '<button type="button" class="filter-clear srp-hist-btn" data-projeto="'+r.projeto.replace(/"/g,'&quot;')+'" style="padding:5px 10px">Histórico</button>'+
+        '<button type="button" class="filter-clear srp-del-btn" data-report-id="'+String(r.id).replace(/"/g,'&quot;')+'" title="Excluir este Status Report" style="padding:5px 10px;color:#dc2626;border-color:rgba(220,38,38,.35)">Excluir</button></td></tr>';
     });
     h+='</tbody></table></div>';
+    if(linhasOrd.length>SRP_LIMITE) h+='<div style="text-align:center;padding:14px"><button type="button" class="filter-clear" id="srp-mais">Carregar mais</button> <span style="color:var(--text-faint);font-size:12.5px">Exibindo '+SRP_LIMITE+' de '+linhasOrd.length+'</span></div>';
   }
   h+='</div>';
   document.getElementById('srp-content').innerHTML=h;
+  const btnMaisSrp=document.getElementById('srp-mais');
+  if(btnMaisSrp) btnMaisSrp.onclick=()=>{ SRP_LIMITE+=100; renderStatusReportPainel(); };
 
   document.querySelectorAll('.srp-hist-btn').forEach(btn=>{
     btn.onclick=()=>abrirHistoricoStatusReportModal(btn.dataset.projeto);
   });
+  document.querySelectorAll('.srp-del-btn').forEach(btn=>{
+    btn.onclick=()=>excluirStatusReportPainel_(btn.dataset.reportId,btn);
+  });
+}
+// v16.3 — exclui o Status Report mostrado na linha (o mais recente do projeto); os anteriores ficam no histórico.
+async function excluirStatusReportPainel_(id,btn){
+  const r=STATUS_REPORTS.find(x=>String(x.id)===String(id)); if(!r) return;
+  if(!confirm('Excluir o Status Report de "'+r.projeto+'" da semana '+srFmtBr(r.semana_inicio)+' – '+srFmtBr(r.semana_fim)+' ('+r.status_preenchimento+')?\n\nSó este report será excluído; os anteriores continuam no histórico. Esta ação não pode ser desfeita.')) return;
+  btn.disabled=true;
+  try{
+    // retries 0: repetir uma exclusão por falha de rede não é perigoso, mas evita resposta confusa
+    const resp=await loadDataJSONPComRetry(feUrl_('excluirStatusReport','&id='+encodeURIComponent(id)),0);
+    if(resp&&resp.ok){
+      STATUS_REPORTS=STATUS_REPORTS.filter(x=>String(x.id)!==String(id));
+      mostrarToastPermissao('Status Report excluído.',true);
+      renderStatusReportPainel();
+    }else{
+      mostrarToastPermissao((resp&&resp.message)||'Não foi possível excluir o Status Report.',false);
+      btn.disabled=false;
+    }
+  }catch(e){
+    mostrarToastPermissao('Falha ao contatar o servidor. Atualize a página e confira antes de tentar de novo.',false);
+    btn.disabled=false;
+  }
 }
 
 // Mapa página -> função de inicialização/render. Usado pra priorizar a
@@ -9488,7 +9605,8 @@ const PAGE_INIT_MAP={
   permissoes:initPermissoes,
   pessoasadmin:initPessoasAdmin,
   feriados:initFeriados,
-  avisos:initAvisos
+  avisos:initAvisos,
+  horasapontadas:initHorasApontadas
 };
 
 // ============================================================
@@ -9682,6 +9800,485 @@ function feFeedback_(msg,ok){
   const el=document.getElementById('fe-feedback');
   el.className='fe-msg '+(ok?'ok':'er'); el.textContent=msg; el.style.display='block';
   clearTimeout(window.__feFbTimeout); window.__feFbTimeout=setTimeout(()=>{ el.style.display='none'; },5000);
+}
+// ============================================================
+// v16.5 — GESTÃO DE HORAS APONTADAS
+// Fonte oficial: aba Tarefas_Horas_Apontadas (via ação leve "horasApontadas"), feriados da aba Feriados.
+// Jornada de referência (controle, NÃO hora extra legal): 8h/dia útil · semana = 8h × dias úteis do período.
+// O cálculo é feito aqui, a partir de UMA resposta do servidor (sem consulta por usuário/projeto/tarefa).
+// ============================================================
+const HA={dados:null,chave:'',tab:'d',open:new Set(),limite:150,charts:{},chartKeys:{},calc:null,seq:0,ligado:false,usuarios:[],recs:[],projetos:[],feriadosCache:{},escopo:'todos'};
+const HA_JORNADA_DIA=8, HA_DN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'], HA_MAX_DIAS=400;
+const HA_COR={normal:'#0C4A6E',exc:'#F59E0B',fs:'#7C3AED',hol:'#0D9488',tarefa:'#4F46E5',reuniao:'#0EA5E9',outros:'#94A3B8'};
+const HA_UF={'acre':'AC','alagoas':'AL','amapa':'AP','amazonas':'AM','bahia':'BA','ceara':'CE','distrito federal':'DF','espirito santo':'ES','goias':'GO','maranhao':'MA','mato grosso':'MT','mato grosso do sul':'MS','minas gerais':'MG','para':'PA','paraiba':'PB','parana':'PR','pernambuco':'PE','piaui':'PI','rio de janeiro':'RJ','rio grande do norte':'RN','rio grande do sul':'RS','rondonia':'RO','roraima':'RR','santa catarina':'SC','sao paulo':'SP','sergipe':'SE','tocantins':'TO'};
+const HA_TIPO_ORIG=['Work Item','Meeting','General'];
+function haN_(s){return String(s==null?'':s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/\s+/g,' ').trim();}
+function haDow_(iso){return new Date(iso+'T12:00:00Z').getUTCDay();}
+function haAdd_(iso,n){const d=new Date(iso+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);}
+function haSeg_(iso){const w=haDow_(iso);return haAdd_(iso,w===0?-6:1-w);}
+function haBr_(iso){return feBr_(iso);}
+function haHm_(h){const m=Math.round((h||0)*60);return Math.floor(m/60)+'h'+(m%60?String(m%60).padStart(2,'0'):'');}
+function haHmz_(h){const m=Math.round((h||0)*60);return Math.floor(m/60)+':'+String(m%60).padStart(2,'0');}
+function haExc_(h,j){return Math.max(0,Math.round(h*3600)-Math.round(j*3600))/3600;} // excedente = max(0, horas − jornada), sem ruído de ponto flutuante
+// ---------- localidade / feriados ----------
+function haUf_(x){const n=haN_(x);return n.length===2?n.toUpperCase():(HA_UF[n]||n.toUpperCase());}
+function haLocParse_(l){
+  const s=String(l||'').trim(); if(!s) return {city:'',uf:''};
+  const p=s.split('/'); if(p.length>1) return {city:haN_(p.slice(0,-1).join('/')),uf:haUf_(p[p.length-1])};
+  const n=haN_(s); if(n.length===2) return {city:'',uf:n.toUpperCase()};
+  if(HA_UF[n]) return {city:'',uf:HA_UF[n]};
+  return {city:n,uf:''};
+}
+// Nacional vale para todos. Estadual: mesma UF. Municipal: mesmo município (e mesma UF, quando ambas informadas).
+// Usuário SEM localidade cadastrada recebe só os feriados Nacionais (nunca presumimos o município).
+function haFeriadoAplica_(f,locUsuario){
+  if(f.tipo==='Nacional') return true;
+  if(!String(locUsuario||'').trim()) return false;
+  const u=haLocParse_(locUsuario), fl=haLocParse_(f.localidade);
+  if(f.tipo==='Estadual') return !!u.uf&&!!fl.uf&&u.uf===fl.uf;
+  if(!fl.city||!u.city) return false;
+  return fl.city===u.city&&(!fl.uf||!u.uf||fl.uf===u.uf);
+}
+function haFeriadosDoDia_(iso){
+  let r=HA.feriadosCache[iso];
+  if(!r){ r=((HA.dados&&HA.dados.feriados)||[]).filter(f=>f.data&&(f.data===iso||(f.recorrente&&f.data.slice(5)===iso.slice(5)))); HA.feriadosCache[iso]=r; }
+  return r;
+}
+const HA_ORDEM_TIPO={Nacional:0,Estadual:1,Municipal:2};
+function haDia_(u,iso){
+  const w=haDow_(iso), fs=w===0||w===6;
+  const hs=haFeriadosDoDia_(iso).filter(f=>haFeriadoAplica_(f,u.l)).sort((a,b)=>HA_ORDEM_TIPO[a.tipo]-HA_ORDEM_TIPO[b.tipo]);
+  const h=hs[0]||null;
+  return {fs,h,util:!fs&&!h,kind:fs?'w':(h?'h':'u')};
+}
+// ---------- dados ----------
+function haUsuarioSel_(){
+  const v=haN_(document.getElementById('ha-user').value); if(!v) return null;
+  return HA.usuarios.find(u=>haN_(u.rot)===v||haN_(u.n)===v||u.e===v)||null;
+}
+function haPrepararDados_(r){
+  HA.dados=r; HA.feriadosCache={};
+  const cont={};
+  HA.usuarios=(r.usuarios||[]).map((u,i)=>{cont[haN_(u.n)]=(cont[haN_(u.n)]||0)+1;return {i,e:u.e,n:u.n,l:u.l||''};});
+  HA.usuarios.forEach(u=>{u.rot=cont[haN_(u.n)]>1?u.n+' ('+u.e+')':u.n;});
+  HA.projetos=(r.projetos||[]).map(p=>({cl:p[0],pj:p[1],id:p[2]}));
+  HA.recs=(r.registros||[]).map((x,i)=>({id:i,d:x[0],u:x[1],pj:x[2],tarefa:x[3]||'',h:x[4],tp:x[5],idItem:x[6]||'',tipoRaw:x[7]||'',row:x[8],
+    g:x[5]===0?'T':(x[5]===1||x[5]===2?'R':'O'),tipoO:x[5]<3?HA_TIPO_ORIG[x[5]]:(x[7]||'(vazio)')}));
+  HA.escopo=r.escopo||'todos';
+}
+function haPreencherFiltros_(){
+  const dl=document.getElementById('ha-ul'); dl.innerHTML=HA.usuarios.slice().sort((a,b)=>a.rot.localeCompare(b.rot,'pt-BR')).map(u=>'<option value="'+feEsc_(u.rot)+'">').join('');
+  const sp=document.getElementById('ha-proj'), atual=sp.value;
+  const nomes=[...new Set(HA.projetos.map(p=>p.pj))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  sp.innerHTML='<option value="">Todos</option>'+nomes.map(n=>'<option>'+feEsc_(n)+'</option>').join('');
+  if(nomes.includes(atual)) sp.value=atual;
+  const un=document.getElementById('ha-user');
+  if(HA.escopo==='proprio'){ un.value=HA.usuarios[0]?HA.usuarios[0].rot:''; un.disabled=true; un.title='Seu perfil visualiza apenas as próprias horas.'; }
+  else { un.disabled=false; un.title=''; if(un.value&&!haUsuarioSel_()) un.value=''; }
+}
+// ---------- cálculo ----------
+function haCalcular_(){
+  const sel=haUsuarioSel_(), uTxt=haN_(document.getElementById('ha-user').value);
+  const pj=document.getElementById('ha-proj').value, tp=document.getElementById('ha-tipo').value, dk=document.getElementById('ha-dia').value;
+  const soExc=document.getElementById('ha-soexc').checked;
+  const ini=document.getElementById('ha-ini').value, fim=document.getElementById('ha-fim').value;
+  const recs=HA.recs.filter(r=>{
+    if(r.d<ini||r.d>fim) return false;
+    if(uTxt&&(!sel||r.u!==sel.i)) return false;
+    if(pj&&HA.projetos[r.pj].pj!==pj) return false;
+    if(tp&&r.g!==tp) return false;
+    return true;
+  });
+  const days={};
+  recs.forEach(r=>{
+    const u=HA.usuarios[r.u], inf=haDia_(u,r.d);
+    if(dk==='u'&&!inf.util) return;
+    if(dk==='w'&&!inf.fs) return;
+    if(dk==='h'&&!inf.h) return;
+    const k=r.u+'|'+r.d, x=days[k]||(days[k]={u:r.u,d:r.d,inf,h:0,T:0,R:0,O:0,recs:[]});
+    x.h+=r.h; x[r.g]+=r.h; x.recs.push(r);
+  });
+  const weeks={};
+  Object.values(days).forEach(x=>{
+    x.jor=x.inf.util?HA_JORNADA_DIA:0; x.exc=x.inf.util?haExc_(x.h,x.jor):0; // fim de semana/feriado: jornada 0 e horas ficam em “fora da jornada padrão” (cards/aba própria), não no excedente diário
+    const wk=haSeg_(x.d), k=x.u+'|'+wk;
+    if(!weeks[k]){
+      const u=HA.usuarios[x.u]; let du=0;
+      for(let n=0;n<7;n++){ const d=haAdd_(wk,n); if(d<ini||d>fim) continue; if(haDia_(u,d).util) du++; }
+      weeks[k]={u:x.u,wk,h:0,du,jor:du*HA_JORNADA_DIA,days:[]};
+    }
+    weeks[k].h+=x.h; weeks[k].days.push(x);
+  });
+  Object.values(weeks).forEach(w=>{ w.exc=haExc_(w.h,w.jor); });
+  let dl=Object.values(days), wl=Object.values(weeks);
+  if(soExc){ dl=dl.filter(x=>x.exc>0); wl=wl.filter(x=>x.exc>0); }
+  return {recs,days:dl,weeks:wl,sel,ini,fim};
+}
+// ---------- tela ----------
+function haRotuloUsuario_(i){return HA.usuarios[i].rot;}
+function haProjDe_(recs){return [...new Set(recs.map(r=>HA.projetos[r.pj].pj))].join(', ');}
+function haTag_(inf){
+  if(inf.fs) return '<span class="ha-tg wk">◆ Fim de semana</span>'+(inf.h?' <span class="ha-tg hol">★ Feriado '+feEsc_(inf.h.tipo.toLowerCase())+'</span>':'');
+  if(inf.h) return '<span class="ha-tg hol">★ Feriado '+feEsc_(inf.h.tipo.toLowerCase())+'</span>';
+  return '<span class="ha-tg g">Dia útil</span>';
+}
+function haKpis_(C){
+  const sum=f=>C.days.reduce((a,x)=>a+f(x),0);
+  const tot=sum(x=>x.h), T=sum(x=>x.T), R=sum(x=>x.R), O=sum(x=>x.O);
+  const ed=sum(x=>x.exc), ew=C.weeks.reduce((a,x)=>a+x.exc,0);
+  const fsH=sum(x=>x.inf.fs?x.h:0), hH=sum(x=>(!x.inf.fs&&x.inf.h)?x.h:0);
+  const us=new Set([...C.days.filter(x=>x.exc>0).map(x=>x.u),...C.weeks.filter(x=>x.exc>0).map(x=>x.u)]).size;
+  const k=(o,acao)=>{let h=kpiHtml(o); return acao?h.replace('<div class="kpi','<div data-ha-k="'+acao+'" tabindex="0" role="button" class="ha-kclick kpi'):h;};
+  document.getElementById('ha-kpis').innerHTML=
+    k({label:'Total de horas apontadas',value:haHm_(tot),foot:O>0?'inclui '+haHm_(O)+' de tipo não classificado':'soma dos lançamentos filtrados',icon:'horas',color:'#0c4a6e',bg:'#e0f2fe'})+
+    k({label:'Horas em tarefas',value:haHm_(T),foot:'Work Item',icon:'tarefas',color:'#4f46e5',bg:'#eef2ff'})+
+    k({label:'Horas em reuniões',value:haHm_(R),foot:'Meeting + General',icon:'relogio',color:'#0284c7',bg:'#e0f2fe'})+
+    k({label:'Horas excedentes diárias',value:haHm_(ed),foot:'dias úteis acima de 8h · clique para detalhar',icon:'alerta',color:'#b45309',bg:'#fef3c7',valueColor:ed>0?'#b45309':''},'ed')+
+    k({label:'Horas excedentes semanais',value:haHm_(ew),foot:'semanas acima da jornada · clique para detalhar',icon:'alerta',color:'#b45309',bg:'#fef3c7',valueColor:ew>0?'#b45309':''},'ew')+
+    k({label:'Horas em fins de semana',value:haHm_(fsH),foot:'fora da jornada padrão · clique para detalhar',icon:'calendario',color:'#6d28d9',bg:'#ede9fe'},'n')+
+    k({label:'Horas em feriados',value:haHm_(hH),foot:'feriado em dia de semana · clique para detalhar',icon:'calendario',color:'#0f766e',bg:'#ccfbf1'},'n')+
+    k({label:'Usuários com excedentes',value:String(us),foot:'diário e/ou semanal (não somados)',icon:'pessoas',color:'#b45309',bg:'#fef3c7'},'eu');
+}
+function haAvisos_(C){
+  const d=HA.dados, msgs=[];
+  const ds=d.descartados||{};
+  if(ds.horasInvalidas) msgs.push(ds.horasInvalidas+' lançamento(s) com horas vazias/zeradas/inválidas ignorado(s).');
+  if(ds.semData) msgs.push(ds.semData+' lançamento(s) sem data ignorado(s).');
+  if(ds.semEmail) msgs.push(ds.semEmail+' lançamento(s) sem e-mail do responsável ignorado(s).');
+  if(ds.horasAcima24) msgs.push(ds.horasAcima24+' lançamento(s) com 24h ou mais num único registro — confira na planilha.');
+  if(ds.tipoDesconhecido) msgs.push(ds.tipoDesconhecido+' lançamento(s) com tipo de apontamento fora de Work Item/Meeting/General (aparecem só em “Todos”).');
+  if(d.temColunaTipo===false) msgs.push('A coluna tipo_apontamento não foi encontrada na aba de horas — a separação Tarefas × Reunião não está disponível.');
+  const ids=new Set(C.recs.map(r=>r.u));
+  const semLoc=HA.usuarios.filter(u=>ids.has(u.i)&&!u.l);
+  const temLocal=(d.feriados||[]).some(f=>f.tipo!=='Nacional');
+  let loc='';
+  if(!d.temColunaLocalidade) loc='A coluna <b>Localidade</b> ainda não existe em Pessoas_Area — somente feriados <b>Nacionais</b> estão sendo aplicados.';
+  else if(semLoc.length&&temLocal) loc='<b>'+semLoc.length+' usuário(s) sem Localidade</b> em Pessoas_Area recebem só feriados Nacionais'+(semLoc.length<=4?': '+semLoc.map(u=>feEsc_(u.n)).join(', '):'')+'. Preencha a Localidade (ex.: Manaus/AM) para aplicar feriados estaduais/municipais.';
+  const filtrado=document.getElementById('ha-proj').value||document.getElementById('ha-tipo').value;
+  document.getElementById('ha-aviso').innerHTML=
+    (msgs.length?'<div class="ha-note warn">⚠ '+msgs.map(feEsc_).join(' · ')+'</div>':'')+
+    (loc?'<div class="ha-note warn">📍 '+loc+'</div>':'')+
+    (filtrado?'<div class="ha-note">ℹ Com filtro de projeto ou tipo ativo, jornada e excedentes são calculados sobre as horas filtradas.</div>':'')+
+    '<div class="ha-note">A jornada (8h/dia · 40h/semana, só dias úteis do período) é uma <b>referência de controle</b> — não caracteriza hora extra legal.</div>';
+}
+function haThCols_(id,cols){
+  const st=SORT_STATE[id]; if(!st) SORT_STATE[id]={col:null,dir:0};
+  return theadOrdenavel_(id,cols);
+}
+function haOrdenar_(id,cols,linhas){
+  const st=SORT_STATE[id]||{col:null,dir:0}; const col=cols.find(c=>c.key===st.col);
+  return col&&st.dir?ordenarLinhas_(linhas,col,st.dir):linhas;
+}
+const HA_COLS_D=[
+  {key:null,label:'',thStyle:'width:34px'},
+  {key:'u',label:'Usuário',tipo:'texto',get:x=>haRotuloUsuario_(x.u)},
+  {key:'d',label:'Data',tipo:'data',get:x=>x.d},
+  {key:'h',label:'Horas apontadas',tipo:'horas',get:x=>x.h,thClass:'ha-n'},
+  {key:'j',label:'Jornada prevista',tipo:'horas',get:x=>x.jor,thClass:'ha-n'},
+  {key:'e',label:'Horas excedentes',tipo:'horas',get:x=>x.exc,thClass:'ha-n'},
+  {key:'t',label:'Tipo do dia',tipo:'texto',get:x=>x.inf.kind==='u'?'Dia útil':x.inf.kind==='w'?'Fim de semana':'Feriado'},
+  {key:'p',label:'Tipo / Projetos',tipo:'texto',get:x=>haProjDe_(x.recs)}];
+const HA_COLS_S=[
+  {key:null,label:'',thStyle:'width:34px'},
+  {key:'u',label:'Usuário',tipo:'texto',get:x=>haRotuloUsuario_(x.u)},
+  {key:'w',label:'Semana (seg–dom)',tipo:'data',get:x=>x.wk},
+  {key:'h',label:'Horas apontadas',tipo:'horas',get:x=>x.h,thClass:'ha-n'},
+  {key:'j',label:'Jornada prevista',tipo:'horas',get:x=>x.jor,thClass:'ha-n'},
+  {key:'e',label:'Horas excedentes',tipo:'horas',get:x=>x.exc,thClass:'ha-n'},
+  {key:'p',label:'Projetos',tipo:'texto',get:x=>haProjDe_(x.days.flatMap(d=>d.recs))}];
+const HA_COLS_N=[
+  {key:'u',label:'Usuário',tipo:'texto',get:x=>haRotuloUsuario_(x.r.u)},
+  {key:'d',label:'Data',tipo:'data',get:x=>x.r.d},
+  {key:'t',label:'Tipo do dia',tipo:'texto',get:x=>x.inf.fs?'Fim de semana':'Feriado'},
+  {key:'h',label:'Horas',tipo:'horas',get:x=>x.r.h,thClass:'ha-n'},
+  {key:'o',label:'Tipo',tipo:'texto',get:x=>x.r.tipoO},
+  {key:'p',label:'Projeto',tipo:'texto',get:x=>HA.projetos[x.r.pj].pj},
+  {key:'k',label:'Tarefa / descrição',tipo:'texto',get:x=>x.r.tarefa}];
+function haPaginar_(linhas){
+  const total=linhas.length, mostra=linhas.slice(0,HA.limite);
+  return {mostra,rodape:'<div class="ha-foot">Exibindo '+mostra.length+' de '+total+(total>HA.limite?' <button type="button" class="ha-btn sm" id="ha-mais">Carregar mais</button>':'')+' · horas em h:mm · clique no cabeçalho para ordenar · “+” expande os lançamentos de origem</div>'};
+}
+function haSubRec_(r,colspan){
+  const p=HA.projetos[r.pj];
+  return '<tr class="ha-sub"><td></td><td colspan="2">↳ '+feEsc_(haRotuloUsuario_(r.u))+' · '+haBr_(r.d)+' <span class="ha-tg info">'+feEsc_(r.tipoO)+'</span></td><td class="ha-n">'+haHmz_(r.h)+'</td><td colspan="'+(colspan||4)+'">'+feEsc_(p.cl)+' › '+feEsc_(p.pj)+' › '+feEsc_(r.tarefa||'(sem descrição)')+'</td></tr>';
+}
+function haTabelaDia_(C){
+  let linhas=C.days.slice().sort((a,b)=>haRotuloUsuario_(a.u).localeCompare(haRotuloUsuario_(b.u),'pt-BR')||a.d.localeCompare(b.d));
+  linhas=haOrdenar_('ha-d',HA_COLS_D,linhas);
+  const pg=haPaginar_(linhas);
+  let h='<div class="table-wrap" style="max-height:none"><table>'+haThCols_('ha-d',HA_COLS_D)+'<tbody>';
+  if(!linhas.length) h+='<tr><td colspan="8" class="ha-vazio">Nenhum apontamento encontrado com esses filtros.</td></tr>';
+  pg.mostra.forEach(x=>{
+    const k='d|'+x.u+'|'+x.d, op=HA.open.has(k);
+    const tp=[x.T?'Tarefas '+haHm_(x.T):'',x.R?'Reunião '+haHm_(x.R):'',x.O?'Outros '+haHm_(x.O):''].filter(Boolean).join(' · ');
+    h+='<tr class="'+(x.exc>0?'ha-r-exc':'')+(!x.inf.util?' ha-r-nw':'')+'"><td><button type="button" class="ha-exp" data-ha-o="'+feEsc_(k)+'" aria-expanded="'+op+'" aria-label="Expandir lançamentos de '+feEsc_(haRotuloUsuario_(x.u))+' em '+haBr_(x.d)+'">'+(op?'−':'+')+'</button></td>'+
+      '<td><b>'+feEsc_(haRotuloUsuario_(x.u))+'</b></td><td>'+haBr_(x.d)+' <small class="ha-mut">'+HA_DN[haDow_(x.d)]+'</small></td>'+
+      '<td class="ha-n"><b>'+haHmz_(x.h)+'</b></td><td class="ha-n">'+haHmz_(x.jor)+'</td>'+
+      '<td class="ha-n">'+(x.exc>0?'<button type="button" class="ha-btn sm" data-ha-ex="d|'+x.u+'|'+x.d+'" aria-label="Detalhar excedente"><span class="ha-tg exc">▲ +'+haHm_(x.exc)+'</span></button>':'—')+'</td>'+
+      '<td>'+haTag_(x.inf)+(!x.inf.util?'<div class="ha-hint">Horas registradas fora da jornada padrão'+(x.inf.h?' · '+feEsc_(x.inf.h.descricao):'')+'</div>':'')+'</td>'+
+      '<td class="ha-sm"><div>'+feEsc_(tp)+'</div><div class="ha-mut">'+feEsc_(haProjDe_(x.recs))+'</div></td></tr>';
+    if(op) h+=x.recs.map(r=>haSubRec_(r,4)).join('');
+  });
+  return h+'</tbody></table></div>'+pg.rodape;
+}
+function haTabelaSem_(C){
+  let linhas=C.weeks.slice().sort((a,b)=>haRotuloUsuario_(a.u).localeCompare(haRotuloUsuario_(b.u),'pt-BR')||a.wk.localeCompare(b.wk));
+  linhas=haOrdenar_('ha-s',HA_COLS_S,linhas);
+  const pg=haPaginar_(linhas);
+  let h='<div class="table-wrap" style="max-height:none"><table>'+haThCols_('ha-s',HA_COLS_S)+'<tbody>';
+  if(!linhas.length) h+='<tr><td colspan="7" class="ha-vazio">Nenhum apontamento encontrado com esses filtros.</td></tr>';
+  pg.mostra.forEach(x=>{
+    const k='s|'+x.u+'|'+x.wk, op=HA.open.has(k), todos=x.days.flatMap(d=>d.recs);
+    h+='<tr class="'+(x.exc>0?'ha-r-exc':'')+'"><td><button type="button" class="ha-exp" data-ha-o="'+feEsc_(k)+'" aria-expanded="'+op+'" aria-label="Expandir dias da semana">'+(op?'−':'+')+'</button></td>'+
+      '<td><b>'+feEsc_(haRotuloUsuario_(x.u))+'</b></td><td>'+haBr_(x.wk)+' – '+haBr_(haAdd_(x.wk,6))+'</td><td class="ha-n"><b>'+haHmz_(x.h)+'</b></td>'+
+      '<td class="ha-n">'+haHmz_(x.jor)+'<div class="ha-hint">'+x.du+' dia(s) útil(eis) × 8h'+(x.du<5?' · semana parcial':'')+'</div></td>'+
+      '<td class="ha-n">'+(x.exc>0?'<button type="button" class="ha-btn sm" data-ha-ex="s|'+x.u+'|'+x.wk+'" aria-label="Detalhar excedente"><span class="ha-tg exc">▲ +'+haHm_(x.exc)+'</span></button>':'—')+'</td>'+
+      '<td class="ha-sm">'+feEsc_(haProjDe_(todos))+'</td></tr>';
+    if(op) h+=x.days.slice().sort((a,b)=>a.d.localeCompare(b.d)).map(d=>'<tr class="ha-sub"><td></td><td colspan="2">↳ '+HA_DN[haDow_(d.d)]+' '+haBr_(d.d)+' '+haTag_(d.inf)+'</td><td class="ha-n">'+haHmz_(d.h)+'</td><td class="ha-n">'+haHmz_(d.jor)+'</td><td class="ha-n">'+(d.exc>0?'+'+haHm_(d.exc)+' no dia':'—')+'</td><td>'+feEsc_(haProjDe_(d.recs))+'</td></tr>').join('');
+  });
+  return h+'</tbody></table></div>'+pg.rodape+'<div class="ha-note" style="margin-top:10px">O excedente semanal pode existir sem excedente diário (ex.: seis dias de 7h) e vice-versa. Por isso os dois nunca são somados. Semanas com feriado ou cortadas pelo período recebem jornada proporcional aos dias úteis — não 40h automáticas.</div>';
+}
+function haLinhasNW_(C){
+  return C.days.filter(x=>!x.inf.util).flatMap(x=>x.recs.map(r=>({r,inf:x.inf})));
+}
+function haTabelaNW_(C){
+  let linhas=haLinhasNW_(C).sort((a,b)=>haRotuloUsuario_(a.r.u).localeCompare(haRotuloUsuario_(b.r.u),'pt-BR')||a.r.d.localeCompare(b.r.d)||a.r.id-b.r.id);
+  linhas=haOrdenar_('ha-n',HA_COLS_N,linhas);
+  const tot=linhas.reduce((a,x)=>a+x.r.h,0), fs=linhas.filter(x=>x.inf.fs).reduce((a,x)=>a+x.r.h,0);
+  const pg=haPaginar_(linhas);
+  let h='<div class="ha-sum"><div><small>Total fora da jornada</small><b>'+haHm_(tot)+'</b></div><div><small>Fins de semana</small><b>'+haHm_(fs)+'</b></div><div><small>Feriados (dia de semana)</small><b>'+haHm_(tot-fs)+'</b></div></div>';
+  h+='<div class="table-wrap" style="max-height:none"><table>'+haThCols_('ha-n',HA_COLS_N)+'<tbody>';
+  if(!linhas.length) h+='<tr><td colspan="7" class="ha-vazio">Nenhum apontamento em fim de semana ou feriado neste filtro.</td></tr>';
+  pg.mostra.forEach(x=>{
+    const r=x.r,p=HA.projetos[r.pj];
+    h+='<tr class="ha-r-nw"><td><b>'+feEsc_(haRotuloUsuario_(r.u))+'</b></td><td>'+haBr_(r.d)+' <small class="ha-mut">'+HA_DN[haDow_(r.d)]+'</small></td>'+
+      '<td>'+haTag_(x.inf)+(x.inf.h?'<div class="ha-hint">'+feEsc_(x.inf.h.descricao)+' ('+feEsc_(x.inf.h.tipo)+(x.inf.h.localidade?' · '+feEsc_(x.inf.h.localidade):'')+')</div>':'')+'</td>'+
+      '<td class="ha-n"><b>'+haHmz_(r.h)+'</b></td><td><span class="ha-tg info">'+feEsc_(r.tipoO)+'</span></td><td>'+feEsc_(p.pj)+'<div class="ha-hint">'+feEsc_(p.cl)+'</div></td><td>'+feEsc_(r.tarefa||'(sem descrição)')+'</td></tr>';
+  });
+  return h+'</tbody></table></div>'+pg.rodape+'<div class="ha-note" style="margin-top:10px">Feriado em sábado/domingo continua como <b>fim de semana</b>, com o selo de feriado — as horas entram uma única vez.</div>';
+}
+// ---------- gráficos ----------
+function haDestruirGraficos_(){ Object.values(HA.charts).forEach(c=>{try{c.destroy();}catch(e){}}); HA.charts={}; HA.chartKeys={}; }
+function haLabelsPlugin_(textos){
+  return {id:'haLbl'+Math.random(),afterDatasetsDraw(chart){
+    const ctx=chart.ctx, meta=chart.getDatasetMeta(0), horiz=chart.options.indexAxis==='y';
+    meta.data.forEach((el,i)=>{ const t=textos[i]; if(!t) return;
+      ctx.save(); ctx.font='bold 11px Inter,sans-serif'; ctx.fillStyle=document.documentElement.dataset.theme==='dark'?'#E7EEF5':'#0F172A';
+      if(horiz){ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(t,el.x+6,el.y);} else {ctx.textAlign='center';ctx.fillText(t,el.x,el.y-6);}
+      ctx.restore(); });
+  }};
+}
+function haGrafico_(id,cfg,chaves,textos){
+  const el=document.getElementById(id); if(!el||!COK) return;
+  cfg.options=Object.assign({responsive:true,maintainAspectRatio:false,onClick:(ev,els)=>{ if(els&&els.length){ const k=(HA.chartKeys[id]||[])[els[0].index]; if(k) haDrillGrafico_(k);} },
+    onHover:(ev,els)=>{ ev.native.target.style.cursor=els&&els.length?'pointer':'default'; }},cfg.options||{});
+  cfg.plugins=(cfg.plugins||[]).concat(textos?[haLabelsPlugin_(textos)]:[]);
+  HA.chartKeys[id]=chaves; HA.charts[id]=new Chart(el,cfg);
+}
+function haDesenharGraficos_(C){
+  haDestruirGraficos_(); if(!COK) return;
+  const sel=C.sel, dias=C.days.slice();
+  // 1) horas por dia × jornada
+  const porDia={};
+  dias.forEach(x=>{const b=porDia[x.d]||(porDia[x.d]={h:0,j:0,e:0,kind:x.inf.kind,fs:x.inf.fs,hol:!!x.inf.h});b.h+=x.h;b.j+=x.jor;b.e+=x.exc;if(!sel&&x.inf.fs)b.kind='w';});
+  let ds=Object.keys(porDia).sort();
+  const nDias=Math.round((Date.parse(C.fim+'T12:00:00Z')-Date.parse(C.ini+'T12:00:00Z'))/864e5)+1;
+  if(nDias<=62){ ds=[]; for(let d=C.ini;d<=C.fim;d=haAdd_(d,1)) ds.push(d); }
+  const g1=ds.map(d=>porDia[d]||{h:0,j:sel?haDia_(sel,d).util?HA_JORNADA_DIA:0:(haDow_(d)%6?HA_JORNADA_DIA:0),e:0,kind:sel?haDia_(sel,d).kind:(haDow_(d)%6?'u':'w')});
+  const cor1=g1.map(b=>b.e>0?HA_COR.exc:b.kind==='w'?HA_COR.fs:b.kind==='h'?HA_COR.hol:HA_COR.normal);
+  const t1=g1.map(b=>b.h?haHm_(b.h)+(b.e>0?' ▲':b.kind==='w'?' ◆':b.kind==='h'?' ★':''):'');
+  haGrafico_('ha-ch1',{type:'bar',data:{labels:ds.map(d=>HA_DN[haDow_(d)]+' '+d.slice(8)+'/'+d.slice(5,7)),datasets:[
+      {type:'bar',label:'Horas apontadas',data:g1.map(b=>Math.round(b.h*100)/100),backgroundColor:cor1,borderRadius:5,order:2},
+      {type:'line',label:'Jornada prevista',data:g1.map(b=>b.j),borderColor:'#0F172A',borderDash:[5,3],pointRadius:2,borderWidth:2,stepped:true,fill:false,order:1}]},
+    options:{layout:{padding:{top:22}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+haHm_(c.parsed.y)}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}},x:{ticks:{autoSkip:true,maxTicksLimit:24,maxRotation:60}}}}},
+    ds.map(d=>'day:'+d),t1);
+  // 3) horas por semana × jornada
+  const porSem={}; C.weeks.forEach(w=>{const b=porSem[w.wk]||(porSem[w.wk]={h:0,j:0,e:0});b.h+=w.h;b.j+=w.jor;b.e+=w.exc;});
+  const sm=Object.keys(porSem).sort();
+  haGrafico_('ha-ch3',{type:'bar',data:{labels:sm.map(w=>haBr_(w).slice(0,5)),datasets:[
+      {type:'bar',label:'Horas apontadas',data:sm.map(w=>Math.round(porSem[w].h*100)/100),backgroundColor:sm.map(w=>porSem[w].e>0?HA_COR.exc:HA_COR.normal),borderRadius:5,order:2},
+      {type:'line',label:'Jornada da semana',data:sm.map(w=>porSem[w].j),borderColor:'#0F172A',borderDash:[5,3],pointRadius:3,borderWidth:2,showLine:false,order:1}]},
+    options:{layout:{padding:{top:22}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+haHm_(c.parsed.y)}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}}},
+    sm.map(w=>'wk:'+w),sm.map(w=>haHm_(porSem[w].h)+(porSem[w].e>0?' ▲+'+haHm_(porSem[w].e):'')));
+  // 2) por tipo
+  const T=dias.reduce((a,x)=>a+x.T,0),R=dias.reduce((a,x)=>a+x.R,0),O=dias.reduce((a,x)=>a+x.O,0);
+  const orig=k=>dias.flatMap(x=>x.recs).filter(r=>r.tipoO===k).reduce((a,r)=>a+r.h,0);
+  const it2=[['Tarefas (Work Item)',T,HA_COR.tarefa,'tp:T'],['Reunião (Meeting + General)',R,HA_COR.reuniao,'tp:R'],['· Meeting',orig('Meeting'),'#7DD3FC','to:Meeting'],['· General',orig('General'),'#BAE6FD','to:General']];
+  if(O>0) it2.push(['Outros / não classificado',O,HA_COR.outros,'tp:O']);
+  haGrafico_('ha-ch2',{type:'bar',data:{labels:it2.map(i=>i[0]),datasets:[{data:it2.map(i=>Math.round(i[1]*100)/100),backgroundColor:it2.map(i=>i[2]),borderRadius:5}]},
+    options:{indexAxis:'y',layout:{padding:{right:50}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>haHm_(c.parsed.x)}}},scales:{x:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}}},it2.map(i=>i[3]),it2.map(i=>haHm_(i[1])));
+  // 4) por projeto
+  const bp={}; dias.flatMap(x=>x.recs).forEach(r=>{const p=HA.projetos[r.pj].pj||'(sem projeto)';bp[p]=(bp[p]||0)+r.h;});
+  const pr=Object.entries(bp).sort((a,b)=>b[1]-a[1]).slice(0,15);
+  document.getElementById('ha-ch4-wrap').style.height=Math.max(160,pr.length*26+40)+'px';
+  haGrafico_('ha-ch4',{type:'bar',data:{labels:pr.map(p=>p[0]),datasets:[{data:pr.map(p=>Math.round(p[1]*100)/100),backgroundColor:HA_COR.tarefa,borderRadius:5}]},
+    options:{indexAxis:'y',layout:{padding:{right:50}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>haHm_(c.parsed.x)}}},scales:{x:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}}},pr.map(p=>'pj:'+p[0]),pr.map(p=>haHm_(p[1])));
+  // 5) dias não úteis
+  let fs=0,hn=0,he=0,hm=0;
+  dias.forEach(x=>{ if(x.inf.fs) fs+=x.h; else if(x.inf.h){ if(x.inf.h.tipo==='Nacional')hn+=x.h; else if(x.inf.h.tipo==='Estadual')he+=x.h; else hm+=x.h; } });
+  const it5=[['Fim de semana',fs,HA_COR.fs,'nw:fs'],['Feriado nacional',hn,HA_COR.hol,'nw:hn'],['Feriado estadual',he,'#14B8A6','nw:he'],['Feriado municipal',hm,'#5EEAD4','nw:hm']];
+  haGrafico_('ha-ch5',{type:'bar',data:{labels:it5.map(i=>i[0]),datasets:[{data:it5.map(i=>Math.round(i[1]*100)/100),backgroundColor:it5.map(i=>i[2]),borderRadius:5}]},
+    options:{layout:{padding:{top:22}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>haHm_(c.parsed.y)}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}}},it5.map(i=>i[3]),it5.map(i=>i[1]?haHm_(i[1]):''));
+  // ranking (visão da equipe)
+  if(!sel&&document.getElementById('ha-ch6')){
+    const m={}; dias.forEach(x=>{m[x.u]=(m[x.u]||0)+x.exc;});
+    const rk=Object.entries(m).filter(a=>a[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,15);
+    document.getElementById('ha-ch6-wrap').style.height=Math.max(120,rk.length*26+40)+'px';
+    haGrafico_('ha-ch6',{type:'bar',data:{labels:rk.map(a=>haRotuloUsuario_(+a[0])),datasets:[{data:rk.map(a=>Math.round(a[1]*100)/100),backgroundColor:HA_COR.exc,borderRadius:5}]},
+      options:{indexAxis:'y',layout:{padding:{right:50}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>haHm_(c.parsed.x)}}},scales:{x:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}}},rk.map(a=>'ux:'+a[0]),rk.map(a=>haHm_(a[1])));
+  }
+}
+function haGraficosHtml_(C){
+  const sel=C.sel;
+  const leg='<div class="ha-leg"><span><i style="background:'+HA_COR.normal+'"></i>Dia útil</span><span><i style="background:'+HA_COR.exc+'"></i>▲ Com excedente</span><span><i style="background:'+HA_COR.fs+'"></i>◆ Fim de semana</span><span><i style="background:'+HA_COR.hol+'"></i>★ Feriado</span><span>┄ Jornada prevista</span></div>';
+  const card=(t,id,h,extra,wide)=>'<div class="card'+(wide?' ha-wide':'')+'"><div class="card-title"><h3>'+t+'</h3></div><div id="'+id+'-wrap" style="height:'+h+'px"><canvas id="'+id+'" role="img" aria-label="'+feEsc_(t)+'"></canvas></div>'+(extra||'')+'</div>';
+  if(!COK) return '<div class="ha-note warn">A biblioteca de gráficos não carregou. Recarregue a página.</div>';
+  return '<p class="ha-quem">'+(sel?'Análise individual — <b>'+feEsc_(sel.rot)+'</b>':'Visão consolidada da equipe — selecione um usuário para a análise individual')+'</p><div class="ha-charts">'+
+    card(sel?'Horas por dia × jornada':'Horas da equipe por dia × jornada somada','ha-ch1',280,leg,true)+
+    card('Horas por tipo de apontamento','ha-ch2',200)+
+    card('Horas por semana × jornada','ha-ch3',240,'<div class="ha-leg"><span>● Jornada da semana (proporcional aos dias úteis)</span><span><i style="background:'+HA_COR.exc+'"></i>▲ Excedente semanal</span></div>')+
+    card('Distribuição por projeto (top 15)','ha-ch4',240)+
+    card('Horas em dias não úteis','ha-ch5',220,'<div class="ha-leg"><span>Feriado em fim de semana conta como “Fim de semana”.</span></div>')+
+    (sel?'':card('Ranking de excedentes diários por usuário (top 15)','ha-ch6',200,'',true))+
+    '</div><div class="ha-note" style="margin-top:12px">Clique em qualquer barra para listar os lançamentos que a compõem. Os gráficos acompanham todos os filtros.</div>';
+}
+// ---------- drill-down ----------
+function haModal_(titulo,html){
+  haFecharModal_();
+  const bg=document.createElement('div'); bg.className='ha-bg'; bg.id='ha-bg';
+  bg.innerHTML='<div class="ha-modal" role="dialog" aria-modal="true" aria-labelledby="ha-m-t"><h2 id="ha-m-t">'+titulo+'</h2>'+html+'<div style="text-align:right;margin-top:14px"><button type="button" class="ha-btn pri" id="ha-m-x">Fechar</button></div></div>';
+  document.body.appendChild(bg);
+  const fim=()=>{ document.removeEventListener('keydown',onKey,true); bg.remove(); };
+  function onKey(e){ if(e.key==='Escape'){ e.preventDefault(); fim(); } }
+  document.addEventListener('keydown',onKey,true);
+  bg.addEventListener('mousedown',e=>{ if(e.target===bg) fim(); });
+  document.getElementById('ha-m-x').onclick=fim; document.getElementById('ha-m-x').focus();
+}
+function haFecharModal_(){ const b=document.getElementById('ha-bg'); if(b) b.remove(); }
+function haTabRecs_(rs,comUsuario){
+  return '<div class="table-wrap" style="max-height:50vh"><table><thead><tr>'+(comUsuario?'<th>Usuário</th>':'')+'<th>Data</th><th>Tipo (original)</th><th>Cliente</th><th>Projeto</th><th>Tarefa / descrição</th><th class="ha-n">Horas</th></tr></thead><tbody>'+
+    rs.map(r=>{const p=HA.projetos[r.pj];return '<tr>'+(comUsuario?'<td>'+feEsc_(haRotuloUsuario_(r.u))+'</td>':'')+'<td>'+haBr_(r.d)+' <small class="ha-mut">'+HA_DN[haDow_(r.d)]+'</small></td><td><span class="ha-tg info">'+feEsc_(r.tipoO)+'</span></td><td>'+feEsc_(p.cl)+'</td><td>'+feEsc_(p.pj)+'</td><td>'+feEsc_(r.tarefa||'(sem descrição)')+'</td><td class="ha-n"><b>'+haHmz_(r.h)+'</b></td></tr>';}).join('')+
+    '</tbody></table></div>';
+}
+function haDrillExcedente_(modo,u,chave){
+  const C=HA.calc; u=+u; let rs,jor,tot,exc,per,tit;
+  if(modo==='d'){ const x=C.days.find(a=>a.u===u&&a.d===chave); if(!x) return; rs=x.recs; jor=x.jor; tot=x.h; exc=x.exc; per=haBr_(chave)+' ('+HA_DN[haDow_(chave)]+')'; tit='Excedente diário'; }
+  else { const w=C.weeks.find(a=>a.u===u&&a.wk===chave); if(!w) return; rs=w.days.flatMap(d=>d.recs); jor=w.jor; tot=w.h; exc=w.exc; per=haBr_(chave)+' a '+haBr_(haAdd_(chave,6)); tit='Excedente semanal'; }
+  rs=rs.slice().sort((a,b)=>a.d.localeCompare(b.d)||a.id-b.id);
+  haModal_(tit+' — '+feEsc_(haRotuloUsuario_(u)),'<div class="ha-mut">'+per+'</div><div class="ha-sum"><div><small>Total apontado</small><b>'+haHmz_(tot)+'</b></div><div><small>Jornada prevista</small><b>'+haHmz_(jor)+'</b></div><div><small>Excedente</small><b style="color:#b45309">▲ '+haHmz_(exc)+'</b></div></div><div class="ha-note">O excedente é calculado sobre o total consolidado e <b>não é atribuído</b> a um projeto ou tarefa específica — abaixo estão os lançamentos reais do período.</div>'+haTabRecs_(rs,false));
+}
+function haDrillGrafico_(k){
+  const C=HA.calc, i=k.indexOf(':'), t=k.slice(0,i), v=k.slice(i+1);
+  let rs=C.days.flatMap(x=>x.recs.map(r=>({r,inf:x.inf,exc:x.exc}))), ttl='';
+  if(t==='day'){ rs=rs.filter(o=>o.r.d===v); ttl='Lançamentos de '+haBr_(v); }
+  else if(t==='wk'){ rs=rs.filter(o=>haSeg_(o.r.d)===v); ttl='Semana de '+haBr_(v); }
+  else if(t==='tp'){ rs=rs.filter(o=>o.r.g===v); ttl=v==='T'?'Tarefas':v==='R'?'Reuniões':'Tipo não classificado'; }
+  else if(t==='to'){ rs=rs.filter(o=>o.r.tipoO===v); ttl='Tipo original: '+v; }
+  else if(t==='pj'){ rs=rs.filter(o=>(HA.projetos[o.r.pj].pj||'(sem projeto)')===v); ttl='Projeto: '+v; }
+  else if(t==='ux'){ rs=rs.filter(o=>o.r.u===+v&&o.exc>0); ttl='Dias com excedente — '+haRotuloUsuario_(+v); }
+  else if(t==='nw'){ rs=rs.filter(o=>v==='fs'?o.inf.fs:(!o.inf.fs&&o.inf.h&&o.inf.h.tipo===({hn:'Nacional',he:'Estadual',hm:'Municipal'})[v])); ttl='Horas em dias não úteis'; }
+  rs.sort((a,b)=>a.r.d.localeCompare(b.r.d)||haRotuloUsuario_(a.r.u).localeCompare(haRotuloUsuario_(b.r.u),'pt-BR'));
+  const tot=rs.reduce((a,o)=>a+o.r.h,0);
+  haModal_(feEsc_(ttl),'<div class="ha-sum"><div><small>Lançamentos</small><b>'+rs.length+'</b></div><div><small>Horas</small><b>'+haHm_(tot)+'</b></div></div>'+(rs.length?haTabRecs_(rs.map(o=>o.r),true):'<div class="ha-vazio">Sem lançamentos.</div>'));
+}
+// ---------- exportação (.xlsx via ExcelJS sob demanda; respeita os filtros ativos) ----------
+function haIsoParaDate_(iso){ const p=String(iso).split('-'); return new Date(Date.UTC(+p[0],+p[1]-1,+p[2])); }
+async function haExportar_(tipo,btn){
+  const C=HA.calc; if(!C) return;
+  const txt=btn.textContent; btn.disabled=true; btn.textContent='Gerando…';
+  try{
+    const ExcelJS=await calCarregarExcelJS_(), wb=new ExcelJS.Workbook();
+    const D='dd/mm/yyyy', HMM='[h]:mm', hx=h=>Math.round(h*3600)/86400;
+    let nome, cols, linhas;
+    const kindTxt=inf=>inf.fs?(inf.h?'Fim de semana (feriado '+inf.h.tipo.toLowerCase()+')':'Fim de semana'):(inf.h?'Feriado '+inf.h.tipo.toLowerCase():'Dia útil');
+    if(tipo==='d'){
+      nome='Resumo diário'; cols=[['Usuário',30],['Data',12,D],['Dia',8],['Horas apontadas',16,HMM],['Jornada prevista',16,HMM],['Horas excedentes',16,HMM],['Tipo do dia',30],['Horas em tarefas',16,HMM],['Horas em reunião',16,HMM],['Horas outros',14,HMM],['Projetos',50]];
+      linhas=C.days.slice().sort((a,b)=>haRotuloUsuario_(a.u).localeCompare(haRotuloUsuario_(b.u),'pt-BR')||a.d.localeCompare(b.d)).map(x=>[haRotuloUsuario_(x.u),haIsoParaDate_(x.d),HA_DN[haDow_(x.d)],hx(x.h),hx(x.jor),hx(x.exc),kindTxt(x.inf),hx(x.T),hx(x.R),hx(x.O),haProjDe_(x.recs)]);
+    } else if(tipo==='s'){
+      nome='Resumo semanal'; cols=[['Usuário',30],['Semana (segunda)',16,D],['Semana (domingo)',16,D],['Horas apontadas',16,HMM],['Dias úteis no período',14],['Jornada prevista',16,HMM],['Horas excedentes',16,HMM],['Projetos',50]];
+      linhas=C.weeks.slice().sort((a,b)=>haRotuloUsuario_(a.u).localeCompare(haRotuloUsuario_(b.u),'pt-BR')||a.wk.localeCompare(b.wk)).map(w=>[haRotuloUsuario_(w.u),haIsoParaDate_(w.wk),haIsoParaDate_(haAdd_(w.wk,6)),hx(w.h),w.du,hx(w.jor),hx(w.exc),haProjDe_(w.days.flatMap(d=>d.recs))]);
+    } else if(tipo==='r'){
+      nome='Detalhamento'; cols=[['Usuário',30],['E-mail',34],['Data',12,D],['Dia',8],['Tipo do dia',30],['Feriado',28],['Tipo (original)',14],['Grupo',12],['Cliente',26],['Projeto',34],['ID projeto',20],['Tarefa / descrição',44],['ID item',20],['Horas',10,HMM],['Linha na planilha',12]];
+      linhas=C.days.flatMap(x=>x.recs.map(r=>({x,r}))).sort((a,b)=>haRotuloUsuario_(a.r.u).localeCompare(haRotuloUsuario_(b.r.u),'pt-BR')||a.r.d.localeCompare(b.r.d)||a.r.id-b.r.id)
+        .map(({x,r})=>{const p=HA.projetos[r.pj];return [haRotuloUsuario_(r.u),HA.usuarios[r.u].e,haIsoParaDate_(r.d),HA_DN[haDow_(r.d)],kindTxt(x.inf),x.inf.h?x.inf.h.descricao:'',r.tipoO,r.g==='T'?'Tarefas':r.g==='R'?'Reunião':'Outros',p.cl,p.pj,p.id,r.tarefa,r.idItem,hx(r.h),r.row];});
+    } else {
+      nome='Análise por usuário'; cols=[['Usuário',30],['Horas apontadas',16,HMM],['Horas em tarefas',16,HMM],['Horas em reunião',16,HMM],['Jornada prevista (dias)',18,HMM],['Excedente diário',16,HMM],['Dias com excedente',14],['Jornada prevista (semanas)',20,HMM],['Excedente semanal',16,HMM],['Horas em fins de semana',18,HMM],['Horas em feriados',16,HMM]];
+      const m={}; C.days.forEach(x=>{const a=m[x.u]||(m[x.u]={h:0,T:0,R:0,j:0,ed:0,nd:0,jw:0,ew:0,fs:0,ho:0});a.h+=x.h;a.T+=x.T;a.R+=x.R;a.j+=x.jor;a.ed+=x.exc;if(x.exc>0)a.nd++;if(x.inf.fs)a.fs+=x.h;else if(x.inf.h)a.ho+=x.h;});
+      C.weeks.forEach(w=>{const a=m[w.u]; if(a){a.jw+=w.jor;a.ew+=w.exc;}});
+      linhas=Object.entries(m).sort((a,b)=>haRotuloUsuario_(+a[0]).localeCompare(haRotuloUsuario_(+b[0]),'pt-BR')).map(([u,a])=>[haRotuloUsuario_(+u),hx(a.h),hx(a.T),hx(a.R),hx(a.j),hx(a.ed),a.nd,hx(a.jw),hx(a.ew),hx(a.fs),hx(a.ho)]);
+    }
+    if(!linhas.length){ mostrarToastPermissao('Não há dados para exportar com os filtros atuais.',false); return; }
+    const ws=wb.addWorksheet(nome);
+    ws.columns=cols.map(c=>({header:c[0],width:c[1],style:c[2]?{numFmt:c[2]}:{}}));
+    linhas.forEach(l=>ws.addRow(l));
+    const hdr=ws.getRow(1); hdr.height=22; hdr.eachCell(c=>{c.font={bold:true,color:{argb:'FFFFFFFF'}};c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF0C4A6E'}};c.alignment={vertical:'middle',horizontal:'left',wrapText:true};});
+    ws.views=[{state:'frozen',ySplit:1}]; ws.autoFilter={from:{row:1,column:1},to:{row:1,column:cols.length}};
+    const wi=wb.addWorksheet('Filtros aplicados');
+    wi.columns=[{width:30},{width:60}];
+    [['Período',haBr_(C.ini)+' a '+haBr_(C.fim)],['Usuário',C.sel?C.sel.rot:'Todos'],['Projeto',document.getElementById('ha-proj').value||'Todos'],['Tipo de apontamento',({'':'Todos',T:'Tarefas',R:'Reunião'})[document.getElementById('ha-tipo').value]],['Tipo de dia',({'':'Todos',u:'Dia útil',w:'Fim de semana',h:'Feriado'})[document.getElementById('ha-dia').value]],['Somente com excedente',document.getElementById('ha-soexc').checked?'Sim':'Não'],['Jornada de referência','8h/dia útil · 40h/semana (controle; não é hora extra legal)']].forEach(r=>wi.addRow(r));
+    const buf=await wb.xlsx.writeBuffer(), hoje=new Date(), iso=hoje.getFullYear()+'-'+String(hoje.getMonth()+1).padStart(2,'0')+'-'+String(hoje.getDate()).padStart(2,'0');
+    const url=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+    const a=document.createElement('a'); a.href=url; a.download='Horas_Apontadas_'+({d:'Resumo_diario',s:'Resumo_semanal',r:'Detalhamento',u:'Analise_por_usuario'})[tipo]+'_'+iso+'.xlsx'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),2000);
+  }catch(e){ console.warn('Falha ao exportar (Horas Apontadas).',e); mostrarToastPermissao('Não foi possível gerar o Excel: '+((e&&e.message)||'erro'),false); }
+  finally{ btn.disabled=false; btn.textContent=txt; }
+}
+// ---------- orquestração ----------
+function haRender_(){
+  if(!HA.dados) return;
+  const C=HA.calc=haCalcular_();
+  haKpis_(C); haAvisos_(C);
+  document.querySelectorAll('#page-horasapontadas .ha-tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.haT===HA.tab)));
+  const pane=document.getElementById('ha-pane'); haDestruirGraficos_();
+  if(HA.tab==='d') pane.innerHTML=haTabelaDia_(C);
+  else if(HA.tab==='s') pane.innerHTML=haTabelaSem_(C);
+  else if(HA.tab==='n') pane.innerHTML=haTabelaNW_(C);
+  else { pane.innerHTML=haGraficosHtml_(C); haDesenharGraficos_(C); }
+}
+async function haCarregar_(forcar){
+  const ini=document.getElementById('ha-ini').value, fim=document.getElementById('ha-fim').value, st=document.getElementById('ha-status');
+  if(!ini||!fim){ st.innerHTML='<div class="ha-note warn">Informe o período (início e fim).</div>'; return; }
+  if(ini>fim){ st.innerHTML='<div class="ha-note warn">A data inicial não pode ser maior que a final.</div>'; return; }
+  const dias=Math.round((Date.parse(fim+'T12:00:00Z')-Date.parse(ini+'T12:00:00Z'))/864e5)+1;
+  if(dias>HA_MAX_DIAS){ st.innerHTML='<div class="ha-note warn">Escolha um período de no máximo '+HA_MAX_DIAS+' dias.</div>'; return; }
+  const va=(typeof VIEW_AS_STATE!=='undefined'&&VIEW_AS_STATE&&VIEW_AS_STATE.email)?VIEW_AS_STATE.email:'';
+  const chave=ini+'|'+fim+'|'+va;
+  if(!forcar&&HA.chave===chave&&HA.dados){ st.innerHTML=''; haRender_(); return; }
+  const seq=++HA.seq; st.innerHTML=loadingInlineHtml('Carregando horas apontadas…');
+  try{
+    const r=await loadDataJSONPComRetry(feUrl_('horasApontadas','&ini='+ini+'&fim='+fim+(va?'&viewAs='+encodeURIComponent(va):'')),1);
+    if(seq!==HA.seq) return;
+    if(!r||r.ok===false){ st.innerHTML='<div class="ha-note warn">'+feEsc_((r&&r.message)||'Não foi possível carregar as horas apontadas.')+'</div>'; return; }
+    HA.chave=chave; haPrepararDados_(r); haPreencherFiltros_(); st.innerHTML=''; haRender_();
+  }catch(e){ if(seq===HA.seq) st.innerHTML='<div class="ha-note warn">Não foi possível carregar as horas apontadas agora. <button type="button" class="ha-btn sm" id="ha-retry">Tentar de novo</button></div>'; }
+}
+function initHorasApontadas(){
+  const pg=document.getElementById('page-horasapontadas');
+  if(!HA.ligado){
+    HA.ligado=true;
+    SORT_RERENDER['ha-d']=haRender_; SORT_RERENDER['ha-s']=haRender_; SORT_RERENDER['ha-n']=haRender_;
+    const hoje=new Date(), p2=n=>String(n).padStart(2,'0'), iso=hoje.getFullYear()+'-'+p2(hoje.getMonth()+1)+'-'+p2(hoje.getDate());
+    document.getElementById('ha-ini').value=hoje.getFullYear()+'-'+p2(hoje.getMonth()+1)+'-01'; document.getElementById('ha-fim').value=iso;
+    ['ha-ini','ha-fim'].forEach(id=>document.getElementById(id).addEventListener('change',()=>haCarregar_(false)));
+    ['ha-proj','ha-tipo','ha-dia','ha-soexc'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{HA.limite=150;haRender_();}));
+    document.getElementById('ha-view').addEventListener('change',e=>{HA.tab=e.target.value;haRender_();});
+    document.getElementById('ha-user').addEventListener('input',debounce(()=>{ if(!document.getElementById('ha-user').value.trim()||haUsuarioSel_()){HA.limite=150;haRender_();} },250));
+    document.getElementById('ha-limpar').addEventListener('click',()=>{
+      ['ha-proj','ha-tipo','ha-dia'].forEach(id=>document.getElementById(id).value=''); document.getElementById('ha-soexc').checked=false;
+      if(!document.getElementById('ha-user').disabled) document.getElementById('ha-user').value='';
+      HA.limite=150; haRender_();
+    });
+    pg.addEventListener('click',e=>{
+      const t=e.target.closest('.ha-tab'); if(t){ HA.tab=t.dataset.haT; if(HA.tab==='d'||HA.tab==='s') document.getElementById('ha-view').value=HA.tab; HA.limite=150; haRender_(); return; }
+      const o=e.target.closest('[data-ha-o]'); if(o){ const k=o.dataset.haO; HA.open.has(k)?HA.open.delete(k):HA.open.add(k); haRender_(); return; }
+      const x=e.target.closest('[data-ha-ex]'); if(x){ const p=x.dataset.haEx.split('|'); haDrillExcedente_(p[0],p[1],p[2]); return; }
+      const k=e.target.closest('[data-ha-k]'); if(k){ const a=k.dataset.haK; if(a==='n') HA.tab='n'; else if(a==='ew') {HA.tab='s';document.getElementById('ha-soexc').checked=true;} else {HA.tab='d';document.getElementById('ha-soexc').checked=true;} HA.limite=150; haRender_(); return; }
+      if(e.target.closest('#ha-mais')){ HA.limite+=150; haRender_(); return; }
+      if(e.target.closest('#ha-retry')){ haCarregar_(true); return; }
+      const ex=e.target.closest('[data-ha-x]'); if(ex){ haExportar_(ex.dataset.haX,ex); return; }
+    });
+    pg.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-ha-k]')){ e.preventDefault(); e.target.click(); } });
+  }
+  haCarregar_(false);
 }
 function feUrl_(action,extra){
   const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
