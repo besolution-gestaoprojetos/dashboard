@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzka7eUyEDu-imkWn_EuytLA_n9DNrCN9OTG_Rw4NkRv1x0VEeOOUFaOaFog4ZdI36SUw/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwzUoqck7O5DTQoWHKRWFMKLJMw-pK92T8uCV6mG1HDYi70WMvdt89Mo2CUeNxFia1h/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1434,6 +1434,47 @@ body.nav-collapsed .nav-nov-badge{display:none;}
 .ha-modal h2{margin:0 0 4px;font-size:19px;}
 .ha-modal .ha-note{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:8px 13px;font-size:12.5px;color:var(--text-muted);margin:8px 0;}
 .ha-modal .ha-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:9px;padding:7px 13px;font:600 12.5px var(--font-body);cursor:pointer;}
+/* v16.9 — Relatório de Projetos e Equipes */
+#page-relatorioprojetos .ha-note{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:8px 13px;font-size:12.5px;color:var(--text-muted);margin:8px 0;}
+#page-relatorioprojetos .ha-note.warn{background:#fffbeb;border-color:#fde68a;color:#92400e;}
+#page-relatorioprojetos .ha-mut{color:var(--text-faint);}
+.rp-chip{display:inline-flex;gap:5px;align-items:baseline;background:var(--surface-alt);border:1px solid var(--border);border-radius:99px;padding:2px 10px;margin:2px 3px 2px 0;font-size:12px;white-space:nowrap;}
+.rp-chip small{color:var(--text-faint);}.rp-chip.gp{background:#e0f2fe;border-color:#7dd3fc;}
+.rp-dt{font-variant-numeric:tabular-nums;white-space:nowrap;}
+tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-visible{outline:3px solid #818cf8;outline-offset:-3px;}
+.rp-seg{display:inline-flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.rp-seg button{border:0;background:var(--surface);padding:7px 12px;font:600 12.5px var(--font-body);cursor:pointer;color:var(--text-muted);}
+.rp-seg button.on{background:var(--primary);color:#fff;}
+.rp-btn{border:1px solid var(--primary);background:var(--primary);color:#fff;border-radius:10px;padding:8px 14px;font:700 13px var(--font-body);cursor:pointer;}.rp-btn:disabled{opacity:.6;cursor:wait;}
+.rp-org{overflow:auto;padding:14px 6px;}
+.rp-tree{display:flex;flex-direction:column;align-items:center;min-width:max-content;}
+.rp-lvl{display:flex;gap:18px;justify-content:center;position:relative;padding-top:22px;}
+.rp-lvl::before{content:"";position:absolute;top:0;left:50%;width:2px;height:22px;background:#94a3b8;}
+.rp-lvl.first{padding-top:0;}.rp-lvl.first::before{display:none;}
+.rp-areas{display:flex;gap:16px;align-items:flex-start;justify-content:center;padding-top:22px;position:relative;}
+.rp-areas::before{content:"";position:absolute;top:0;left:50%;width:2px;height:22px;background:#94a3b8;}
+.rp-acol{position:relative;padding-top:22px;display:flex;flex-direction:column;gap:8px;align-items:center;border-top:2px solid #94a3b8;}
+.rp-acol::before{content:"";position:absolute;top:0;left:50%;width:2px;height:22px;background:#94a3b8;}
+.rp-alab{font-size:11px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.05em;}
+.rp-node{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:8px 12px;min-width:150px;text-align:center;box-shadow:0 1px 3px rgba(15,23,42,.08);}
+.rp-node b{display:block;font-size:13px;}.rp-node small{display:block;color:var(--text-muted);font-size:11.5px;}
+.rp-node .pp{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--primary);}
+.rp-node.l0{background:var(--primary);color:#fff;border-color:var(--primary);}.rp-node.l0 small,.rp-node.l0 .pp{color:#bae6fd;}
+.rp-node.semcargo{border-style:dashed;background:#fffbeb;color:#78350f;}.rp-node.semcargo small{color:#92400e;}
+.rp-ul{overflow:auto;padding:14px 6px;}
+.rp-ul ul{display:flex;justify-content:center;padding-top:22px;position:relative;margin:0;list-style:none;padding-left:0;}
+.rp-ul>ul{padding-top:0;}
+.rp-ul li{display:flex;flex-direction:column;align-items:center;position:relative;padding:22px 8px 0;}
+.rp-ul>ul>li{padding-top:0;}
+.rp-ul li::before,.rp-ul li::after{content:"";position:absolute;top:0;right:50%;width:50%;height:22px;border-top:2px solid #94a3b8;}
+.rp-ul li::after{right:auto;left:50%;border-left:2px solid #94a3b8;}
+.rp-ul li:only-child::before,.rp-ul li:only-child::after{display:none;}
+.rp-ul li:only-child{padding-top:22px;}
+.rp-ul>ul>li::before,.rp-ul>ul>li::after{display:none;}
+.rp-ul li:first-child::before,.rp-ul li:last-child::after{border:0 none;}
+.rp-ul li:last-child::before{border-right:2px solid #94a3b8;border-radius:0 6px 0 0;}
+.rp-ul li:first-child::after{border-radius:6px 0 0 0;}
+.rp-ul ul ul::before{content:"";position:absolute;top:0;left:50%;border-left:2px solid #94a3b8;width:0;height:22px;}
 /* v16.8 — Modo Manutenção */
 .mt-block{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;background:linear-gradient(160deg,#0c4a6e,#075985);color:#fff;text-align:center;padding:30px;overflow:auto;}
 .mt-block .mt-in{max-width:540px}.mt-block h2{font-size:28px;margin:10px 0}.mt-block p{color:#e0f2fe;font-size:15px}.mt-em{font-size:58px}
@@ -1591,6 +1632,7 @@ body.nav-collapsed .nav-nov-badge{display:none;}
         <div class="nav-cat-panel">
           <button class="nav-tab" data-page="gerente">Meus Projetos</button>
           <button class="nav-tab" data-page="lider">Projetos por Líder</button>
+          <button class="nav-tab" data-page="relatorioprojetos">Relatório de Projetos e Equipes</button>
           <button class="nav-tab" data-page="statusreport">Status Report</button>
           <button class="nav-tab" data-page="statusreportpainel">Painel de Status Report</button>
           <button class="nav-tab" data-page="pend">Pendências de Tarefas</button>
@@ -1733,6 +1775,26 @@ body.nav-collapsed .nav-nov-badge{display:none;}
     </section>
 
     <!-- PAGE FERIADOS (v16.0) -->
+    <section class="page" id="page-relatorioprojetos">
+      <div class="page-header"><div><h1>Relatório de Projetos e Equipes</h1><p>Cliente, projeto, previsão de entrega e equipe atuante com cargo — com organograma por projeto.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label for="rp-cli">Cliente</label><select id="rp-cli"></select></div>
+        <div class="filter-field"><label for="rp-proj">Projeto</label><input id="rp-proj" placeholder="buscar projeto…" style="min-width:200px"></div>
+        <div class="filter-field"><label for="rp-st">Status do projeto</label><select id="rp-st"></select></div>
+        <div class="filter-field"><label for="rp-area">Área da equipe</label><select id="rp-area"></select></div>
+        <div class="filter-field"><label for="rp-cargo">Cargo</label><select id="rp-cargo"></select></div>
+        <div class="filter-field"><label>Previsão de entrega</label><div class="rp-seg" id="rp-datas"><button type="button" data-v="ambas" class="on">Inicial e atual</button><button type="button" data-v="ini">Só inicial</button><button type="button" data-v="atu">Só atual</button></div></div>
+        <div class="filter-field" style="justify-content:flex-end"><label style="visibility:hidden">.</label><button type="button" class="rp-btn" id="rp-exp">⬇ Exportar Excel</button></div>
+      </div>
+      <div id="rp-aviso"></div>
+      <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Projetos e equipes</h3><span class="sub" id="rp-cnt"></span></div>
+        <div class="ha-mut" style="font-size:12px;margin:-4px 0 8px">Ordene clicando no título da coluna · clique (ou Enter) na linha para abrir o organograma do projeto.</div>
+        <div id="rp-tabela"></div></div>
+      <div class="card" id="rp-orgcard" style="display:none"><div class="card-title"><h3 id="rp-orgt">Organograma</h3><div class="rp-seg" id="rp-orgm"><button type="button" data-v="papel" class="on">Por papel no projeto</button><button type="button" data-v="emp">Por hierarquia da empresa (gestor)</button></div></div>
+        <div class="ha-mut" id="rp-orgs" style="font-size:12px"></div>
+        <div class="rp-org" id="rp-org"></div><div class="ha-mut" id="rp-lg" style="font-size:12px;margin-top:6px"></div></div>
+    </section>
+
     <section class="page" id="page-manutencao">
       <div class="page-header"><div><h1>Modo Manutenção</h1><p>Bloqueia o acesso de todos, exceto as duas contas autorizadas, enquanto o sistema está em manutenção.</p></div></div>
       <div id="mt-root"></div>
@@ -2358,7 +2420,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v16.8';
+const APP_VERSION='v16.9';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2590,6 +2652,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
 // aparece no card "Última atualização" no topo da tela de Novidades.
 const NOVIDADES_ATUALIZADO_EM='15/10/2026';
 const NOVIDADES=[
+  {icone:'🏢', bg:'#e0f2fe', cor:'#0284c7', titulo:'Relatório de Projetos e Equipes', descricao:'Nova página no menu Projetos (somente Administrador): cliente, projeto, status, previsão de entrega inicial e atual lado a lado com a variação em dias e a equipe atuante com cargo. Filtros por cliente, projeto, status, área e cargo. Ao clicar no projeto abre o organograma, por papel no projeto ou pela hierarquia da empresa (gestor). Exporta para Excel com uma linha por projeto.', paginas:['relatorioprojetos'], data:'2026-10-15', tag:'Nova página', tagCor:'nova'},
   {icone:'🛠️', bg:'#fee2e2', cor:'#b91c1c', titulo:'Modo Manutenção', descricao:'Nova página em Administração, visível só para as contas autorizadas (tiago.ferreira@ e gestaoprojetos@): liga e desliga o bloqueio de acesso do sistema, com confirmação e motivo. Quando ativo, todos os outros usuários — inclusive outros Administradores — são bloqueados imediatamente e veem uma tela de manutenção com a mensagem e a previsão de retorno. Também há aviso prévio em faixa amarela, histórico de quem ativou/desativou e um teste de e-mail.', paginas:['manutencao'], data:'2026-10-15', tag:'Nova página', tagCor:'nova'},
   {icone:'👤', bg:'#e0f2fe', cor:'#0284c7', titulo:'Desempenho por Pessoa com as regras de Horas Apontadas', descricao:'A comparação semanal deixou de usar 40h fixas e passou a usar a jornada real da semana (8h por dia útil, descontando fins de semana e feriados conforme a Localidade da pessoa em Pessoas_Area). Novos cards: horas em tarefas, em reuniões, excedente diário e semanal, fins de semana, feriados e ociosidade vs. jornada. A tabela semanal ganhou Tarefas, Reunião, Jornada prevista, Excedente (com detalhamento dos lançamentos) e Ociosidade, além de dias expansíveis; há o novo bloco “Horas fora da jornada padrão”, o filtro Tipo de apontamento e “só semanas com excedente”. Tudo o que já existia na tela foi mantido. A jornada é só uma referência de controle, não hora extra legal.', paginas:['pessoa'], data:'2026-10-13', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'⏱️', bg:'#e0f2fe', cor:'#0284c7', titulo:'Gestão de Horas Apontadas', descricao:'Nova página no menu Gestão: horas apontadas por usuário, dia e semana comparadas com a jornada de referência (8h/dia · 40h/semana), com horas excedentes, horas em fins de semana e feriados, separação Tarefas × Reunião, gráficos, detalhamento dos lançamentos e exportação para Excel. Disponível apenas para o perfil Administrador. A jornada é só uma referência de controle, não hora extra legal.', paginas:['horasapontadas'], data:'2026-10-13', tag:'Nova página', tagCor:'nova'},
@@ -3829,7 +3892,7 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','calendario','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','permissoes','pessoasadmin','feriados','manutencao','avisos','novidades'],
+  'Administrador':  ['cliente','calendario','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','relatorioprojetos','permissoes','pessoasadmin','feriados','manutencao','avisos','novidades'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
@@ -3874,7 +3937,7 @@ if(PERM_MENU['Administrador']) PERM_MENU['Administrador'].push('horasapontadas')
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',alocacoes:'Alocações',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',transversal:'Entrega e Produtividade',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',horasapontadas:'Gestão de Horas Apontadas',manutencao:'Modo Manutenção',novidades:'Novidades'};
+const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',alocacoes:'Alocações',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',transversal:'Entrega e Produtividade',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',horasapontadas:'Gestão de Horas Apontadas',manutencao:'Modo Manutenção',relatorioprojetos:'Relatório de Projetos e Equipes',novidades:'Novidades'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 // EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
 // PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
@@ -3892,7 +3955,7 @@ let EFFECTIVE_EXCECOES={add:[],remove:[]};
 // "novidades" também fica fora: é a tela de entrada exclusiva do
 // Administrador (ver #shell-novidades-placeholder), não uma página de
 // dados com escopo por perfil — não faz sentido liberá-la por exceção.
-const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='feriados' && p!=='manutencao' && p!=='avisos' && p!=='novidades' && p!=='calendario');
+const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='feriados' && p!=='manutencao' && p!=='relatorioprojetos' && p!=='avisos' && p!=='novidades' && p!=='calendario');
 
 // v15.7: "novidades" é página inicial de TODOS os perfis — sempre liberada
 // (não é gerenciável em Permissões e nenhuma exceção a remove).
@@ -6613,6 +6676,151 @@ async function initManutencao(){
 document.addEventListener('click',function(e){
   if(e.target.closest&&e.target.closest('[data-mt-ir]')){ const t=document.querySelector('.nav-tab[data-page=manutencao]'); if(t) t.click(); }
 });
+
+// ============================================================
+// v16.9 — RELATÓRIO DE PROJETOS E EQUIPES (só Administrador)
+// Cliente · Projeto · Status · Previsão de entrega inicial e atual (com variação em dias) · equipe atuante com cargo/papel,
+// + organograma por projeto (por papel no projeto OU por hierarquia da empresa/gestor). Só lê D.pj e D.p (nenhuma chamada nova).
+// ============================================================
+const RP={ligado:false,datas:'ambas',org:'papel',sel:'',open:null,lista:[]};
+const RP_AREA_PAPEL={'Analista de Negócios':'Negócios','UX':'UX / Produto','QA':'Qualidade','Dados':'Dados e IA','Eng de IA':'Dados e IA','Arquiteto Cloud':'Arquitetura','Dev FullStack':'Desenvolvimento','Dev Back':'Desenvolvimento','Dev Front':'Desenvolvimento','Outros':'Outros'};
+const RP_ORDEM_AREA=['Negócios','UX / Produto','Qualidade','Dados e IA','Arquitetura','Desenvolvimento','Outros'];
+const RP_GESTAO=['SM','Líder Responsável','PO','Tech Lead'];
+function rpIso_(br){const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(br||'');return m?m[3]+'-'+m[2]+'-'+m[1]:'';}
+function rpDias_(a,b){return Math.round((Date.parse(b+'T12:00:00Z')-Date.parse(a+'T12:00:00Z'))/864e5);}
+function rpVar_(p){const a=rpIso_(p.pei),b=rpIso_(p.pea);return(a&&b)?rpDias_(a,b):null;}
+function rpMembros_(p){
+  const pess=(D&&D.p)||[],byEmail={},byName={};
+  pess.forEach(x=>{if(x.email)byEmail[String(x.email).toLowerCase()]=x;if(x.a)byName[haN_(x.a)]=x;});
+  const out=[],vistos=new Set();
+  const mk=(nome,papel,email)=>{
+    const pe=(email&&byEmail[String(email).toLowerCase()])||byName[haN_(nome)]||null;
+    const cg=pe?String(pe.cargo||'').trim():'', nv=pe?String(pe.nv||'').trim():'';
+    out.push({nome:pe?pe.a:nome,papel,cargo:cg,nv,cargoTxt:cg?(nv&&nv!=='—'?cg+' · '+nv:cg):'',area:pe?String(pe.area||'').trim():'',gestor:pe?String(pe.gestor||'').trim():'',semCadastro:!pe});
+  };
+  (p.alocacoes||[]).forEach(a=>{mk(a.nome,a.papel,a.email);vistos.add(haN_(a.nome));});
+  (p.eq||[]).forEach(n=>{if(!vistos.has(haN_(n))){mk(n,'Outros','');vistos.add(haN_(n));}});
+  const ord=r=>r==='Gerente do Projeto'?0:(RP_GESTAO.indexOf(r)!==-1?1:2);
+  return out.sort((a,b)=>ord(a.papel)-ord(b.papel)||a.papel.localeCompare(b.papel,'pt-BR')||a.nome.localeCompare(b.nome,'pt-BR'));
+}
+function rpCalcular_(){
+  const g=id=>document.getElementById(id);
+  const c=g('rp-cli').value,t=haN_(g('rp-proj').value),s=g('rp-st').value,a=g('rp-area').value,cg=g('rp-cargo').value;
+  const L=((D&&D.pj)||[]).filter(p=>(!c||p.cl===c)&&(!t||haN_(p.pj).includes(t))&&(!s||(s==='nc'?!projetoConcluidoStatus_(p.st):p.st===s)))
+    .map(p=>({p,m:rpMembros_(p)}));
+  return L.filter(x=>(!a||x.m.some(y=>y.area===a))&&(!cg||x.m.some(y=>y.cargo===cg)));
+}
+function rpCols_(){
+  const d=RP.datas, cols=[
+    {key:'cli',label:'Cliente',tipo:'texto',get:x=>x.p.cl},
+    {key:'proj',label:'Projeto',tipo:'texto',get:x=>x.p.pj},
+    {key:'st',label:'Status',tipo:'texto',get:x=>x.p.st}];
+  if(d!=='atu') cols.push({key:'pei',label:'Previsão inicial',tipo:'data',get:x=>x.p.pei||''});
+  if(d!=='ini') cols.push({key:'pea',label:'Previsão atual',tipo:'data',get:x=>x.p.pea||''});
+  if(d==='ambas') cols.push({key:'var',label:'Variação',tipo:'numero',get:x=>rpVar_(x.p)});
+  cols.push({key:'eq',label:'Equipe atuante (nome · cargo · papel)',tipo:'numero',get:x=>x.m.length});
+  return cols;
+}
+function rpVarHtml_(p){
+  const v=rpVar_(p); if(v===null) return '<span class="ha-tg g">—</span>';
+  return v>0?'<span class="ha-tg exc" style="background:#fee2e2;color:#991b1b">+'+v+' dias</span>':v<0?'<span class="ha-tg hol">'+v+' dias</span>':'<span class="ha-tg hol">no prazo</span>';
+}
+function rpChips_(x){
+  const a=document.getElementById('rp-area').value,cg=document.getElementById('rp-cargo').value;
+  return x.m.map(y=>{
+    const ok=(!a||y.area===a)&&(!cg||y.cargo===cg);
+    return '<span class="rp-chip'+(y.papel==='Gerente do Projeto'?' gp':'')+'" style="'+(ok?'':'opacity:.4')+'"><b>'+feEsc_(y.nome)+'</b><small>'+(y.cargoTxt?feEsc_(y.cargoTxt):'<i style="color:#b45309">sem cargo</i>')+' · '+feEsc_(y.papel)+'</small></span>';
+  }).join('');
+}
+function renderRelatorioProjetos(){
+  const el=document.getElementById('rp-tabela'); if(!el) return;
+  document.querySelectorAll('#rp-datas button').forEach(b=>b.classList.toggle('on',b.dataset.v===RP.datas));
+  const L=rpCalcular_(); RP.lista=L;
+  const cols=rpCols_(), st=SORT_STATE['relproj']||{col:null,dir:0}, col=cols.find(c=>c.key===st.col);
+  const Lo=col?ordenarLinhas_(L,col,st.dir):L;
+  el.innerHTML='<div class="table-wrap" style="max-height:none"><table>'+theadOrdenavel_('relproj',cols)+'<tbody>'+
+    (Lo.map(x=>{const p=x.p;return '<tr class="rp-row'+(RP.sel===p.pj?' sel':'')+'" data-rp-p="'+feEsc_(p.pj)+'" tabindex="0" role="button" aria-label="Abrir organograma de '+feEsc_(p.pj)+'"><td>'+feEsc_(p.cl)+'</td><td><b>'+feEsc_(p.pj)+'</b></td><td><span class="ha-tg info">'+feEsc_(p.st||'—')+'</span></td>'+
+      (RP.datas!=='atu'?'<td class="rp-dt">'+(p.pei||'—')+'</td>':'')+(RP.datas!=='ini'?'<td class="rp-dt">'+(p.pea||'—')+'</td>':'')+(RP.datas==='ambas'?'<td>'+rpVarHtml_(p)+'</td>':'')+
+      '<td>'+rpChips_(x)+'<div class="ha-mut" style="font-size:11.5px">'+x.m.length+' pessoa(s)</div></td></tr>';}).join('')||'<tr><td colspan="7" class="ha-mut" style="text-align:center;padding:22px">Nenhum projeto com esses filtros.</td></tr>')+'</tbody></table></div>';
+  document.getElementById('rp-cnt').textContent=L.length+' projeto(s)';
+  const sc=L.filter(x=>x.m.some(y=>!y.cargo)).length, sd=L.filter(x=>!x.p.pei&&!x.p.pea).length;
+  document.getElementById('rp-aviso').innerHTML=(sc?'<div class="ha-note warn">👤 '+sc+' projeto(s) têm pessoas <b>sem cargo</b> em Pessoas_Area (aparecem como “sem cargo” e no organograma com borda tracejada).</div>':'')+(sd?'<div class="ha-note">📅 '+sd+' projeto(s) sem data de previsão no Portfólio.</div>':'');
+  const cur=RP.sel&&L.find(x=>x.p.pj===RP.sel);
+  if(cur) rpOrg_(cur,false); else {document.getElementById('rp-orgcard').style.display='none';RP.sel='';}
+}
+function rpNo_(y,papel,cls){return '<div class="rp-node '+(cls||'')+(y.cargo?'':' semcargo')+'"><div class="pp">'+feEsc_(papel)+'</div><b>'+feEsc_(y.nome)+'</b><small>'+(y.cargoTxt?feEsc_(y.cargoTxt):'sem cargo cadastrado')+'</small></div>';}
+function rpOrg_(x,rolar){
+  const p=x.p,m=x.m; document.getElementById('rp-orgcard').style.display='';
+  document.getElementById('rp-orgt').textContent='Organograma — '+p.pj;
+  document.getElementById('rp-orgs').textContent=p.cl+' · '+m.length+' pessoa(s)'+(p.pea?' · previsão atual '+p.pea:'');
+  document.querySelectorAll('#rp-orgm button').forEach(b=>b.classList.toggle('on',b.dataset.v===RP.org));
+  let h='',lg='';
+  if(RP.org==='papel'){
+    const gp=m.filter(y=>y.papel==='Gerente do Projeto'), ges=m.filter(y=>RP_GESTAO.indexOf(y.papel)!==-1);
+    const ar={}; m.filter(y=>y.papel!=='Gerente do Projeto'&&RP_GESTAO.indexOf(y.papel)===-1).forEach(y=>{const a=RP_AREA_PAPEL[y.papel]||'Outros';(ar[a]=ar[a]||[]).push(y);});
+    const ordA=Object.keys(ar).sort((a,b)=>RP_ORDEM_AREA.indexOf(a)-RP_ORDEM_AREA.indexOf(b));
+    h='<div class="rp-tree"><div class="rp-lvl first">'+(gp.map(y=>rpNo_(y,y.papel,'l0')).join('')||'<div class="rp-node semcargo"><b>Sem Gerente do Projeto</b></div>')+'</div>'+
+      (ges.length?'<div class="rp-lvl">'+ges.map(y=>rpNo_(y,y.papel)).join('')+'</div>':'')+
+      (ordA.length?'<div class="rp-areas">'+ordA.map(a=>'<div class="rp-acol"><div class="rp-alab">'+feEsc_(a)+'</div>'+ar[a].map(y=>rpNo_(y,y.papel)).join('')+'</div>').join('')+'</div>':'')+'</div>';
+    lg='Topo: Gerente do Projeto · 2º nível: SM, Líder, PO, Tech Lead · abaixo: colunas por área de atuação (papel no Portfólio).';
+  }else{
+    const por={}; m.forEach(y=>{const k=haN_(y.nome);(por[k]=por[k]||{y,papeis:[]}).papeis.push(y.papel);});
+    const nos=Object.values(por), nomes=new Set(Object.keys(por)), vis=new Set();
+    const filhos=n=>nos.filter(o=>o!==n&&haN_(o.y.gestor)===haN_(n.y.nome));
+    const raizes=nos.filter(n=>!n.y.gestor||!nomes.has(haN_(n.y.gestor)));
+    const li=n=>{ if(vis.has(n)) return ''; vis.add(n); const f=filhos(n).map(li).join('');
+      return '<li>'+rpNo_(n.y,n.papeis.join(' / '))+(f?'<ul>'+f+'</ul>':'')+'</li>'; };
+    let corpo=raizes.map(li).join(''); nos.forEach(n=>{ if(!vis.has(n)) corpo+=li(n); }); // ciclos (A→B→A): nada fica de fora
+    h='<div class="rp-ul"><ul>'+corpo+'</ul></div>';
+    lg='Cada pessoa aparece abaixo do seu <b>Gestor</b> (Pessoas_Area), considerando só quem atua neste projeto. Quem tem gestor fora do projeto aparece no topo.';
+  }
+  document.getElementById('rp-org').innerHTML=h; document.getElementById('rp-lg').innerHTML=lg;
+  if(rolar) document.getElementById('rp-orgcard').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+async function rpExportar_(btn){
+  const L=RP.lista; if(!L.length){mostrarToastPermissao('Não há projetos para exportar com os filtros atuais.',false);return;}
+  const txt=btn.textContent; btn.disabled=true; btn.textContent='Gerando…';
+  try{
+    const ExcelJS=await calCarregarExcelJS_(), wb=new ExcelJS.Workbook(), ws=wb.addWorksheet('Projetos e equipes');
+    const dt=br=>{const i=rpIso_(br);return i?haIsoParaDate_(i):null;};
+    ws.columns=[{header:'Cliente',width:26},{header:'Projeto',width:38},{header:'Status',width:16},{header:'Previsão de entrega inicial',width:18,style:{numFmt:'dd/mm/yyyy'}},{header:'Previsão de entrega atual',width:18,style:{numFmt:'dd/mm/yyyy'}},{header:'Variação (dias)',width:14},{header:'Nº de pessoas',width:13},{header:'Equipe atuante (nome — cargo — papel)',width:90,style:{alignment:{wrapText:true,vertical:'top'}}}];
+    L.slice().sort((a,b)=>a.p.cl.localeCompare(b.p.cl,'pt-BR')||a.p.pj.localeCompare(b.p.pj,'pt-BR')).forEach(x=>{
+      ws.addRow([x.p.cl,x.p.pj,x.p.st||'',dt(x.p.pei),dt(x.p.pea),rpVar_(x.p),x.m.length,x.m.map(y=>y.nome+' — '+(y.cargoTxt||'sem cargo')+' — '+y.papel).join('\n')]);
+    });
+    const hdr=ws.getRow(1); hdr.height=22; hdr.eachCell(c=>{c.font={bold:true,color:{argb:'FFFFFFFF'}};c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF0C4A6E'}};c.alignment={vertical:'middle',horizontal:'left',wrapText:true};});
+    ws.views=[{state:'frozen',ySplit:1}]; ws.autoFilter={from:{row:1,column:1},to:{row:1,column:8}};
+    const g=id=>document.getElementById(id), wi=wb.addWorksheet('Filtros aplicados'); wi.columns=[{width:26},{width:60}];
+    [['Cliente',g('rp-cli').value||'Todos'],['Projeto (busca)',g('rp-proj').value||'—'],['Status',g('rp-st').selectedOptions[0].textContent],['Área da equipe',g('rp-area').value||'Todas'],['Cargo',g('rp-cargo').value||'Todos'],['Gerado em',new Date().toLocaleString('pt-BR')]].forEach(r=>wi.addRow(r));
+    wi.getColumn(1).font={bold:true};
+    const buf=await wb.xlsx.writeBuffer(), h=new Date(), iso=h.getFullYear()+'-'+String(h.getMonth()+1).padStart(2,'0')+'-'+String(h.getDate()).padStart(2,'0');
+    const url=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+    const a=document.createElement('a'); a.href=url; a.download='Relatorio_Projetos_Equipes_'+iso+'.xlsx'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),4000);
+  }catch(e){ console.warn('Falha ao exportar (Relatório de Projetos).',e); mostrarToastPermissao('Não foi possível gerar o Excel: '+((e&&e.message)||'erro'),false); }
+  finally{ btn.disabled=false; btn.textContent=txt; }
+}
+function initRelatorioProjetos(){
+  const g=id=>document.getElementById(id);
+  const pj=(D&&D.pj)||[], pess=(D&&D.p)||[];
+  const sel=(id,vals,ini)=>{const v=g(id).value;g(id).innerHTML=ini+vals.map(x=>'<option>'+feEsc_(x)+'</option>').join('');if(vals.includes(v))g(id).value=v;};
+  sel('rp-cli',[...new Set(pj.map(p=>p.cl).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),'<option value="">Todos</option>');
+  sel('rp-area',[...new Set(pess.map(p=>String(p.area||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),'<option value="">Todas</option>');
+  sel('rp-cargo',[...new Set(pess.map(p=>String(p.cargo||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),'<option value="">Todos</option>');
+  const sts=[...new Set(pj.map(p=>p.st).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')), v0=g('rp-st').value||'nc';
+  g('rp-st').innerHTML='<option value="nc">Não concluídos</option><option value="">Todos</option>'+sts.map(x=>'<option>'+feEsc_(x)+'</option>').join(''); g('rp-st').value=[...g('rp-st').options].some(o=>o.value===v0)?v0:'nc';
+  if(!RP.ligado){
+    RP.ligado=true; SORT_RERENDER['relproj']=renderRelatorioProjetos;
+    ['rp-cli','rp-st','rp-area','rp-cargo'].forEach(id=>g(id).addEventListener('change',renderRelatorioProjetos));
+    g('rp-proj').addEventListener('input',debounce(renderRelatorioProjetos,200));
+    g('rp-datas').addEventListener('click',e=>{const b=e.target.closest('button');if(b){RP.datas=b.dataset.v;renderRelatorioProjetos();}});
+    g('rp-orgm').addEventListener('click',e=>{const b=e.target.closest('button');if(b){RP.org=b.dataset.v;const x=RP.lista.find(o=>o.p.pj===RP.sel);if(x)rpOrg_(x,false);}});
+    g('rp-exp').addEventListener('click',()=>rpExportar_(g('rp-exp')));
+    const abrir=e=>{const r=e.target.closest('tr[data-rp-p]');if(!r)return;RP.sel=r.dataset.rpP;renderRelatorioProjetos();const x=RP.lista.find(o=>o.p.pj===RP.sel);if(x)rpOrg_(x,true);};
+    g('rp-tabela').addEventListener('click',abrir);
+    g('rp-tabela').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();abrir(e);}});
+  }
+  renderRelatorioProjetos();
+}
+
 
 // === AREA ===
 function initArea(){
@@ -9995,7 +10203,8 @@ const PAGE_INIT_MAP={
   feriados:initFeriados,
   avisos:initAvisos,
   horasapontadas:initHorasApontadas,
-  manutencao:initManutencao
+  manutencao:initManutencao,
+  relatorioprojetos:initRelatorioProjetos
 };
 
 // ============================================================
