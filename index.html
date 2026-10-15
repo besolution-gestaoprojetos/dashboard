@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzUMEC6IZKmOPq_2EsCxiUqx157GxMO3CyDFcpXi9aP1xnJEPXu5wqPR5gRftmf1K88EQ/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzka7eUyEDu-imkWn_EuytLA_n9DNrCN9OTG_Rw4NkRv1x0VEeOOUFaOaFog4ZdI36SUw/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -809,6 +809,13 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .task-modal-header button{background:none; border:none; font-size:16px; cursor:pointer; color:var(--text-faint); padding:4px 8px; border-radius:6px;}
 .task-modal-header button:hover{background:var(--surface-alt); color:var(--text);}
 .task-modal-body{padding:16px 20px; overflow-y:auto;}
+/* v16.8: Histórico de Status Reports — sem rolagem interna; o botão Ver/Editar fica sempre visível */
+.task-modal-card:has(.sr-hist-wrap){max-width:920px;}
+.sr-hist-wrap{max-height:none; overflow-y:visible; overflow-x:auto;}
+.sr-hist-wrap td,.sr-hist-wrap th{white-space:nowrap;}
+.sr-hist-wrap td:nth-child(5){white-space:normal; min-width:90px;}
+.sr-hist-wrap th:last-child,.sr-hist-wrap td.sr-hist-acao{position:sticky; right:0; background:var(--surface); z-index:2; text-align:right; box-shadow:-6px 0 6px -6px rgba(15,23,42,.15);}
+.sr-hist-wrap th:last-child{background:var(--surface-alt);}
 .task-modal-field{display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid var(--border);}
 .task-modal-field:last-child{border-bottom:none;}
 .task-modal-field-full{flex-direction:column; gap:4px;}
@@ -1427,6 +1434,42 @@ body.nav-collapsed .nav-nov-badge{display:none;}
 .ha-modal h2{margin:0 0 4px;font-size:19px;}
 .ha-modal .ha-note{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:8px 13px;font-size:12.5px;color:var(--text-muted);margin:8px 0;}
 .ha-modal .ha-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:9px;padding:7px 13px;font:600 12.5px var(--font-body);cursor:pointer;}
+/* v16.8 — Modo Manutenção */
+.mt-block{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;background:linear-gradient(160deg,#0c4a6e,#075985);color:#fff;text-align:center;padding:30px;overflow:auto;}
+.mt-block .mt-in{max-width:540px}.mt-block h2{font-size:28px;margin:10px 0}.mt-block p{color:#e0f2fe;font-size:15px}.mt-em{font-size:58px}
+.mt-pill{display:inline-block;background:rgba(255,255,255,.16);border-radius:99px;padding:6px 16px;font-weight:700;margin-top:6px}
+.mt-foot{margin-top:22px;font-size:12.5px!important;opacity:.85}
+.mt-btn{margin-top:8px;border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;border-radius:10px;padding:8px 20px;font:700 13px var(--font-body);cursor:pointer}.mt-btn:hover{background:rgba(255,255,255,.12)}
+.mt-ban{background:#7f1d1d;color:#fff;padding:9px 24px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px}
+.mt-ban b{background:#fff;color:#7f1d1d;border-radius:6px;padding:1px 8px;font-size:12px}
+.mt-ban.pre{background:#fef3c7;color:#92400e}.mt-ban.pre b{background:#92400e;color:#fff}
+.mt-ban-btn{margin-left:auto;border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;border-radius:8px;padding:3px 12px;font:700 12px var(--font-body);cursor:pointer}
+#page-manutencao .mt-big{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.mt-sw{position:relative;width:62px;height:34px;border-radius:99px;background:#cbd5e1;border:0;cursor:pointer;transition:.2s;flex:none}
+.mt-sw::after{content:"";position:absolute;top:4px;left:4px;width:26px;height:26px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.mt-sw.on{background:#dc2626}.mt-sw.on::after{left:32px}
+.mt-sw:focus-visible,.mt-b:focus-visible{outline:3px solid #818cf8;outline-offset:2px}
+.mt-st{display:inline-flex;gap:6px;align-items:center;border-radius:99px;padding:3px 12px;font-weight:800;font-size:12.5px}.mt-st.ok{background:#dcfce7;color:#166534}.mt-st.mt{background:#fee2e2;color:#991b1b}
+.mt-mut{color:var(--text-faint);font-size:12.5px}
+#page-manutencao .mt-two{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}@media(max-width:900px){#page-manutencao .mt-two{grid-template-columns:1fr}}
+#page-manutencao textarea{width:100%;min-height:76px;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface-alt);font:inherit;color:var(--text);resize:vertical}
+#page-manutencao .ha-note,.mt-md .ha-note{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:8px 13px;font-size:12.5px;color:var(--text-muted);margin:8px 0}
+#page-manutencao .ha-note.warn{background:#fffbeb;border-color:#fde68a;color:#92400e}
+.mt-acc{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;background:var(--surface-alt);font-size:13px}
+.mt-av{width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:800;flex:none}
+.mt-b{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:10px;padding:8px 14px;font:700 13px var(--font-body);cursor:pointer}
+.mt-b.pri{background:var(--primary);color:#fff;border-color:var(--primary)}.mt-b.dan{background:#dc2626;color:#fff;border-color:#dc2626}.mt-b:disabled{opacity:.6;cursor:wait}
+.mt-bg{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:100005;display:flex;align-items:center;justify-content:center;padding:16px}
+.mt-md{background:var(--surface);color:var(--text);border-radius:18px;max-width:520px;width:100%;padding:20px 22px;box-shadow:0 20px 50px rgba(15,23,42,.3)}
+#page-pessoa .ha-note{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:8px 13px;font-size:12.5px;color:var(--text-muted);margin:8px 0;}
+#page-pessoa .ha-note.warn{background:#fffbeb;border-color:#fde68a;color:#92400e;}
+#page-pessoa .ha-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:9px;padding:7px 13px;font:600 12.5px var(--font-body);cursor:pointer;}
+#page-pessoa .ha-btn:hover{border-color:var(--primary);}
+#page-pessoa .ha-btn.sm{padding:3px 9px;font-size:12px;}
+#page-pessoa .ha-n{text-align:right;}
+#page-pessoa .ha-mut{color:var(--text-faint);}
+#page-pessoa tr.pes-sub td{background:var(--surface-alt);font-size:12.5px;}
+#page-pessoa .pes-loc{font-weight:700;font-size:13px;min-height:36px;display:flex;align-items:center;}
 @media (max-width:760px){#page-horasapontadas .ha-charts{grid-template-columns:1fr;}#page-horasapontadas .ha-exports{margin-left:0;}}
 </style>
 </head>
@@ -1579,6 +1622,7 @@ body.nav-collapsed .nav-nov-badge{display:none;}
           <button class="nav-tab" data-page="permissoes">Permissões</button>
           <button class="nav-tab" data-page="feriados">Feriados</button>
           <button class="nav-tab" data-page="avisos">Gestão de Avisos</button>
+          <button class="nav-tab" data-page="manutencao">Modo Manutenção</button>
           <button class="nav-tab" data-page="logalteracoes">Log de Alterações</button>
         </div>
       </div>
@@ -1588,6 +1632,7 @@ body.nav-collapsed .nav-nov-badge{display:none;}
       </div>
     </nav>
     <div class="nav-scrim" id="nav-scrim"></div>
+  <div id="mt-banner"></div>
   <div class="viewas-banner" id="viewas-banner" style="display:none">
     <span>👤 <b>Modo de visualização:</b> você está vendo o sistema como <b id="viewas-banner-nome"></b> — <span id="viewas-banner-perfil"></span></span>
     <button id="viewas-voltar-btn">← Voltar para meu acesso</button>
@@ -1688,6 +1733,11 @@ body.nav-collapsed .nav-nov-badge{display:none;}
     </section>
 
     <!-- PAGE FERIADOS (v16.0) -->
+    <section class="page" id="page-manutencao">
+      <div class="page-header"><div><h1>Modo Manutenção</h1><p>Bloqueia o acesso de todos, exceto as duas contas autorizadas, enquanto o sistema está em manutenção.</p></div></div>
+      <div id="mt-root"></div>
+    </section>
+
     <section class="page" id="page-feriados">
       <div class="fe-panel">
         <div class="fe-head"><h2>📅 Calendário de Feriados &amp; Pontos Facultativos</h2><p>Cadastre feriados nacionais, estaduais e municipais para o correto cálculo de horas extras e jornadas.</p></div>
@@ -1785,6 +1835,7 @@ body.nav-collapsed .nav-nov-badge{display:none;}
       <div id="pes-projstatus-wrap"></div>
       <div class="filter-bar">
         <div class="filter-field"><label>Pessoa</label><select id="f-pes"></select></div>
+        <div class="filter-field"><label>Localidade</label><span class="pes-loc" id="pes-loc">—</span></div>
         <div class="filter-field" style="justify-content:flex-end;">
           <label style="visibility:hidden;">.</label>
           <label class="claude-toggle" for="f-pes-claude-only">
@@ -1802,6 +1853,8 @@ body.nav-collapsed .nav-nov-badge{display:none;}
         </div>
         <div class="filter-field"><label>De</label><input type="date" id="f-pes-de"></div>
         <div class="filter-field"><label>Até</label><input type="date" id="f-pes-ate"></div>
+        <div class="filter-field"><label for="f-pes-tipo">Tipo de apontamento</label><select id="f-pes-tipo"><option value="">Todos</option><option value="T">Tarefas</option><option value="R">Reunião</option></select></div>
+        <div class="filter-field" style="justify-content:flex-end;"><label style="visibility:hidden;">.</label><label style="font-size:13px;display:flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" id="f-pes-soexc"> só semanas com excedente</label></div>
       </div>
       <div id="pes-content"></div>
     </section>
@@ -2223,6 +2276,7 @@ function loadDataJSONP(url){
     }
     window[cbName]=function(data){
       limpar();
+      if(data&&data.manutencao&&typeof mtMostrarBloqueio_==='function'){ mtMostrarBloqueio_(data); } // v16.8
       if(data&&data.avisoPendente&&!window.__avGate){ window.__avGate=true; setTimeout(()=>avGateMidSessao_(),0); } // v16.2
       resolve(data);
     };
@@ -2304,7 +2358,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v16.5';
+const APP_VERSION='v16.8';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2534,9 +2588,11 @@ async function attemptLoadWithToken(token, viewAsEmail){
 //
 // Atualize esta data junto com qualquer alteração no array abaixo — ela
 // aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='13/10/2026';
+const NOVIDADES_ATUALIZADO_EM='15/10/2026';
 const NOVIDADES=[
-  {icone:'⏱️', bg:'#e0f2fe', cor:'#0284c7', titulo:'Gestão de Horas Apontadas', descricao:'Nova página no menu Gestão: horas apontadas por usuário, dia e semana comparadas com a jornada de referência (8h/dia · 40h/semana), com horas excedentes, horas em fins de semana e feriados, separação Tarefas × Reunião, gráficos, detalhamento dos lançamentos e exportação para Excel. Perfis Administrador e Projetos veem todos os usuários; os demais veem as próprias horas. A jornada é só uma referência de controle, não hora extra legal.', paginas:['horasapontadas'], data:'2026-10-13', tag:'Nova página', tagCor:'nova'},
+  {icone:'🛠️', bg:'#fee2e2', cor:'#b91c1c', titulo:'Modo Manutenção', descricao:'Nova página em Administração, visível só para as contas autorizadas (tiago.ferreira@ e gestaoprojetos@): liga e desliga o bloqueio de acesso do sistema, com confirmação e motivo. Quando ativo, todos os outros usuários — inclusive outros Administradores — são bloqueados imediatamente e veem uma tela de manutenção com a mensagem e a previsão de retorno. Também há aviso prévio em faixa amarela, histórico de quem ativou/desativou e um teste de e-mail.', paginas:['manutencao'], data:'2026-10-15', tag:'Nova página', tagCor:'nova'},
+  {icone:'👤', bg:'#e0f2fe', cor:'#0284c7', titulo:'Desempenho por Pessoa com as regras de Horas Apontadas', descricao:'A comparação semanal deixou de usar 40h fixas e passou a usar a jornada real da semana (8h por dia útil, descontando fins de semana e feriados conforme a Localidade da pessoa em Pessoas_Area). Novos cards: horas em tarefas, em reuniões, excedente diário e semanal, fins de semana, feriados e ociosidade vs. jornada. A tabela semanal ganhou Tarefas, Reunião, Jornada prevista, Excedente (com detalhamento dos lançamentos) e Ociosidade, além de dias expansíveis; há o novo bloco “Horas fora da jornada padrão”, o filtro Tipo de apontamento e “só semanas com excedente”. Tudo o que já existia na tela foi mantido. A jornada é só uma referência de controle, não hora extra legal.', paginas:['pessoa'], data:'2026-10-13', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'⏱️', bg:'#e0f2fe', cor:'#0284c7', titulo:'Gestão de Horas Apontadas', descricao:'Nova página no menu Gestão: horas apontadas por usuário, dia e semana comparadas com a jornada de referência (8h/dia · 40h/semana), com horas excedentes, horas em fins de semana e feriados, separação Tarefas × Reunião, gráficos, detalhamento dos lançamentos e exportação para Excel. Disponível apenas para o perfil Administrador. A jornada é só uma referência de controle, não hora extra legal.', paginas:['horasapontadas'], data:'2026-10-13', tag:'Nova página', tagCor:'nova'},
   {icone:'📋', bg:'#eff6ff', cor:'#2563eb', titulo:'Painel de Status Report: todos os reports', descricao:'O painel agora lista todos os Status Reports já registrados, uma linha por semana de cada projeto (antes mostrava só o último de cada projeto), mantendo os filtros. Cada linha tem Ver, Histórico e Excluir.', paginas:['statusreportpainel'], data:'2026-10-13', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'📣', bg:'#fff7ed', cor:'#ea580c', titulo:'Avisos e comunicados', descricao:'A partir de agora, comunicados importantes da gestão aparecem logo após o login. Quando o aviso for obrigatório, basta clicar em “Ciente / Lido” para continuar — a leitura fica registrada com data e hora.', paginas:[], data:'2026-10-08', tag:'Novo', tagCor:'nova'},
   {icone:'🗂️', bg:'#fff7ed', cor:'#ea580c', titulo:'Gestão de Avisos', descricao:'Nova página em Administração para cadastrar avisos (tipo, prioridade, vigência, obrigatório), escolher destinatários por perfil e/ou pessoa e acompanhar no Controle de Visualizações quem já deu ciência.', paginas:['avisos'], data:'2026-10-08', tag:'Nova página', tagCor:'nova'},
@@ -3092,6 +3148,7 @@ async function attemptLoadWithTokenClassico(token, viewAsEmail){
   }
 }
 function addLogoutControl(userLabel,perfil){
+  setTimeout(()=>{ try{ mtIniciar_(); }catch(eMt){} },0); // v16.8: monitor do modo manutenção
   const info=document.getElementById('user-info');
   if(!info) return;
   document.getElementById('user-info-name').textContent = userLabel || '—';
@@ -3772,7 +3829,7 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','calendario','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','permissoes','pessoasadmin','feriados','avisos','novidades'],
+  'Administrador':  ['cliente','calendario','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','permissoes','pessoasadmin','feriados','manutencao','avisos','novidades'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
@@ -3810,13 +3867,14 @@ const PERM_MENU = {
   // (doGet) — este menu só entra em cena no preview de "Visualizar como".
   'Sem Perfil Definido': ['cliente','pessoa','projdetail'],
 };
-// v16.5: Gestão de Horas Apontadas — todos os perfis veem a página; o RECORTE vem do backend (Administrador e Projetos veem todos; os demais só as próprias horas).
-Object.keys(PERM_MENU).forEach(p=>{ if(!PERM_MENU[p].includes('horasapontadas')) PERM_MENU[p].push('horasapontadas'); });
+// v16.7: Gestão de Horas Apontadas — menu/página só para o perfil Administrador (exceções individuais de permissão continuam valendo).
+Object.keys(PERM_MENU).forEach(p=>{ PERM_MENU[p]=PERM_MENU[p].filter(x=>x!=='horasapontadas'); });
+if(PERM_MENU['Administrador']) PERM_MENU['Administrador'].push('horasapontadas');
 // "projdetail" (Detalhamento do Projeto) não é uma aba de menu — é uma página de
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',alocacoes:'Alocações',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',transversal:'Entrega e Produtividade',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',horasapontadas:'Gestão de Horas Apontadas',novidades:'Novidades'};
+const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',alocacoes:'Alocações',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',transversal:'Entrega e Produtividade',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',horasapontadas:'Gestão de Horas Apontadas',manutencao:'Modo Manutenção',novidades:'Novidades'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 // EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
 // PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
@@ -3834,12 +3892,14 @@ let EFFECTIVE_EXCECOES={add:[],remove:[]};
 // "novidades" também fica fora: é a tela de entrada exclusiva do
 // Administrador (ver #shell-novidades-placeholder), não uma página de
 // dados com escopo por perfil — não faz sentido liberá-la por exceção.
-const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='feriados' && p!=='avisos' && p!=='novidades' && p!=='calendario');
+const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='feriados' && p!=='manutencao' && p!=='avisos' && p!=='novidades' && p!=='calendario');
 
 // v15.7: "novidades" é página inicial de TODOS os perfis — sempre liberada
 // (não é gerenciável em Permissões e nenhuma exceção a remove).
 function paginasPermitidas(){
-  const r=paginasPermitidasBase_();
+  // v16.8: "Modo Manutenção" só aparece para as contas autorizadas pelo servidor (MT.pode) e fora do "Visualizar como"
+  let r=paginasPermitidasBase_().filter(p=>p!=='manutencao');
+  if(typeof MT!=='undefined'&&MT.pode&&!(VIEW_AS_STATE&&VIEW_AS_STATE.email)) r=r.concat('manutencao');
   return r.includes('novidades')?r:r.concat('novidades');
 }
 function paginasPermitidasBase_(){
@@ -5886,6 +5946,8 @@ function initPessoa(){
   sel.onchange=renderPessoa;
   document.getElementById('f-pes-claude-only').onchange=()=>{populatePessoaOptions();renderPessoa();};
   initPeriodSeg('pes-periodo-seg','f-pes-de','f-pes-ate',renderPessoa);
+  document.getElementById('f-pes-tipo').onchange=renderPessoa;
+  document.getElementById('f-pes-soexc').onchange=renderPessoa;
   // Filtro Status do Projeto (Todos/Concluídos/Não Concluídos): mantém o modo escolhido ao trocar pessoa/período.
   initProjStatusSeg_('pessoa','pes-projstatus-wrap',renderPessoa);
 }
@@ -5901,6 +5963,7 @@ function populatePessoaOptions(){
 }
 function renderPessoa(){
   const nome=document.getElementById('f-pes').value;const el=document.getElementById('pes-content');
+  { const l0=document.getElementById('pes-loc'); if(l0) l0.textContent='—'; }
   if(!nome){el.innerHTML='<div class="empty-state" style="padding:80px 20px"><p>Selecione uma pessoa.</p></div>';return;}
   const info=D.p.find(p=>p.a===nome);if(!info){el.innerHTML='';return;}
   const emailKey=(info.email||'').toLowerCase();
@@ -6053,6 +6116,20 @@ function renderPessoa(){
     return{monday,sunday,prev,exec,excedente40,ociosidade40};
   });
 
+  // v16.6 — Horas Apontadas oficiais (jornada real, Tarefas × Reunião, fora da jornada padrão)
+  const tipoPes=(document.getElementById('f-pes-tipo')||{}).value||'';
+  const soExcPes=!!(document.getElementById('f-pes-soexc')||{}).checked;
+  const phJ=pesHaJanela_(semDe,semAte);
+  const phS=pesHaGarantir_(emailKey,phJ.ini,phJ.fim);
+  const ph=(phS.est==='ok')?pesHaCalc_(phS.dados,tipoPes,phJ.ini,phJ.fim):null;
+  semanasDetalhe.forEach(s=>{ s.ha=(ph&&s.sunday>=ph.ini&&s.monday<=ph.fim)?ph.semana(s.monday):null; });
+  PES_HA.vista={ph,P:phS.dados||null,nome:info.a};
+  { const locEl=document.getElementById('pes-loc'); if(locEl) locEl.textContent=ph?(phS.dados.loc||'não cadastrada'):(phS.est==='erro'?'—':'carregando…'); }
+  const semanasVis=(ph&&soExcPes)?semanasDetalhe.filter(s=>s.ha&&s.ha.exc>0):semanasDetalhe;
+  const phKpis=ph?pesHaKpis_(ph):'';
+  const phAviso=pesHaAviso_(phS,ph,phJ,tipoPes,filtroPes);
+  const phFora=pesHaFora_(ph,phS);
+
   // Mantido pra compatibilidade com o texto do "Resumo" acima, mas o indicador
   // visual de capacidade agora vive na quebra semanal (mais preciso: compara
   // semana a semana, não uma média diluída no período inteiro).
@@ -6121,7 +6198,7 @@ function renderPessoa(){
   const stPesStatus=SORT_STATE['pessoa-status']||{col:null,dir:0};
   const statusRowsOrd=stPesStatus.col?ordenarLinhas_(statusRows,colunasPesStatus.find(c=>c.key===stPesStatus.col),stPesStatus.dir):statusRows;
 
-  const semanasParaTabela=semanasDetalhe.slice().reverse();
+  const semanasParaTabela=semanasVis.slice().reverse();
   const colunasPesSemanas=[
     {key:'semana',label:'Semana',tipo:'data',get:s=>s.monday},
     {key:'estimado',label:'Estimado',tipo:'horas',get:s=>s.prev},
@@ -6129,8 +6206,24 @@ function renderPessoa(){
     {key:'vsestimado',label:'vs. Estimado',tipo:'numero',get:s=>s.exec-s.prev},
     {key:'vs40',label:'vs. 40h/semana',tipo:'numero',get:s=>s.exec-40}
   ];
+  const colunasPesSemanasPh=[
+    {key:null,label:'',thStyle:'width:34px'},
+    {key:'semana',label:'Semana',tipo:'data',get:s=>s.monday},
+    {key:'estimado',label:'Estimado',tipo:'horas',get:s=>s.prev},
+    {key:'executado',label:'Executado',tipo:'horas',get:s=>s.exec},
+    {key:'vsestimado',label:'vs. Estimado',tipo:'numero',get:s=>s.exec-s.prev},
+    {key:'tarefas',label:'Tarefas',tipo:'horas',get:s=>s.ha?s.ha.T:null},
+    {key:'reuniao',label:'Reunião',tipo:'horas',get:s=>s.ha?s.ha.R:null},
+    {key:'jornada',label:'Jornada prevista',tipo:'horas',get:s=>s.ha?s.ha.jor:null},
+    {key:'excedente',label:'Excedente',tipo:'horas',get:s=>s.ha?s.ha.exc:null},
+    {key:'ociosidade',label:'Ociosidade',tipo:'horas',get:s=>(s.ha&&s.ha.oci!==null)?s.ha.oci:null}
+  ];
   const stPesSemanas=SORT_STATE['pessoa-semanas']||{col:null,dir:0};
-  const semanasParaTabelaOrd=stPesSemanas.col?ordenarLinhas_(semanasParaTabela,colunasPesSemanas.find(c=>c.key===stPesSemanas.col),stPesSemanas.dir):semanasParaTabela;
+  const colSelSem=(ph?colunasPesSemanasPh:colunasPesSemanas).find(c=>c.key===stPesSemanas.col);
+  const semanasParaTabelaOrd=colSelSem?ordenarLinhas_(semanasParaTabela,colSelSem,stPesSemanas.dir):semanasParaTabela;
+  const tipSemana=ph
+    ?'Cada semana vai de segunda a domingo. “Estimado” é a soma das horas estimadas das tarefas com vencimento naquela semana; “Executado” é a soma das horas apontadas (Zoho). “Tarefas” e “Reunião” vêm dos apontamentos oficiais (Work Item × Meeting+General). A linha tracejada marca a jornada prevista da semana (8h × dias úteis, sem fins de semana e feriados). Excedente = max(0, horas − jornada); Ociosidade = max(0, jornada − horas), só em semanas encerradas.'
+    :'Cada semana vai de segunda a domingo. “Estimado” é a soma das horas estimadas das tarefas com vencimento naquela semana; “Executado” é a soma das horas realmente apontadas (Zoho) naquela semana. A linha tracejada marca 40h — o padrão de uma semana cheia de trabalho.';
 
   const sufixoModoPes=modoStatusPes!=='todos'?' · '+projStatusRotulo_(modoStatusPes):'';
   const colunasPesProjetos=[
@@ -6147,6 +6240,7 @@ function renderPessoa(){
 
   <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Resumo</h3></div><div class="insight-card ${fH2===0&&fT===0?'risco':fH2===0?'atencao':'positivo'}"><div class="ic-icon">${fH2===0&&fT===0?'⚠':fH2===0?'⚡':'✓'}</div><p><b>${info.a}</b> — <b>${info.cargo||'—'}</b> (${info.nv||'—'}), área de <b>${info.area||'—'}</b>, gestor <b>${personLinkHtml(info.gestor)}</b>.${pL.length>0?' <b>'+pL.length+'</b> projeto(s), <b>'+fT+'</b> tarefas no período, <b>'+fH(fH2)+'</b>.':' Sem alocação.'}${hEst>0?' Estimado: <b>'+fH(hEst)+'</b> vs executado <b>'+fH(hApo)+'</b>.':''}${qtdSemana>0?' <b>'+qtdSemana+'</b> tarefa(s) vencendo esta semana.':''}${ociosidadeSemanaPct!==null&&ociosidadeSemanaPct>=25?' Ociosidade esta semana: <b>'+ociosidadeSemanaPct+'%</b>.':''}${clMin>0?' Claude: '+cS+'.':''}</p></div></div>
 
+  ${phAviso}
   <div class="grid grid-kpi" style="margin-bottom:16px">
     ${kpiHtml({label:'Projetos',value:pLView.length,icon:'projetos',bg:'#eff6ff',color:'#2563eb',foot:filtroPes?projStatusRotulo_(modoStatusPes):''})}
     ${kpiHtml({label:'Tarefas (período)',value:fT,icon:'tarefas',bg:'#ecfeff',color:'#0891b2',trend:trendTarefas})}
@@ -6155,6 +6249,7 @@ function renderPessoa(){
     ${ociosidadeSemanaPct!==null?kpiHtml({label:'Ociosidade Esta Semana',value:ociosidadeSemanaPct+'%',icon:'bateria',bg:'#fff7ed',color:'#ea580c',valueColor:(ociosidadeSemanaPct>=50?'var(--st-bloqueado)':ociosidadeSemanaPct>=25?'#f59e0b':'var(--st-feito)'),foot:fH(hExecutadoSemana)+' de '+fH(hPrevistoSemana)+' previstas',trend:trendOciosidade}):''}
     ${kpiHtml({label:'Claude Code',value:cS,icon:'cpu',bg:'#faf5ff',color:'#9333ea',foot:clD>0?clD+' dias ativos':''})}
     ${kpiHtml({label:'Tokens (Claude)',value:fN(clTokens),icon:'cpu',bg:'#faf5ff',color:'#9333ea'})}
+    ${phKpis}
   </div>
 
   <div class="pd-section" style="margin-bottom:16px"><h3>📊 Comparativo com o Time (percentil)</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
@@ -6176,13 +6271,13 @@ function renderPessoa(){
   </div>
 
   <div class="card" style="margin-bottom:16px">
-    <div class="card-title"><h3>📅 Carga de Trabalho por Semana${infoTip('Cada semana vai de segunda a domingo. \"Estimado\" é a soma das horas estimadas das tarefas com vencimento naquela semana; \"Executado\" é a soma das horas realmente apontadas (Zoho) naquela semana. A linha tracejada marca 40h — o padrão de uma semana cheia de trabalho.')}</h3>
-      <span class="sub">${semanasDetalhe.length} semana(s)${periodoAtivoPes?' no período selecionado':' · últimas 12 semanas (selecione um período para outra janela)'}</span>
+    <div class="card-title"><h3>📅 Carga de Trabalho por Semana${infoTip(tipSemana)}</h3>
+      <span class="sub">${semanasVis.length} semana(s)${(ph&&soExcPes)?' com excedente':''}${periodoAtivoPes?' no período selecionado':' · últimas 12 semanas (selecione um período para outra janela)'}</span>
     </div>
     <div style="padding:12px 4px 4px">
-      ${semanasDetalhe.length===0?'<div class="empty-state" style="padding:30px"><p>Sem dados nesse intervalo.</p></div>':`
+      ${semanasVis.length===0?'<div class="empty-state" style="padding:30px"><p>'+((ph&&soExcPes)?'Nenhuma semana com excedente nesse intervalo.':'Sem dados nesse intervalo.')+'</p></div>':`
       <div style="height:260px;margin-bottom:18px"><canvas id="chSemanal"></canvas></div>
-      <div class="table-wrap" style="max-height:320px"><table>${theadOrdenavel_('pessoa-semanas',colunasPesSemanas)}<tbody>
+      ${ph?pesHaTabela_(semanasParaTabelaOrd,colunasPesSemanasPh):`<div class="table-wrap" style="max-height:320px"><table>${theadOrdenavel_('pessoa-semanas',colunasPesSemanas)}<tbody>
         ${semanasParaTabelaOrd.map(s=>{
           const semanaLabel=s.monday.slice(8,10)+'/'+s.monday.slice(5,7)+' a '+s.sunday.slice(8,10)+'/'+s.sunday.slice(5,7)+' (S'+isoWeekNum(s.monday)+')';
           let vsEstimadoHtml;
@@ -6197,9 +6292,11 @@ function renderPessoa(){
           else vs40Html='<span class="status-pill" style="border-left:3px solid #f59e0b">🟡 '+fH(s.ociosidade40)+' de folga</span>';
           return '<tr><td>'+semanaLabel+'</td><td>'+fH(s.prev)+'</td><td><strong>'+fH(s.exec)+'</strong></td><td>'+vsEstimadoHtml+'</td><td>'+vs40Html+'</td></tr>';
         }).join('')}
-      </tbody></table></div>`}
+      </tbody></table></div>`}`}
     </div>
   </div>
+
+  ${phFora}
 
   <div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Detalhamento por Projeto<span class="sub">${periodoAtivoPes?' (no período)':' (geral)'}${sufixoModoPes}</span></h3><span class="sub">${pLView.length}</span></div><div class="table-wrap"><table>${theadOrdenavel_('pessoa-projetos',colunasPesProjetos)}<tbody>${pLOrd.map(p=>'<tr'+(p.semApontamento?' style="opacity:.75"':'')+'><td>'+projetoLinkHtml(p.n,p.n.length>35?p.n.slice(0,35)+'…':p.n)+'</td><td><strong>'+p.t+'</strong></td><td>'+fH(p.h)+'</td><td>'+(p.semApontamento?'<span class="status-pill" title="Alocado na equipe do projeto, mas sem nenhuma hora ou tarefa registrada ainda">Sem apontamento</span>':'<div class="bullet-row" style="grid-template-columns:1fr 36px"><div class="bullet-track"><div class="bullet-fill" style="width:'+p.pct+'%"></div></div><div class="bullet-pct">'+p.pct+'%</div></div>')+'</td></tr>').join('')||'<tr><td colspan="4" style="color:var(--text-faint);text-align:center;padding:20px">Nenhuma atividade '+(modoStatusPes!=='todos'?'com esse filtro de projetos ':'')+'nesse período.</td></tr>'}</tbody></table></div></div>
 
@@ -6211,20 +6308,311 @@ function renderPessoa(){
       options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:24}},plugins:{legend:{display:false},tooltip:noTooltip},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}},
       plugins:[valueLabelPlugin(v=>fH(v),false)]});
   }
-  if(semanasDetalhe.length){
-    const labelsSemana=semanasDetalhe.map(s=>s.monday.slice(8,10)+'/'+s.monday.slice(5,7));
+  if(semanasVis.length){
+    const labelsSemana=semanasVis.map(s=>s.monday.slice(8,10)+'/'+s.monday.slice(5,7));
+    let dsSem;
+    if(ph){
+      const bordaExc=semanasVis.map(s=>(s.ha&&s.ha.exc>0)?'#f59e0b':'transparent');
+      dsSem=[
+        {type:'bar',label:'Estimado',data:semanasVis.map(s=>s.prev),backgroundColor:'#94a3b8',borderRadius:5,order:2,stack:'est'},
+        {type:'bar',label:'Tarefas',data:semanasVis.map(s=>s.ha?s.ha.T:null),backgroundColor:'#0C4A6E',borderColor:bordaExc,borderWidth:2,order:2,stack:'apo'},
+        {type:'bar',label:'Reunião',data:semanasVis.map(s=>s.ha?s.ha.R:null),backgroundColor:'#38bdf8',borderColor:bordaExc,borderWidth:2,order:2,stack:'apo'}
+      ];
+      if(semanasVis.some(s=>s.ha&&s.ha.O>0)) dsSem.push({type:'bar',label:'Outros tipos',data:semanasVis.map(s=>s.ha?s.ha.O:null),backgroundColor:'#cbd5e1',order:2,stack:'apo'});
+      dsSem.push({type:'line',label:'Jornada prevista da semana',data:semanasVis.map(s=>s.ha?s.ha.jor:null),borderColor:'#f59e0b',backgroundColor:'#f59e0b',borderDash:[6,4],borderWidth:2,pointRadius:3,fill:false,order:1});
+    }else{
+      dsSem=[
+        {type:'bar',label:'Estimado',data:semanasVis.map(s=>s.prev),backgroundColor:'#94a3b8',borderRadius:5,order:2},
+        {type:'bar',label:'Executado',data:semanasVis.map(s=>s.exec),backgroundColor:semanasVis.map(s=>s.excedente40>0?'#dc2626':'#0C4A6E'),borderRadius:5,order:2},
+        {type:'line',label:'Referência 40h/semana',data:semanasVis.map(()=>40),borderColor:'#f59e0b',borderDash:[6,4],borderWidth:2,pointRadius:0,fill:false,order:1}
+      ];
+    }
     ch.semanal=new Chart(document.getElementById('chSemanal'),{
-      data:{labels:labelsSemana,datasets:[
-        {type:'bar',label:'Estimado',data:semanasDetalhe.map(s=>s.prev),backgroundColor:'#94a3b8',borderRadius:5,order:2},
-        {type:'bar',label:'Executado',data:semanasDetalhe.map(s=>s.exec),backgroundColor:semanasDetalhe.map(s=>s.excedente40>0?'#dc2626':'#0C4A6E'),borderRadius:5,order:2},
-        {type:'line',label:'Referência 40h/semana',data:semanasDetalhe.map(()=>40),borderColor:'#f59e0b',borderDash:[6,4],borderWidth:2,pointRadius:0,fill:false,order:1}
-      ]},
+      data:{labels:labelsSemana,datasets:dsSem},
       options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-        plugins:{legend:{display:true,position:'top',labels:{boxWidth:12,font:{size:11}}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fH(c.raw)}}},
-        scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}}
+        plugins:{legend:{display:true,position:'top',labels:{boxWidth:12,font:{size:11}}},tooltip:{filter:c=>c.raw!=null,callbacks:{label:c=>c.dataset.label+': '+fH(c.raw)}}},
+        scales:{x:{stacked:!!ph},y:{beginAtZero:true,stacked:!!ph,ticks:{callback:v=>v+'h'}}}}
     });
   }
 }
+
+// ============================================================
+// v16.6 — DESEMPENHO POR PESSOA × HORAS APONTADAS
+// Busca as horas oficiais (ação leve "horasApontadas") só da pessoa e do período exibidos e calcula jornada real
+// (8h/dia útil, feriados conforme Localidade), Tarefas × Reunião, excedentes e horas fora da jornada padrão.
+// Reaproveita as regras da página Gestão de Horas Apontadas (haExc_, haFeriadoAplica_, haAdd_, haSeg_ …).
+// ============================================================
+const PES_HA={cache:{},pend:{},atual:'',vista:null,open:new Set(),ligado:false};
+function pesHaHoje_(){const d=new Date(),p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
+function pesHaJanela_(semDe,semAte){
+  let fim=semAte||pesHaHoje_(), ini=semDe||haAdd_(fim,-(HA_MAX_DIAS-1)), cortado=false;
+  if(ini>fim){const t=ini;ini=fim;fim=t;}
+  const dias=Math.round((Date.parse(fim+'T12:00:00Z')-Date.parse(ini+'T12:00:00Z'))/864e5)+1;
+  if(dias>HA_MAX_DIAS){ ini=haAdd_(fim,-(HA_MAX_DIAS-1)); cortado=true; }
+  return {ini,fim,cortado};
+}
+function pesHaPrep_(r){
+  const u0=(r.usuarios&&r.usuarios[0])||{};
+  const loc=((r.alvo&&r.alvo.l)||u0.l||'').toString().trim();
+  return {
+    loc, feriados:r.feriados||[], descartados:r.descartados||{},
+    temColunaLocalidade:r.temColunaLocalidade!==false, temColunaTipo:r.temColunaTipo!==false,
+    projetos:(r.projetos||[]).map(p=>({cl:p[0],pj:p[1],id:p[2]})),
+    recs:(r.registros||[]).map((x,i)=>({id:i,d:x[0],pj:x[2],tarefa:x[3]||'',h:x[4],tp:x[5],idItem:x[6]||'',tipoRaw:x[7]||'',row:x[8],
+      g:x[5]===0?'T':(x[5]===1||x[5]===2?'R':'O'),tipoO:x[5]<3?HA_TIPO_ORIG[x[5]]:(x[7]||'(vazio)')}))
+  };
+}
+function pesHaGarantir_(email,ini,fim){
+  const va=(typeof VIEW_AS_STATE!=='undefined'&&VIEW_AS_STATE&&VIEW_AS_STATE.email)?VIEW_AS_STATE.email:'';
+  const key=email+'|'+ini+'|'+fim+'|'+va;
+  PES_HA.atual=key;
+  const c=PES_HA.cache[key]; if(c) return c;
+  if(Object.keys(PES_HA.cache).length>30) PES_HA.cache={};
+  const reg=PES_HA.cache[key]={est:'carregando'};
+  loadDataJSONPComRetry(feUrl_('horasApontadas','&ini='+ini+'&fim='+fim+'&email='+encodeURIComponent(email)+(va?'&viewAs='+encodeURIComponent(va):'')),1).then(r=>{
+    if(!r||r.ok===false){ reg.est='erro'; reg.msg=(r&&r.message)||'Não foi possível carregar as horas apontadas.'; reg.semRetry=!!(r&&r.message); }
+    else { reg.dados=pesHaPrep_(r); reg.est='ok'; }
+  }).catch(()=>{ reg.est='erro'; reg.msg='Não foi possível carregar as horas apontadas agora.'; })
+    .then(()=>{ if(PES_HA.atual===key){ try{renderPessoa();}catch(e){} } });
+  return reg;
+}
+function pesHaCalc_(P,tipo,ini,fim){
+  const hoje=pesHaHoje_(), memo={};
+  const dia=iso=>{
+    if(memo[iso]) return memo[iso];
+    const w=haDow_(iso), fs=w===0||w===6;
+    const hs=P.feriados.filter(f=>f.data&&(f.data===iso||(f.recorrente&&f.data.slice(5)===iso.slice(5)))&&haFeriadoAplica_(f,P.loc)).sort((a,b)=>(HA_ORDEM_TIPO[a.tipo]||0)-(HA_ORDEM_TIPO[b.tipo]||0));
+    const h=hs[0]||null;
+    return memo[iso]={fs,h,util:!fs&&!h,kind:fs?'w':(h?'h':'u')};
+  };
+  const recs=P.recs.filter(r=>r.d>=ini&&r.d<=fim&&(!tipo||r.g===tipo));
+  const days={}, wks={};
+  for(let wk=haSeg_(ini); wk<=fim; wk=haAdd_(wk,7)){
+    let du=0; for(let n=0;n<7;n++){ const d=haAdd_(wk,n); if(d<ini||d>fim) continue; if(dia(d).util) du++; }
+    const fimEf=haAdd_(wk,6)<fim?haAdd_(wk,6):fim;
+    wks[wk]={wk,h:0,T:0,R:0,O:0,du,jor:du*HA_JORNADA_DIA,days:[],aberta:wk<=hoje&&fimEf>=hoje,futura:wk>hoje};
+  }
+  recs.forEach(r=>{
+    const x=days[r.d]||(days[r.d]={d:r.d,inf:dia(r.d),h:0,T:0,R:0,O:0,recs:[]});
+    x.h+=r.h; x[r.g]+=r.h; x.recs.push(r);
+  });
+  const dl=Object.values(days).sort((a,b)=>a.d.localeCompare(b.d));
+  dl.forEach(x=>{
+    x.jor=x.inf.util?HA_JORNADA_DIA:0; x.exc=x.inf.util?haExc_(x.h,x.jor):0; // fim de semana/feriado: jornada 0 e horas vão para “fora da jornada padrão”
+    const w=wks[haSeg_(x.d)]; w.h+=x.h; w.T+=x.T; w.R+=x.R; w.O+=x.O; w.days.push(x);
+  });
+  Object.values(wks).forEach(w=>{
+    w.exc=haExc_(w.h,w.jor);
+    w.oci=(w.aberta||w.futura)?null:Math.max(0,Math.round(w.jor*3600)-Math.round(w.h*3600))/3600;
+  });
+  const S=f=>dl.reduce((a,x)=>a+f(x),0), W=f=>Object.values(wks).reduce((a,w)=>a+f(w),0);
+  const kp={T:S(x=>x.T),R:S(x=>x.R),O:S(x=>x.O),ed:S(x=>x.exc),ew:W(w=>w.exc),fs:S(x=>x.inf.fs?x.h:0),ho:S(x=>(!x.inf.fs&&x.inf.h)?x.h:0),oci:W(w=>w.oci||0),tot:S(x=>x.h)};
+  const fora=[]; dl.forEach(x=>{ if(!x.inf.util) x.recs.forEach(r=>fora.push({r,inf:x.inf})); });
+  return {ini,fim,tipo,recs,days:dl,semana:wk=>wks[wk]||null,kp,fora};
+}
+function pesHaTagDia_(inf){
+  if(inf.fs) return '<span class="ha-tg wk">◆ Fim de semana</span>'+(inf.h?' <span class="ha-tg hol">★ Feriado '+feEsc_(inf.h.tipo.toLowerCase())+'</span>':'');
+  if(inf.h) return '<span class="ha-tg hol">★ Feriado '+feEsc_(inf.h.tipo.toLowerCase())+'</span>';
+  return '<span class="ha-tg g">Dia útil</span>';
+}
+function pesHaKpis_(ph){
+  const k=ph.kp;
+  return kpiHtml({label:'Horas em tarefas',value:fH(k.T),foot:'Work Item',icon:'tarefas',color:'#4f46e5',bg:'#eef2ff'})+
+    kpiHtml({label:'Horas em reuniões',value:fH(k.R),foot:'Meeting + General',icon:'relogio',color:'#0284c7',bg:'#e0f2fe'})+
+    kpiHtml({label:'Excedente diário',value:fH(k.ed),foot:'dias úteis acima de 8h',icon:'alerta',color:'#b45309',bg:'#fef3c7',valueColor:k.ed>0?'#b45309':''})+
+    kpiHtml({label:'Excedente semanal',value:fH(k.ew),foot:'acima da jornada da semana (não soma com o diário)',icon:'alerta',color:'#b45309',bg:'#fef3c7',valueColor:k.ew>0?'#b45309':''})+
+    kpiHtml({label:'Horas em fins de semana',value:fH(k.fs),foot:'fora da jornada padrão',icon:'calendario',color:'#6d28d9',bg:'#ede9fe'})+
+    kpiHtml({label:'Horas em feriados',value:fH(k.ho),foot:'feriado em dia de semana',icon:'calendario',color:'#0f766e',bg:'#ccfbf1'})+
+    kpiHtml({label:'Ociosidade vs. jornada',value:fH(k.oci),foot:'jornada prevista − apontado (semanas encerradas)',icon:'bateria',color:'#ea580c',bg:'#fff7ed'});
+}
+function pesHaAviso_(S,ph,J,tipo,filtroStatus){
+  let h='';
+  if(S.est==='carregando') h+='<div class="ha-note">'+loadingInlineHtml('Carregando horas apontadas oficiais (jornada, tarefas × reunião)…')+'Enquanto isso, a comparação semanal usa a referência de 40h.</div>';
+  else if(S.est==='erro') h+='<div class="ha-note warn">⚠ '+feEsc_(S.msg||'Não foi possível carregar as horas apontadas.')+' Mostrando a comparação com 40h/semana. '+(S.semRetry?'':'<button type="button" class="ha-btn sm" data-pes-retry="1">Tentar de novo</button>')+'</div>';
+  if(ph){
+    const P=S.dados, ds=P.descartados||{};
+    if(!P.temColunaLocalidade) h+='<div class="ha-note warn">📍 A coluna <b>Localidade</b> ainda não existe em Pessoas_Area — somente feriados <b>Nacionais</b> estão sendo aplicados.</div>';
+    else if(!P.loc&&P.feriados.some(f=>f.tipo!=='Nacional')) h+='<div class="ha-note warn">📍 Esta pessoa não tem <b>Localidade</b> em Pessoas_Area: só feriados <b>Nacionais</b> estão aplicados. Preencha (ex.: Manaus/AM) para considerar feriados estaduais/municipais.</div>';
+    if(P.temColunaTipo===false) h+='<div class="ha-note warn">A coluna tipo_apontamento não foi encontrada na aba de horas — a separação Tarefas × Reunião não está disponível.</div>';
+    if(ds.horasAcima24) h+='<div class="ha-note warn">⚠ '+ds.horasAcima24+' lançamento(s) com 24h ou mais num único registro — confira na planilha.</div>';
+    if(tipo) h+='<div class="ha-note">ℹ Com o filtro de tipo ativo, jornada e excedentes são calculados sobre as horas filtradas.</div>';
+    if(filtroStatus) h+='<div class="ha-note">ℹ Com o filtro de Status do projeto ativo, os blocos de jornada, Tarefas × Reunião e horas fora da jornada usam o <b>total da pessoa</b> (não são separáveis por projeto).</div>';
+    if(J.cortado) h+='<div class="ha-note warn">O período passa de '+HA_MAX_DIAS+' dias: os blocos de jornada consideram apenas '+haBr_(J.ini)+' a '+haBr_(J.fim)+'.</div>';
+    h+='<div class="ha-note">A jornada (8h/dia · 40h/semana, só dias úteis do período) é uma <b>referência de controle</b> — não caracteriza hora extra legal. “Horas Registradas” e “Executado” seguem a fonte de sempre; os novos blocos usam os apontamentos oficiais, então pode haver pequenas diferenças.</div>';
+  }
+  return h?'<div style="margin-bottom:12px">'+h+'</div>':'';
+}
+function pesHaTabela_(rows,cols){
+  const linhas=rows.map(s=>{
+    const semanaLabel=s.monday.slice(8,10)+'/'+s.monday.slice(5,7)+' a '+s.sunday.slice(8,10)+'/'+s.sunday.slice(5,7)+' (S'+isoWeekNum(s.monday)+')';
+    let vsEst;
+    if(s.prev===0&&s.exec===0) vsEst='<span style="color:var(--text-faint)">—</span>';
+    else if(s.prev===0) vsEst='<span style="color:var(--text-faint)" title="Executou horas sem nenhuma estimativa vinculada nessa semana">Sem estimativa</span>';
+    else if(s.exec>s.prev) vsEst='<span class="status-pill" style="border-left:3px solid var(--st-bloqueado)">+'+fH(s.exec-s.prev)+' acima</span>';
+    else vsEst='<span class="status-pill" style="border-left:3px solid var(--st-feito)">'+Math.round(s.exec/s.prev*100)+'% do estimado</span>';
+    const w=s.ha, dash='<span style="color:var(--text-faint)">—</span>';
+    const aberta=w&&w.aberta, op=PES_HA.open.has(s.monday);
+    const btn=w&&w.days.length?'<button type="button" class="ha-btn sm" data-pes-o="'+s.monday+'" aria-expanded="'+op+'" aria-label="Expandir dias da semana">'+(op?'−':'+')+'</button>':'';
+    let r='<tr><td>'+btn+'</td><td>'+semanaLabel+'</td><td>'+fH(s.prev)+'</td><td><strong>'+fH(s.exec)+'</strong></td><td>'+vsEst+'</td>';
+    if(w){
+      r+='<td>'+fH(w.T)+'</td><td>'+fH(w.R)+'</td><td>'+fH(w.jor)+'<div class="ha-mut" style="font-size:11px">'+w.du+' dia(s) útil(eis) × 8h'+(w.du<5?' · semana com feriado/parcial':'')+'</div></td>'+
+        '<td>'+(w.exc>0?'<button type="button" class="ha-btn sm" data-pes-x="'+s.monday+'" title="Ver os lançamentos da semana"><span class="ha-tg exc">▲ +'+fH(w.exc)+'</span></button>':dash)+'</td>'+
+        '<td>'+(aberta?'<span class="ha-mut">em andamento</span>':(w.oci===null?dash:(w.oci>0?fH(w.oci):dash)))+'</td></tr>';
+      if(w.days.length) r+=w.days.map(x=>'<tr class="pes-sub" data-pes-sub="'+s.monday+'"'+(op?'':' style="display:none"')+'><td></td><td>↳ '+HA_DN[haDow_(x.d)]+' '+haBr_(x.d)+' '+pesHaTagDia_(x.inf)+'</td><td></td><td>'+fH(x.h)+'</td><td></td><td>'+fH(x.T)+'</td><td>'+fH(x.R)+'</td><td>'+fH(x.jor)+'</td><td>'+(x.exc>0?'+'+fH(x.exc)+' no dia':dash)+'</td><td></td></tr>').join('');
+    }else r+='<td>'+dash+'</td><td>'+dash+'</td><td>'+dash+'</td><td>'+dash+'</td><td>'+dash+'</td></tr>';
+    return r;
+  }).join('');
+  return '<div class="table-wrap" style="max-height:420px"><table>'+theadOrdenavel_('pessoa-semanas',cols)+'<tbody>'+linhas+'</tbody></table></div>'+
+    '<div class="ha-note" style="margin-top:10px">“Ociosidade” = max(0, jornada − apontado): uma semana com feriado não conta mais 8h de ociosidade; a semana em andamento não calcula ociosidade. “+” abre os dias; clique no excedente para ver os lançamentos. “Estimado” continua vindo das tarefas.</div>';
+}
+function pesHaFora_(ph,S){
+  if(!ph) return '';
+  const linhas=ph.fora.map(o=>'<tr><td>'+haBr_(o.r.d)+' <small class="ha-mut">'+HA_DN[haDow_(o.r.d)]+'</small></td><td>'+pesHaTagDia_(o.inf)+(o.inf.h?'<div class="ha-mut" style="font-size:11px">'+feEsc_(o.inf.h.descricao||'')+'</div>':'')+'</td><td><b>'+haHmz_(o.r.h)+'</b></td><td><span class="ha-tg info">'+feEsc_(o.r.tipoO)+'</span></td><td>'+feEsc_((S.dados.projetos[o.r.pj]||{}).pj||'')+'</td><td>'+feEsc_(o.r.tarefa||'(sem descrição)')+'</td></tr>').join('');
+  return '<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Horas fora da jornada padrão'+infoTip('Apontamentos em fins de semana e feriados aplicáveis a esta pessoa (Nacionais sempre; Estaduais/Municipais conforme a Localidade em Pessoas_Area). Não entram no excedente diário; entram no total da semana para o excedente semanal.')+'</h3><span class="sub">'+ph.fora.length+' lançamento(s) · '+fH(ph.kp.fs+ph.kp.ho)+'</span></div>'+
+    '<div class="table-wrap" style="max-height:340px"><table><thead><tr><th>Data</th><th>Tipo do dia</th><th>Horas</th><th>Tipo</th><th>Projeto</th><th>Tarefa / descrição</th></tr></thead><tbody>'+
+    (linhas||'<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-faint)">Nenhuma hora em fim de semana/feriado no período.</td></tr>')+'</tbody></table></div></div>';
+}
+function pesHaModalSemana_(monday){
+  const V=PES_HA.vista; if(!V||!V.ph) return;
+  const w=V.ph.semana(monday); if(!w) return;
+  const rs=w.days.flatMap(d=>d.recs).sort((a,b)=>a.d.localeCompare(b.d)||a.id-b.id);
+  const tab='<div class="table-wrap" style="max-height:50vh"><table><thead><tr><th>Data</th><th>Tipo (original)</th><th>Cliente</th><th>Projeto</th><th>Tarefa / descrição</th><th class="ha-n">Horas</th></tr></thead><tbody>'+
+    rs.map(r=>{const p=V.P.projetos[r.pj]||{};return '<tr><td>'+haBr_(r.d)+' <small class="ha-mut">'+HA_DN[haDow_(r.d)]+'</small></td><td><span class="ha-tg info">'+feEsc_(r.tipoO)+'</span></td><td>'+feEsc_(p.cl||'')+'</td><td>'+feEsc_(p.pj||'')+'</td><td>'+feEsc_(r.tarefa||'(sem descrição)')+'</td><td class="ha-n"><b>'+haHmz_(r.h)+'</b></td></tr>';}).join('')+'</tbody></table></div>';
+  haModal_('Excedente semanal — '+feEsc_(V.nome),'<div class="ha-mut">'+haBr_(monday)+' a '+haBr_(haAdd_(monday,6))+'</div><div class="ha-sum"><div><small>Total apontado</small><b>'+haHmz_(w.h)+'</b></div><div><small>Jornada prevista</small><b>'+haHmz_(w.jor)+'</b></div><div><small>Excedente</small><b style="color:#b45309">▲ '+haHmz_(w.exc)+'</b></div></div><div class="ha-note">O excedente é calculado sobre o total consolidado da semana e <b>não é atribuído</b> a um projeto ou tarefa específica — abaixo estão os lançamentos reais.</div>'+tab);
+}
+if(!PES_HA.ligado){
+  PES_HA.ligado=true;
+  document.addEventListener('click',function(e){
+    const o=e.target.closest&&e.target.closest('[data-pes-o]');
+    if(o){
+      const wk=o.dataset.pesO, abrir=!PES_HA.open.has(wk);
+      if(abrir) PES_HA.open.add(wk); else PES_HA.open.delete(wk);
+      document.querySelectorAll('tr[data-pes-sub="'+wk+'"]').forEach(tr=>{tr.style.display=abrir?'':'none';});
+      o.textContent=abrir?'−':'+'; o.setAttribute('aria-expanded',abrir); return;
+    }
+    const x=e.target.closest&&e.target.closest('[data-pes-x]');
+    if(x){ pesHaModalSemana_(x.dataset.pesX); return; }
+    if(e.target.closest&&e.target.closest('[data-pes-retry]')){ delete PES_HA.cache[PES_HA.atual]; renderPessoa(); }
+  });
+}
+
+// ============================================================
+// v16.8 — MODO MANUTENÇÃO (frontend)
+// Bloqueio imediato: o servidor devolve { manutencao:true } a quem não é conta autorizada (qualquer ação) e este módulo
+// acompanha o status público a cada ~15s. Tela de controle em Administração › Modo Manutenção (só as 2 contas fixas no backend).
+// ============================================================
+const MT={pode:false,timer:null,bloqueado:false,iniciado:false,busy:false,cfg:null,log:[],contas:[],ligado:false};
+function mtFmtPrev_(s){const m=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(s||'');return m?m[3]+'/'+m[2]+'/'+m[1]+' às '+m[4]+':'+m[5]:'';}
+function mtApiPublica_(){const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';return loadDataJSONP(DASHBOARD_API_URL+sep+'action=manutencaoPublico');}
+function mtMostrarBloqueio_(d){
+  MT.bloqueado=true;
+  let el=document.getElementById('mt-block');
+  if(!el){el=document.createElement('div');el.id='mt-block';el.className='mt-block';el.setAttribute('role','alertdialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-labelledby','mt-block-t');document.body.appendChild(el);}
+  el.innerHTML='<div class="mt-in"><div class="mt-em" aria-hidden="true">🛠️</div><h2 id="mt-block-t">Sistema em manutenção</h2><p>'+feEsc_((d&&d.mensagem)||'Estamos em manutenção. Voltamos em breve!')+'</p>'+((d&&d.previsao)?'<div class="mt-pill">Previsão de retorno: '+feEsc_(mtFmtPrev_(d.previsao))+'</div>':'')+'<p class="mt-foot">Central de Projetos Be Solution · esta tela atualiza sozinha quando o sistema voltar.</p><button type="button" class="mt-btn" id="mt-sair">Sair</button></div>';
+  document.getElementById('mt-sair').onclick=()=>{sessionStorage.removeItem('dash_id_token');location.reload();};
+  document.body.style.overflow='hidden';
+  mtIniciar_();
+}
+function mtBanner_(tipo,d){
+  const el=document.getElementById('mt-banner'); if(!el) return;
+  if(tipo==='ativa') el.innerHTML='<div class="mt-ban"><b>MANUTENÇÃO ATIVA</b><span>Só as contas autorizadas conseguem entrar; os demais usuários estão bloqueados.</span>'+(MT.pode?'<button type="button" class="mt-ban-btn" data-mt-ir="1">Ir para o controle</button>':'')+'</div>';
+  else if(tipo==='pre'&&d&&d.texto) el.innerHTML='<div class="mt-ban pre"><b>AVISO</b><span>'+feEsc_(d.texto)+'</span></div>';
+  else el.innerHTML='';
+}
+async function mtStatusAuth_(){
+  if(typeof AUTH_TOKEN==='undefined'||!AUTH_TOKEN) return null;
+  return loadDataJSONP(feUrl_('manutencaoStatus'));
+}
+async function mtTick_(){
+  if(MT.busy) return; MT.busy=true;
+  try{
+    const pub=await mtApiPublica_();
+    if(!pub||pub.ok===false) return;
+    if(MT.bloqueado){ if(!pub.ativa){location.reload();return;} mtMostrarBloqueio_(pub); return; }
+    if(pub.ativa){
+      const st=await mtStatusAuth_();
+      if(!st||st.manutencao){ return; } // o gancho do JSONP já exibiu o bloqueio quando for o caso
+      if(st.bloqueado){ mtMostrarBloqueio_(st); return; }
+      if(st.ok){ MT.pode=!!st.podeAdministrar; mtBanner_('ativa',st); }
+    }else{ mtBanner_(pub.preAviso&&pub.preAviso.ativo?'pre':'',pub.preAviso); }
+  }catch(e){} finally{ MT.busy=false; }
+}
+async function mtIniciar_(){
+  if(!MT.timer){
+    MT.timer=setInterval(mtTick_,15000);
+    document.addEventListener('visibilitychange',()=>{ if(!document.hidden) mtTick_(); });
+  }
+  if(MT.iniciado) return; MT.iniciado=true;
+  try{
+    const st=await mtStatusAuth_();
+    if(st&&st.ok){
+      const mudou=MT.pode!==!!st.podeAdministrar; MT.pode=!!st.podeAdministrar;
+      if(mudou) aplicarMenuDinamico();
+      if(st.ativa) mtBanner_('ativa',st); else mtBanner_(st.preAviso&&st.preAviso.ativo?'pre':'',st.preAviso);
+    }
+  }catch(e){}
+}
+// ---------- tela de controle ----------
+function mtModal_(html){
+  let bg=document.getElementById('mt-bg'); if(bg) bg.remove();
+  bg=document.createElement('div'); bg.id='mt-bg'; bg.className='mt-bg'; bg.innerHTML='<div class="mt-md" role="dialog" aria-modal="true">'+html+'</div>'; document.body.appendChild(bg);
+  const fim=()=>{document.removeEventListener('keydown',onKey,true);bg.remove();};
+  function onKey(e){ if(e.key==='Escape'){e.preventDefault();fim();} }
+  document.addEventListener('keydown',onKey,true);
+  bg.addEventListener('mousedown',e=>{ if(e.target===bg) fim(); });
+  return fim;
+}
+function mtToast_(t){ if(typeof feFeedback_==='function'&&document.getElementById('fe-feedback')){} const d=document.createElement('div'); d.textContent=t; d.style.cssText='position:fixed;bottom:20px;right:20px;background:#0f172a;color:#fff;padding:10px 16px;border-radius:10px;z-index:100010;font-weight:600'; document.body.appendChild(d); setTimeout(()=>d.remove(),2800); }
+function mtRender_(){
+  const el=document.getElementById('mt-root'); const c=MT.cfg; if(!el||!c) return;
+  const on=c.ativa;
+  el.innerHTML='<div class="card" style="margin-bottom:14px"><div class="mt-big"><button type="button" class="mt-sw'+(on?' on':'')+'" id="mt-sw" role="switch" aria-checked="'+on+'" aria-label="Ativar modo manutenção"></button><div><h2 style="margin:0;font-size:18px">Modo manutenção: <span class="mt-st '+(on?'mt':'ok')+'">'+(on?'● ATIVO — acesso bloqueado':'● Desativado — sistema normal')+'</span></h2><div class="mt-mut">'+(on?'Ativado por '+feEsc_(c.por||'')+' em '+feEsc_(c.desde||'')+'.':'Ao ativar, você confirma antes. O bloqueio é imediato: quem estiver com o sistema aberto é bloqueado em até ~15 segundos (ou na próxima ação).')+'</div></div></div></div>'+
+  '<div class="mt-two"><div>'+
+   '<div class="card" style="margin-bottom:14px"><div class="card-title"><h3>Mensagem exibida aos usuários</h3></div><textarea id="mt-msg" maxlength="500" aria-label="Mensagem de manutenção">'+feEsc_(c.mensagem)+'</textarea><div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;align-items:end"><div class="filter-field"><label for="mt-prev">Previsão de retorno (opcional)</label><input type="datetime-local" id="mt-prev" value="'+feEsc_(c.previsao||'')+'"></div></div></div>'+
+   '<div class="card" style="margin-bottom:14px"><div class="card-title"><h3>Aviso prévio (opcional)</h3></div><div class="mt-mut" style="margin-bottom:8px">Faixa amarela para todos antes de bloquear — não impede o uso. Some quando a manutenção é ativada.</div><label style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-size:13px"><input type="checkbox" id="mt-pre"'+(c.pre?' checked':'')+'> Exibir aviso de manutenção programada</label><input id="mt-pretxt" maxlength="200" style="width:100%" value="'+feEsc_(c.preTexto)+'" placeholder="Ex.: Manutenção programada hoje às 18h. Salve o que estiver fazendo." aria-label="Texto do aviso prévio"></div>'+
+   '<div style="margin-bottom:14px"><button type="button" class="mt-b pri" id="mt-sv">Salvar mensagem e aviso</button></div>'+
+   '<div class="card"><div class="card-title"><h3>Histórico</h3></div><div class="table-wrap" style="max-height:340px"><table><thead><tr><th>Quando</th><th>Quem</th><th>Ação</th><th>Motivo / mensagem</th></tr></thead><tbody>'+
+     (MT.log.map(l=>'<tr><td>'+feEsc_(l.q)+'</td><td>'+feEsc_(l.u)+'</td><td><span class="ha-tg '+(l.a==='Ativou'?'exc':l.a==='Desativou'?'hol':'g')+'">'+feEsc_(l.a)+'</span></td><td><small class="mt-mut">'+feEsc_(l.m)+'</small></td></tr>').join('')||'<tr><td colspan="4" class="mt-mut" style="text-align:center;padding:18px">Sem registros ainda.</td></tr>')+
+   '</tbody></table></div></div></div><div>'+
+   '<div class="card" style="margin-bottom:14px"><div class="card-title"><h3>Contas autorizadas durante a manutenção</h3></div><div class="mt-mut" style="margin-bottom:8px">Fixas no código do sistema (não editáveis aqui, para ninguém ficar de fora).</div>'+
+     MT.contas.map(a=>'<div class="mt-acc"><div class="mt-av">'+feEsc_(a[0].toUpperCase())+'</div><div><b>'+feEsc_(a)+'</b></div><span class="ha-tg hol" style="margin-left:auto">Autorizada</span></div>').join('')+
+     '<div class="ha-note">Só estas duas contas entram e só elas veem esta tela. Qualquer outro usuário — inclusive outros Administradores — é bloqueado enquanto estiver ativo. O “Visualizar como” continua funcionando para elas.</div></div>'+
+   '<div class="card" style="margin-bottom:14px"><div class="card-title"><h3>Testar antes de ativar</h3></div><input id="mt-tst" placeholder="e-mail para testar" style="width:100%;margin-bottom:8px" aria-label="E-mail para testar"><button type="button" class="mt-b" id="mt-tb">Simular</button><div id="mt-tr" style="margin-top:8px;font-size:13px"></div></div>'+
+   '<div class="card"><div class="card-title"><h3>Plano B</h3></div><div class="mt-mut">Se as duas contas perderem o acesso, desligue direto no Apps Script: Configurações do projeto › Propriedades do script › <b>MANUT_ATIVA</b> = false.</div></div>'+
+  '</div></div>';
+  const form=()=>({mensagem:document.getElementById('mt-msg').value,previsao:document.getElementById('mt-prev').value,pre:document.getElementById('mt-pre').checked,preTexto:document.getElementById('mt-pretxt').value});
+  document.getElementById('mt-sw').onclick=()=>mtConfirmar_(!on,form);
+  document.getElementById('mt-sv').onclick=async()=>{ const b=document.getElementById('mt-sv'); b.disabled=true; await mtSalvar_(Object.assign(form(),{motivo:''}),'Mensagem e aviso salvos.'); b.disabled=false; };
+  document.getElementById('mt-tb').onclick=()=>{ const e=document.getElementById('mt-tst').value.trim().toLowerCase(); document.getElementById('mt-tr').innerHTML=!e?'':(MT.contas.indexOf(e)!==-1?'<span class="ha-tg hol">✔ Passa — conta autorizada</span>':'<span class="ha-tg exc">✖ Bloqueado — verá a tela de manutenção</span>'); };
+}
+async function mtSalvar_(pl,okMsg){
+  try{
+    const r=await loadDataJSONPComRetry(feUrl_('manutencaoSalvar','&payload='+encodeURIComponent(JSON.stringify(pl))),1);
+    if(!r||r.ok===false){ mtToast_((r&&r.message)||'Não foi possível salvar.'); return false; }
+    MT.cfg=r.config; MT.log=r.log||[]; MT.contas=r.contas||MT.contas; mtRender_();
+    if(MT.cfg.ativa) mtBanner_('ativa',MT.cfg); else mtBanner_(MT.cfg.pre&&MT.cfg.preTexto?'pre':'',{texto:MT.cfg.preTexto});
+    mtToast_(okMsg); return true;
+  }catch(e){ mtToast_('Falha de conexão ao salvar. Tente de novo.'); return false; }
+}
+function mtConfirmar_(ativando,form){
+  const fim=mtModal_('<h2 style="margin:0 0 6px;font-size:19px">'+(ativando?'Ativar modo manutenção?':'Desativar modo manutenção?')+'</h2><p class="mt-mut" style="font-size:13.5px">'+(ativando?'Todos os usuários, exceto <b>'+MT.contas.map(feEsc_).join('</b> e <b>')+'</b>, serão bloqueados <b>imediatamente</b> e verão a tela de manutenção.':'O acesso volta ao normal para todos os usuários.')+'</p><label for="mt-mot" class="mt-mut" style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;margin:10px 0 4px">Motivo (vai para o histórico)</label><input id="mt-mot" maxlength="120" style="width:100%" placeholder="Ex.: Publicação da v16.8"><div style="text-align:right;margin-top:14px;display:flex;gap:8px;justify-content:flex-end"><button type="button" class="mt-b" id="mt-no">Cancelar</button><button type="button" class="mt-b '+(ativando?'dan':'pri')+'" id="mt-yes">'+(ativando?'Ativar e bloquear':'Desativar')+'</button></div>');
+  document.getElementById('mt-mot').focus();
+  document.getElementById('mt-no').onclick=fim;
+  document.getElementById('mt-yes').onclick=async()=>{ const b=document.getElementById('mt-yes'); b.disabled=true; const ok=await mtSalvar_(Object.assign(form(),{ativa:ativando,motivo:document.getElementById('mt-mot').value}),ativando?'Modo manutenção ATIVADO.':'Modo manutenção desativado.'); if(ok) fim(); else b.disabled=false; };
+}
+async function initManutencao(){
+  const el=document.getElementById('mt-root'); if(!el) return;
+  if(!MT.ligado){ MT.ligado=true; }
+  el.innerHTML=loadingInlineHtml('Carregando modo manutenção…');
+  try{
+    const r=await loadDataJSONPComRetry(feUrl_('manutencaoAdmin'),1);
+    if(!r||r.ok===false){ el.innerHTML='<div class="ha-note warn">'+feEsc_((r&&r.message)||'Não foi possível carregar.')+'</div>'; return; }
+    MT.cfg=r.config; MT.log=r.log||[]; MT.contas=r.contas||[]; mtRender_();
+  }catch(e){ el.innerHTML='<div class="ha-note warn">Não foi possível carregar o modo manutenção agora.</div>'; }
+}
+document.addEventListener('click',function(e){
+  if(e.target.closest&&e.target.closest('[data-mt-ir]')){ const t=document.querySelector('.nav-tab[data-page=manutencao]'); if(t) t.click(); }
+});
 
 // === AREA ===
 function initArea(){
@@ -8982,7 +9370,7 @@ function buildHistoricoStatusReportHtml(projeto, modoView, containerId){
     ];
     const stHist=SORT_STATE[histTableId]||{col:null,dir:0};
     const historicoOrd=stHist.col?ordenarLinhas_(historico,colunasHist.find(c=>c.key===stHist.col),stHist.dir):historico;
-    h+='<div class="table-wrap"><table>'+theadOrdenavel_(histTableId,colunasHist)+'<tbody>';
+    h+='<div class="table-wrap sr-hist-wrap"><table>'+theadOrdenavel_(histTableId,colunasHist)+'<tbody>';
     historicoOrd.forEach(r=>{
       const btnCls=modoView?'sr-ver-btn-view':'sr-ver-btn-edit';
       const btnLabel=modoView?'Ver':('Ver'+(r.status_preenchimento!=='Finalizado'?'/Editar':''));
@@ -8991,7 +9379,7 @@ function buildHistoricoStatusReportHtml(projeto, modoView, containerId){
         '<td><span class="status-pill" style="border-left:3px solid '+(r.status_preenchimento==='Finalizado'?'var(--st-feito)':'#f59e0b')+'">'+r.status_preenchimento+'</span></td>'+
         '<td>'+(r.data_atualizacao?srFmtBr((r.data_atualizacao+'').slice(0,10)):'—')+'</td>'+
         '<td>'+personLinkHtml(r.gerente_nome)+'</td>'+
-        '<td><button type="button" class="filter-clear '+btnCls+'" data-semana="'+r.semana_inicio+'" data-report-id="'+r.id+'" style="padding:5px 12px">'+btnLabel+'</button></td></tr>';
+        '<td class="sr-hist-acao"><button type="button" class="filter-clear '+btnCls+'" data-semana="'+r.semana_inicio+'" data-report-id="'+r.id+'" style="padding:5px 12px;white-space:nowrap">'+btnLabel+'</button></td></tr>';
     });
     h+='</tbody></table></div>';
   }
@@ -9606,7 +9994,8 @@ const PAGE_INIT_MAP={
   pessoasadmin:initPessoasAdmin,
   feriados:initFeriados,
   avisos:initAvisos,
-  horasapontadas:initHorasApontadas
+  horasapontadas:initHorasApontadas,
+  manutencao:initManutencao
 };
 
 // ============================================================
