@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyF1LaM0HbcO8Wj9AnbaJmWu3kai3K0ApXHzXKEajh66tf4VGyT_hJW5mQuH6nuOE9o9w/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzJbPuTVwiTYtrVVZSiuGncII8lf0GpS9HAngrYZmts4T8szgAUH2gicSkdIZ3V_iFgFg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -658,6 +658,40 @@ tbody tr.row-danger:hover{background:var(--st-bloqueado-bg);}
 .treemap-cell .tc-name{font-size:12px; font-weight:700;}
 .treemap-cell .tc-val{font-size:11px; opacity:.85;}
 
+/* v17.3 — Decisão de Alocação */
+.da-tabs,.da-subtabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px}
+.da-tabs button,.da-subtabs button{border:1px solid var(--border);background:var(--surface);padding:7px 14px;border-radius:9px;cursor:pointer;font-weight:600;color:var(--primary);font:inherit;font-weight:600}
+.da-tabs button.on,.da-subtabs button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.da-intro{font-size:12.5px;color:var(--text-muted);margin-bottom:12px}
+.da-filters{margin-bottom:12px}
+.da-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;align-items:end}
+.da-form label{font-size:11px;color:var(--text-faint);display:block;margin-bottom:2px}
+.da-form select,.da-form input,.da-top select{width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:#fff;font:inherit}
+.da-top select{width:auto;max-width:240px}
+.da-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.da-kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+.da-kpi b{display:block;font-size:22px;color:var(--primary)}.da-kpi span{font-size:11px;color:var(--text-faint)}
+.da-grid2{display:grid;grid-template-columns:1.6fr 1fr;gap:12px}.da-grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+@media(max-width:980px){.da-grid2{grid-template-columns:1fr}}
+.da-t{width:100%;border-collapse:collapse}.da-t th{font-size:11px;text-align:left;color:var(--text-faint);font-weight:600;padding:5px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
+.da-t td{padding:6px;border-bottom:1px solid #edf3f8;vertical-align:middle}.da-nw{white-space:nowrap}
+.da-chip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap}
+.da-ok{background:#dcfce7;color:#166534}.da-aten{background:#fef3c7;color:#92400e}.da-alta{background:#ffedd5;color:#9a3412}.da-crit{background:#fee2e2;color:#991b1b}.da-ins{background:#e2e8f0;color:#334155}
+.da-bar{height:8px;border-radius:99px;background:#e5eef5;overflow:hidden;min-width:70px}.da-bar i{display:block;height:100%;background:#0284c7}
+.da-bar.g i{background:#16a34a}.da-bar.y i{background:#d97706}.da-bar.o i{background:#ea580c}.da-bar.r i{background:#dc2626}
+.da-btn{border:1px solid #0284c7;background:#fff;color:#0284c7;border-radius:7px;padding:3px 9px;cursor:pointer;font-size:12px;font-weight:600}
+.da-btn:hover,.da-btn.p{background:#0284c7;color:#fff}
+.da-av{width:28px;height:28px;border-radius:50%;background:#0284c7;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;margin-right:7px;vertical-align:middle}
+.da-note{font-size:11px;color:var(--text-faint)}.da-why{background:#f0f9ff;border-left:3px solid #0284c7;padding:8px 10px;border-radius:6px;margin-top:6px}
+.da-why ul{margin:4px 0 0 16px;padding:0}.da-pos{color:#166534}.da-neg{color:#991b1b}.da-mut{color:var(--text-faint)}
+.da-top{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.da-row{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px}.da-al{margin-bottom:7px}
+.da-wk{display:flex;gap:10px;align-items:flex-end;margin-top:6px}.da-wk>div{flex:1;text-align:center;font-size:11px}
+.da-col{position:relative;height:84px;background:#e5eef5;border-radius:6px;overflow:hidden}.da-col i{position:absolute;bottom:0;left:0;right:0}
+.da-capline{position:absolute;left:0;right:0;border-top:2px dashed var(--primary)}
+.da-big{font-size:26px;font-weight:700;color:var(--primary)}.da-hl{background:#dcfce7}
+.da-sug{border:1px solid var(--border);border-radius:10px;padding:9px 11px;margin-bottom:8px}
+.da-pill{font-size:11px;background:#e0f2fe;color:#075985;padding:1px 8px;border-radius:99px}.da-pc{cursor:pointer}
 .empty-state{
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
   padding:50px 20px; color:var(--text-faint); text-align:center;
@@ -1892,6 +1926,8 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
     <!-- PAGE INTELIGÊNCIA DE ALOCAÇÃO -->
     <section class="page" id="page-inteligencia">
       <div class="page-header"><div><h1>Carga e Risco de Alocação</h1><p>Indicador de carga/risco por pessoa, combinando quantidade de projetos, complexidade, prioridade e proximidade de prazos — a partir dos mesmos dados de Alocações. É um apoio à decisão, não uma afirmação automática.</p></div></div>
+      <div class="da-tabs" id="ia-tabs"><button type="button" class="on" data-ia-tab="carga">Carga e Risco</button><button type="button" data-ia-tab="decisao">Decisão de Alocação</button></div>
+      <div id="ia-tab-carga">
       <div id="ia-projstatus-wrap"></div>
       <div class="filter-bar">
         <div class="filter-field"><label>Pessoa</label><select id="f-ia-pessoa"><option value="">Todas</option></select></div>
@@ -1905,6 +1941,32 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
       </div>
       <div class="grid grid-kpi" id="kpi-inteligencia"></div>
       <div id="inteligencia-content"></div>
+          </div>
+      <div id="ia-tab-decisao" style="display:none">
+        <div class="card da-intro"><b>Apoio à decisão, não decisão automática.</b> Mostra quem pode receber uma nova demanda, quem está sob pressão e para qual projeto uma pessoa pode ser realocada para acelerar a entrega. Todas as simulações são visuais — nada é gravado. Pessoas com "Participa das análises = Não", Heads e inativos ficam fora.<div style="margin-top:8px"><button type="button" class="filter-clear" id="da-explicacao-btn">❓ Como os indicadores são calculados</button></div></div>
+        <div class="card da-filters">
+          <div class="da-form">
+            <div><label>Projeto da demanda</label><select id="da-d-prj"></select></div>
+            <div><label>Área necessária</label><select id="da-d-area"></select></div>
+            <div><label>Senioridade mínima</label><select id="da-d-nv"></select></div>
+            <div><label>Complexidade</label><select id="da-d-cx"></select></div>
+            <div><label>Horas por semana</label><input type="number" id="da-d-h" min="1" max="40" value="16"></div>
+            <div><label>Duração (semanas)</label><input type="number" id="da-d-sem" min="1" max="52" value="4"></div>
+          </div>
+          <div class="da-form" style="margin-top:8px">
+            <div><label>Área</label><select id="da-f-area"></select></div>
+            <div><label>Senioridade</label><select id="da-f-nv"></select></div>
+            <div><label>Pessoa</label><select id="da-f-pes"></select></div>
+            <div><label>Gestor</label><select id="da-f-ges"></select></div>
+            <div><label>Projeto (vínculo)</label><select id="da-f-prj"></select></div>
+            <div><label>Período de análise</label><select id="da-f-per"><option value="7">7 dias</option><option value="15" selected>15 dias</option><option value="30">30 dias</option></select></div>
+            <div style="align-self:end"><button type="button" class="filter-clear" id="da-limpar">Limpar</button></div>
+          </div>
+          <div class="da-note" id="da-info" style="margin-top:6px"></div>
+        </div>
+        <div class="da-subtabs" id="da-subtabs"><button type="button" data-t="exec" class="on">Visão executiva</button><button type="button" data-t="ind">Análise individual</button><button type="button" data-t="cmp">Comparar</button><button type="button" data-t="sim">Simulador</button><button type="button" data-t="rel">Sugestão de realocação</button></div>
+        <div id="da-root"><div id="da-view"></div></div>
+      </div>
     </section>
 
     <!-- PAGE PESSOA -->
@@ -2281,7 +2343,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
 (function(){
-let D,HM,PM,PM_PROJ,CD,AREAS,TOP5,PSTAT,PHEST,PHAP,PVENC,PPREVISTO,PEND,PROJ_TASKS,SEM_ALOC,ALOC_SEM_APONT,CTOK,AREA_CL,EXECTOP;
+let D,HM,PM,PM_PROJ,CD,AREAS,TOP5,PSTAT,PHEST,PHAP,PVENC,PPREVISTO,PALOC={},PEND,PROJ_TASKS,SEM_ALOC,ALOC_SEM_APONT,CTOK,AREA_CL,EXECTOP;
 // F7/F8/F9 — Caches derivados dos dados globais (D/PM/HM/PPREVISTO/PROJ_TASKS).
 // Cada um guarda um resultado calculado a partir desses dados; são invalidados
 // (zerados) sempre que os dados globais são recarregados/substituídos (ver
@@ -2424,7 +2486,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v17.2';
+const APP_VERSION='v17.3';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2656,6 +2718,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
 // aparece no card "Última atualização" no topo da tela de Novidades.
 const NOVIDADES_ATUALIZADO_EM='16/10/2026';
 const NOVIDADES=[
+  {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Decisão de Alocação', descricao:'Nova aba em Inteligência de Alocação para apoiar a decisão do gestor: ranking de candidatos para uma nova demanda (área, senioridade, complexidade, horas), pressão de trabalho explicada, capacidade livre para 7/15/30 dias, comparação de profissionais, simulador de alocação e sugestão de para qual projeto realocar cada pessoa para acelerar a entrega. Usa as horas estimadas e apontadas das tarefas abertas; sem dados suficientes mostra "Dados insuficientes para avaliar". Nada é gravado: as simulações são só visuais. A aba Carga e Risco continua como estava.', paginas:['inteligencia'], data:'2026-10-16', tag:'Nova', tagCor:'nova'},
   {icone:'🧹', bg:'#f1f5f9', cor:'#475569', titulo:'Páginas Alocações e Entrega e Produtividade removidas', descricao:'As páginas Alocações e Entrega e Produtividade não fazem mais parte do Portal e saíram do menu. Os dados continuam disponíveis nas demais páginas (por exemplo, Carga e Risco de Alocação, Gestão da Área e Detalhamento do Projeto).', paginas:[], data:'2026-10-16', tag:'Mudança', tagCor:'mudanca'},
   {icone:'📊', bg:'#ecfdf5', cor:'#059669', titulo:'Participa das Análises também em Pendências, Horas Apontadas e Relatório de Equipes', descricao:'A regra do campo Participa_Analises agora vale também para Pendências de Tarefas (responsável fora das análises não é contado; a tarefa permanece se houver outro responsável ou nenhum), Gestão de Horas Apontadas (a pessoa sai da lista, dos totais e dos gráficos — você continua vendo as suas próprias horas) e Relatório de Projetos e Equipes (equipe, contagem e organograma). Projetos, tarefas e lançamentos não são excluídos.', paginas:['pend','horasapontadas','relatorioprojetos'], data:'2026-10-16', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🧑‍💼', bg:'#e0f2fe', cor:'#0284c7', titulo:'Cadastro de pessoas modernizado — Estado e Cidade', descricao:'A tela de Pessoas e Perfis agora organiza os campos em blocos (identificação, estrutura organizacional, localização, acesso e análises), valida os campos perto de onde você digita e salva sem recarregar a página. O antigo campo Localidade foi substituído por Estado e Cidade (a lista de cidades vem do IBGE e muda conforme o estado; se o serviço estiver fora do ar, a digitação é livre). O botão “Migrar Localidade” separa os valores antigos com pré-visualização, sem apagar nada. Os feriados estaduais e municipais da jornada continuam funcionando.', paginas:['pessoasadmin','horasapontadas','pessoa'], data:'2026-10-16', tag:'Melhoria', tagCor:'melhoria'},
@@ -2814,7 +2877,7 @@ const CAMPOS_EM_VOO = new Map();     // campo -> Promise em andamento (dedupe de
 // não mandar um campo que foi pedido.
 const CAMPOS_DEFAULT_VAZIO = {
   HM:{}, PM:{}, PM_PROJ:{}, CD:{}, CTOK:{}, EXECTOP:{positivos:{saude:[],ger_prazo:[],aderencia:[],area_prod:[],cli_saude:[]},negativos:{atrasados:[],estouro:[],zumbi:[],overload:[],ger_atraso:[],bloqueados:[],cli_risco:[]}},
-  PSTAT:{}, PHEST:{}, PHAP:{}, PVENC:{}, PPREVISTO:{}, PEND:[], PROJ_TASKS:{}, SEM_ALOC:[], ALOC_SEM_APONT:[]
+  PSTAT:{}, PHEST:{}, PHAP:{}, PVENC:{}, PPREVISTO:{}, PALOC:{}, PEND:[], PROJ_TASKS:{}, SEM_ALOC:[], ALOC_SEM_APONT:[]
 };
 // Mesma associação campo→variável global já usada em carregarDadosCompletos —
 // centralizada aqui pra não duplicar essa lista em cada chamador novo.
@@ -2832,6 +2895,7 @@ function atribuirCampoGlobal_(campo, valor){
     case 'PHAP': PHAP=v; break;
     case 'PVENC': PVENC=v; break;
     case 'PPREVISTO': PPREVISTO=v; break;
+    case 'PALOC': PALOC=v; break;
     case 'PEND': PEND=v; break;
     case 'PROJ_TASKS': PROJ_TASKS=v; break;
     case 'SEM_ALOC': SEM_ALOC=v; break;
@@ -2940,7 +3004,7 @@ async function carregarDadosCore(token){
       marcarCamposDoCoreComoCarregados_();
       D=j.D; AREAS=j.AREAS; AREA_CL=j.AREA_CL||{}; STATUS_REPORTS=j.STATUS_REPORTS||[];
       HM={}; PM={}; PM_PROJ={}; CD={}; CTOK={}; EXECTOP=CAMPOS_DEFAULT_VAZIO.EXECTOP; PSTAT={}; PHEST={}; PHAP={};
-      PVENC={}; PPREVISTO={}; PEND=[]; PROJ_TASKS={}; SEM_ALOC=[]; ALOC_SEM_APONT=[];
+      PVENC={}; PPREVISTO={}; PALOC={}; PEND=[]; PROJ_TASKS={}; SEM_ALOC=[]; ALOC_SEM_APONT=[];
       invalidarCachesDeDadosGlobais();
       CURRENT_USER_NOME=j._usuarioNome||j._usuario; CURRENT_USER_EMAIL=j._usuario;
       showDataBadge('live');
@@ -2969,7 +3033,7 @@ async function carregarDadosCore(token){
     // carregado (CAMPOS_CARREGADOS) quando realmente buscado sob demanda.
     marcarCamposDoCoreComoCarregados_();
     HM={}; PM={}; PM_PROJ={}; CD={}; CTOK={}; EXECTOP=CAMPOS_DEFAULT_VAZIO.EXECTOP; PSTAT={}; PHEST={}; PHAP={};
-    PVENC={}; PPREVISTO={}; PEND=[]; PROJ_TASKS={}; SEM_ALOC=[]; ALOC_SEM_APONT=[];
+    PVENC={}; PPREVISTO={}; PALOC={}; PEND=[]; PROJ_TASKS={}; SEM_ALOC=[]; ALOC_SEM_APONT=[];
     invalidarCachesDeDadosGlobais();
     CURRENT_USER_NOME=j._usuarioNome||j._usuario; CURRENT_USER_EMAIL=j._usuario;
     showDataBadge('live');
@@ -3030,7 +3094,7 @@ async function carregarDadosPesadosEmSegundoPlano(token){
       return;
     }
     D=j.D; HM=j.HM; PM=j.PM; PM_PROJ=j.PM_PROJ||{}; CD=j.CD; CTOK=j.CTOK; AREAS=j.AREAS; AREA_CL=j.AREA_CL;
-    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PEND=j.PEND;
+    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PALOC=j.PALOC||{}; PEND=j.PEND;
     PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
     invalidarCachesDeDadosGlobais();
     STATUS_REPORTS=j.STATUS_REPORTS||[];
@@ -3086,7 +3150,7 @@ async function carregarDadosCompletos(token, semBannerTopo){
       return;
     }
     D=j.D; HM=j.HM; PM=j.PM; PM_PROJ=j.PM_PROJ||{}; CD=j.CD; CTOK=j.CTOK; AREAS=j.AREAS; AREA_CL=j.AREA_CL;
-    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PEND=j.PEND;
+    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PALOC=j.PALOC||{}; PEND=j.PEND;
     PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
     invalidarCachesDeDadosGlobais();
     STATUS_REPORTS=j.STATUS_REPORTS||[];
@@ -3169,7 +3233,7 @@ async function attemptLoadWithTokenClassico(token, viewAsEmail){
       return;
     }
     D=j.D; HM=j.HM; PM=j.PM; PM_PROJ=j.PM_PROJ||{}; CD=j.CD; CTOK=j.CTOK; AREAS=j.AREAS; AREA_CL=j.AREA_CL;
-    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PEND=j.PEND;
+    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PALOC=j.PALOC||{}; PEND=j.PEND;
     PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
     invalidarCachesDeDadosGlobais();
     STATUS_REPORTS=j.STATUS_REPORTS||[];
@@ -4734,7 +4798,452 @@ function iaPopularQtdProj_(){
   sel.innerHTML=opcoesQtdHtml;
   if(prev!=='' && parseInt(prev)<=maxQtd) sel.value=prev;
 }
+// ======== MÓDULO v17.3 ========
+// ============================================================
+// v17.3 — DECISÃO DE ALOCAÇÃO (aba da página Inteligência de Alocação)
+// Apoio à decisão do gestor: ranking para uma demanda, pressão de trabalho,
+// capacidade futura (7/15/30 dias), simulador, comparação e sugestão de
+// realocação. Usa SÓ dados já existentes (D.p, D.pj, PROJ_TASKS, PALOC) e as
+// mesmas regras do portal: Participa_Analises, Heads e inativos fora, projetos
+// concluídos/pausados fora da carga, sem dupla contagem (PALOC/PROJ_TASKS já
+// vêm uma vez por tarefa e pessoa). Nada é gravado: simulações são só visuais.
+// ============================================================
+// PARÂMETROS A VALIDAR COM OS GESTORES — tudo que é "regra de negócio" fica aqui.
+const DA_PARAM={
+  horasSemana:40,                                // jornada padrão (8h x 5 dias)
+  pressao:{disp:70,aten:90,alta:105},            // % de utilização: até 70 Disponível · até 90 Atenção · até 105 Alta pressão · acima Crítico
+  escalonar:{atrasadas:3,entregas7:2},           // sobe 1 nível de pressão com N tarefas atrasadas ou N entregas em até 7 dias
+  coberturaMin:50,                               // % mínimo de tarefas abertas com horas estimadas
+  rank:{aderencia:.4,capacidade:.3,pressao:.3},  // nota final de candidato
+  aderencia:{area:.5,nivel:.3,cx:.2},            // composição da aderência
+  realoc:{necessidade:.4,fit:.35,capacidade:.25},// nota de destino de realocação
+  folgaMinH:4, utilMaxRealoc:90, utilSaida:85,   // folga mínima (h/sem), teto de utilização após realocar, alvo ao liberar
+  semanasSemData:4,                              // projeto sem previsão de entrega: dilui o esforço em N semanas (premissa sinalizada)
+  areasAfins:{}                                  // ex.: {'engenharia de dados':['ciencia de dados e ia']} — vazio até os gestores definirem
+};
+const DA_NIVEIS={'estagiario':0,'junior':1,'pleno':2,'senior':3,'especialista':4,'tech lead':4};
+const DA_NIVEL_NOME=['Estagiário','Júnior','Pleno','Sênior','Especialista'];
+const DA_LV=['Disponível','Atenção','Alta pressão','Crítico'], DA_LC=['da-ok','da-aten','da-alta','da-crit'];
+const DA={tab:'exec',sel:'',cmp:[],simP:'',relP:'',simH:null,simW:null,iniciado:false,
+  dem:{prj:'',area:'',nv:'',cx:'',h:16,sem:4},memo:null,memoRef:null,memoPorH:{}};
+
+const daClamp_=(x,a,b)=>Math.max(a,Math.min(b,x));
+const daF_=x=>Math.round(x*10)/10;
+const daN_=s=>peNormalizarHeader(s||'');
+function daNv_(p){ const n=daN_(p&&p.nv); return Object.prototype.hasOwnProperty.call(DA_NIVEIS,n)?DA_NIVEIS[n]:null; }
+function daCxN_(cx){ const n=daN_(cx); if(!n) return null;
+  if(/alta|alto|elevad|critic|urgent/.test(n)) return 3;
+  if(/media|medio|moderad|intermedi/.test(n)) return 2;
+  if(/baixa|baixo|leve|normal/.test(n)) return 1; return null; }
+function daProjAtivo_(proj){ return !!proj && !proj.de && !proj.pausado && !projetoConcluidoStatus_(proj.st) && daN_(proj.st)!=='cancelado'; }
+function daFechada_(t){ const s=daN_(t.status); return s==='done'||s==='cancelado'||s==='cancelada'||s==='concluido'||!!t.dt_conc; }
+
+// ---------- base por pessoa (independe do período) ----------
+function daBase_(p){
+  const ek=(p.email||'').toLowerCase();
+  const hojeISO=new Date().toISOString().slice(0,10);
+  const lim7=new Date(Date.now()+7*86400000).toISOString().slice(0,10);
+  const projs=alocProjetosDaPessoa(p).filter(daProjAtivo_);
+  const rows=[]; let nTot=0,sTot=0,late=0,blocked=0,near=0,pond=0;
+  const vistos=new Set();
+  projs.forEach(proj=>{
+    if(vistos.has(proj.pj)) return; vistos.add(proj.pj);
+    const pa=((PALOC&&PALOC[ek])||{})[proj.pj]||{h:0,n:0,s:0};
+    const pr=iaPrazoInfoProjeto_(proj), dias=pr.diasRestantes;
+    const semData=dias==null||dias===undefined;
+    const diasEf=semData?DA_PARAM.semanasSemData*7:Math.max(7,dias);
+    rows.push({proj,pa,dias:semData?null:dias,semData,vencido:!semData&&dias<0,diasEf,taxa:pa.h/(diasEf/7)});
+    nTot+=pa.n; sTot+=pa.s; pond+=daCxN_(proj.cx)||2;
+    (PROJ_TASKS[proj.pj]||[]).forEach(t=>{
+      const meu=(t.responsaveis||[]).some(r=>r.email===ek)||t.email===ek; if(!meu||daFechada_(t)) return;
+      if(daN_(t.status)==='blocked') blocked++;
+      else if(t.dt_venc_iso&&t.dt_venc_iso<hojeISO) late++;
+      else if(t.dt_venc_iso&&t.dt_venc_iso<=lim7) near++;
+    });
+  });
+  const cov=nTot>0?Math.round((nTot-sTot)/nTot*100):null;
+  return {p,ek,rows,nTot,sTot,cov,late,blocked,near,pond,
+    horasApontadas:PHAP[ek]||0,horasEstimadas:PHEST[ek]||0};
+}
+// ---------- cálculo por período (H dias) com carga extra opcional ----------
+function daCalc_(b,H,extra){
+  const cap=DA_PARAM.horasSemana;
+  let ent7=0,ent15=0;
+  b.rows.forEach(r=>{ if(r.dias!==null&&r.dias<=7) ent7++; if(r.dias!==null&&r.dias<=15) ent15++; });
+  // Carga média por semana numa janela de Hx dias. A pressão usa a PIOR janela entre os
+  // próximos 7 dias e o período escolhido — senão um aperto de curto prazo some na média.
+  const plAt=Hx=>{ let v=0; b.rows.forEach(r=>{ v+=r.taxa*Math.min(Hx,r.diasEf)/Hx; }); if(extra) v+=extra.h*Math.min(Hx,extra.sem*7)/Hx; return v; };
+  const plH=plAt(H), pl7=plAt(7), pl=Math.max(plH,pl7);
+  const util=pl/cap*100, free=cap-pl, why=[];
+  const sem=b.rows.length===0;
+  const insuf=!sem && (b.nTot===0 || (b.cov!==null&&b.cov<DA_PARAM.coberturaMin));
+  let lvl=util<=DA_PARAM.pressao.disp?0:util<=DA_PARAM.pressao.aten?1:util<=DA_PARAM.pressao.alta?2:3;
+  if(sem) why.push('Sem projetos ativos vinculados');
+  else if(insuf) why.push(b.nTot===0?'Projetos ativos sem tarefas abertas registradas':'Só '+b.cov+'% das tarefas abertas têm horas estimadas (mínimo '+DA_PARAM.coberturaMin+'%)');
+  else why.push(pl7>plH+0.5?'Pico nos próximos 7 dias: '+Math.round(util)+'% ('+daF_(pl)+'h de '+cap+'h/sem); média de '+H+' dias: '+Math.round(plH/cap*100)+'%':'Utilização planejada '+Math.round(util)+'% ('+daF_(pl)+'h de '+cap+'h/sem nos próximos '+H+' dias)');
+  let esc=false;
+  if(b.late>=DA_PARAM.escalonar.atrasadas){esc=true; why.push(b.late+' tarefas atrasadas (≥'+DA_PARAM.escalonar.atrasadas+') → sobe 1 nível');}
+  if(ent7>=DA_PARAM.escalonar.entregas7){esc=true; why.push(ent7+' entregas em até 7 dias (≥'+DA_PARAM.escalonar.entregas7+') → sobe 1 nível');}
+  if(esc) lvl=Math.min(3,lvl+1);
+  if(b.blocked) why.push(b.blocked+' tarefa(s) bloqueada(s) — informativo, não conta como atraso');
+  const semData=b.rows.filter(r=>r.semData).length;
+  if(semData) why.push(semData+' projeto(s) sem previsão de entrega — esforço diluído em '+DA_PARAM.semanasSemData+' semanas (premissa)');
+  const venc=b.rows.filter(r=>r.vencido).length;
+  if(venc) why.push(venc+' projeto(s) com entrega vencida — esforço concentrado na próxima semana');
+  return {cap,pl,free,util,lvl:insuf?-1:lvl,why,ent7,ent15,insuf,sem};
+}
+// ---------- conjunto de pessoas analisáveis ----------
+function daPessoas_(){
+  const heads=iaNomesHeads_();
+  return PESA_().filter(p=>p.a&&pessoaEstaAtiva(p)&&!heads.has(peNormalizarHeader(p.a)));
+}
+function daTodasBases_(){
+  if(DA.memoRef!==D||!DA.memo){ DA.memoRef=D; DA.memoPorH={};
+    DA.memo=daPessoas_().map(daBase_); }
+  return DA.memo;
+}
+function daCalcTodos_(H){
+  const bases=daTodasBases_();
+  if(!DA.memoPorH[H]) DA.memoPorH[H]=bases.map(b=>({p:b.p,b,c:daCalc_(b,H)}));
+  return DA.memoPorH[H];
+}
+function daFiltrados_(H){
+  const f=daFiltros_();
+  return daCalcTodos_(H).filter(x=>(!f.area||x.p.area===f.area)&&(!f.nv||x.p.nv===f.nv)&&(!f.pessoa||x.p.a===f.pessoa)&&(!f.gestor||x.p.gestor===f.gestor)&&(!f.prj||x.b.rows.some(r=>r.proj.pj===f.prj)));
+}
+function daFiltros_(){ const g=id=>(document.getElementById(id)||{}).value||''; return {area:g('da-f-area'),nv:g('da-f-nv'),pessoa:g('da-f-pes'),gestor:g('da-f-ges'),prj:g('da-f-prj'),H:+g('da-f-per')||15}; }
+
+// ---------- projetos (necessidade de reforço) ----------
+function daProjetos_(H){
+  const k='proj'+H; if(DA.memoPorH[k]) return DA.memoPorH[k];
+  const mapa={};
+  daCalcTodos_(H).forEach(x=>{
+    const somaTaxa=x.b.rows.reduce((s,r)=>s+r.taxa,0)||1;
+    const excesso=Math.max(0,x.c.pl-x.c.cap*DA_PARAM.utilMaxRealoc/100);
+    x.b.rows.forEach(r=>{
+      const m=mapa[r.proj.pj]=mapa[r.proj.pj]||{proj:r.proj,need:0,gap:0,areas:new Set(),membros:[],dias:r.dias,diasEf:r.diasEf,semData:r.semData,s:0,n:0};
+      m.need+=r.taxa; m.gap+=excesso*(r.taxa/somaTaxa); m.s+=r.pa.s; m.n+=r.pa.n;
+      if(x.p.area) m.areas.add(x.p.area);
+      m.membros.push(x.p.a);
+    });
+  });
+  Object.values(mapa).forEach(m=>{
+    m.ratio=m.need>0?m.gap/m.need:0;
+    m.insuf=m.need<=0||(m.n>0&&(m.n-m.s)/m.n*100<DA_PARAM.coberturaMin);
+    let l=m.gap<=0.5?0:m.ratio<.15?1:m.ratio<.3?2:3;
+    if(m.dias!==null&&m.dias<0) l=Math.min(3,l+1);
+    m.lvl=m.insuf?-1:l;
+    m.atraso=m.ratio*m.diasEf;  // dias de atraso estimados se nada mudar
+    m.late=(PROJ_TASKS[m.proj.pj]||[]).filter(t=>!daFechada_(t)&&daN_(t.status)!=='blocked'&&t.dt_venc_iso&&t.dt_venc_iso<new Date().toISOString().slice(0,10)).length;
+  });
+  DA.memoPorH[k]=mapa; return mapa;
+}
+function daProjDepois_(m,h){
+  const gap=Math.max(0,m.gap-h), ratio=m.need>0?gap/m.need:0;
+  let l=gap<=0.5?0:ratio<.15?1:ratio<.3?2:3; if(m.dias!==null&&m.dias<0) l=Math.min(3,l+1);
+  return {gap,lvl:l,atraso:ratio*m.diasEf};
+}
+const DA_RISCO=['No prazo','Atenção','Risco','Crítico'];
+
+// ---------- aderência ----------
+function daAderencia_(p,d){
+  const ex=[]; let soma=0,peso=0; const falt=[];
+  if(d.area){
+    const a=daN_(p.area)===daN_(d.area)?100:((DA_PARAM.areasAfins[daN_(d.area)]||[]).indexOf(daN_(p.area))>=0?35:0);
+    soma+=a*DA_PARAM.aderencia.area; peso+=DA_PARAM.aderencia.area;
+    ex.push([a===100?'pos':a?'mut':'neg',a===100?'Área compatível ('+p.area+')':a?'Área afim, não idêntica ('+p.area+')':'Área diferente da necessária ('+(p.area||'sem área')+')']);
+  } else falt.push('área necessária não informada');
+  const nvp=daNv_(p), nvm=d.nv!==''&&d.nv!=null?+d.nv:null;
+  if(nvp===null) falt.push('senioridade de '+p.a+' ausente ou não reconhecida');
+  else if(nvm===null) falt.push('senioridade mínima não informada');
+  else { const df=nvp-nvm; const n=df===0?100:df===1?90:df>=2?70:df===-1?50:20;
+    soma+=n*DA_PARAM.aderencia.nivel; peso+=DA_PARAM.aderencia.nivel;
+    ex.push([df===0?'pos':df>0?'mut':'neg', df===0?'Senioridade exata ('+p.nv+')':df>0?'Senioridade acima do mínimo ('+p.nv+')'+(df>=2?' — perfil mais caro que o necessário':''):'Senioridade abaixo do mínimo ('+p.nv+') — exige acompanhamento']); }
+  const cxn=daCxN_(d.cx);
+  if(nvp!==null&&cxn!==null){ const lv=Math.min(nvp,3); const c=lv>=cxn?100:100-35*(cxn-lv);
+    soma+=c*DA_PARAM.aderencia.cx; peso+=DA_PARAM.aderencia.cx;
+    ex.push([c===100?'pos':'neg', c===100?'Complexidade '+d.cx+' compatível com o nível':'Complexidade '+d.cx+' acima do nível cadastrado']); }
+  else if(d.cx) falt.push('complexidade não reconhecida ou nível ausente');
+  return {score:peso>0?Math.round(soma/peso):null,ex,falt,areaOk:!d.area||ex.some(e=>e[1].indexOf('Área compatível')===0||e[1].indexOf('Área afim')===0)};
+}
+function daAvaliar_(x,d,H){
+  const ad=daAderencia_(x.p,d), c=x.c;
+  const cDep=daCalc_(x.b,H,{h:d.h,sem:d.sem});
+  const capScore=daClamp_(c.free/d.h*100,0,100);
+  const pr=c.lvl<0?null:[0,35,70,100][c.lvl];
+  const risco=c.lvl<0?null:cDep.util>110?'Alto':cDep.util>95?'Médio':'Baixo';
+  let score=null,ver='Indicado';
+  if(c.insuf) ver='Dados insuficientes para avaliar';
+  else if(ad.score===null) ver='Dados insuficientes para avaliar aderência';
+  else { score=Math.round(DA_PARAM.rank.aderencia*ad.score+DA_PARAM.rank.capacidade*capScore+DA_PARAM.rank.pressao*(100-pr));
+    if(d.area&&!ad.areaOk) ver='Não indicado (área)'; else if(cDep.util>110) ver='Não recomendado (sobrecarga)'; else if(score<60) ver='Indicado com ressalvas'; }
+  return {x,p:x.p,c,cDep,ad,capScore,score,risco,ver};
+}
+
+// ---------- realocação ----------
+function daFitProj_(p,m){
+  const a=m.areas.has(p.area)?100:0; const nvp=daNv_(p), cxn=daCxN_(m.proj.cx);
+  const n=(nvp===null||cxn===null)?null:(Math.min(nvp,3)>=cxn?100:100-35*(cxn-Math.min(nvp,3)));
+  return {a,n,s:n===null?a:Math.round(.65*a+.35*n)};
+}
+function daReforco_(x,H){
+  const c=daCalc_(x.b,15); if(c.insuf) return {insuf:true,lista:[],livre:0};
+  const livre=Math.max(0,Math.min(c.free,c.cap*DA_PARAM.utilMaxRealoc/100-c.pl));
+  const meus=new Set(x.b.rows.map(r=>r.proj.pj)); const lista=[];
+  Object.values(daProjetos_(15)).forEach(m=>{
+    if(meus.has(m.proj.pj)||m.insuf||m.gap<=0.5) return;
+    const f=daFitProj_(x.p,m); if(f.a===0) return;
+    const h=Math.floor(Math.min(livre,m.gap,20)); if(h<DA_PARAM.folgaMinH) return;
+    const dep=daProjDepois_(m,h);
+    const need=daClamp_(m.ratio*200+((m.dias!==null&&m.dias<=14)?20:0),0,100);
+    const ce=daClamp_(h/m.gap*100,0,100);
+    const sc=Math.round(DA_PARAM.realoc.necessidade*need+DA_PARAM.realoc.fit*f.s+DA_PARAM.realoc.capacidade*ce);
+    const cp=daCalc_(x.b,15,{h,sem:Math.max(1,Math.min(8,m.diasEf/7))});
+    lista.push({m,h,dep,f,sc,ganho:m.atraso-dep.atraso,cp});
+  });
+  return {insuf:false,livre,lista:lista.sort((a,b)=>b.sc-a.sc)};
+}
+function daSaida_(x){
+  const c=daCalc_(x.b,15); const excesso=Math.max(0,c.pl-c.cap*DA_PARAM.utilSaida/100);
+  const mapa=daProjetos_(15), res=[];
+  const todos=daCalcTodos_(15);
+  x.b.rows.forEach(r=>{
+    const m=mapa[r.proj.pj]; if(!m) return;
+    const hRel=Math.min(Math.ceil(r.taxa),Math.ceil(excesso)); if(hRel<2) return;
+    const rec=todos.filter(o=>o.p!==x.p&&!o.c.insuf&&o.c.lvl<=1&&o.c.free>=hRel&&!o.b.rows.some(rr=>rr.proj.pj===r.proj.pj)).map(o=>({o,f:daFitProj_(o.p,m)})).filter(z=>z.f.a>0).sort((a,b)=>b.f.s-a.f.s||b.o.c.free-a.o.c.free);
+    const prio=daCxN_(r.proj.pr)||2;
+    res.push({r,m,hRel,rec:rec.slice(0,2),ordem:prio*10+m.gap});
+  });
+  return {excesso,lista:res.sort((a,b)=>a.ordem-b.ordem)};
+}
+
+// ---------- interface ----------
+const daE_=s=>feEsc_(String(s==null?'':s));
+function daChip_(l){ return l<0?'<span class="da-chip da-ins">Dados insuficientes</span>':'<span class="da-chip '+DA_LC[l]+'">'+DA_LV[l]+'</span>'; }
+function daRiscoChip_(l){ return l<0?'<span class="da-chip da-ins">Dados insuficientes</span>':'<span class="da-chip '+DA_LC[l]+'">'+DA_RISCO[l]+'</span>'; }
+function daAv_(n){ return '<span class="da-av">'+daE_((n||'?').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase())+'</span>'; }
+function daBar_(u){ const c=u>DA_PARAM.pressao.alta?'r':u>DA_PARAM.pressao.aten?'o':u>DA_PARAM.pressao.disp?'y':'g'; return '<div class="da-bar '+c+'"><i style="width:'+daClamp_(u,0,100)+'%"></i></div>'; }
+const daId_=p=>encodeURIComponent(p.a);
+const daAchar_=id=>daTodasBases_().find(b=>b.p.a===decodeURIComponent(id));
+function daXpor_(id,H){ const b=daAchar_(id); return b?daCalcTodos_(H).find(x=>x.p===b.p):null; }
+function daDemanda_(){
+  const g=id=>(document.getElementById(id)||{}).value;
+  const d={prj:g('da-d-prj')||'',area:g('da-d-area')||'',nv:g('da-d-nv')||'',cx:g('da-d-cx')||'',h:Math.max(1,+g('da-d-h')||16),sem:Math.max(1,+g('da-d-sem')||4)};
+  DA.dem=d; return d;
+}
+function daOpt_(v,l,sel){ return '<option value="'+daE_(v)+'"'+(String(v)===String(sel)?' selected':'')+'>'+daE_(l)+'</option>'; }
+function daLi_(arr){ return arr.map(e=>'<li class="da-'+e[0]+'">'+daE_(e[1])+'</li>').join(''); }
+
+function daIniciar_(){
+  const root=document.getElementById('da-root'); if(!root) return;
+  const bases=daTodasBases_();
+  const pessoas=bases.map(b=>b.p).sort((a,b)=>a.a.localeCompare(b.a,'pt-BR'));
+  const areas=[...new Set(pessoas.map(p=>p.area).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const nvs=[...new Set(pessoas.map(p=>p.nv).filter(Boolean))].sort();
+  const gest=[...new Set(pessoas.map(p=>p.gestor).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const projs=Object.values(D.pj.filter(daProjAtivo_).reduce((o,p)=>{o[p.pj]=p;return o;},{})).sort((a,b)=>a.pj.localeCompare(b.pj,'pt-BR'));
+  const pop=(id,first,opts)=>{ document.getElementById(id).innerHTML='<option value="">'+first+'</option>'+opts; };
+  pop('da-f-area','Todas',areas.map(a=>daOpt_(a,a)).join(''));
+  pop('da-f-nv','Todas',nvs.map(a=>daOpt_(a,a)).join(''));
+  pop('da-f-pes','Todas',pessoas.map(p=>daOpt_(p.a,p.a)).join(''));
+  pop('da-f-ges','Todos',gest.map(a=>daOpt_(a,a)).join(''));
+  pop('da-f-prj','Todos',projs.map(p=>daOpt_(p.pj,p.pj)).join(''));
+  pop('da-d-prj','Sem projeto específico',projs.map(p=>daOpt_(p.pj,p.pj)).join(''));
+  pop('da-d-area','Não informada',areas.map(a=>daOpt_(a,a)).join(''));
+  pop('da-d-nv','Não informada',DA_NIVEL_NOME.map((n,i)=>daOpt_(i,n)).join(''));
+  const cxs=[...new Set(D.pj.map(p=>p.cx).filter(Boolean))].sort();
+  pop('da-d-cx','Não informada',cxs.map(a=>daOpt_(a,a)).join(''));
+  document.getElementById('da-d-prj').onchange=()=>{ const p=D.pj.find(x=>x.pj===document.getElementById('da-d-prj').value); if(p&&p.cx) document.getElementById('da-d-cx').value=p.cx; daRender_(); };
+  ['da-f-area','da-f-nv','da-f-pes','da-f-ges','da-f-prj','da-f-per','da-d-area','da-d-nv','da-d-cx','da-d-h','da-d-sem'].forEach(id=>document.getElementById(id).onchange=daRender_);
+  document.getElementById('da-limpar').onclick=()=>{ ['da-f-area','da-f-nv','da-f-pes','da-f-ges','da-f-prj','da-d-prj','da-d-area','da-d-nv','da-d-cx'].forEach(id=>document.getElementById(id).value=''); document.getElementById('da-d-h').value=16; document.getElementById('da-d-sem').value=4; document.getElementById('da-f-per').value=15; daRender_(); };
+  document.querySelectorAll('#da-subtabs [data-t]').forEach(b=>b.onclick=()=>{ DA.tab=b.dataset.t; daRender_(); });
+  document.getElementById('da-view').addEventListener('click',ev=>{
+    const el=ev.target.closest('[data-da]'); if(!el) return;
+    const [acao,id]=el.dataset.da.split('|');
+    if(acao==='ind'){DA.sel=id;DA.tab='ind';}
+    else if(acao==='sim'){DA.simP=id;DA.tab='sim';DA.simH=null;DA.simW=null;}
+    else if(acao==='rel'){DA.relP=id;DA.tab='rel';}
+    else if(acao==='cmp'){ if(DA.cmp.indexOf(id)<0){DA.cmp.push(id); if(DA.cmp.length>3) DA.cmp.shift();} DA.tab='cmp'; }
+    else if(acao==='rm'){ DA.cmp=DA.cmp.filter(x=>x!==id); }
+    daRender_(); window.scrollTo({top:0});
+  });
+  document.getElementById('da-view').addEventListener('change',ev=>{
+    const t=ev.target; if(!t.dataset||!t.dataset.dasel) return;
+    if(t.dataset.dasel==='ind') DA.sel=t.value; else if(t.dataset.dasel==='sim'){DA.simP=t.value;DA.simH=null;DA.simW=null;} else if(t.dataset.dasel==='rel') DA.relP=t.value;
+    else if(t.dataset.dasel==='simh') DA.simH=Math.max(1,+t.value||1); else if(t.dataset.dasel==='simw') DA.simW=Math.max(1,+t.value||1);
+    daRender_();
+  });
+  document.getElementById('da-explicacao-btn').onclick=daAbrirExplicacao_;
+  DA.iniciado=true; daRender_();
+}
+function daRender_(){
+  if(!DA.iniciado) return;
+  const f=daFiltros_(), d=daDemanda_();
+  document.querySelectorAll('#da-subtabs [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===DA.tab));
+  const nm=daFiltrados_(f.H)[0];
+  const fb=daTodasBases_().length;
+  document.getElementById('da-info').innerHTML=fb?'Demanda: '+(d.prj?'<b>'+daE_(d.prj)+'</b> · ':'')+(d.area?'área <b>'+daE_(d.area)+'</b> · ':'área <b>não informada</b> · ')+(d.nv!==''?'mínimo <b>'+DA_NIVEL_NOME[+d.nv]+'</b> · ':'')+(d.cx?'complexidade <b>'+daE_(d.cx)+'</b> · ':'')+'<b>'+d.h+'h/sem</b> por <b>'+d.sem+' sem</b>. '+(d.area?'':'<span class="da-neg">Informe a área para ranquear por aderência.</span>'):'';
+  const v=document.getElementById('da-view');
+  if(!fb){ v.innerHTML='<div class="card"><div class="empty-state">Nenhuma pessoa elegível (ativa, fora de Head e com participação nas análises).</div></div>'; return; }
+  v.innerHTML=({exec:daVExec_,ind:daVInd_,cmp:daVCmp_,sim:daVSim_,rel:daVRel_})[DA.tab](f,d);
+}
+function daKpi_(v,l){ return '<div class="da-kpi"><b>'+v+'</b><span>'+l+'</span></div>'; }
+
+function daVExec_(f,d){
+  const H=f.H, fl=daFiltrados_(H);
+  const grupo=r=>r.ver.indexOf('Indicado')===0?0:r.score!==null&&r.ver.indexOf('Dados')!==0?1:2;
+  const rows=fl.map(x=>daAvaliar_(x,d,H)).sort((a,b)=>grupo(a)-grupo(b)||(b.score??-1)-(a.score??-1)||b.c.free-a.c.free);
+  const lv=l=>fl.filter(x=>x.c.lvl===l).length;
+  const capT=fl.reduce((s,x)=>s+x.c.cap,0), plT=fl.reduce((s,x)=>s+(x.c.insuf?0:x.c.pl),0);
+  const mp=daProjetos_(H);
+  const alertas=Object.values(mp).filter(m=>(m.dias!==null&&m.dias<=15)||m.lvl>=2).sort((a,b)=>(a.dias??999)-(b.dias??999)).slice(0,7);
+  const reinf=Object.values(mp).filter(m=>m.gap>0.5&&!m.insuf).sort((a,b)=>b.gap-a.gap).slice(0,6);
+  const chaves=fl.filter(x=>x.b.rows.filter(r=>daCxN_(r.proj.cx)===3).length>=3).map(x=>x.p.a);
+  const rel=[]; fl.forEach(x=>{ const r=daReforco_(x,H); if(r.lista[0]) rel.push({x,s:r.lista[0]}); }); rel.sort((a,b)=>b.s.sc-a.s.sc);
+  return '<div class="da-kpis">'+daKpi_(fl.length,'Profissionais elegíveis')+daKpi_(lv(0),'Disponíveis (≤'+DA_PARAM.pressao.disp+'% de utilização)')+daKpi_(lv(1)+lv(2)+lv(3),'Em atenção ou sobrecarga')+daKpi_(lv(-1),'Dados insuficientes')+daKpi_(capT?Math.round(plT/capT*100)+'%':'—','Planejado vs total ('+Math.round(plT)+'h de '+Math.round(capT)+'h/sem)')+daKpi_(alertas.length,'Projetos com alerta de prazo/risco')+'</div>'
+  +'<div class="da-grid2"><div class="card"><div class="card-title"><h3>Candidatos para a demanda</h3><span class="sub">aderência '+DA_PARAM.rank.aderencia*100+'% · capacidade '+DA_PARAM.rank.capacidade*100+'% · pressão '+DA_PARAM.rank.pressao*100+'%</span></div><div class="table-wrap"><table class="da-t"><thead><tr><th>#</th><th>Profissional</th><th>Aderência</th><th>Livre ('+H+'d)</th><th>Pressão</th><th>Nota</th><th>Veredito</th><th></th></tr></thead><tbody>'
+  +(rows.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+daAv_(r.p.a)+'<b>'+daE_(r.p.a)+'</b><div class="da-note">'+daE_(r.p.area||'sem área')+' · '+daE_(r.p.nv||'sem nível')+'</div></td><td style="min-width:90px">'+(r.ad.score===null?'<span class="da-note">n/d</span>':r.ad.score+'<div class="da-bar"><i style="width:'+r.ad.score+'%"></i></div>')+'</td><td>'+(r.c.insuf?'—':daF_(Math.max(0,r.c.free))+'h/sem')+'</td><td>'+daChip_(r.c.lvl)+'</td><td><b>'+(r.score??'—')+'</b></td><td class="da-note">'+daE_(r.ver)+'</td><td class="da-nw"><button class="da-btn" data-da="ind|'+daId_(r.p)+'">Analisar</button> <button class="da-btn" data-da="cmp|'+daId_(r.p)+'">Comparar</button> <button class="da-btn" data-da="sim|'+daId_(r.p)+'">Simular</button></td></tr>').join('')||'<tr><td colspan="8" class="da-note">Nenhuma pessoa para os filtros.</td></tr>')
+  +'</tbody></table></div></div><div>'
+  +'<div class="card"><div class="card-title"><h3>Alertas de prazo e risco</h3></div>'+(alertas.map(m=>'<div class="da-al"><b>'+projetoLinkHtml(m.proj.pj)+'</b> '+daRiscoChip_(m.lvl)+'<div class="da-note">'+(m.dias===null?'Sem previsão de entrega':m.dias<0?'Entrega vencida há '+(-m.dias)+' dias':'Entrega em '+m.dias+' dias')+(m.late?' · '+m.late+' tarefa(s) atrasada(s)':'')+(m.atraso>=1&&!m.insuf?' · atraso estimado ~'+Math.round(m.atraso)+'d se nada mudar':'')+'</div></div>').join('')||'<div class="da-note">Nenhum alerta.</div>')
+  +(chaves.length?'<div class="da-note" style="margin-top:6px">Dependência de pessoa-chave: <b>'+chaves.map(daE_).join(', ')+'</b> concentra(m) 3 ou mais projetos de complexidade alta.</div>':'')+'</div>'
+  +'<div class="card"><div class="card-title"><h3>Projetos que precisam de reforço</h3></div>'+(reinf.map(m=>'<div class="da-row"><span>'+projetoLinkHtml(m.proj.pj)+'</span><b>+'+daF_(m.gap)+'h/sem</b></div>').join('')||'<div class="da-note">Nenhum projeto com excesso de carga entre os membros.</div>')+'<div class="da-note" style="margin-top:4px">Horas por semana que os membros sobrecarregados não conseguem absorver.</div></div></div></div>'
+  +'<div class="card"><div class="card-title"><h3>Realocações sugeridas</h3><span class="sub">quem pode ir para qual projeto para dar velocidade à entrega</span></div><div class="table-wrap"><table class="da-t"><thead><tr><th>Profissional</th><th>Projeto sugerido</th><th>Horas/sem</th><th>Ganho estimado</th><th>Risco do projeto</th><th>Pressão da pessoa depois</th><th></th></tr></thead><tbody>'
+  +(rel.slice(0,6).map(r=>'<tr><td>'+daAv_(r.x.p.a)+'<b>'+daE_(r.x.p.a)+'</b></td><td>'+projetoLinkHtml(r.s.m.proj.pj)+'</td><td>'+r.s.h+'h</td><td class="da-pos">'+(r.s.ganho>=1?'−'+Math.round(r.s.ganho)+' dias de atraso estimado':'melhora a folga')+'</td><td>'+daRiscoChip_(r.s.m.lvl)+' → '+daRiscoChip_(r.s.dep.lvl)+'</td><td>'+daChip_(r.s.cp.lvl)+'</td><td><button class="da-btn" data-da="rel|'+daId_(r.x.p)+'">Detalhar</button></td></tr>').join('')||'<tr><td colspan="7" class="da-note">Sem sugestões: nenhum projeto com necessidade e pessoa com folga e área compatível.</td></tr>')
+  +'</tbody></table></div></div>'
+  +'<div class="card"><div class="card-title"><h3>Mapa de pressão por pessoa</h3></div><div class="da-grid3">'+fl.map(x=>'<div class="da-pc" data-da="ind|'+daId_(x.p)+'">'+daAv_(x.p.a)+'<b>'+daE_(x.p.a)+'</b> '+daChip_(x.c.lvl)+'<div style="margin-top:4px">'+(x.c.insuf?'':daBar_(x.c.util))+'</div><div class="da-note">'+(x.c.insuf?'Dados insuficientes para avaliar':Math.round(x.c.util)+'% · '+daF_(x.c.pl)+'h de '+x.c.cap+'h')+'</div></div>').join('')+'</div></div>';
+}
+
+function daVInd_(f,d){
+  const H=f.H, todos=daFiltrados_(H);
+  const lista=daCalcTodos_(H);
+  let x=DA.sel?daXpor_(DA.sel,H):null;
+  if(!x) x=todos[0]||lista[0]; if(!x) return '';
+  DA.sel=daId_(x.p);
+  const r=daAvaliar_(x,d,H), c=x.c, b=x.b;
+  const wk=[1,2,3,4].map(w=>b.rows.reduce((s,rr)=>s+(rr.diasEf>(w-1)*7?rr.taxa*Math.min(1,(rr.diasEf-(w-1)*7)/7):0),0));
+  const rf=daReforco_(x,H), sd=c.util>DA_PARAM.pressao.aten?daSaida_(x):null;
+  return '<div class="card"><div class="da-top"><div>'+daAv_(x.p.a)+'<b style="font-size:16px">'+daE_(x.p.a)+'</b> '+daChip_(c.lvl)+'<div class="da-note">'+daE_(x.p.cargo||'sem cargo')+' · '+daE_(x.p.area||'sem área')+' · Senioridade cadastrada: '+daE_(x.p.nv||'não informada')+'</div></div><div><select data-dasel="ind">'+lista.map(o=>daOpt_(daId_(o.p),o.p.a,daId_(x.p))).join('')+'</select> <button class="da-btn p" data-da="cmp|'+daId_(x.p)+'">Comparar</button> <button class="da-btn p" data-da="sim|'+daId_(x.p)+'">Simular alocação</button> <button class="da-btn p" data-da="rel|'+daId_(x.p)+'">Sugerir realocação</button></div></div></div>'
+  +'<div class="da-kpis">'+daKpi_(b.rows.length,'Projetos ativos (carga ponderada '+b.pond+')')+daKpi_(c.insuf?'—':daF_(c.pl)+'h','Planejadas/sem ('+H+'d) · capacidade '+c.cap+'h')+daKpi_(daF_(b.horasApontadas)+'h','Horas apontadas (total) — não é carga futura')+daKpi_(c.insuf?'—':daF_(Math.max(0,c.free))+'h','Capacidade teórica livre/sem')+daKpi_(b.nTot,'Tarefas abertas')+daKpi_(b.late,'Atrasadas')+daKpi_(b.blocked,'Bloqueadas (≠ atrasadas)')+daKpi_(b.near,'Vencendo em 7 dias')+'</div>'
+  +'<div class="da-grid2"><div>'
+  +'<div class="card"><div class="card-title"><h3>Projetos ativos e próximas entregas</h3></div><div class="table-wrap"><table class="da-t"><thead><tr><th>Projeto</th><th>Complex.</th><th>Prior.</th><th>Restante</th><th>Tarefas</th><th>Entrega</th><th>Risco do projeto</th></tr></thead><tbody>'
+  +(b.rows.slice().sort((a,b2)=>(a.dias??9999)-(b2.dias??9999)).map(rr=>{ const m=daProjetos_(H)[rr.proj.pj]; return '<tr><td>'+projetoLinkHtml(rr.proj.pj)+'</td><td>'+daE_(rr.proj.cx||'—')+'</td><td>'+daE_(rr.proj.pr||'—')+'</td><td>'+daF_(rr.pa.h)+'h</td><td>'+rr.pa.n+(rr.pa.s?' <span class="da-note">('+rr.pa.s+' sem estimativa)</span>':'')+'</td><td>'+(rr.dias===null?'sem previsão':rr.dias<0?'vencida '+(-rr.dias)+'d':rr.dias+' dias')+'</td><td>'+(m?daRiscoChip_(m.lvl):'—')+'</td></tr>'; }).join('')||'<tr><td colspan="7" class="da-note">Sem projetos ativos.</td></tr>')+'</tbody></table></div></div>'
+  +'<div class="card"><div class="card-title"><h3>Capacidade futura por semana</h3><span class="sub">linha = '+c.cap+'h</span></div><div class="da-wk">'+wk.map((v,i)=>{ const u=v/c.cap*100; return '<div><div class="da-col"><i style="height:'+daClamp_(v/(c.cap*1.2)*100,0,100)+'%;background:'+(u>DA_PARAM.pressao.alta?'var(--pr-alta)':u>DA_PARAM.pressao.aten?'#ea580c':u>DA_PARAM.pressao.disp?'var(--pr-media)':'var(--pr-baixa)')+'"></i><span class="da-capline" style="bottom:'+(100/1.2)+'%"></span></div>Sem '+(i+1)+'<br><b>'+daF_(v)+'h</b></div>'; }).join('')+'</div><div class="da-note">Livre por semana (média) — 7 dias: '+daF_(daCalc_(b,7).free)+'h · 15 dias: '+daF_(daCalc_(b,15).free)+'h · 30 dias: '+daF_(daCalc_(b,30).free)+'h. A carga cai quando os projetos encerram. Feriados e ausências ainda não entram no cálculo.</div></div>'
+  +'</div><div>'
+  +'<div class="card"><div class="card-title"><h3>Aderência à demanda</h3></div><div class="da-big">'+(r.ad.score===null?'n/d':r.ad.score+'<span class="da-note"> / 100</span>')+'</div><div class="da-why"><b>'+daE_(r.ver)+'</b>'+(r.score!=null?' · nota final '+r.score:'')+'<ul>'+daLi_(r.ad.ex)+'<li>Capacidade: '+(c.insuf?'dados insuficientes':daF_(c.free)+'h livres/sem para '+d.h+'h pedidas — '+(c.free>=d.h?'<span class="da-pos">cabe</span>':'<span class="da-neg">não cabe integralmente</span>'))+'</li>'+(c.insuf?'':'<li>Com a demanda: utilização '+Math.round(r.cDep.util)+'% (risco de alocação <b>'+(r.risco||'—')+'</b>)</li>')+'</ul>'+(r.ad.falt.length?'<div class="da-note">Dados ausentes: '+r.ad.falt.map(daE_).join('; ')+'</div>':'')+'</div></div>'
+  +'<div class="card"><div class="card-title"><h3>Pressão de trabalho</h3></div><div class="da-why"><b>'+(c.lvl<0?'Dados insuficientes para avaliar':DA_LV[c.lvl])+'</b><ul>'+c.why.map(w=>'<li>'+daE_(w)+'</li>').join('')+'</ul></div>'+(b.cov!==null?'<div class="da-note" style="margin-top:6px">Cobertura de horas estimadas: '+b.cov+'% das tarefas abertas.</div>':'')+'</div>'
+  +'<div class="card"><div class="card-title"><h3>Realocação — resumo</h3></div>'
+  +(sd?(sd.lista.length?'<div>Pessoa acima de '+DA_PARAM.pressao.aten+'%: sugere-se liberar horas de <b>'+daE_(sd.lista[0].r.proj.pj)+'</b>.</div>':'<div class="da-note">Sem opção segura de liberação.</div>')
+      :(rf.lista[0]?'<div>Pode reforçar <b>'+daE_(rf.lista[0].m.proj.pj)+'</b> com <b>'+rf.lista[0].h+'h/sem</b>.</div>':'<div class="da-note">'+(rf.insuf?'Dados insuficientes para avaliar.':'Sem destino claro com a capacidade atual.')+'</div>'))
+  +'<button class="da-btn" style="margin-top:6px" data-da="rel|'+daId_(x.p)+'">Ver detalhes e impacto</button></div></div></div>';
+}
+
+function daVCmp_(f,d){
+  const H=f.H, lista=daCalcTodos_(H);
+  const xs=DA.cmp.map(id=>daXpor_(id,H)).filter(Boolean);
+  if(!xs.length) return '<div class="card"><div class="da-note">Escolha pessoas pelo botão <b>Comparar</b> na Visão executiva (até 3).</div></div>';
+  const rs=xs.map(x=>daAvaliar_(x,d,H));
+  const num=(fn)=>{ const v=rs.map(fn).filter(z=>typeof z==='number'); return v.length>1?Math.max(...v):null; };
+  const defs=[['Área / senioridade',r=>daE_((r.p.area||'—')+' · '+(r.p.nv||'—')),null],['Aderência (0–100)',r=>r.ad.score===null?'n/d':r.ad.score,r=>r.ad.score],['Livre no período (h/sem)',r=>r.c.insuf?'—':daF_(r.c.free),r=>r.c.insuf?null:r.c.free],['Utilização atual',r=>r.c.insuf?'—':Math.round(r.c.util)+'%',null],['Utilização com a demanda',r=>r.c.insuf?'—':Math.round(r.cDep.util)+'%',null],['Pressão atual',r=>daChip_(r.c.lvl),null],['Atrasadas / bloqueadas',r=>r.x.b.late+' / '+r.x.b.blocked,null],['Entregas em ≤15 dias',r=>r.c.ent15,null],['Risco de alocação',r=>r.risco||'—',null],['Nota final',r=>r.score??'—',r=>r.score],['Veredito',r=>daE_(r.ver),null]];
+  return '<div class="card"><div class="card-title"><h3>Comparação (até 3 profissionais)</h3></div><div class="table-wrap"><table class="da-t"><thead><tr><th></th>'+rs.map(r=>'<th>'+daE_(r.p.a)+' <button class="da-btn" data-da="rm|'+daId_(r.p)+'">×</button></th>').join('')+'</tr></thead><tbody>'
+  +defs.map(([l,fn,num2])=>{ const best=num2?num(num2):null; return '<tr><td class="da-note">'+l+'</td>'+rs.map(r=>'<td class="'+(best!==null&&num2(r)===best?'da-hl':'')+'">'+fn(r)+'</td>').join('')+'</tr>'; }).join('')
+  +'</tbody></table></div><div class="da-note" style="margin-top:4px">Verde = melhor valor da linha.</div><div class="da-grid3" style="margin-top:8px">'+rs.map(r=>'<div class="da-why"><b>'+daE_(r.p.a)+'</b><ul>'+daLi_(r.ad.ex)+r.c.why.map(w=>'<li class="da-mut">'+daE_(w)+'</li>').join('')+'</ul>'+(r.ad.falt.length?'<div class="da-note">Dados ausentes: '+r.ad.falt.map(daE_).join('; ')+'</div>':'')+'</div>').join('')+'</div></div>';
+}
+
+function daVSim_(f,d){
+  const H=f.H, lista=daCalcTodos_(H);
+  let x=DA.simP?daXpor_(DA.simP,H):null; if(!x) x=lista[0]; if(!x) return '';
+  DA.simP=daId_(x.p);
+  const h=DA.simH??d.h, w=DA.simW??d.sem;
+  const b=x.c, a=daCalc_(x.b,H,{h,sem:w}), ad=daAderencia_(x.p,d);
+  const m=d.prj?daProjetos_(H)[d.prj]:null;
+  const dep=m?daProjDepois_(m,h):null;
+  const riscos=[];
+  if(a.util>110) riscos.push(['neg','Sobrecarga: utilização acima de 110%']); else if(a.util>95) riscos.push(['neg','Utilização acima de 95% — sem margem para imprevistos']);
+  if(a.ent7>=DA_PARAM.escalonar.entregas7) riscos.push(['neg','Concentração: '+a.ent7+' entregas em até 7 dias']);
+  if(x.b.late>=2) riscos.push(['neg',x.b.late+' tarefas já atrasadas competem com a nova demanda']);
+  if(d.area&&!ad.areaOk) riscos.push(['neg','Área diferente da necessária']);
+  if(b.insuf) riscos.push(['mut','Dados insuficientes: a simulação não é confiável sem horas estimadas']);
+  if(!riscos.length) riscos.push(['pos','Sem riscos relevantes com os dados disponíveis']);
+  const row=(l,p1,p2)=>'<tr><td class="da-note">'+l+'</td><td>'+p1+'</td><td><b>'+p2+'</b></td></tr>';
+  const nProj=x.b.rows.length, ja=d.prj&&x.b.rows.some(r=>r.proj.pj===d.prj);
+  return '<div class="card"><div class="card-title"><h3>Simulador de alocação</h3><span class="sub">o cenário não altera nenhum dado real</span></div><div class="da-form"><div><label>Profissional</label><select data-dasel="sim">'+lista.map(o=>daOpt_(daId_(o.p),o.p.a,daId_(x.p))).join('')+'</select></div><div><label>Horas por semana</label><input type="number" min="1" max="40" value="'+h+'" data-dasel="simh"></div><div><label>Duração (semanas)</label><input type="number" min="1" max="52" value="'+w+'" data-dasel="simw"></div></div></div>'
+  +'<div class="card"><table class="da-t"><thead><tr><th></th><th>Antes</th><th>Depois (simulado)</th></tr></thead><tbody>'
+  +row('Pressão de trabalho',daChip_(b.lvl),daChip_(a.lvl))
+  +row('Capacidade planejada ('+H+'d)',b.insuf?'—':daF_(b.pl)+'h / '+b.cap+'h ('+Math.round(b.util)+'%)',a.insuf?'—':daF_(a.pl)+'h / '+a.cap+'h ('+Math.round(a.util)+'%)')
+  +row('Capacidade livre',b.insuf?'—':daF_(b.free)+'h/sem',a.insuf?'—':daF_(a.free)+'h/sem')
+  +row('Projetos ativos',nProj,nProj+(d.prj&&!ja?1:0))
+  +row('Tarefas em aberto',x.b.nTot,x.b.nTot+' + as da nova demanda (ainda não existem)')
+  +(m?row('Prazo de "'+daE_(d.prj)+'"',daRiscoChip_(m.lvl)+(m.atraso>=1?' atraso estimado ~'+Math.round(m.atraso)+'d':''),daRiscoChip_(dep.lvl)+(dep.atraso>=1?' atraso estimado ~'+Math.round(dep.atraso)+'d':' no prazo')):'')
+  +row('Aderência à demanda',ad.score===null?'n/d':ad.score,ad.score===null?'n/d':ad.score)
+  +'</tbody></table><div class="da-why"><b>Riscos e justificativas</b><ul>'+daLi_(riscos)+daLi_(ad.ex)+'</ul></div><div class="da-note" style="margin-top:8px">Simulação apenas visual: nenhuma alocação é criada ou alterada. A confirmação continua sendo feita pelo gestor nos fluxos atuais do portal.</div></div>';
+}
+
+function daVRel_(f,d){
+  const H=f.H, lista=daCalcTodos_(H);
+  let x=DA.relP?daXpor_(DA.relP,H):null; if(!x) x=lista[0]; if(!x) return '';
+  DA.relP=daId_(x.p);
+  const c=daCalc_(x.b,15), rf=daReforco_(x,H), sob=c.util>DA_PARAM.pressao.aten&&!c.insuf, sd=sob?daSaida_(x):null;
+  let html='<div class="card"><div class="card-title"><h3>Sugestão de realocação</h3><span class="sub">para qual projeto levar a pessoa para dar velocidade à entrega e aos resultados</span></div><div class="da-form"><div><label>Profissional</label><select data-dasel="rel">'+lista.map(o=>daOpt_(daId_(o.p),o.p.a,daId_(x.p))).join('')+'</select></div></div>'
+   +'<div style="margin-top:8px">'+daAv_(x.p.a)+'<b>'+daE_(x.p.a)+'</b> · '+daE_(x.p.area||'sem área')+' · '+daE_(x.p.nv||'sem nível')+' '+daChip_(c.lvl)+' <span class="da-note">'+(c.insuf?'':Math.round(c.util)+'% utilizada · livre '+daF_(c.free)+'h/sem (15d)')+'</span></div>'
+   +'<div class="da-note" style="margin-top:6px">Nota do destino = necessidade do projeto '+DA_PARAM.realoc.necessidade*100+'% + aderência (área/nível) '+DA_PARAM.realoc.fit*100+'% + efeito na capacidade '+DA_PARAM.realoc.capacidade*100+'%. Só entra projeto com área compatível (área dos membros atuais), folga real (≥'+DA_PARAM.folgaMinH+'h/sem, mantendo ≤'+DA_PARAM.utilMaxRealoc+'% de utilização) e dados suficientes. Considera apenas pessoas e projetos visíveis para o seu perfil.</div></div>';
+  if(c.insuf) return html+'<div class="card"><div class="da-why"><b>Dados insuficientes para avaliar</b> — a pessoa não tem horas estimadas suficientes nas tarefas abertas. Nenhuma realocação é sugerida.</div></div>';
+  html+='<div class="card"><div class="card-title"><h3>'+(sob?'Onde há folga? (pessoa acima do limite — veja a liberação abaixo primeiro)':'Reforçar projetos que precisam de velocidade')+'</h3></div>'
+   +(rf.lista.length?rf.lista.slice(0,3).map((s,i)=>'<div class="da-sug"><div class="da-top"><div><b>'+(i+1)+'. '+projetoLinkHtml(s.m.proj.pj)+'</b> <span class="da-pill">nota '+s.sc+'</span></div><div>'+daRiscoChip_(s.m.lvl)+' → '+daRiscoChip_(s.dep.lvl)+'</div></div>'
+     +'<div style="margin-top:4px">Alocar <b>'+s.h+'h/sem</b> · atraso estimado <b>~'+Math.round(s.m.atraso)+'d → ~'+Math.round(s.dep.atraso)+'d</b> · pressão da pessoa depois: '+daChip_(s.cp.lvl)+'</div>'
+     +'<div class="da-why"><b>Por que este projeto</b><ul><li>Os membros atuais têm ~'+daF_(s.m.gap)+'h/sem acima do que conseguem absorver (necessário ~'+daF_(s.m.need)+'h/sem); '+(s.m.dias===null?'sem previsão de entrega':s.m.dias<0?'entrega vencida':'entrega em '+s.m.dias+' dias')+', prioridade '+daE_(s.m.proj.pr||'—')+', complexidade '+daE_(s.m.proj.cx||'—')+'</li>'
+     +'<li class="'+(s.f.a===100?'da-pos':'da-mut')+'">Área da pessoa ('+daE_(x.p.area)+') já atua no projeto</li>'
+     +(s.f.n===null?'<li class="da-mut">Nível/complexidade: dados insuficientes para avaliar</li>':'<li class="'+(s.f.n===100?'da-pos':'da-neg')+'">Nível '+daE_(x.p.nv)+' '+(s.f.n===100?'atende':'está abaixo do ideal para')+' complexidade '+daE_(s.m.proj.cx)+'</li>')
+     +'<li>Dados usados: horas estimadas restantes e apontadas, jornada de '+DA_PARAM.horasSemana+'h/sem, previsão de entrega atual</li></ul></div>'
+     +'<div style="margin-top:6px"><button class="da-btn" data-da="sim|'+daId_(x.p)+'">Simular esta alocação</button> <span class="da-note">A aplicação é feita pelo gestor nos fluxos atuais do portal.</span></div></div>').join('')
+   :'<div class="da-note">Nenhum projeto com necessidade real, área compatível e capacidade livre para esta pessoa.</div>')+'</div>';
+  if(sob) html+='<div class="card"><div class="card-title"><h3>Liberar capacidade — de onde tirar e quem assume</h3><span class="sub">excesso ≈ '+daF_(sd.excesso)+'h/sem acima de '+DA_PARAM.utilSaida+'%</span></div>'
+   +(sd.lista.length?sd.lista.slice(0,2).map(s=>'<div class="da-sug"><div class="da-top"><b>Reduzir ~'+s.hRel+'h/sem em '+projetoLinkHtml(s.r.proj.pj)+'</b><span>'+daRiscoChip_(s.m.lvl)+' · prioridade '+daE_(s.r.proj.pr||'—')+'</span></div><div class="da-why"><ul><li>Escolhido por ter menor prioridade/necessidade entre os projetos da pessoa</li><li>Quem pode assumir: '+(s.rec.length?s.rec.map(z=>'<b>'+daE_(z.o.p.a)+'</b> ('+daE_(z.o.p.area)+', '+daE_(z.o.p.nv||'sem nível')+'; livre '+daF_(z.o.c.free)+'h/sem; '+daChip_(z.o.c.lvl)+')').join(' · '):'<span class="da-neg">ninguém visível com área compatível e folga — avaliar rever prazo ou prioridade</span>')+'</li><li>Efeito: utilização cai de '+Math.round(c.util)+'% para ~'+Math.round((c.pl-s.hRel)/c.cap*100)+'%</li></ul></div></div>').join(''):'<div class="da-note">Sem opção segura: considerar rever prioridades e prazos.</div>')+'</div>';
+  const mp=Object.values(daProjetos_(15)).filter(m=>!m.insuf).sort((a,b)=>b.gap-a.gap).slice(0,8);
+  html+='<div class="card"><div class="card-title"><h3>Projetos que mais precisam de velocidade</h3></div><div class="table-wrap"><table class="da-t"><thead><tr><th>Projeto</th><th>Entrega</th><th>Esforço restante/sem</th><th>Excesso dos membros</th><th>Atraso estimado</th><th>Risco</th></tr></thead><tbody>'
+   +mp.map(m=>'<tr><td>'+projetoLinkHtml(m.proj.pj)+'</td><td>'+(m.dias===null?'sem previsão':m.dias<0?'vencida':m.dias+'d')+'</td><td>'+daF_(m.need)+'h</td><td>'+(m.gap>0.5?'+':'')+daF_(m.gap)+'h</td><td>'+(m.atraso>=1?'~'+Math.round(m.atraso)+'d':'—')+'</td><td>'+daRiscoChip_(m.lvl)+'</td></tr>').join('')+'</tbody></table></div></div>';
+  return html;
+}
+
+
+// Explicação "na prática" — usa os parâmetros vigentes (DA_PARAM) e, no final, os números reais de uma pessoa da base.
+function daAbrirExplicacao_(){
+  const P=DA_PARAM, pc=P.pressao;
+  const bloco=(emoji,titulo,oQueE,como,exemplo)=>'<div style="margin-bottom:22px"><div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px">'+emoji+' '+titulo+'</div><p style="font-size:13px;color:var(--text-muted);line-height:1.6;margin:0 0 8px">'+oQueE+'</p><p style="font-size:12.5px;color:var(--text-faint);line-height:1.6;margin:0 0 8px"><strong>Como é calculado:</strong> '+como+'</p>'+(exemplo?'<div style="background:var(--surface-alt);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--text-muted);line-height:1.55"><strong>Exemplo:</strong> '+exemplo+'</div>':'')+'</div>';
+  let h='<p style="font-size:13px;color:var(--text-muted);margin-bottom:6px">A Decisão de Alocação é um <strong>apoio à decisão</strong>: mostra números e justificativas, mas quem decide é o gestor. Nada aqui altera alocações reais. Os exemplos abaixo usam números ilustrativos; no fim há um caso com dados reais da sua base.</p><p style="font-size:12px;color:var(--text-faint);margin-bottom:18px">Os limites e pesos citados são os parâmetros atuais, ainda sujeitos à validação dos gestores.</p>';
+  h+=bloco('🕒','Capacidade da pessoa','Quantas horas por semana uma pessoa pode dedicar aos projetos.','Jornada padrão de '+P.horasSemana+'h por semana (8h × 5 dias). Feriados e ausências ainda não são descontados.','Capacidade = <strong>'+P.horasSemana+'h/sem</strong> para todos.');
+  h+=bloco('⏳','Esforço restante por projeto','O trabalho que ainda falta para uma pessoa em cada projeto.','Soma, só das tarefas ABERTAS dela, as horas estimadas menos as horas que ela já apontou na mesma tarefa. Tarefa concluída ou cancelada não conta. Tarefa com vários responsáveis tem as horas divididas entre eles. Tarefa sem horas estimadas não entra nas horas — ela é contada à parte (cobertura) e nunca é "chutada".','Ana tem 3 tarefas abertas no projeto Alfa: 20h estimadas (já apontou 5h), 30h estimadas (apontou 0h) e uma sem estimativa. Esforço restante = (20−5) + 30 = <strong>45h</strong>; cobertura = 2 de 3 tarefas = <strong>67%</strong>.');
+  h+=bloco('📈','Carga semanal planejada','Quantas horas por semana a pessoa precisa dedicar para entregar no prazo.','Para cada projeto: esforço restante ÷ semanas até a entrega (mínimo de 1 semana; projeto vencido concentra o esforço na próxima semana; projeto sem previsão é diluído em '+P.semanasSemData+' semanas, e isso é avisado). A carga é a soma dos projetos, olhando duas janelas — os próximos 7 dias e o período escolhido (7/15/30) — e vale a <strong>pior</strong> das duas, para um aperto de curto prazo não sumir na média.','60h restantes num projeto que entrega em 9 dias: 60 ÷ (9/7) = <strong>46,7h/sem</strong>. Sobre '+P.horasSemana+'h de capacidade, a utilização é <strong>117%</strong>. Na média de 30 dias seria só 14h/sem (35%), mas o pico dos primeiros 7 dias é o que importa.');
+  h+=bloco('🚦','Pressão de trabalho','A classificação principal: Disponível, Atenção, Alta pressão, Crítico ou Dados insuficientes.','Utilização = carga semanal ÷ capacidade. Até '+pc.disp+'% Disponível · até '+pc.aten+'% Atenção · até '+pc.alta+'% Alta pressão · acima Crítico. Sobe 1 nível se a pessoa tem '+P.escalonar.atrasadas+' ou mais tarefas atrasadas, ou '+P.escalonar.entregas7+' ou mais entregas em até 7 dias. Tarefa bloqueada é só informada e nunca conta como atrasada. Se menos de '+P.coberturaMin+'% das tarefas abertas têm horas estimadas (ou há projetos sem nenhuma tarefa), aparece <strong>Dados insuficientes para avaliar</strong>.','Utilização de 74% = Atenção. Se a mesma pessoa tiver 3 tarefas atrasadas, sobe para <strong>Alta pressão</strong>. Se só 30% das tarefas tiverem estimativa, o resultado é <strong>Dados insuficientes</strong> — melhor não opinar do que errar.');
+  h+=bloco('🎯','Aderência à demanda','O quanto a pessoa combina com a demanda escolhida (0 a 100).','Média ponderada: área '+P.aderencia.area*100+'% · senioridade '+P.aderencia.nivel*100+'% · complexidade '+P.aderencia.cx*100+'%. Área igual vale 100, outra área vale 0 (áreas afins só valem se os gestores as cadastrarem). Senioridade: exata 100, um nível acima 90, dois ou mais acima 70 (perfil mais caro que o necessário), um abaixo 50, dois abaixo 20. Complexidade Baixa/Média/Alta pede nível Júnior+/Pleno+/Sênior+. A senioridade vem só do cadastro (campo Nível), nunca do cargo. Item sem informação sai da conta e é listado como "dado ausente".','Demanda de Engenharia de Dados, mínimo Pleno, complexidade Alta. Beto (Dados, Pleno): área 100, nível 100, complexidade 65 → (100×0,5 + 100×0,3 + 65×0,2) = <strong>93</strong>.');
+  h+=bloco('🏆','Nota final e ranking','A ordem dos candidatos para a demanda.','Nota = aderência × '+P.rank.aderencia*100+'% + capacidade × '+P.rank.capacidade*100+'% + (100 − pressão) × '+P.rank.pressao*100+'%. Capacidade = horas livres ÷ horas pedidas (máx. 100). Pressão vale 0/35/70/100 para Disponível/Atenção/Alta/Crítico. Primeiro vêm os "Indicados", depois os com ressalvas ou não indicados (área errada ou utilização acima de 110% com a demanda), e por último os sem dados.','Aderência 93, 20h livres para 12h pedidas (capacidade 100), Disponível (pressão 0): 93×0,4 + 100×0,3 + 100×0,3 = <strong>97</strong>.');
+  h+=bloco('⚠️','Risco de alocação','O impacto de somar a demanda ao que a pessoa já tem.','Recalcula a utilização somando as horas por semana da demanda: acima de 110% é Alto, acima de 95% Médio, senão Baixo.','Pessoa com 74% recebe 12h/sem (30% da jornada): vai a 104% → risco <strong>Médio</strong>; com 20h/sem iria a 124% → <strong>Alto</strong>.');
+  h+=bloco('📦','Risco e atraso estimado do projeto','Quanto o projeto precisa de reforço.','Para cada membro acima de '+P.utilMaxRealoc+'% de utilização, o excesso de horas é repartido entre os projetos dele, proporcionalmente ao esforço de cada um. O excesso somado dos membros é o "gap" (horas por semana que o time não consegue absorver). Gap ÷ esforço semanal necessário dá a fração do trabalho em risco; multiplicada pelos dias até a entrega, dá o <strong>atraso estimado</strong> (uma estimativa, não um fato). Projeto vencido sobe um nível; sem horas estimadas suficientes, fica "Dados insuficientes".','Projeto precisa de 78h/sem; seus membros têm 11h/sem acima do limite. Fração em risco = 14%; entrega em 9 dias → atraso estimado de <strong>~1 dia</strong>.');
+  h+=bloco('🔁','Sugestão de realocação','Para qual projeto levar uma pessoa para dar velocidade à entrega.','Considera só projetos ativos que a pessoa ainda não integra, com gap positivo, área da pessoa já presente no projeto, folga mínima de '+P.folgaMinH+'h/sem e utilização final de no máximo '+P.utilMaxRealoc+'%. Nota do destino = necessidade '+P.realoc.necessidade*100+'% + aderência '+P.realoc.fit*100+'% + efeito na capacidade '+P.realoc.capacidade*100+'%. Horas sugeridas = o menor entre a folga, o gap do projeto e 20h/sem. Para quem está acima de '+pc.aten+'%, sugere de qual projeto reduzir horas (o de menor prioridade e menor necessidade) e quem pode assumir (área compatível, folga e pressão Disponível/Atenção).','Livre L (QA, 0% utilizada) pode reforçar o projeto Alfa com 10h/sem: o atraso estimado cai de ~1 dia para 0 e a pressão dela continua Disponível.');
+  h+=bloco('🧹','O que fica de fora','Para os números serem comparáveis e sem duplicidade.','Pessoas com Participa das análises = Não, Heads e inativos não entram. Projetos concluídos, cancelados ou pausados não geram carga. Cada tarefa conta uma vez por pessoa. Gestores e Heads veem só as pessoas e projetos que o perfil deles já enxerga.',null);
+  // caso real
+  try{
+    const lista=daCalcTodos_(+(document.getElementById('da-f-per')||{value:15}).value||15).filter(x=>x.b.rows.length>0);
+    const alvo=(DA.sel&&daXpor_(DA.sel,+document.getElementById('da-f-per').value||15))||lista[0];
+    if(alvo){ const H=+document.getElementById('da-f-per').value||15, c=alvo.c, b=alvo.b;
+      h+='<div style="border-top:2px solid var(--border);padding-top:14px;margin-top:6px"><div style="font-size:14px;font-weight:800;margin-bottom:6px">🔎 Na prática, com dados reais: '+daE_(alvo.p.a)+'</div><p style="font-size:12.5px;color:var(--text-faint);margin:0 0 8px">(para ver outra pessoa, selecione-a em Análise individual e abra esta explicação de novo)</p>'
+       +'<table class="da-t"><thead><tr><th>Projeto</th><th>Restante</th><th>Entrega</th><th>Semanas</th><th>Carga/sem</th></tr></thead><tbody>'
+       +b.rows.map(r=>'<tr><td>'+daE_(r.proj.pj)+'</td><td>'+daF_(r.pa.h)+'h'+(r.pa.s?' <span class="da-note">('+r.pa.s+' tarefa(s) sem estimativa)</span>':'')+'</td><td>'+(r.dias===null?'sem previsão':r.dias<0?'vencida':r.dias+' dias')+'</td><td>'+daF_(r.diasEf/7)+'</td><td><b>'+daF_(r.taxa)+'h</b></td></tr>').join('')
+       +'</tbody></table><div style="background:var(--surface-alt);border-radius:8px;padding:10px 12px;font-size:12.5px;line-height:1.6;margin-top:8px">Soma (pior janela entre 7 dias e '+H+' dias) = <strong>'+daF_(c.pl)+'h/sem</strong> sobre '+c.cap+'h → utilização <strong>'+Math.round(c.util)+'%</strong> → <strong>'+(c.lvl<0?'Dados insuficientes para avaliar':DA_LV[c.lvl])+'</strong>.<ul style="margin:6px 0 0 16px;padding:0">'+c.why.map(w=>'<li>'+daE_(w)+'</li>').join('')+'</ul></div></div>'; }
+  }catch(e){}
+  document.getElementById('task-modal-title').textContent='Como os indicadores são calculados — Decisão de Alocação';
+  document.getElementById('task-modal-body').innerHTML=h;
+  document.getElementById('task-modal-overlay').classList.add('show');
+}
+function daAtivarAba_(t){
+  document.querySelectorAll('#ia-tabs [data-ia-tab]').forEach(b=>b.classList.toggle('on',b.dataset.iaTab===t));
+  document.getElementById('ia-tab-carga').style.display=t==='carga'?'':'none';
+  document.getElementById('ia-tab-decisao').style.display=t==='decisao'?'':'none';
+  if(t==='decisao'){ if(!DA.iniciado) daIniciar_(); else daRender_(); }
+}
 function initInteligenciaAlocacao(){
+  DA.iniciado=false; DA.memo=null; DA.memoPorH={}; DA.cmp=[]; DA.sel=''; DA.simP=''; DA.relP='';
+  document.querySelectorAll('#ia-tabs [data-ia-tab]').forEach(b=>b.onclick=()=>daAtivarAba_(b.dataset.iaTab));
+  daAtivarAba_('carga');
   // Cálculo do score de TODAS as pessoas feito aqui, uma vez só (ao abrir a
   // página) — não mais dentro de renderInteligenciaAlocacao, que roda a cada
   // troca de filtro. Os dados-base (D.p, D.pj, PROJ_TASKS) não mudam entre um
@@ -10261,7 +10770,7 @@ async function excluirStatusReportPainel_(id,btn){
 // este mapa (ver comentário lá).
 const PAGINA_CAMPOS_NECESSARIOS={
   cliente:['PROJ_TASKS'],
-  inteligencia:['PROJ_TASKS','PSTAT','PHEST','PHAP'],
+  inteligencia:['PROJ_TASKS','PSTAT','PHEST','PHAP','PALOC'],
   pessoa:['PM','PM_PROJ','PROJ_TASKS','CD','CTOK','PSTAT','PPREVISTO','PHEST','PHAP','HM','PVENC'],
   area:['PPREVISTO','PM'],
   // DESVIO da lista original (achado ao auditar chamadas fora das páginas
