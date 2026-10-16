@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwzUoqck7O5DTQoWHKRWFMKLJMw-pK92T8uCV6mG1HDYi70WMvdt89Mo2CUeNxFia1h/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyF1LaM0HbcO8Wj9AnbaJmWu3kai3K0ApXHzXKEajh66tf4VGyT_hJW5mQuH6nuOE9o9w/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1351,6 +1351,39 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .av-lock{font-size:12px;color:var(--text-faint);} .av-err{color:#dc2626;font-weight:700;font-size:12.5px;width:100%;}
 .av-ok{background:#16a34a;color:#fff;border:0;border-radius:12px;padding:11px 20px;font:800 13px var(--font-body);cursor:pointer;box-shadow:0 6px 14px rgba(22,163,74,.3);} .av-ok:disabled{opacity:.6;cursor:wait;}
 @media (max-width:820px){.av-g2,.av-g3{grid-template-columns:1fr;} .av-cards{grid-template-columns:1fr 1fr;}}
+/* v17.0 — cadastro de pessoas por blocos */
+.pa-layout{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:start;}
+.pa-steps{position:sticky;top:76px;display:flex;flex-direction:column;gap:4px;}
+.pa-steps a{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;color:var(--text-muted);text-decoration:none;font-weight:600;font-size:13px;border:1px solid transparent;}
+.pa-steps a:hover{background:var(--surface);border-color:var(--border);}
+.pa-steps a i{font-style:normal;flex:none;width:22px;height:22px;border-radius:50%;background:var(--surface-alt);display:grid;place-items:center;font-size:11px;color:var(--primary);}
+.pa-d{color:var(--text-muted);font-size:12.5px;margin:0 0 12px;}
+.pa-g{display:grid;grid-template-columns:repeat(12,1fr);gap:2px 16px;}
+.pa-g .sr-field{grid-column:span 6;margin-bottom:12px;}
+.pa-g .sr-field.s4{grid-column:span 4;}.pa-g .sr-field.s8{grid-column:span 8;}.pa-g .sr-field.s12{grid-column:span 12;}
+.pa-g .sr-field input[type=text],.pa-g .sr-field input[type=date],.pa-g .sr-field input[type=number],.pa-g .sr-field select{width:100%;box-sizing:border-box;}
+.pa-req{color:#dc2626;}.pa-err{color:#dc2626;font-size:11.5px;font-weight:600;margin-top:3px;}.pa-err:empty{display:none;}
+.pa-invalid{border-color:#dc2626 !important;background:rgba(220,38,38,.06) !important;}
+.pa-hint{font-size:11.5px;color:var(--text-faint);margin-top:4px;}.pa-hint.warn{color:#b45309;font-weight:600;}
+.pa-switch{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--border);border-radius:12px;background:var(--surface-alt);}
+.pa-switch.off{border-color:#fca5a5;background:rgba(220,38,38,.07);}
+.pa-sw{position:relative;width:46px;height:26px;flex:none;display:block;margin:0 !important;}
+.pa-sw input{opacity:0;position:absolute;inset:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1;}
+.pa-sw span{position:absolute;inset:0;background:#cbd5e1;border-radius:99px;transition:.15s;}
+.pa-sw span::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.15s;}
+.pa-sw input:checked+span{background:#16a34a;}.pa-sw input:checked+span::after{left:23px;}
+.pa-sw input:focus-visible+span{outline:3px solid #818cf8;outline-offset:2px;}
+.pa-bar{position:sticky;bottom:0;z-index:5;display:flex;gap:10px;justify-content:flex-end;align-items:center;padding:12px 0 4px;background:linear-gradient(transparent,var(--bg,#eaf5fc) 35%);}
+.pa-dirty{margin-right:auto;font-size:12px;color:#b45309;font-weight:700;}
+.pa-fchips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px;}
+.pa-fchips button{border:1px solid var(--border);background:var(--surface);color:var(--text-muted);border-radius:99px;padding:5px 12px;font:600 12px var(--font-body);cursor:pointer;}
+.pa-fchips button.on{background:var(--primary);color:#fff;border-color:var(--primary);}
+.pa-pill{display:inline-block;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700;background:#dcfce7;color:#166534;}
+.pa-pill.info{background:#e0f2fe;color:#075985;}.pa-pill.warn{background:#fef3c7;color:#92400e;}.pa-pill.mut{background:var(--surface-alt);color:var(--text-muted);}.pa-pill.bad{background:#fee2e2;color:#991b1b;}
+.pa-note{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:9px 13px;font-size:12.5px;margin:0 0 12px;}
+.pa-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:12px;}
+.pa-kpis div{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;}.pa-kpis b{display:block;font-size:22px;}.pa-kpis small{color:var(--text-muted);}
+@media (max-width:860px){.pa-layout{grid-template-columns:1fr;}.pa-steps{position:static;flex-direction:row;overflow:auto;}.pa-steps a{white-space:nowrap;}.pa-g .sr-field,.pa-g .sr-field.s4,.pa-g .sr-field.s8{grid-column:span 12;}}
 .pa-chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px;border:1px solid var(--border);border-radius:10px;background:var(--surface);min-height:44px;align-items:center;}
 .pa-chip{display:inline-flex;align-items:center;gap:6px;background:var(--primary-100,#e0f2fe);color:var(--primary);border-radius:999px;padding:4px 6px 4px 11px;font-size:12.5px;font-weight:600;}
 .pa-chip.ext{background:rgba(245,158,11,.2);color:var(--text);}
@@ -1636,7 +1669,6 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
           <button class="nav-tab" data-page="statusreport">Status Report</button>
           <button class="nav-tab" data-page="statusreportpainel">Painel de Status Report</button>
           <button class="nav-tab" data-page="pend">Pendências de Tarefas</button>
-          <button class="nav-tab" data-page="transversal">Entrega e Produtividade</button>
         </div>
       </div>
       <div class="nav-cat" data-cat="pessoas">
@@ -1644,7 +1676,6 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
         <div class="nav-cat-panel">
           <button class="nav-tab" data-page="equipe">Minha Equipe</button>
           <button class="nav-tab" data-page="pessoa">Desempenho por Pessoa</button>
-          <button class="nav-tab" data-page="alocacoes">Alocações</button>
           <button class="nav-tab" data-page="inteligencia">Carga e Risco de Alocação</button>
           <button class="nav-tab" data-page="ociosos">Pessoas Disponíveis</button>
           <button class="nav-tab" data-page="area">Visão por Área</button>
@@ -1776,7 +1807,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
 
     <!-- PAGE FERIADOS (v16.0) -->
     <section class="page" id="page-relatorioprojetos">
-      <div class="page-header"><div><h1>Relatório de Projetos e Equipes</h1><p>Cliente, projeto, previsão de entrega e equipe atuante com cargo — com organograma por projeto.</p></div></div>
+      <div class="page-header"><div><h1>Relatório de Projetos e Equipes</h1><p>Cliente, projeto, previsão de entrega e equipe atuante com cargo — com organograma por projeto. Pessoas marcadas como “não participa das análises” não aparecem na equipe.</p></div></div>
       <div class="filter-bar">
         <div class="filter-field"><label for="rp-cli">Cliente</label><select id="rp-cli"></select></div>
         <div class="filter-field"><label for="rp-proj">Projeto</label><input id="rp-proj" placeholder="buscar projeto…" style="min-width:200px"></div>
@@ -1858,21 +1889,6 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
       </div>
     </section>
 
-    <!-- PAGE ALOCAÇÕES -->
-    <section class="page" id="page-alocacoes">
-      <div class="page-header"><div><h1>Alocações</h1><p>Visão consolidada de pessoas, projetos, tarefas e horas — a partir dos dados já existentes no dashboard (equipe dos projetos, tarefas e apontamentos).</p></div></div>
-      <div class="filter-bar">
-        <div class="filter-field"><label>Pessoa</label><select id="f-aloc-pessoa"><option value="">Todas</option></select></div>
-        <div class="filter-field"><label>Qtd. de Projetos</label><select id="f-aloc-qtdproj"><option value="">Qualquer quantidade</option></select></div>
-        <div class="filter-field"><label>Status da Tarefa</label><select id="f-aloc-status"><option value="">Todos</option></select></div>
-        <div class="filter-field"><label>Complexidade</label><select id="f-aloc-complexidade"><option value="">Todas</option></select></div>
-        <div class="filter-field"><label>Prioridade</label><select id="f-aloc-prioridade"><option value="">Todas</option></select></div>
-        <button class="filter-clear" id="f-aloc-clear">Limpar filtros</button>
-      </div>
-      <div class="grid grid-kpi" id="kpi-alocacoes"></div>
-      <div id="alocacoes-content"></div>
-    </section>
-
     <!-- PAGE INTELIGÊNCIA DE ALOCAÇÃO -->
     <section class="page" id="page-inteligencia">
       <div class="page-header"><div><h1>Carga e Risco de Alocação</h1><p>Indicador de carga/risco por pessoa, combinando quantidade de projetos, complexidade, prioridade e proximidade de prazos — a partir dos mesmos dados de Alocações. É um apoio à decisão, não uma afirmação automática.</p></div></div>
@@ -1947,18 +1963,6 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
       </div>
       <div class="grid grid-kpi" id="kpi-setorial"></div>
       <div id="setorial-content"></div>
-    </section>
-
-    <!-- PAGE GESTÃO TRANSVERSAL (PROJETOS & SQUADS) -->
-    <section class="page" id="page-transversal">
-      <div class="page-header"><div><h1>Entrega e Produtividade</h1><p>Visão de LP/GP/SM: acompanhamento de entrega (atraso, bloqueios, prazo previsto x concluído) e produtividade (horas, ociosidade) por projeto/squad — "atraso causado pelo cliente" ainda não é rastreado no dashboard.</p></div></div>
-      <div class="filter-bar">
-        <div class="filter-field"><label>Cliente</label><select id="f-transversal-cl"><option value="">Todos</option></select></div>
-        <div class="filter-field"><label>Status</label><select id="f-transversal-st"><option value="">Ativos (Em Andamento/Sustentação)</option><option value="Em Andamento">Em Andamento</option><option value="Sustentação">Sustentação</option><option value="Pausado">Pausado</option><option value="Concluído">Concluído</option><option value="Pré Venda">Pré Venda</option><option value="todos">Todos os status</option></select></div>
-        <button class="filter-clear" id="f-transversal-clear">Limpar filtros</button>
-      </div>
-      <div class="grid grid-kpi" id="kpi-transversal"></div>
-      <div id="transversal-content"></div>
     </section>
 
     <!-- PAGE STATUS REPORT -->
@@ -2420,7 +2424,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v16.9';
+const APP_VERSION='v17.2';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2650,8 +2654,12 @@ async function attemptLoadWithToken(token, viewAsEmail){
 //
 // Atualize esta data junto com qualquer alteração no array abaixo — ela
 // aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='15/10/2026';
+const NOVIDADES_ATUALIZADO_EM='16/10/2026';
 const NOVIDADES=[
+  {icone:'🧹', bg:'#f1f5f9', cor:'#475569', titulo:'Páginas Alocações e Entrega e Produtividade removidas', descricao:'As páginas Alocações e Entrega e Produtividade não fazem mais parte do Portal e saíram do menu. Os dados continuam disponíveis nas demais páginas (por exemplo, Carga e Risco de Alocação, Gestão da Área e Detalhamento do Projeto).', paginas:[], data:'2026-10-16', tag:'Mudança', tagCor:'mudanca'},
+  {icone:'📊', bg:'#ecfdf5', cor:'#059669', titulo:'Participa das Análises também em Pendências, Horas Apontadas e Relatório de Equipes', descricao:'A regra do campo Participa_Analises agora vale também para Pendências de Tarefas (responsável fora das análises não é contado; a tarefa permanece se houver outro responsável ou nenhum), Gestão de Horas Apontadas (a pessoa sai da lista, dos totais e dos gráficos — você continua vendo as suas próprias horas) e Relatório de Projetos e Equipes (equipe, contagem e organograma). Projetos, tarefas e lançamentos não são excluídos.', paginas:['pend','horasapontadas','relatorioprojetos'], data:'2026-10-16', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🧑‍💼', bg:'#e0f2fe', cor:'#0284c7', titulo:'Cadastro de pessoas modernizado — Estado e Cidade', descricao:'A tela de Pessoas e Perfis agora organiza os campos em blocos (identificação, estrutura organizacional, localização, acesso e análises), valida os campos perto de onde você digita e salva sem recarregar a página. O antigo campo Localidade foi substituído por Estado e Cidade (a lista de cidades vem do IBGE e muda conforme o estado; se o serviço estiver fora do ar, a digitação é livre). O botão “Migrar Localidade” separa os valores antigos com pré-visualização, sem apagar nada. Os feriados estaduais e municipais da jornada continuam funcionando.', paginas:['pessoasadmin','horasapontadas','pessoa'], data:'2026-10-16', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'📊', bg:'#ecfdf5', cor:'#059669', titulo:'Participa das Análises?', descricao:'Novo campo no cadastro de pessoas (Participa_Analises: Sim/Não; vazio conta como Sim). Pessoas marcadas como Não deixam de entrar nos totais, médias, rankings e listas de pessoas das análises — Central de Comando, Destaques, Disponibilidade, Carga e Risco, Gestão da Área, Minha Equipe e Desempenho. Projetos e tarefas dela não são excluídos; em projetos com vários responsáveis, só a contagem dela sai. O campo não altera permissões nem login.', paginas:['pessoasadmin','futuristic','topexec','ociosos','inteligencia','setorial','equipe','pessoa'], data:'2026-10-16', tag:'Nova', tagCor:'nova'},
   {icone:'🏢', bg:'#e0f2fe', cor:'#0284c7', titulo:'Relatório de Projetos e Equipes', descricao:'Nova página no menu Projetos (somente Administrador): cliente, projeto, status, previsão de entrega inicial e atual lado a lado com a variação em dias e a equipe atuante com cargo. Filtros por cliente, projeto, status, área e cargo. Ao clicar no projeto abre o organograma, por papel no projeto ou pela hierarquia da empresa (gestor). Exporta para Excel com uma linha por projeto.', paginas:['relatorioprojetos'], data:'2026-10-15', tag:'Nova página', tagCor:'nova'},
   {icone:'🛠️', bg:'#fee2e2', cor:'#b91c1c', titulo:'Modo Manutenção', descricao:'Nova página em Administração, visível só para as contas autorizadas (tiago.ferreira@ e gestaoprojetos@): liga e desliga o bloqueio de acesso do sistema, com confirmação e motivo. Quando ativo, todos os outros usuários — inclusive outros Administradores — são bloqueados imediatamente e veem uma tela de manutenção com a mensagem e a previsão de retorno. Também há aviso prévio em faixa amarela, histórico de quem ativou/desativou e um teste de e-mail.', paginas:['manutencao'], data:'2026-10-15', tag:'Nova página', tagCor:'nova'},
   {icone:'👤', bg:'#e0f2fe', cor:'#0284c7', titulo:'Desempenho por Pessoa com as regras de Horas Apontadas', descricao:'A comparação semanal deixou de usar 40h fixas e passou a usar a jornada real da semana (8h por dia útil, descontando fins de semana e feriados conforme a Localidade da pessoa em Pessoas_Area). Novos cards: horas em tarefas, em reuniões, excedente diário e semanal, fins de semana, feriados e ociosidade vs. jornada. A tabela semanal ganhou Tarefas, Reunião, Jornada prevista, Excedente (com detalhamento dos lançamentos) e Ociosidade, além de dias expansíveis; há o novo bloco “Horas fora da jornada padrão”, o filtro Tipo de apontamento e “só semanas com excedente”. Tudo o que já existia na tela foi mantido. A jornada é só uma referência de controle, não hora extra legal.', paginas:['pessoa'], data:'2026-10-13', tag:'Melhoria', tagCor:'melhoria'},
@@ -3892,19 +3900,19 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','calendario','alocacoes','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','transversal','statusreport','statusreportpainel','logalteracoes','andamento','relatorioprojetos','permissoes','pessoasadmin','feriados','manutencao','avisos','novidades'],
+  'Administrador':  ['cliente','calendario','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','statusreport','statusreportpainel','logalteracoes','andamento','relatorioprojetos','permissoes','pessoasadmin','feriados','manutencao','avisos','novidades'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
   // Também vê Gestão Setorial (sua área) e Gestão Transversal (apoio ao GP).
-  'Head':           ['cliente','alocacoes','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','transversal','statusreport'],
+  'Head':           ['cliente','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','statusreport'],
   // Gestor: vê ele mesmo + liderados diretos (coluna Gestor de Pessoas_Area) e os
   // projetos deles — mesmo menu do Head (o recorte de dados vem do backend).
-  'Gestor':         ['cliente','alocacoes','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','transversal','statusreport'],
+  'Gestor':         ['cliente','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','statusreport'],
   // Tech Lead / PO / SM: veem o(s) projeto(s) onde atuam por completo, junto com a equipe.
   // Gestão Transversal é a página central desses perfis (LP/GP/SM).
-  'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail','transversal','statusreport'],
-  'PO':             ['cliente','pessoa','gerente','pend','projdetail','transversal','statusreport'],
+  'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail','statusreport'],
+  'PO':             ['cliente','pessoa','gerente','pend','projdetail','statusreport'],
   // 'SM' deve ver somente a página Gerência (mais o Detalhamento do Projeto, que
   // não é uma aba de menu — é aberto ao clicar num card de projeto dentro da
   // própria Gerência).
@@ -3937,7 +3945,7 @@ if(PERM_MENU['Administrador']) PERM_MENU['Administrador'].push('horasapontadas')
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',alocacoes:'Alocações',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',transversal:'Entrega e Produtividade',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',horasapontadas:'Gestão de Horas Apontadas',manutencao:'Modo Manutenção',relatorioprojetos:'Relatório de Projetos e Equipes',novidades:'Novidades'};
+const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',horasapontadas:'Gestão de Horas Apontadas',manutencao:'Modo Manutenção',relatorioprojetos:'Relatório de Projetos e Equipes',novidades:'Novidades'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 // EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
 // PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
@@ -4698,123 +4706,13 @@ function iaCalcularTodasAnalises_(modoStatus){
   // Exclusão feita AQUI, na fonte da lista — assim tabela, KPIs, rankings,
   // filtros (que leem as opções a partir dessas análises) e modal de
   // detalhamento nunca veem uma pessoa Head, em nenhum lugar da página.
-  const pessoas=D.p.filter(p=>p.a && !heads.has(peNormalizarHeader(p.a)));
+  const pessoas=PESA_().filter(p=>p.a && !heads.has(peNormalizarHeader(p.a)));
   const mapaComplexidade=iaConstruirMapaNiveis_(D.pj.map(p=>p.cx));
   const mapaPrioridade=iaConstruirMapaNiveis_(D.pj.map(p=>p.pr));
   // maxProjetosObservado calculado sobre as MESMAS contagens (já filtradas pelo modo).
   const qtdsPorPessoa=pessoas.map(p=>iaProjetosDaPessoaNoModo_(p, modoStatus).length);
   const maxProjetosObservado=qtdsPorPessoa.length>0?Math.max(...qtdsPorPessoa):0;
   return pessoas.map(p=>iaCalcularAnalisePessoa_(p, mapaComplexidade, mapaPrioridade, maxProjetosObservado, modoStatus));
-}
-
-function initAlocacoes(){
-  const pessoasObjs=D.p.filter(p=>p.a);
-  // Opções do seletor de Pessoa não trazem gente Inativa — a tabela em si
-  // (ALOC_LINHAS_BASE, calculado abaixo) continua mostrando todo mundo, pra
-  // não esconder alocação de quem acabou de sair.
-  const pessoas=[...new Set(pessoasObjs.filter(pessoaEstaAtiva).map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
-  document.getElementById('f-aloc-pessoa').innerHTML='<option value="">Todas</option>'+pessoas.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">'+n+'</option>').join('');
-
-  const statusesSet=new Set();
-  Object.values(PROJ_TASKS).forEach(list=>list.forEach(t=>{ if(t.status) statusesSet.add(t.status); }));
-  const statuses=[...statusesSet].sort();
-  document.getElementById('f-aloc-status').innerHTML='<option value="">Todos</option>'+statuses.map(s=>'<option value="'+s.replace(/"/g,'&quot;')+'">'+s+'</option>').join('');
-
-  // Qtd. de Projetos: só quantidade EXATA (sem "ou mais") — as opções refletem os
-  // valores que realmente ocorrem nos dados atuais (0 até o máximo observado).
-  const qtdsPorPessoa=pessoasObjs.map(p=>alocProjetosDaPessoa(p).length);
-  const maxQtd=qtdsPorPessoa.length>0?Math.max(...qtdsPorPessoa):0;
-  let opcoesQtdHtml='<option value="">Qualquer quantidade</option>';
-  for(let i=0;i<=maxQtd;i++) opcoesQtdHtml+='<option value="'+i+'">'+i+'</option>';
-  document.getElementById('f-aloc-qtdproj').innerHTML=opcoesQtdHtml;
-
-  // Complexidade/Prioridade: valores reais existentes em D.pj (mesmos campos já
-  // usados na exibição de "Projetos Vinculados").
-  const complexidades=[...new Set(D.pj.map(p=>p.cx).filter(Boolean))].sort();
-  const prioridades=[...new Set(D.pj.map(p=>p.pr).filter(Boolean))].sort();
-  document.getElementById('f-aloc-complexidade').innerHTML='<option value="">Todas</option>'+complexidades.map(c=>'<option value="'+c.replace(/"/g,'&quot;')+'">'+c+'</option>').join('');
-  document.getElementById('f-aloc-prioridade').innerHTML='<option value="">Todas</option>'+prioridades.map(p=>'<option value="'+p.replace(/"/g,'&quot;')+'">'+p+'</option>').join('');
-
-  ['f-aloc-pessoa','f-aloc-qtdproj','f-aloc-status','f-aloc-complexidade','f-aloc-prioridade'].forEach(id=>{ document.getElementById(id).onchange=renderAlocacoes; });
-  document.getElementById('f-aloc-clear').onclick=()=>{
-    document.getElementById('f-aloc-pessoa').value='';
-    document.getElementById('f-aloc-qtdproj').value='';
-    document.getElementById('f-aloc-status').value='';
-    document.getElementById('f-aloc-complexidade').value='';
-    document.getElementById('f-aloc-prioridade').value='';
-    renderAlocacoes();
-  };
-  // Base calculada aqui, uma vez só (ao abrir a página) — projetosVinculados
-  // por pessoa não muda entre um clique de filtro e outro na mesma sessão,
-  // então recalcular pra todo mundo a cada filtro era trabalho repetido à
-  // toa; agora os filtros só reduzem/reordenam o que já foi calculado.
-  ALOC_LINHAS_BASE=D.p.filter(p=>p.a).map(p=>{
-    const ek=(p.email||'').toLowerCase();
-    const projetosVinculados=alocProjetosDaPessoa(p);
-    const qtdTarefas=Object.values(PSTAT[ek]||{}).reduce((s,v)=>s+v,0);
-    const horasPrevistas=PHEST[ek]||0;
-    const horasApontadas=PHAP[ek]||0;
-    const statusesDaPessoa=new Set(Object.keys(PSTAT[ek]||{}));
-    return {p,projetosVinculados,qtdTarefas,horasPrevistas,horasApontadas,statusesDaPessoa};
-  });
-  renderAlocacoes();
-}
-let ALOC_LINHAS_BASE=[];
-function renderAlocacoes(){
-  SORT_RERENDER['alocacoes']=()=>renderAlocacoes();
-  const fPessoa=document.getElementById('f-aloc-pessoa').value;
-  const fQtdProj=document.getElementById('f-aloc-qtdproj').value;
-  const fStatus=document.getElementById('f-aloc-status').value;
-  const fComplexidade=document.getElementById('f-aloc-complexidade').value;
-  const fPrioridade=document.getElementById('f-aloc-prioridade').value;
-
-  let linhas=ALOC_LINHAS_BASE;
-  if(fPessoa) linhas=linhas.filter(l=>l.p.a===fPessoa);
-
-  // Qtd. de Projetos agora é sempre quantidade EXATA (sem "ou mais")
-  if(fQtdProj!=='') linhas=linhas.filter(l=>l.projetosVinculados.length===parseInt(fQtdProj));
-  if(fStatus) linhas=linhas.filter(l=>l.statusesDaPessoa.has(fStatus));
-  if(fComplexidade) linhas=linhas.filter(l=>l.projetosVinculados.some(proj=>proj.cx===fComplexidade));
-  if(fPrioridade) linhas=linhas.filter(l=>l.projetosVinculados.some(proj=>proj.pr===fPrioridade));
-
-  linhas.sort((a,b)=>b.projetosVinculados.length-a.projetosVinculados.length || a.p.a.localeCompare(b.p.a,'pt-BR'));
-
-  const semProjeto=linhas.filter(l=>l.projetosVinculados.length===0).length;
-  document.getElementById('kpi-alocacoes').innerHTML=
-    kpiHtml({label:'Pessoas (com os filtros)',value:linhas.length,icon:'pessoas',bg:'#eff6ff',color:'#2563eb'})+
-    kpiHtml({label:'Sem Nenhum Projeto',value:semProjeto,icon:'alerta',bg:semProjeto>0?'#fef2f2':'#eff6ff',color:semProjeto>0?'#dc2626':'#2563eb',valueColor:semProjeto>0?'var(--st-bloqueado)':'var(--text)'});
-
-  const colunasAloc=[
-    {key:'pessoa',label:'Pessoa',tipo:'texto',get:l=>l.p.a},
-    {key:'qtdprojetos',label:'Qtd. Projetos',tipo:'numero',get:l=>l.projetosVinculados.length},
-    {label:'Projetos Vinculados'},
-    {key:'qtdtarefas',label:'Qtd. Tarefas',tipo:'numero',get:l=>l.qtdTarefas},
-    {key:'gestor',label:'Gestor',tipo:'texto',get:l=>l.p.gestor},
-    {key:'horasprev',label:'Horas Previstas',tipo:'horas',get:l=>l.horasPrevistas},
-    {key:'horasapo',label:'Horas Apontadas',tipo:'horas',get:l=>l.horasApontadas}
-  ];
-  const stAloc=SORT_STATE['alocacoes']||{col:null,dir:0};
-  const linhasOrdAloc=stAloc.col?ordenarLinhas_(linhas,colunasAloc.find(c=>c.key===stAloc.col),stAloc.dir):linhas;
-  let h='<div class="card"><div class="card-title"><h3>Alocações por Pessoa</h3><span class="sub">'+linhas.length+'</span></div><div class="table-wrap" style="max-height:600px"><table>'+theadOrdenavel_('alocacoes',colunasAloc)+'<tbody>';
-  linhasOrdAloc.forEach(l=>{
-    // Cada projeto vinculado vira um "mini-card" com Nome/Complexidade/Prioridade
-    // sempre visíveis e rotulados — evita que Complexidade/Prioridade fiquem
-    // escondidas atrás de um hover ou se percam junto ao nome do projeto.
-    const projetosHtml=l.projetosVinculados.length===0?'<span style="color:var(--text-faint)">—</span>':
-      l.projetosVinculados.map(proj=>
-        '<div class="aloc-proj-item">'+
-          '<div class="aloc-proj-nome">'+projetoLinkHtml(proj.pj)+'</div>'+
-          '<div class="aloc-proj-meta">'+
-            '<span class="aloc-proj-tag">Complexidade: <strong>'+(proj.cx||'—')+'</strong></span>'+
-            '<span class="aloc-proj-tag">Prioridade: <strong>'+(proj.pr||'—')+'</strong></span>'+
-          '</div>'+
-        '</div>'
-      ).join('');
-    h+='<tr><td><strong>'+personLinkHtml(l.p.a)+'</strong></td><td>'+l.projetosVinculados.length+'</td><td>'+projetosHtml+'</td><td>'+l.qtdTarefas+'</td><td>'+personLinkHtml(l.p.gestor)+'</td><td>'+fH(l.horasPrevistas)+'</td><td>'+fH(l.horasApontadas)+'</td></tr>';
-  });
-  if(linhas.length===0) h+='<tr><td colspan="7" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
-  h+='</tbody></table></div></div>';
-  document.getElementById('alocacoes-content').innerHTML=h;
 }
 
 // ============================================================
@@ -4829,7 +4727,7 @@ function iaPopularQtdProj_(){
   const prev=sel.value;
   const heads=iaNomesHeads_();
   const modo=projStatusModo_('ia');
-  const qtds=D.p.filter(p=>p.a && !heads.has(peNormalizarHeader(p.a))).map(p=>iaProjetosDaPessoaNoModo_(p,modo).length);
+  const qtds=PESA_().filter(p=>p.a && !heads.has(peNormalizarHeader(p.a))).map(p=>iaProjetosDaPessoaNoModo_(p,modo).length);
   const maxQtd=qtds.length>0?Math.max(...qtds):0;
   let opcoesQtdHtml='<option value="">Qualquer quantidade</option>';
   for(let i=0;i<=maxQtd;i++) opcoesQtdHtml+='<option value="'+i+'">'+i+'</option>';
@@ -4852,7 +4750,7 @@ function initInteligenciaAlocacao(){
   // valer também aqui, senão o filtro de Pessoa ainda ofereceria o nome de um
   // Head como opção (mesmo que selecioná-lo não trouxesse nenhum resultado).
   const heads=iaNomesHeads_();
-  const pessoasSemHead=D.p.filter(p=>p.a && !heads.has(peNormalizarHeader(p.a)));
+  const pessoasSemHead=PESA_().filter(p=>p.a && !heads.has(peNormalizarHeader(p.a)));
   // Opção do seletor de Pessoa não traz gente Inativa (a tabela/análises em
   // si, já calculadas em IA_ANALISES_CACHE acima, continuam mostrando todo mundo).
   const pessoas=[...new Set(pessoasSemHead.filter(pessoaEstaAtiva).map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
@@ -4909,7 +4807,7 @@ function renderInteligenciaAlocacao(){
   if(fPrioridade) linhas=linhas.filter(l=>l.projetos.some(p=>p.pr===fPrioridade));
   if(fStatus){
     if(modoStatusIA==='todos'){
-      const eksComStatus=new Set(D.p.filter(p=>Object.keys(PSTAT[(p.email||'').toLowerCase()]||{}).includes(fStatus)).map(p=>p.a));
+      const eksComStatus=new Set(PESA_().filter(p=>Object.keys(PSTAT[(p.email||'').toLowerCase()]||{}).includes(fStatus)).map(p=>p.a));
       linhas=linhas.filter(l=>eksComStatus.has(l.pessoa.a));
     }else{
       // Com filtro de Status do Projeto: só tarefas dos projetos filtrados.
@@ -5070,6 +4968,12 @@ function peNormalizarHeader(h){ return (h||'').toString().toLowerCase().normaliz
 // de Aloca\u00e7\u00e3o, Desempenho, Minha Equipe e o combobox de pessoa da Edi\u00e7\u00e3o do
 // Portf\u00f3lio) \u2014 n\u00e3o mexe nas listas/tabelas de conte\u00fado em si.
 function pessoaEstaAtiva(p){ return peNormalizarHeader(p&&p.status)!=='inativo'; }
+// v17.0 — REGRA ÚNICA de participação nas análises (Pessoas_Area › Participa_Analises).
+// Vazio/ausente = participa (preserva o comportamento anterior). Só controla a contagem estatística:
+// nunca permissão, login, vínculos nem histórico. D.p continua completo para consultas por nome/e-mail.
+function pessoaParticipaAnalises_(p){ return !p || p.participa!==false; }
+let PESA_CACHE=null, PESA_REF=null;
+function PESA_(){ const L=(D&&D.p)||[]; if(PESA_REF!==L||!PESA_CACHE){ PESA_REF=L; PESA_CACHE=L.filter(pessoaParticipaAnalises_); } return PESA_CACHE; }
 function peMostrarView(modo){
   PE_MODO=modo;
   document.getElementById('pe-lista-view').style.display=modo==='lista'?'':'none';
@@ -5559,11 +5463,11 @@ async function carregarListaPessoasAdmin(){
 function renderListaPessoasAdmin(termoBusca){
   SORT_RERENDER['pessoasadmin']=()=>renderListaPessoasAdmin(termoBusca);
   const termo=peNormalizarHeader(termoBusca);
-  const filtrados=!termo?PA_LISTA_CACHE:PA_LISTA_CACHE.filter(p=>
+  const filtrados=(!termo?PA_LISTA_CACHE:PA_LISTA_CACHE.filter(p=>
     peNormalizarHeader(p.nome).includes(termo) || peNormalizarHeader(p.nome_completo).includes(termo) || peNormalizarHeader(p.email).includes(termo) ||
     peNormalizarHeader(p.cargo).includes(termo) || peNormalizarHeader(p.area).includes(termo) || peNormalizarHeader(p.perfil).includes(termo) ||
-    peNormalizarHeader(p.status).includes(termo)
-  );
+    peNormalizarHeader(p.status).includes(termo) || peNormalizarHeader(p.estado).includes(termo) || peNormalizarHeader(p.cidade).includes(termo)
+  )).filter(paAplicaChip_);
   const colunasPessoasAdmin=[
     {key:'status',label:'Status',tipo:'texto',get:p=>peNormalizarHeader(p.status)==='inativo'?'Inativo':'Ativo'},
     {key:'nome',label:'Nome',tipo:'texto',get:p=>p.nome},
@@ -5571,6 +5475,9 @@ function renderListaPessoasAdmin(termoBusca){
     {key:'email',label:'E-mail',tipo:'texto',get:p=>p.email},
     {key:'cargo',label:'Cargo',tipo:'texto',get:p=>p.cargo},
     {key:'area',label:'Área',tipo:'texto',get:p=>p.area},
+    {key:'estado',label:'Estado',tipo:'texto',get:p=>p.estado},
+    {key:'cidade',label:'Cidade',tipo:'texto',get:p=>p.cidade},
+    {key:'participa',label:'Análises',tipo:'texto',get:p=>p.participa===false?'Não':'Sim'},
     {key:'perfil',label:'Perfil de Acesso',tipo:'texto',get:p=>p.perfil},
     {key:'ultimoacesso',label:'Último Acesso',tipo:'data',get:p=>p.ultimo_acesso},
     {label:''}
@@ -5578,17 +5485,20 @@ function renderListaPessoasAdmin(termoBusca){
   const stPA=SORT_STATE['pessoasadmin']||{col:null,dir:0};
   const filtradosOrd=stPA.col?ordenarLinhas_(filtrados,colunasPessoasAdmin.find(c=>c.key===stPA.col),stPA.dir):filtrados;
   let h='<div class="card"><div class="card-title"><h3>Pessoas ('+PA_LISTA_CACHE.length+')</h3>'+
-    '<button type="button" class="sr-btn sr-btn-primary" id="pa-novo-btn" style="padding:7px 16px">+ Nova Pessoa</button></div>'+
-    '<input type="text" id="pa-busca" placeholder="Buscar por nome, e-mail, cargo, área, perfil ou status…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13.5px;margin-bottom:14px;box-sizing:border-box">'+
+    '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="filter-clear" id="pa-mig-btn" style="padding:7px 14px" title="Separa o valor antigo de Localidade em Estado e Cidade (com pré-visualização)">📍 Migrar Localidade</button><button type="button" class="sr-btn sr-btn-primary" id="pa-novo-btn" style="padding:7px 16px">+ Nova Pessoa</button></span></div>'+
+    (function(){ const c=paContagensChips_(); const chip=(k,t)=>'<button type="button" data-pa-chip="'+k+'" class="'+(PA_FILTRO===k?'on':'')+'">'+t+'</button>'; return '<div class="pa-fchips">'+chip('todas','Todas ('+c.todas+')')+chip('ativas','Ativas ('+c.ativas+')')+chip('inativas','Inativas ('+c.inativas+')')+chip('nao','Fora das análises ('+c.nao+')')+chip('semloc','Sem estado/cidade ('+c.semloc+')')+'</div>'; })()+
+    '<input type="text" id="pa-busca" placeholder="Buscar por nome, e-mail, cargo, área, estado, cidade, perfil ou status…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13.5px;margin-bottom:14px;box-sizing:border-box">'+
     '<div class="table-wrap" style="max-height:560px"><table>'+theadOrdenavel_('pessoasadmin',colunasPessoasAdmin)+'<tbody>';
   if(filtradosOrd.length===0){
-    h+='<tr><td colspan="9" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada'+(termo?' com esse termo de busca':'')+'.</td></tr>';
+    h+='<tr><td colspan="12" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada'+(termo?' com esse termo de busca':'')+'.</td></tr>';
   }else{
     filtradosOrd.forEach(p=>{
       const statusInativo=peNormalizarHeader(p.status)==='inativo';
       h+='<tr style="cursor:pointer" class="pa-lista-row" data-pa-pessoa="'+p.nome.replace(/"/g,'&quot;')+'">'+
         '<td>'+(statusInativo?'<span class="status-pill" style="background:var(--surface-alt);color:var(--text-muted)">Inativo</span>':'<span class="status-pill">Ativo</span>')+'</td>'+
         '<td><strong>'+p.nome+'</strong></td><td>'+(p.nome_completo||'—')+'</td><td>'+(p.email||'—')+'</td><td>'+(p.cargo||'—')+'</td><td>'+(p.area||'—')+'</td>'+
+        '<td>'+(p.estado||'—')+'</td><td>'+(p.cidade||'—')+'</td>'+
+        '<td>'+(p.participa===false?'<span class="pa-pill bad">Não</span>':'<span class="pa-pill info">Sim'+(p.participa_vazio?' <small>(vazio)</small>':'')+'</span>')+'</td>'+
         '<td>'+(p.perfil?'<span class="status-pill">'+p.perfil+'</span>':'<span style="color:var(--text-faint)">Sem Perfil Definido</span>')+'</td>'+
         '<td>'+(p.ultimo_acesso||'—')+'</td>'+
         '<td><button type="button" class="filter-clear" style="padding:5px 12px">Abrir</button></td></tr>';
@@ -5597,6 +5507,8 @@ function renderListaPessoasAdmin(termoBusca){
   h+='</tbody></table></div></div>';
   document.getElementById('pa-lista-view').innerHTML=h;
   document.getElementById('pa-novo-btn').onclick=()=>abrirFormularioNovaPessoa();
+  document.getElementById('pa-mig-btn').onclick=abrirMigracaoLocalidade_;
+  document.querySelectorAll('[data-pa-chip]').forEach(b=>b.onclick=()=>{ PA_FILTRO=b.dataset.paChip; renderListaPessoasAdmin(document.getElementById('pa-busca').value); });
   const buscaEl=document.getElementById('pa-busca');
   // F6 — Debounce (mesmo motivo de renderListaPortfolio: reconstrói o bloco
   // inteiro, inclusive o <input> de busca).
@@ -5662,7 +5574,7 @@ function paLerValoresNovaPessoa_(){
 function paMontarPreviaEmail_(){
   const valores=paLerValoresNovaPessoa_();
   const linhas=PA_NOVA_CAMPOS.map((c,i)=>({c,i})).filter(x=>peNormalizarHeader(x.c.header)!=='ultimo acesso').map(x=>{
-    const v=valores[x.i]; return '<tr><td style="padding:6px 10px;border:1px solid var(--border);background:var(--surface-alt);font-weight:700;width:34%">'+paEscHtml_(x.c.header)+'</td><td style="padding:6px 10px;border:1px solid var(--border)">'+(v===''||v==null?'—':paEscHtml_(v))+'</td></tr>';
+    let v=valores[x.i]; if(typeof v==='boolean') v=v?'Sim':'Não'; return '<tr><td style="padding:6px 10px;border:1px solid var(--border);background:var(--surface-alt);font-weight:700;width:34%">'+paEscHtml_(x.c.header)+'</td><td style="padding:6px 10px;border:1px solid var(--border)">'+(v===''||v==null?'—':paEscHtml_(v))+'</td></tr>';
   }).join('');
   return '<div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface)"><div style="background:var(--surface-alt);padding:10px 14px;font-size:13px;line-height:1.7"><b>De:</b> Central de Projetos Be Solution<br><b>Para:</b> '+(PA_DEST_SEL.map(x=>paEscHtml_(x.nome)+' &lt;'+paEscHtml_(x.email)+'&gt;').join(', ')||'(nenhum destinatário)')+'<br><b>Assunto:</b> <strong>'+PA_ASSUNTO_NOVO_CONTRATADO+'</strong></div>'+
     '<div style="padding:14px 16px"><p style="margin-top:0">Um novo colaborador foi cadastrado na Central de Projetos Be Solution por <b>'+paEscHtml_(CURRENT_USER_NOME||'um administrador')+'</b>.</p><table style="border-collapse:collapse;width:100%;font-size:13px">'+linhas+'</table></div></div>';
@@ -5688,22 +5600,18 @@ async function abrirFormularioNovaPessoa(){
 function renderFormularioNovaPessoa_(){
   let h='<button type="button" class="filter-clear" id="pa-voltar-btn" style="margin-bottom:14px">← Voltar para a lista</button>';
   h+='<div class="page-header" style="padding:0 0 16px"><h2 style="font-size:20px;font-weight:800">Nova pessoa</h2></div>';
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Dados</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">';
-  PA_NOVA_CAMPOS.forEach((c,i)=>{
-    const hn=peNormalizarHeader(c.header);
-    const rot=(hn==='assinatura')?c.header+' *':c.header;
-    h+='<div class="sr-field"><label>'+paEscHtml_(rot)+'</label>'+paConstruirInputHtml(c,i)+'</div>';
-  });
-  h+='</div></div>';
+  h+=paBlocosHtml_(PA_NOVA_CAMPOS,true);
   h+='<div class="card pa-email-card" style="margin-bottom:16px"><div class="card-title"><h3>✉️ Aviso por e-mail</h3></div>'+
     '<label style="display:flex;align-items:center;gap:10px;font-weight:700;margin-bottom:12px;cursor:pointer"><input type="checkbox" id="pa-enviar-email" checked style="width:18px;height:18px"> Enviar e-mail ao cadastrar</label>'+
     '<div id="pa-email-bloco"><div class="sr-field" style="max-width:420px;margin-bottom:12px"><label>Assunto (fixo)</label><input type="text" value="'+PA_ASSUNTO_NOVO_CONTRATADO+'" readonly disabled></div>'+
     '<div class="sr-field"><label>Para quem enviar? (pode escolher mais de uma pessoa)</label><div class="pa-chips" id="pa-dest-chips"></div><div class="pa-sugg" id="pa-dest-sugg" style="display:none"></div>'+
     '<div style="font-size:12px;color:var(--text-faint);margin-top:6px">Busque entre as pessoas ativas com e-mail cadastrado, ou digite um e-mail e tecle Enter para um destinatário externo. A última seleção fica lembrada neste navegador.</div></div>'+
     '<button type="button" class="filter-clear" id="pa-previa-btn" style="margin-top:12px">👁 Ver prévia do e-mail</button><div id="pa-previa" style="display:none;margin-top:12px"></div></div></div>';
-  h+='<div class="sr-actions"><button type="button" class="sr-btn sr-btn-primary" id="pa-btn-cadastrar">💾 Cadastrar e enviar e-mail</button></div>';
+  h+=paBarraAcoesHtml_('pa-btn-cadastrar','💾 Cadastrar e enviar e-mail');
   document.getElementById('pa-form-view').innerHTML=h;
-  document.getElementById('pa-voltar-btn').onclick=carregarListaPessoasAdmin;
+  document.getElementById('pa-voltar-btn').onclick=paCancelar_;
+  document.getElementById('pa-btn-cancelar').onclick=paCancelar_;
+  paLigarFormulario_();
   paDesenharChips_();
   document.addEventListener('click',paFecharSugestoes_);
   const chk=document.getElementById('pa-enviar-email');
@@ -5720,7 +5628,8 @@ function paFecharSugestoes_(e){
 async function cadastrarNovaPessoaCompleta_(){
   const valores=paLerValoresNovaPessoa_();
   const idxAss=PA_NOVA_CAMPOS.findIndex(c=>peNormalizarHeader(c.header)==='assinatura');
-  if(idxAss===-1 || !String(valores[idxAss]||'').trim()){ paFeedback('Informe o nome (Assinatura) da pessoa.',false); return; }
+  if(idxAss===-1 || !String(valores[idxAss]||'').trim()){ paValidarFormulario_(PA_NOVA_CAMPOS); paFeedback('Informe o nome (Assinatura) da pessoa.',false); return; }
+  if(!paValidarFormulario_(PA_NOVA_CAMPOS)){ paFeedback('Corrija os campos destacados.',false); return; }
   const enviar=document.getElementById('pa-enviar-email').checked;
   if(enviar && !PA_DEST_SEL.length){ paFeedback('Selecione pelo menos um destinatário — ou desmarque "Enviar e-mail ao cadastrar".',false); return; }
   const emails=enviar?PA_DEST_SEL.map(x=>x.email):[];
@@ -5855,22 +5764,21 @@ function paConstruirInputHtml(c,i){
 function renderFormularioPessoaAdmin(nomePessoa, campos){
   let h='<button type="button" class="filter-clear" id="pa-voltar-btn" style="margin-bottom:14px">← Voltar para a lista</button>';
   h+='<div class="page-header" style="padding:0 0 16px"><h2 style="font-size:20px;font-weight:800">'+nomePessoa+'</h2></div>';
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Dados</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">';
-  campos.forEach((c,i)=>{
-    // O campo "Último Acesso" (readonly) não recebe o atributo data-pa-idx, então
-    // fica automaticamente de fora do payload de salvar — nunca é sobrescrito.
-    h+='<div class="sr-field"><label>'+c.header+'</label>'+paConstruirInputHtml(c,i)+'</div>';
-  });
-  h+='</div></div>';
-  h+='<div class="sr-actions"><button type="button" class="sr-btn sr-btn-primary" id="pa-btn-salvar">💾 Salvar Alterações</button></div>';
+  // O campo "Último Acesso" (readonly) não recebe o atributo data-pa-idx, então
+  // fica automaticamente de fora do payload de salvar — nunca é sobrescrito.
+  h+=paBlocosHtml_(campos,false);
+  h+=paBarraAcoesHtml_('pa-btn-salvar','💾 Salvar alterações');
   document.getElementById('pa-form-view').innerHTML=h;
-  document.getElementById('pa-voltar-btn').onclick=carregarListaPessoasAdmin;
+  document.getElementById('pa-voltar-btn').onclick=paCancelar_;
+  document.getElementById('pa-btn-cancelar').onclick=paCancelar_;
   document.getElementById('pa-btn-salvar').onclick=salvarEdicaoPessoaAdmin;
+  paLigarFormulario_();
 }
 
 // ---------- SALVAR ----------
 async function salvarEdicaoPessoaAdmin(){
   if(!PA_ULTIMA_LEITURA) return;
+  if(!paValidarFormulario_(PA_ULTIMA_LEITURA.campos)){ paFeedback('Corrija os campos destacados.',false); return; }
   const campos=document.querySelectorAll('#pa-form-view .pa-campo');
   const valores=PA_ULTIMA_LEITURA.campos.map(c=>c.valor); // parte do valor original, sobrescreve só o que tem input editável
   campos.forEach(el=>{
@@ -5888,7 +5796,30 @@ async function salvarEdicaoPessoaAdmin(){
     const r=await loadDataJSONPComRetry(url,1);
     if(r && r.ok){
       paFeedback('Pessoa salva com sucesso.',true);
-      carregarPessoaParaEdicao(PA_ULTIMA_LEITURA.nome); // recarrega pra refletir o que foi salvo de verdade
+      PA_DIRTY=false;
+      const cps=PA_ULTIMA_LEITURA.campos, antes=cps.map(c=>c.valor);
+      const renomeou=cps.some((c,i)=>paKey_(c.header)==='assinatura' && String(antes[i]||'').trim()!==String(valores[i]||'').trim());
+      if(renomeou){
+        carregarPessoaParaEdicao(String(valores[cps.findIndex(c=>paKey_(c.header)==='assinatura')]).trim()); // identidade mudou: relê do servidor
+        atualizarDadosAposCadastroPessoas_();
+      }else{
+        // Sem recarregar do servidor: aplica o que foi salvo na própria tela e na lista em memória.
+        let afetou=false;
+        cps.forEach((c,i)=>{
+          const k=paKey_(c.header); if(c.header && peNormalizarHeader(c.header)==='ultimo acesso') return;
+          const novo=paEhParticipa_(c.header)?(valores[i]===true||valores[i]==='true'?'Sim':'Não'):valores[i];
+          const mudou=paEhParticipa_(c.header)?(paParticipaVal_(antes[i])!==(novo==='Sim')):String(antes[i]==null?'':antes[i]).trim()!==String(novo==null?'':novo).trim();
+          if(mudou && PA_CAMPOS_QUE_AFETAM_ANALISES.includes(k)) afetou=true;
+          c.valor=novo;
+        });
+        const li=PA_LISTA_CACHE.find(x=>x.nome===PA_ULTIMA_LEITURA.nome);
+        if(li) cps.forEach(c=>{ const k=paKey_(c.header),v=c.valor;
+          if(k==='nomecompleto') li.nome_completo=v||''; else if(k==='email') li.email=v||''; else if(k==='cargo') li.cargo=v||''; else if(k==='area') li.area=v||'';
+          else if(k==='status') li.status=v||''; else if(k==='perfildeacesso'||k==='perfilacesso') li.perfil=v||''; else if(k==='estado'||k==='uf') li.estado=v||''; else if(k==='cidade'||k==='municipio') li.cidade=v||'';
+          else if(paEhParticipa_(c.header)){ li.participa=(v!=='Não'); li.participa_vazio=false; } });
+        renderFormularioPessoaAdmin(PA_ULTIMA_LEITURA.nome, cps);
+        if(afetou) atualizarDadosAposCadastroPessoas_(); // indicadores refletem a mudança sem limpar o navegador
+      }
     }else{
       paFeedback((r&&r.message)||'Não foi possível salvar as alterações.',false);
     }
@@ -5897,6 +5828,269 @@ async function salvarEdicaoPessoaAdmin(){
   }
   esconderLoadingGlobal();
   btn.disabled=false;
+}
+
+// ============================================================
+// v17.0 — CADASTRO DE PESSOAS: blocos, Estado/Cidade (IBGE), Participa_Analises, migração de Localidade.
+// Reaproveita a tela e as ações existentes (Pessoas_Area continua sendo a fonte única).
+// ============================================================
+const PA_UFS=[['AC','Acre'],['AL','Alagoas'],['AP','Amapá'],['AM','Amazonas'],['BA','Bahia'],['CE','Ceará'],['DF','Distrito Federal'],['ES','Espírito Santo'],['GO','Goiás'],['MA','Maranhão'],['MT','Mato Grosso'],['MS','Mato Grosso do Sul'],['MG','Minas Gerais'],['PA','Pará'],['PB','Paraíba'],['PR','Paraná'],['PE','Pernambuco'],['PI','Piauí'],['RJ','Rio de Janeiro'],['RN','Rio Grande do Norte'],['RS','Rio Grande do Sul'],['RO','Rondônia'],['RR','Roraima'],['SC','Santa Catarina'],['SP','São Paulo'],['SE','Sergipe'],['TO','Tocantins']];
+let PA_FILTRO='todas';
+let PA_DIRTY=false;
+function paKey_(h){ return peNormalizarHeader(h).replace(/[^a-z]/g,''); }
+function paBlocoDe_(h){
+  const k=paKey_(h);
+  if(['assinatura','nomecompleto','email','resumo'].includes(k)) return 1;
+  if(['area','cargo','nivel','head','gestor','status','dataentrada','datadistrato'].includes(k)) return 2;
+  if(['estado','uf','cidade','municipio','localidade'].includes(k)) return 3;
+  if(['perfildeacesso','perfilacesso','ultimoacesso','participaanalises','participadasanalises'].includes(k)) return 4;
+  return 5;
+}
+function paSpan_(h){
+  const k=paKey_(h);
+  if(k==='assinatura'||k==='area'||k==='cargo'||k==='status'||k==='nivel'||k==='gestor'||k==='head') return 's4';
+  if(k==='nomecompleto'||k==='email') return 's8';
+  if(k==='resumo'||k==='participaanalises'||k==='participadasanalises') return 's12';
+  if(k==='estado'||k==='uf') return 's4';
+  if(k==='cidade'||k==='municipio') return 's8';
+  return '';
+}
+function paEhParticipa_(h){ const k=paKey_(h); return k==='participaanalises'||k==='participadasanalises'; }
+function paParticipaVal_(v){ if(v===true) return true; if(v===false) return false; const n=peNormalizarHeader(v).replace(/[^a-z0-9]/g,''); if(!n) return true; return !(n==='nao'||n==='n'||n==='false'||n==='0'||n==='no'||n==='naoparticipa'); }
+// Campos especiais (Estado, Cidade, Participa_Analises) — os demais seguem paConstruirInputHtml (inalterado).
+function paInputEspecial_(c,i){
+  const k=paKey_(c.header), v=(c.valor===null||c.valor===undefined)?'':String(c.valor).trim();
+  if(k==='estado'||k==='uf'){
+    const sig=PA_UFS.find(u=>u[0]===v.toUpperCase()||peNormalizarHeader(u[1])===peNormalizarHeader(v));
+    const atual=sig?sig[0]:'';
+    return '<select data-pa-idx="'+i+'" class="pa-campo" id="pa-estado"><option value="">— Selecione —</option>'+
+      PA_UFS.map(u=>'<option value="'+u[0]+'"'+(atual===u[0]?' selected':'')+'>'+u[0]+' — '+u[1]+'</option>').join('')+
+      (v&&!sig?'<option value="'+paEscHtml_(v)+'" selected>'+paEscHtml_(v)+' (não reconhecido)</option>':'')+'</select>';
+  }
+  if(k==='cidade'||k==='municipio'){
+    return '<input type="text" data-pa-idx="'+i+'" class="pa-campo" id="pa-cidade" list="pa-cid-list" autocomplete="off" maxlength="80" value="'+paEscHtml_(v)+'" placeholder="Selecione o estado primeiro"><datalist id="pa-cid-list"></datalist><div class="pa-hint" id="pa-cid-hint"></div>';
+  }
+  if(paEhParticipa_(c.header)){
+    const on=paParticipaVal_(c.valor);
+    return '<div class="pa-switch'+(on?'':' off')+'" id="pa-part-box"><label class="pa-sw"><input type="checkbox" class="pa-campo" data-pa-idx="'+i+'" id="pa-participa"'+(on?' checked':'')+'><span></span></label>'+
+      '<div><b id="pa-part-t">'+(on?'Sim — entra nos totais, gráficos e rankings':'Não — fora dos totais, gráficos e rankings')+'</b>'+
+      '<div class="pa-hint" id="pa-part-h">'+(on?'Não altera permissões, login, projetos nem histórico. Só controla a contagem estatística.':'A pessoa continua com acesso, projetos e histórico. Só deixa de ser contada nas análises.')+'</div></div></div>';
+  }
+  return null;
+}
+function paCampoHtml_(c,i,nova){
+  const k=paKey_(c.header), hn=peNormalizarHeader(c.header);
+  if(k==='localidade'){
+    const v=(c.valor===null||c.valor===undefined)?'':String(c.valor).trim();
+    if(!v) return '';
+    return '<div class="sr-field s12"><label>Localidade (valor antigo — preservado)</label><input type="text" value="'+paEscHtml_(v)+'" readonly disabled><div class="pa-hint">Mantido só como histórico. Use Estado e Cidade acima; a migração em lote está em “Migrar Localidade”.</div></div>';
+  }
+  const esp=paInputEspecial_(c,i);
+  const sp=paSpan_(c.header);
+  const req=(k==='assinatura');
+  const rot=(paEhParticipa_(c.header)?'Participa das análises?':paEscHtml_(c.header))+(req?' <span class="pa-req">*</span>':'');
+  const input=esp!==null?esp:paConstruirInputHtml(c,i);
+  return '<div class="sr-field'+(sp?' '+sp:'')+'"><label>'+rot+'</label>'+input+(req?'<div class="pa-err" id="pa-err-ass"></div>':'')+(k==='email'?'<div class="pa-err" id="pa-err-email"></div>':'')+'</div>';
+}
+const PA_BLOCOS=[
+  {n:1,t:'Dados pessoais e identificação',d:'Como a pessoa aparece nos relatórios e é reconhecida no login.'},
+  {n:2,t:'Estrutura organizacional',d:'Posição na empresa — alimenta escopo de Head/Gestor, organogramas e filtros por área.'},
+  {n:3,t:'Localização',d:'Define quais feriados estaduais e municipais valem para a pessoa (jornada em Horas Apontadas).'},
+  {n:4,t:'Acesso e participação nas análises',d:'Perfil de acesso e se a pessoa entra nos números da Central de Projetos.'},
+  {n:5,t:'Outros campos',d:'Demais colunas de Pessoas_Area, exibidas automaticamente.'}
+];
+function paBlocosHtml_(campos,nova){
+  const por={1:[],2:[],3:[],4:[],5:[]};
+  const ORD=['assinatura','nomecompleto','email','resumo','area','cargo','nivel','status','gestor','head','dataentrada','datadistrato','estado','uf','cidade','municipio','localidade','perfildeacesso','perfilacesso','ultimoacesso','participaanalises','participadasanalises'];
+  const ord=k=>{ const x=ORD.indexOf(k); return x<0?999:x; };
+  campos.map((c,i)=>({c,i})).sort((a,b)=>ord(paKey_(a.c.header))-ord(paKey_(b.c.header))||a.i-b.i).forEach(x=>{ por[paBlocoDe_(x.c.header)].push(paCampoHtml_(x.c,x.i,nova)); });
+  let nav='',cards='';
+  PA_BLOCOS.forEach(b=>{
+    const itens=por[b.n].filter(Boolean);
+    if(!itens.length) return;
+    nav+='<a href="#pa-b'+b.n+'" data-pa-nav="pa-b'+b.n+'"><i>'+b.n+'</i>'+b.t+'</a>';
+    cards+='<div class="card pa-bloco" id="pa-b'+b.n+'" style="margin-bottom:16px"><div class="card-title" style="margin-bottom:2px"><h3>'+b.n+' · '+b.t+'</h3></div><p class="pa-d">'+b.d+'</p><div class="pa-g">'+itens.join('')+'</div></div>';
+  });
+  return '<div class="pa-layout"><nav class="pa-steps">'+nav+'</nav><div>'+cards+'</div></div>';
+}
+// Estado -> cidades (API pública do IBGE; se falhar, digitação livre). Cache em memória + sessionStorage.
+const IBGE_CID_CACHE={};
+async function ibgeCidades_(uf){
+  if(IBGE_CID_CACHE[uf]) return IBGE_CID_CACHE[uf];
+  try{ const s=sessionStorage.getItem('ibge_cid_'+uf); if(s){ IBGE_CID_CACHE[uf]=JSON.parse(s); return IBGE_CID_CACHE[uf]; } }catch(e){}
+  try{
+    const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),7000);
+    const r=await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados/'+encodeURIComponent(uf)+'/municipios?orderBy=nome',{signal:ctl.signal});
+    clearTimeout(t);
+    if(!r.ok) return null;
+    const j=await r.json();
+    const nomes=(Array.isArray(j)?j:[]).map(m=>m&&m.nome).filter(Boolean);
+    if(!nomes.length) return null;
+    IBGE_CID_CACHE[uf]=nomes;
+    try{ sessionStorage.setItem('ibge_cid_'+uf,JSON.stringify(nomes)); }catch(e){}
+    return nomes;
+  }catch(e){ return null; }
+}
+function paLigarLocalizacao_(){
+  const sel=document.getElementById('pa-estado'), inp=document.getElementById('pa-cidade');
+  if(!sel||!inp) return;
+  const dl=document.getElementById('pa-cid-list'), hint=document.getElementById('pa-cid-hint');
+  let lista=null, seq=0;
+  const norm=s=>peNormalizarHeader(s);
+  const checar=()=>{
+    if(!lista||!inp.value.trim()){ hint.classList.remove('warn'); return; }
+    const ok=lista.some(n=>norm(n)===norm(inp.value));
+    if(!ok){ hint.classList.add('warn'); hint.textContent='⚠ “'+inp.value.trim()+'” não está na lista do IBGE para '+sel.value+' — será salva como digitada.'; }
+    else{ hint.classList.remove('warn'); hint.textContent=lista.length+' cidades de '+sel.value+' — digite para filtrar.'; }
+  };
+  const carregar=async(limpar)=>{
+    const uf=sel.value, minha=++seq;
+    lista=null; dl.innerHTML=''; hint.classList.remove('warn');
+    if(limpar) inp.value='';
+    if(!/^[A-Z]{2}$/.test(uf)){ inp.disabled=!uf&&true; inp.placeholder=uf?'Digite a cidade':'Selecione o estado primeiro'; hint.textContent=uf?'Estado fora da lista oficial — digite a cidade livremente.':'A lista de cidades muda conforme o estado escolhido.'; if(!uf) inp.disabled=true; else inp.disabled=false; return; }
+    inp.disabled=false; inp.placeholder='Carregando cidades…'; hint.textContent='Carregando cidades de '+uf+'…';
+    const nomes=await ibgeCidades_(uf);
+    if(minha!==seq) return;
+    if(nomes){ lista=nomes; dl.innerHTML=nomes.map(n=>'<option value="'+paEscHtml_(n)+'">').join(''); inp.placeholder='Digite ou escolha a cidade'; checar(); }
+    else{ inp.placeholder='Digite a cidade'; hint.textContent='Lista do IBGE indisponível no momento — digite a cidade livremente.'; }
+  };
+  sel.addEventListener('change',()=>{ carregar(true); });
+  inp.addEventListener('input',checar); inp.addEventListener('blur',checar);
+  carregar(false);
+}
+function paLigarFormulario_(){
+  PA_DIRTY=false;
+  const box=document.getElementById('pa-form-view');
+  const ind=document.getElementById('pa-dirty');
+  const marca=()=>{ PA_DIRTY=true; if(ind) ind.textContent='● Alterações não salvas'; };
+  box.querySelectorAll('.pa-campo').forEach(el=>{ el.addEventListener('input',marca); el.addEventListener('change',marca); });
+  const part=document.getElementById('pa-participa');
+  if(part) part.addEventListener('change',()=>{
+    const on=part.checked;
+    document.getElementById('pa-part-box').classList.toggle('off',!on);
+    document.getElementById('pa-part-t').textContent=on?'Sim — entra nos totais, gráficos e rankings':'Não — fora dos totais, gráficos e rankings';
+    document.getElementById('pa-part-h').textContent=on?'Não altera permissões, login, projetos nem histórico. Só controla a contagem estatística.':'A pessoa continua com acesso, projetos e histórico. Só deixa de ser contada nas análises.';
+  });
+  paLigarLocalizacao_();
+  box.querySelectorAll('[data-pa-nav]').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); const t=document.getElementById(a.dataset.paNav); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); }));
+}
+// Validação perto dos campos (nome obrigatório; e-mail com formato válido quando preenchido).
+function paValidarFormulario_(campos){
+  let ok=true;
+  const iAss=campos.findIndex(c=>paKey_(c.header)==='assinatura');
+  const iEm=campos.findIndex(c=>paKey_(c.header)==='email');
+  const eAss=document.getElementById('pa-err-ass'), eEm=document.getElementById('pa-err-email');
+  const elAss=iAss>=0?document.querySelector('#pa-form-view .pa-campo[data-pa-idx="'+iAss+'"]'):null;
+  const elEm=iEm>=0?document.querySelector('#pa-form-view .pa-campo[data-pa-idx="'+iEm+'"]'):null;
+  if(eAss) eAss.textContent=''; if(eEm) eEm.textContent='';
+  [elAss,elEm].forEach(e=>e&&e.classList.remove('pa-invalid'));
+  if(elAss&&!elAss.value.trim()){ ok=false; elAss.classList.add('pa-invalid'); if(eAss) eAss.textContent='Informe o nome (assinatura).'; }
+  if(elEm&&elEm.value.trim()&&!/^\S+@\S+\.\S+$/.test(elEm.value.trim())){ ok=false; elEm.classList.add('pa-invalid'); if(eEm) eEm.textContent='E-mail inválido.'; }
+  if(!ok){ const p=document.querySelector('#pa-form-view .pa-invalid'); if(p){ p.scrollIntoView({behavior:'smooth',block:'center'}); try{p.focus();}catch(e){} } }
+  return ok;
+}
+function paBarraAcoesHtml_(idSalvar,rotuloSalvar){
+  return '<div class="pa-bar"><span class="pa-dirty" id="pa-dirty"></span><button type="button" class="filter-clear" id="pa-btn-cancelar">Cancelar</button><button type="button" class="sr-btn sr-btn-primary" id="'+idSalvar+'">'+rotuloSalvar+'</button></div>';
+}
+function paCancelar_(){
+  if(PA_DIRTY && !confirm('Há alterações não salvas. Descartar e voltar para a lista?')) return;
+  PA_DIRTY=false; carregarListaPessoasAdmin();
+}
+// ---------- atualização de cache após salvar ----------
+// Atualiza D/AREAS (leve, action=core) e invalida os campos pesados derivados de pessoas, para que
+// indicadores/gráficos reflitam a mudança sem limpar o navegador. Não bloqueia a tela.
+let PA_ATUALIZANDO_DADOS=false;
+async function atualizarDadosAposCadastroPessoas_(){
+  if(PA_ATUALIZANDO_DADOS || VIEW_AS_STATE) return;
+  PA_ATUALIZANDO_DADOS=true;
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const j=await loadDataJSONPComRetry(DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=core',1);
+    if(j && j._core && j.D){ D=j.D; AREAS=j.AREAS; AREA_CL=j.AREA_CL||{}; }
+    ['SEM_ALOC','ALOC_SEM_APONT','EXECTOP'].forEach(c=>CAMPOS_CARREGADOS.delete(c));
+    invalidarCachesDeDadosGlobais();
+    PESA_CACHE=null;
+  }catch(e){ console.warn('Não foi possível atualizar os dados após o cadastro.',e); }
+  PA_ATUALIZANDO_DADOS=false;
+}
+const PA_CAMPOS_QUE_AFETAM_ANALISES=['assinatura','email','area','cargo','nivel','head','gestor','status','estado','uf','cidade','municipio','participaanalises','participadasanalises','nomecompleto'];
+// ---------- lista: filtros rápidos ----------
+function paContagensChips_(){
+  const L=PA_LISTA_CACHE||[];
+  return {
+    todas:L.length,
+    ativas:L.filter(p=>peNormalizarHeader(p.status)!=='inativo').length,
+    inativas:L.filter(p=>peNormalizarHeader(p.status)==='inativo').length,
+    nao:L.filter(p=>p.participa===false).length,
+    semloc:L.filter(p=>!p.estado||!p.cidade).length
+  };
+}
+function paAplicaChip_(p){
+  switch(PA_FILTRO){
+    case 'ativas': return peNormalizarHeader(p.status)!=='inativo';
+    case 'inativas': return peNormalizarHeader(p.status)==='inativo';
+    case 'nao': return p.participa===false;
+    case 'semloc': return !p.estado||!p.cidade;
+    default: return true;
+  }
+}
+// ---------- migração Localidade -> Estado + Cidade ----------
+let PA_MIG=null;
+async function abrirMigracaoLocalidade_(){
+  document.getElementById('pa-form-view').innerHTML=loadingInlineHtml('Analisando os valores atuais de Localidade…');
+  paMostrarView('form');
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const r=await loadDataJSONPComRetry(DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=migrarLocalidadeAdmin&payload='+encodeURIComponent(JSON.stringify({aplicar:false})),1);
+    if(!r||!r.ok){ paMostrarView('lista'); paFeedback((r&&r.message)||'Não foi possível analisar a Localidade.',false); return; }
+    PA_MIG=r; renderMigracaoLocalidade_();
+  }catch(e){ paMostrarView('lista'); paFeedback('Falha ao contatar o servidor. Tente novamente.',false); }
+}
+function paSituacaoPill_(it){
+  const m={segura:['Segura','ok'],so_estado:['Só estado','info'],ambigua:['Ambígua — escolha o estado','warn'],vazio:['Sem dado','mut'],ja_preenchida:['Já preenchida','mut']};
+  const x=m[it.situacao]||['—','mut']; return '<span class="pa-pill '+x[1]+'">'+x[0]+'</span>';
+}
+function paContaMigraveis_(){
+  let n=0; (PA_MIG.itens||[]).forEach((it,i)=>{
+    if(it.situacao==='segura'||it.situacao==='so_estado') n++;
+    else if(it.situacao==='ambigua'){ const s=document.querySelector('[data-pa-mig-uf="'+i+'"]'); if(s&&s.value) n++; }
+  }); return n;
+}
+function renderMigracaoLocalidade_(){
+  const r=PA_MIG, R=r.resumo||{};
+  let h='<button type="button" class="filter-clear" id="pa-voltar-btn" style="margin-bottom:14px">← Voltar para a lista</button>';
+  h+='<div class="page-header" style="padding:0 0 12px"><h2 style="font-size:20px;font-weight:800">Migrar Localidade → Estado + Cidade</h2></div>';
+  h+='<div class="pa-note">Só preenche Estado/Cidade que estiverem <b>vazios</b>. A coluna <b>Localidade</b> original <b>não é alterada nem apagada</b>. Casos ambíguos só são migrados se você escolher o estado; os demais continuam funcionando pela Localidade antiga.</div>';
+  h+='<div class="pa-kpis"><div><b>'+(R.segura||0)+'</b><small>Migração segura</small></div><div><b>'+(R.so_estado||0)+'</b><small>Só estado reconhecido</small></div><div><b>'+(R.ambigua||0)+'</b><small>Ambíguas — revisar</small></div><div><b>'+((R.vazio||0))+'</b><small>Sem Localidade</small></div><div><b>'+(R.ja_preenchida||0)+'</b><small>Já preenchidas</small></div></div>';
+  h+='<div class="card"><div class="table-wrap" style="max-height:520px"><table><thead><tr><th>Pessoa</th><th>Localidade atual</th><th></th><th>Estado</th><th>Cidade</th><th>Situação</th></tr></thead><tbody>';
+  (r.itens||[]).forEach((it,i)=>{
+    const estCel=it.situacao==='ambigua'
+      ? '<select data-pa-mig-uf="'+i+'"><option value="">Escolher…</option>'+PA_UFS.map(u=>'<option value="'+u[0]+'">'+u[0]+'</option>').join('')+'</select>'
+      : paEscHtml_(it.situacao==='ja_preenchida'?it.estadoAtual:(it.estado||'—'));
+    h+='<tr><td><b>'+paEscHtml_(it.nome)+'</b></td><td>'+(it.localidade?'<code>'+paEscHtml_(it.localidade)+'</code>':'—')+'</td><td style="color:var(--text-faint)">→</td><td>'+estCel+'</td><td>'+paEscHtml_(it.situacao==='ja_preenchida'?it.cidadeAtual:(it.cidade||'—'))+'</td><td>'+paSituacaoPill_(it)+'</td></tr>';
+  });
+  h+='</tbody></table></div></div>';
+  h+='<div class="pa-bar"><span class="pa-dirty" id="pa-mig-cnt"></span><button type="button" class="filter-clear" id="pa-mig-cancel">Cancelar</button><button type="button" class="sr-btn sr-btn-primary" id="pa-mig-aplicar">Aplicar migração</button></div>';
+  document.getElementById('pa-form-view').innerHTML=h;
+  const atualiza=()=>{ const n=paContaMigraveis_(); document.getElementById('pa-mig-aplicar').textContent='Aplicar migração ('+n+')'; document.getElementById('pa-mig-aplicar').disabled=n===0; };
+  document.querySelectorAll('[data-pa-mig-uf]').forEach(s=>s.addEventListener('change',atualiza)); atualiza();
+  document.getElementById('pa-voltar-btn').onclick=carregarListaPessoasAdmin;
+  document.getElementById('pa-mig-cancel').onclick=carregarListaPessoasAdmin;
+  document.getElementById('pa-mig-aplicar').onclick=aplicarMigracaoLocalidade_;
+}
+async function aplicarMigracaoLocalidade_(){
+  const escolhas={};
+  document.querySelectorAll('[data-pa-mig-uf]').forEach(s=>{ if(s.value) escolhas[PA_MIG.itens[parseInt(s.dataset.paMigUf,10)].nome]=s.value; });
+  const btn=document.getElementById('pa-mig-aplicar'); btn.disabled=true; btn.textContent='Aplicando…';
+  mostrarLoadingGlobal('Migrando Localidade…');
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    // sem retry automático: repetir regravaria as mesmas células (idempotente, mas evita log duplicado)
+    const r=await loadDataJSONPComRetry(DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=migrarLocalidadeAdmin&payload='+encodeURIComponent(JSON.stringify({aplicar:true,escolhas:escolhas})),0);
+    esconderLoadingGlobal();
+    if(r&&r.ok){ paFeedback('Migração concluída: '+((r.resumo&&r.resumo.aplicadas)||0)+' pessoa(s) atualizada(s). A Localidade original foi preservada.',true,9000); atualizarDadosAposCadastroPessoas_(); carregarListaPessoasAdmin(); }
+    else{ paFeedback((r&&r.message)||'Não foi possível aplicar a migração.',false); btn.disabled=false; btn.textContent='Aplicar migração'; }
+  }catch(e){ esconderLoadingGlobal(); paFeedback('Falha ao contatar o servidor. Confira a lista antes de tentar de novo.',false,10000); btn.disabled=false; btn.textContent='Aplicar migração'; }
 }
 
 function initCliente(){
@@ -6018,7 +6212,7 @@ function populatePessoaOptions(){
   const sel=document.getElementById('f-pes');
   const prevVal=sel.value;
   const claudeOnly=document.getElementById('f-pes-claude-only').checked;
-  let list=D.p.filter(p=>p.a&&pessoaEstaAtiva(p));
+  let list=PESA_().filter(p=>p.a&&pessoaEstaAtiva(p));
   if(claudeOnly) list=list.filter(p=>D.cl[(p.email||'').toLowerCase()]);
   const names=list.map(p=>p.a).sort();
   sel.innerHTML='<option value="">— Selecione —</option>'+names.map(n=>'<option value="'+n+'">'+n+'</option>').join('');
@@ -6115,7 +6309,7 @@ function renderPessoa(){
 
   // === PERCENTIS vs todas as pessoas (mesmo filtro de período) ===
   const allHorasArr=[], allTarefasArr=[], allTokensArr=[];
-  D.p.filter(pp=>pp.a).forEach(pp=>{
+  PESA_().filter(pp=>pp.a).forEach(pp=>{
     const pmOther=PM[(pp.email||'').toLowerCase()]||{};
     const h=sumRangeFromDict(pmOther,de,ate,0);
     const t=sumRangeFromDict(pmOther,de,ate,1);
@@ -6494,8 +6688,8 @@ function pesHaAviso_(S,ph,J,tipo,filtroStatus){
   else if(S.est==='erro') h+='<div class="ha-note warn">⚠ '+feEsc_(S.msg||'Não foi possível carregar as horas apontadas.')+' Mostrando a comparação com 40h/semana. '+(S.semRetry?'':'<button type="button" class="ha-btn sm" data-pes-retry="1">Tentar de novo</button>')+'</div>';
   if(ph){
     const P=S.dados, ds=P.descartados||{};
-    if(!P.temColunaLocalidade) h+='<div class="ha-note warn">📍 A coluna <b>Localidade</b> ainda não existe em Pessoas_Area — somente feriados <b>Nacionais</b> estão sendo aplicados.</div>';
-    else if(!P.loc&&P.feriados.some(f=>f.tipo!=='Nacional')) h+='<div class="ha-note warn">📍 Esta pessoa não tem <b>Localidade</b> em Pessoas_Area: só feriados <b>Nacionais</b> estão aplicados. Preencha (ex.: Manaus/AM) para considerar feriados estaduais/municipais.</div>';
+    if(!P.temColunaLocalidade) h+='<div class="ha-note warn">📍 As colunas <b>Estado/Cidade</b> (ou Localidade) ainda não existem em Pessoas_Area — somente feriados <b>Nacionais</b> estão sendo aplicados.</div>';
+    else if(!P.loc&&P.feriados.some(f=>f.tipo!=='Nacional')) h+='<div class="ha-note warn">📍 Esta pessoa não tem <b>Estado/Cidade</b> em Pessoas_Area: só feriados <b>Nacionais</b> estão aplicados. Preencha (ex.: Manaus/AM) para considerar feriados estaduais/municipais.</div>';
     if(P.temColunaTipo===false) h+='<div class="ha-note warn">A coluna tipo_apontamento não foi encontrada na aba de horas — a separação Tarefas × Reunião não está disponível.</div>';
     if(ds.horasAcima24) h+='<div class="ha-note warn">⚠ '+ds.horasAcima24+' lançamento(s) com 24h ou mais num único registro — confira na planilha.</div>';
     if(tipo) h+='<div class="ha-note">ℹ Com o filtro de tipo ativo, jornada e excedentes são calculados sobre as horas filtradas.</div>';
@@ -6695,6 +6889,7 @@ function rpMembros_(p){
   const out=[],vistos=new Set();
   const mk=(nome,papel,email)=>{
     const pe=(email&&byEmail[String(email).toLowerCase()])||byName[haN_(nome)]||null;
+    if(pe&&!pessoaParticipaAnalises_(pe)) return; // v17.1 — Participa_Analises = Não: fora da equipe/organograma/contagens (o projeto continua)
     const cg=pe?String(pe.cargo||'').trim():'', nv=pe?String(pe.nv||'').trim():'';
     out.push({nome:pe?pe.a:nome,papel,cargo:cg,nv,cargoTxt:cg?(nv&&nv!=='—'?cg+' · '+nv:cg):'',area:pe?String(pe.area||'').trim():'',gestor:pe?String(pe.gestor||'').trim():'',semCadastro:!pe});
   };
@@ -6976,10 +7171,26 @@ function renderArea(){
 
 // === TOP 5 ===
 // === PENDÊNCIAS DE DATAS ===
+// v17.1 — Pendências: tarefas nunca são excluídas por causa de Participa_Analises. Só a participação estatística da
+// pessoa sai: responsável fora das análises deixa de ser exibido; tarefa cujos responsáveis são TODOS "fora" não entra na análise.
+let PEND_ANL_REF=null, PEND_ANL=null, PEND_ANL_PESS=null;
+function pendAnalise_(){
+  const L=PEND||[];
+  if(PEND_ANL && PEND_ANL_REF===L && PEND_ANL_PESS===D.p) return PEND_ANL;
+  const byEmail={},byName={};
+  ((D&&D.p)||[]).forEach(x=>{ if(x.email) byEmail[String(x.email).toLowerCase()]=x; if(x.a) byName[haN_(x.a)]=x; });
+  const fora=r=>{ const pe=(r.email&&byEmail[String(r.email).toLowerCase()])||(r.nome&&byName[haN_(r.nome)])||null; return !!pe&&!pessoaParticipaAnalises_(pe); };
+  PEND_ANL=L.filter(t=>{ const rs=t.responsaveis||[]; return !rs.length||rs.some(r=>!fora(r)); }).map(t=>{
+    const rs=t.responsaveis||[]; if(!rs.length||!rs.some(fora)) return t;
+    const ok=rs.filter(r=>!fora(r));
+    return Object.assign({},t,{responsaveis:ok,resp:ok[0]&&ok[0].nome?ok[0].nome:t.resp});
+  });
+  PEND_ANL_REF=L; PEND_ANL_PESS=D.p; return PEND_ANL;
+}
 function initPend(){
-  const gerentes=['', ...new Set(PEND.map(t=>t.gerente))].sort();
+  const gerentes=['', ...new Set(pendAnalise_().map(t=>t.gerente))].sort();
   document.getElementById('f-pend-ger').innerHTML=gerentes.map(g=>'<option value="'+g+'">'+(g||'Todos os gerentes')+'</option>').join('');
-  const statuses=['', ...new Set(PEND.map(t=>t.status).filter(Boolean))].sort();
+  const statuses=['', ...new Set(pendAnalise_().map(t=>t.status).filter(Boolean))].sort();
   document.getElementById('f-pend-status').innerHTML=statuses.map(s=>'<option value="'+s.replace(/"/g,'&quot;')+'">'+(s||'Todos os status')+'</option>').join('');
   document.getElementById('f-pend-ger').onchange=renderPend;
   document.getElementById('f-pend-status').onchange=renderPend;
@@ -6989,7 +7200,7 @@ function initPend(){
 function renderPend(){
   const ger=document.getElementById('f-pend-ger').value;
   const statusFiltro=document.getElementById('f-pend-status').value;
-  let list=PEND;
+  let list=pendAnalise_();
   if(ger)list=list.filter(t=>t.gerente===ger);
   if(statusFiltro)list=list.filter(t=>t.status===statusFiltro);
   const both=list.filter(t=>t.falta_inicio&&t.falta_venc).length;
@@ -7043,11 +7254,10 @@ async function openProjDetail(pjName){
   const activePage=document.querySelector('.page.active');
   if(activePage && activePage.id==='page-lider') PD_ORIGIN_PAGE='lider';
   else if(activePage && activePage.id==='page-gerente') PD_ORIGIN_PAGE='gerente';
-  else if(activePage && activePage.id==='page-transversal') PD_ORIGIN_PAGE='transversal';
   else if(activePage && activePage.id==='page-calendario') PD_ORIGIN_PAGE='calendario';
   else PD_ORIGIN_PAGE='cliente';
   const backBtn=document.getElementById('proj-voltar');
-  const backLabels={lider:'← Voltar para Projetos por Líder',gerente:'← Voltar para Meus Projetos',transversal:'← Voltar para Entrega e Produtividade',cliente:'← Voltar para Portfólio Geral',calendario:'← Voltar para Calendário de Projetos'};
+  const backLabels={lider:'← Voltar para Projetos por Líder',gerente:'← Voltar para Meus Projetos',cliente:'← Voltar para Portfólio Geral',calendario:'← Voltar para Calendário de Projetos'};
   if(backBtn) backBtn.textContent = backLabels[PD_ORIGIN_PAGE] || backLabels.cliente;
   goToPage('projdetail');
   PD_TAG_FILTER = '';
@@ -7081,10 +7291,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(card) openProjDetail(card.dataset.pj);
   });
   document.getElementById('gerente-content').addEventListener('click', (e)=>{
-    const card = e.target.closest('.proj-card');
-    if(card) openProjDetail(card.dataset.pj);
-  });
-  document.getElementById('transversal-content').addEventListener('click', (e)=>{
     const card = e.target.closest('.proj-card');
     if(card) openProjDetail(card.dataset.pj);
   });
@@ -7882,7 +8088,7 @@ function renderOciosos(){
   const semAlocNamesSet=new Set(SEM_ALOC.map(o=>o.a));
   const alocSemApontNamesSet=new Set(ALOC_SEM_APONT.map(o=>o.a));
   const [ocMon,ocSun]=getMondaySunday(new Date());
-  const ociososSemanaList=D.p.filter(p=>p.a&&!semAlocNamesSet.has(p.a)&&!alocSemApontNamesSet.has(p.a)).map(p=>{
+  const ociososSemanaList=PESA_().filter(p=>p.a&&!semAlocNamesSet.has(p.a)&&!alocSemApontNamesSet.has(p.a)).map(p=>{
     const ek=(p.email||'').toLowerCase();
     const hPrev=Object.entries(PPREVISTO[ek]||{}).filter(([d])=>d>=ocMon&&d<=ocSun).reduce((s,[,v])=>s+v,0);
     const hExec=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&d>=ocMon&&d<=ocSun).reduce((s,[,v])=>s+v[0],0);
@@ -7898,7 +8104,7 @@ function renderOciosos(){
   const periodoAtivo=!!(pDe||pAte);
   let comTarefaPeriodo=[],semTarefaPeriodo=[];
   if(periodoAtivo){
-    D.p.filter(p=>p.a).forEach(p=>{
+    PESA_().filter(p=>p.a).forEach(p=>{
       const ek=(p.email||'').toLowerCase();
       const vencList=PVENC[ek]||[];
       const tem=vencList.some(d=>inRange(d,pDe,pAte));
@@ -7910,10 +8116,10 @@ function renderOciosos(){
 
   document.getElementById('kpi-ociosos').innerHTML =
     (periodoAtivo?
-    kpiHtml({label:'Com Tarefa Atribuída no Período',value:comTarefaPeriodo.length,icon:'check',bg:'#eff6ff',color:'#2563eb',valueColor:'var(--primary)',foot:'de '+D.p.filter(p=>p.a).length+' colaboradores'})+
+    kpiHtml({label:'Com Tarefa Atribuída no Período',value:comTarefaPeriodo.length,icon:'check',bg:'#eff6ff',color:'#2563eb',valueColor:'var(--primary)',foot:'de '+PESA_().filter(p=>p.a).length+' colaboradores'})+
     kpiHtml({label:'Sem Tarefa Atribuída no Período',value:semTarefaPeriodo.length,icon:'usuarioX',bg:semTarefaPeriodo.length>0?'#fef2f2':'#f8fafc',color:semTarefaPeriodo.length>0?'#dc2626':'#64748b',valueColor:(semTarefaPeriodo.length>0?'var(--st-bloqueado)':'var(--text)'),foot:'nenhum vencimento no período'})
     :
-    kpiHtml({label:'Disponibilidade (real)',value:SEM_ALOC.length,icon:'usuarioX',bg:'#fef2f2',color:'#dc2626',valueColor:'var(--st-bloqueado)',foot:'de '+D.p.filter(p=>p.a).length+' colaboradores'})+
+    kpiHtml({label:'Disponibilidade (real)',value:SEM_ALOC.length,icon:'usuarioX',bg:'#fef2f2',color:'#dc2626',valueColor:'var(--st-bloqueado)',foot:'de '+PESA_().filter(p=>p.a).length+' colaboradores'})+
     kpiHtml({label:'Alocados, sem apontamento no Zoho',value:ALOC_SEM_APONT.length,icon:'alerta',bg:'#fff7ed',color:'#f59e0b',valueColor:'#f59e0b',foot:'estão em equipe de projeto no Portifolio'})+
     kpiHtml({label:'Ociosidade Alta Esta Semana',value:ociososSemanaList.length,icon:'bateria',bg:ociososSemanaList.length>0?'#fff7ed':'#eff6ff',color:ociososSemanaList.length>0?'#f59e0b':'var(--primary)',valueColor:(ociososSemanaList.length>0?'#f59e0b':'var(--primary)'),foot:'alocados, mas ≥50% abaixo do previsto'}));
 
@@ -8194,7 +8400,7 @@ async function renderTopExec(){
 
   h+='<div class="top5-card"><div class="card-title"><h3>💤 Pessoas com Maior Ociosidade Semanal<span class="sub"> (atual)</span></h3><span class="sub">horas previstas x executadas nesta semana</span></div>';
   const [ociMon,ociSun]=getMondaySunday(new Date());
-  const ociosidadeRanking=D.p.filter(p=>p.a).map(p=>{
+  const ociosidadeRanking=PESA_().filter(p=>p.a).map(p=>{
     const ek=(p.email||'').toLowerCase();
     const hPrev=Object.entries(PPREVISTO[ek]||{}).filter(([d])=>d>=ociMon&&d<=ociSun).reduce((s,[,v])=>s+v,0);
     const hExec=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&d>=ociMon&&d<=ociSun).reduce((s,[,v])=>s+v[0],0);
@@ -8356,8 +8562,8 @@ function renderFuturistic(firstLoad){
   const pctConsumoMes = totalHestGlobal>0?Math.round(horasMes/totalHestGlobal*100):0;
 
   const pctPrazo = ativos.length>0?Math.round((ativos.length-atrasadosCount)/ativos.length*100):0;
-  const pessoasAtivas = D.p.filter(p=>p.a).length - SEM_ALOC.length;
-  const totalPessoas = D.p.filter(p=>p.a).length;
+  const pessoasAtivas = PESA_().filter(p=>p.a).length - SEM_ALOC.length;
+  const totalPessoas = PESA_().filter(p=>p.a).length;
   const pctOcupacao = totalPessoas>0?Math.round(pessoasAtivas/totalPessoas*100):0;
 
   // Ritmo do portfólio (% de projetos ativos classificados "No ritmo")
@@ -8482,7 +8688,7 @@ function renderFuturistic(firstLoad){
         onClick:(evt,elems)=>{
           if(!elems.length) return;
           const sem=semanasRef[elems[0].index];
-          const linhas=D.p.filter(p=>p.a).map(p=>{
+          const linhas=PESA_().filter(p=>p.a).map(p=>{
             const ek=(p.email||'').toLowerCase();
             const hPrev=Object.entries(PPREVISTO[ek]||{}).filter(([d])=>d>=sem.mon&&d<=sem.sun).reduce((s,[,v])=>s+v,0);
             const hExec=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&d>=sem.mon&&d<=sem.sun).reduce((s,[,v])=>s+v[0],0);
@@ -8608,7 +8814,7 @@ function abrirDetalheFuturista(tipo, el){
   }else if(tipo==='pessoas-alocadas'){
     titulo='Pessoas Alocadas x Sem Alocação (atual)';
     const semAlocSet=new Set(SEM_ALOC.map(o=>o.a));
-    const alocadas=D.p.filter(p=>p.a && !semAlocSet.has(p.a));
+    const alocadas=PESA_().filter(p=>p.a && !semAlocSet.has(p.a));
     const colunasFutPessoas=[{key:'nome',label:'Nome',tipo:'texto',get:p=>p.a},{key:'area',label:'Área',tipo:'texto',get:p=>p.area}];
     SORT_RERENDER['fut-modal-alocadas']=()=>abrirDetalheFuturista(tipo,el);
     SORT_RERENDER['fut-modal-semaloc']=()=>abrirDetalheFuturista(tipo,el);
@@ -8657,7 +8863,7 @@ function abrirDetalheFuturista(tipo, el){
   }else if(tipo==='area-mes'){
     const area=el.dataset.futArea;
     titulo='Área: '+area+' — '+S.mesLabel;
-    const pessoasArea=D.p.filter(p=>p.area===area && p.a);
+    const pessoasArea=PESA_().filter(p=>p.area===area && p.a);
     const linhas=pessoasArea.map(p=>{
       const ek=(p.email||'').toLowerCase();
       let h=0; Object.entries(HM[ek]||{}).forEach(([d,v])=>{ if(d.slice(0,7)===S.mes) h+=v; });
@@ -8942,7 +9148,7 @@ function populateEquipeGestorFilter(){
   const head=document.getElementById('f-equipe').value;
   const gestorSel=document.getElementById('f-equipe-gestor');
   const PLACEHOLDERS=['#N/T','#N/A','Pendente'];
-  const base=head?D.p.filter(p=>p.head===head):D.p;
+  const base=head?PESA_().filter(p=>p.head===head):PESA_();
   const gestores=[...new Set(base.map(p=>p.gestor).filter(Boolean).filter(g=>PLACEHOLDERS.indexOf(g)===-1))].sort();
   const prevVal=gestorSel.value;
   gestorSel.innerHTML='<option value="">— Todos —</option>'+gestores.map(g=>'<option value="'+g.replace(/"/g,'&quot;')+'">'+g+'</option>').join('');
@@ -8964,7 +9170,7 @@ function populateEquipePessoaFilter(){
   }
   // Seletor não traz gente Inativa (a equipe listada em si, montada por
   // renderEquipe, continua mostrando todo mundo do recorte de Head/Gestor).
-  const pessoas=D.p.filter(p=>(!head||p.head===head)&&(!gestor||p.gestor===gestor)&&p.a&&pessoaEstaAtiva(p)).map(p=>p.a).sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const pessoas=PESA_().filter(p=>(!head||p.head===head)&&(!gestor||p.gestor===gestor)&&p.a&&pessoaEstaAtiva(p)).map(p=>p.a).sort((a,b)=>a.localeCompare(b,'pt-BR'));
   pessoaSel.innerHTML='<option value="">— Todos —</option>'+pessoas.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">'+n+'</option>').join('');
   wrap.style.display='';
 }
@@ -8977,7 +9183,7 @@ function renderEquipe(){
     return;
   }
   const pessoaFiltro=document.getElementById('f-equipe-pessoa').value;
-  let time=D.p.filter(p=>(!head||p.head===head)&&(!gestor||p.gestor===gestor)&&p.a);
+  let time=PESA_().filter(p=>(!head||p.head===head)&&(!gestor||p.gestor===gestor)&&p.a);
   if(pessoaFiltro) time=time.filter(p=>p.a===pessoaFiltro);
 
   const [de,ate]=getDateRange('f-equipe-de','f-equipe-ate');
@@ -8986,7 +9192,7 @@ function renderEquipe(){
   // Percentil de horas/tarefas vs todo o portfólio (mesma base do restante do dashboard,
   // já respeitando o período quando selecionado)
   const allHorasArr=[], allTarefasArr=[];
-  D.p.filter(pp=>pp.a).forEach(pp=>{
+  PESA_().filter(pp=>pp.a).forEach(pp=>{
     const ek=(pp.email||'').toLowerCase();
     let h,t;
     if(periodoAtivo){
@@ -9146,7 +9352,7 @@ function renderSetorial(){
   if(!area){ kpiEl.innerHTML=''; contentEl.innerHTML='<div class="empty-state" style="padding:80px 20px"><p>Nenhuma área disponível no seu escopo.</p></div>'; return; }
 
   const d=AREAS[area]||{ps:0,pj:0,hrs:0,tar:0,head:'—'};
-  const pessoas=D.p.filter(p=>p.area===area).sort((a,b)=>a.a.localeCompare(b.a));
+  const pessoas=PESA_().filter(p=>p.area===area).sort((a,b)=>a.a.localeCompare(b.a));
   const semAloc=SEM_ALOC.filter(o=>(o.area||'')===area);
   const alocSemApo=ALOC_SEM_APONT.filter(o=>(o.area||'')===area);
 
@@ -9208,93 +9414,6 @@ function renderSetorial(){
     h+='</tbody></table></div></div>';
   }
   contentEl.innerHTML=h;
-}
-
-// ============================================================
-// GESTÃO TRANSVERSAL (PROJETOS & SQUADS) — visão de LP/GP/SM.
-// Baseada no esquema: Foco Operacional (GP/SM: atraso, bloqueios, conclusão) +
-// Foco Estratégico (LP: prazo previsto, comparativo de prazos) + Produtividade
-// (horas estimado x executado). "Atraso causado pelo cliente?" NÃO é rastreado
-// no dashboard hoje (não existe esse campo nos dados de origem).
-// ============================================================
-function initTransversal(){
-  const clientes=[...new Set(D.pj.map(p=>p.cl).filter(Boolean))].sort();
-  document.getElementById('f-transversal-cl').innerHTML='<option value="">Todos</option>'+clientes.map(c=>'<option value="'+c.replace(/"/g,'&quot;')+'">'+c+'</option>').join('');
-  document.getElementById('f-transversal-cl').onchange=renderTransversal;
-  document.getElementById('f-transversal-st').onchange=renderTransversal;
-  document.getElementById('f-transversal-clear').onclick=()=>{document.getElementById('f-transversal-cl').value='';document.getElementById('f-transversal-st').value='';renderTransversal();};
-  renderTransversal();
-}
-function renderTransversal(){
-  const cl=document.getElementById('f-transversal-cl').value;
-  const st=document.getElementById('f-transversal-st').value;
-  let prj=D.pj.slice();
-  if(cl) prj=prj.filter(p=>p.cl===cl);
-  if(st==='todos'){ /* sem filtro de status */ }
-  else if(st){ prj=prj.filter(p=>p.st===st); }
-  else { prj=prj.filter(p=>p.st==='Em Andamento'||p.st==='Sustentação'); } // padrão: só ativos
-  prj=sortByStatusOrder(prj);
-
-  let atrasados=0,bloqueados=0,tEst=0,tApo=0;
-  prj.forEach(p=>{
-    if(p.dd&&String(p.dd).toLowerCase().includes('atraso')) atrasados++;
-    if(p.tar_bloq>0) bloqueados++;
-    tEst+=p.horas_est||0; tApo+=p.horas_apo||0;
-  });
-  const pctConsumo=tEst>0?Math.round(tApo/tEst*100):null;
-
-  document.getElementById('kpi-transversal').innerHTML=
-    kpiHtml({label:'Projetos',value:prj.length,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})+
-    kpiHtml({label:'Atraso do Projeto'+infoTip('Foco Operacional (GP/SM): projeto com indicador de atraso no cronograma.'),value:atrasados,icon:'alerta',bg:atrasados>0?'#fef2f2':'#f8fafc',color:atrasados>0?'#dc2626':'#64748b',valueColor:(atrasados>0?'var(--st-bloqueado)':'var(--text)')})+
-    kpiHtml({label:'Com Impedimentos/Bloqueios'+infoTip('Foco Operacional (GP/SM): projetos com pelo menos uma tarefa em status "Blocked".'),value:bloqueados,icon:'bloqueio',bg:bloqueados>0?'#fff7ed':'#f8fafc',color:bloqueados>0?'#f59e0b':'#64748b',valueColor:(bloqueados>0?'#f59e0b':'var(--text)')})+
-    kpiHtml({label:'Horas — Estimado x Executado'+infoTip(TIP_ESTIMADO_EXECUTADO),value:fH(tEst)+' → '+fH(tApo),icon:'balanca',bg:'#eef2ff',color:'#4f46e5',foot:(pctConsumo===null?'—':pctConsumo+'% consumido')});
-
-  let h='<div class="proj-grid">';
-  prj.forEach(p=>{
-    const at=p.dd&&String(p.dd).toLowerCase().includes('atraso');
-    const pctEst=p.horas_est>0?Math.round(p.horas_apo/p.horas_est*100):null;
-    // Comparativo de Prazos: Data de Conclusão x Data Prevista (Foco Estratégico do LP)
-    let compH='';
-    if(p.de && p.pea){
-      const dConc=parseBrDateLocal_(p.de), dPrev=parseBrDateLocal_(p.pea);
-      if(dConc&&dPrev){
-        const diffDias=Math.round((dConc-dPrev)/86400000);
-        compH='<span class="status-pill" style="border-left:3px solid '+(diffDias>0?'var(--st-bloqueado)':'var(--st-feito)')+'" title="Data de Conclusão x Data Prevista">📐 '+(diffDias>0?diffDias+'d após o previsto':diffDias<0?Math.abs(diffDias)+'d antes do previsto':'no prazo previsto')+'</span>';
-      }
-    } else if(p.pea && !p.de){
-      compH='<span class="status-pill" title="Ainda não concluído">📐 Previsto: '+p.pea+'</span>';
-    }
-    const equipeH=(p.eq||[]).map(m=>'<span class="status-pill">'+personLinkHtml(m)+'</span>').join(' ');
-    h+=`<div class="proj-card" data-idx="0" data-pj="${p.pj.replace(/"/g,'&quot;')}">
-      <div class="proj-card-top">
-        <div class="proj-card-name">${p.pj}</div>
-        ${statusChipHtml(p.st)}
-      </div>
-      <div class="proj-card-meta">
-        <span>🏢 <strong>${p.cl}</strong></span>
-        <span>🧑‍💼 LP/Líder: <strong>${personLinkHtml(p.lider)}</strong></span>
-        <span>⚙️ GP: <strong>${personLinkHtml(p.gp)}</strong></span>
-        ${p.sm?'<span>🎯 SM: <strong>'+personLinkHtml(p.sm)+'</strong></span>':''}
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
-        ${p.dd?'<span class="status-pill" style="border-left:3px solid '+(at?'var(--st-bloqueado)':'var(--text-faint)')+';color:'+(at?'var(--st-bloqueado)':'inherit')+'">'+(at?'⚠️ ':'📅 ')+p.dd+'</span>':''}
-        ${p.tar_bloq>0?'<span class="status-pill" style="border-left:3px solid #f59e0b;color:#f59e0b">🚧 '+p.tar_bloq+' bloqueada(s)</span>':''}
-        ${compH}
-      </div>
-      ${ritmoBadgeHtml(p)?'<div style="margin-bottom:10px">'+ritmoBadgeHtml(p)+'</div>':''}
-      <div class="proj-card-hours">
-        <div><span class="proj-card-hours-label">Estimado</span><span class="proj-card-hours-val">${fH(p.horas_est)}</span></div>
-        <div><span class="proj-card-hours-label">Executado</span><span class="proj-card-hours-val" style="color:var(--primary)">${fH(p.horas_apo)}</span></div>
-        ${pctEst!=null?'<div><span class="proj-card-hours-label">Consumo de Horas</span><span class="proj-card-hours-val" style="color:'+(pctEst>100?'var(--st-bloqueado)':'var(--text)')+'">'+pctEst+'%</span></div>':''}
-      </div>
-      <div style="font-size:11px;color:var(--text-faint);margin:8px 0 4px;text-transform:uppercase;letter-spacing:.03em">Squad</div>
-      <div style="line-height:1.9;margin-bottom:8px">${equipeH||'<span style="color:var(--text-faint)">— sem equipe registrada —</span>'}</div>
-      <div class="proj-card-cta">Ver detalhamento completo →</div>
-    </div>`;
-  });
-  h+='</div>';
-  if(prj.length===0) h='<div class="empty-state" style="padding:80px 20px"><p>Nenhum projeto encontrado com esses filtros.</p></div>';
-  document.getElementById('transversal-content').innerHTML=h;
 }
 
 // ============================================================
@@ -10142,7 +10261,6 @@ async function excluirStatusReportPainel_(id,btn){
 // este mapa (ver comentário lá).
 const PAGINA_CAMPOS_NECESSARIOS={
   cliente:['PROJ_TASKS'],
-  alocacoes:['PROJ_TASKS','PSTAT','PHEST','PHAP'],
   inteligencia:['PROJ_TASKS','PSTAT','PHEST','PHAP'],
   pessoa:['PM','PM_PROJ','PROJ_TASKS','CD','CTOK','PSTAT','PPREVISTO','PHEST','PHAP','HM','PVENC'],
   area:['PPREVISTO','PM'],
@@ -10190,11 +10308,11 @@ function comCamposNecessarios_(nomePagina, fnOriginal){
   return wrapped;
 }
 const PAGE_INIT_MAP={
-  cliente:comCamposNecessarios_('cliente',initCliente), alocacoes:comCamposNecessarios_('alocacoes',initAlocacoes), inteligencia:comCamposNecessarios_('inteligencia',initInteligenciaAlocacao), portfolioedit:initPortfolioEdit, pessoa:comCamposNecessarios_('pessoa',initPessoa), area:comCamposNecessarios_('area',initArea), pend:comCamposNecessarios_('pend',initPend),
+  cliente:comCamposNecessarios_('cliente',initCliente), inteligencia:comCamposNecessarios_('inteligencia',initInteligenciaAlocacao), portfolioedit:initPortfolioEdit, pessoa:comCamposNecessarios_('pessoa',initPessoa), area:comCamposNecessarios_('area',initArea), pend:comCamposNecessarios_('pend',initPend),
   ociosos:comCamposNecessarios_('ociosos',initOciosos), topexec:initTopExec, futuristic:comCamposNecessarios_('futuristic',renderFuturistic),
   calendario:initCalendarioProjetos,
   lider:initLider, gerente:initGerente, equipe:comCamposNecessarios_('equipe',initEquipe),
-  setorial:comCamposNecessarios_('setorial',initSetorial), transversal:initTransversal, statusreport:initStatusReport,
+  setorial:comCamposNecessarios_('setorial',initSetorial), statusreport:initStatusReport,
   statusreportpainel:initStatusReportPainel,
   logalteracoes:initLogAlteracoes,
   andamento:comCamposNecessarios_('andamento',initAndamento),
@@ -10452,20 +10570,24 @@ function haDia_(u,iso){
 // ---------- dados ----------
 function haUsuarioSel_(){
   const v=haN_(document.getElementById('ha-user').value); if(!v) return null;
-  return HA.usuarios.find(u=>haN_(u.rot)===v||haN_(u.n)===v||u.e===v)||null;
+  return HA.usuarios.find(u=>!u.fora&&(haN_(u.rot)===v||haN_(u.n)===v||u.e===v))||null;
 }
 function haPrepararDados_(r){
   HA.dados=r; HA.feriadosCache={};
   const cont={};
   HA.usuarios=(r.usuarios||[]).map((u,i)=>{cont[haN_(u.n)]=(cont[haN_(u.n)]||0)+1;return {i,e:u.e,n:u.n,l:u.l||''};});
   HA.usuarios.forEach(u=>{u.rot=cont[haN_(u.n)]>1?u.n+' ('+u.e+')':u.n;});
+  // v17.1 — Participa_Analises = Não: sai das listas, totais e gráficos (exceto quando a própria pessoa vê as suas horas).
+  // Os lançamentos continuam na planilha; só deixam de entrar nesta análise.
+  const pesPorEmail={}; ((D&&D.p)||[]).forEach(x=>{ if(x.email) pesPorEmail[String(x.email).toLowerCase()]=x; });
+  HA.usuarios.forEach(u=>{ u.fora=(r.escopo!=='proprio')&&!pessoaParticipaAnalises_(pesPorEmail[String(u.e||'').toLowerCase()]); });
   HA.projetos=(r.projetos||[]).map(p=>({cl:p[0],pj:p[1],id:p[2]}));
   HA.recs=(r.registros||[]).map((x,i)=>({id:i,d:x[0],u:x[1],pj:x[2],tarefa:x[3]||'',h:x[4],tp:x[5],idItem:x[6]||'',tipoRaw:x[7]||'',row:x[8],
-    g:x[5]===0?'T':(x[5]===1||x[5]===2?'R':'O'),tipoO:x[5]<3?HA_TIPO_ORIG[x[5]]:(x[7]||'(vazio)')}));
+    g:x[5]===0?'T':(x[5]===1||x[5]===2?'R':'O'),tipoO:x[5]<3?HA_TIPO_ORIG[x[5]]:(x[7]||'(vazio)')})).filter(x=>!(HA.usuarios[x.u]&&HA.usuarios[x.u].fora));
   HA.escopo=r.escopo||'todos';
 }
 function haPreencherFiltros_(){
-  const dl=document.getElementById('ha-ul'); dl.innerHTML=HA.usuarios.slice().sort((a,b)=>a.rot.localeCompare(b.rot,'pt-BR')).map(u=>'<option value="'+feEsc_(u.rot)+'">').join('');
+  const dl=document.getElementById('ha-ul'); dl.innerHTML=HA.usuarios.filter(u=>!u.fora).sort((a,b)=>a.rot.localeCompare(b.rot,'pt-BR')).map(u=>'<option value="'+feEsc_(u.rot)+'">').join('');
   const sp=document.getElementById('ha-proj'), atual=sp.value;
   const nomes=[...new Set(HA.projetos.map(p=>p.pj))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
   sp.innerHTML='<option value="">Todos</option>'+nomes.map(n=>'<option>'+feEsc_(n)+'</option>').join('');
@@ -10550,7 +10672,7 @@ function haAvisos_(C){
   const semLoc=HA.usuarios.filter(u=>ids.has(u.i)&&!u.l);
   const temLocal=(d.feriados||[]).some(f=>f.tipo!=='Nacional');
   let loc='';
-  if(!d.temColunaLocalidade) loc='A coluna <b>Localidade</b> ainda não existe em Pessoas_Area — somente feriados <b>Nacionais</b> estão sendo aplicados.';
+  if(!d.temColunaLocalidade) loc='As colunas <b>Estado/Cidade</b> (ou Localidade) ainda não existem em Pessoas_Area — somente feriados <b>Nacionais</b> estão sendo aplicados.';
   else if(semLoc.length&&temLocal) loc='<b>'+semLoc.length+' usuário(s) sem Localidade</b> em Pessoas_Area recebem só feriados Nacionais'+(semLoc.length<=4?': '+semLoc.map(u=>feEsc_(u.n)).join(', '):'')+'. Preencha a Localidade (ex.: Manaus/AM) para aplicar feriados estaduais/municipais.';
   const filtrado=document.getElementById('ha-proj').value||document.getElementById('ha-tipo').value;
   document.getElementById('ha-aviso').innerHTML=
