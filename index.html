@@ -722,6 +722,17 @@ tbody tr.row-danger:hover{background:var(--st-bloqueado-bg);}
 .sg-hoje{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed #e11d48;z-index:3;pointer-events:none}
 .sg-hoje i{position:absolute;top:0;left:-18px;background:#e11d48;color:#fff;font-size:10px;font-style:normal;padding:0 5px;border-radius:0 0 5px 5px;z-index:6}
 .sg-vl{position:absolute;top:0;bottom:0;width:1px;background:#edf3f8}.sg-fs{position:absolute;top:0;bottom:0;background:rgba(2,132,199,.04)}
+/* v17.4.1 — visualização do Status Report: modal mais largo/alto e abas */
+.task-modal-card.sr-exec-card{max-width:min(1500px,96vw); max-height:94vh; width:96vw}
+.task-modal-overlay:has(.sr-exec-card){padding:2vh 2vw}
+.sr-exec-card .sr-exec-doc{margin:12px 16px}
+.sre-tabs{display:flex;gap:4px;padding:0 24px;border-bottom:1px solid #e2e8f0;margin-top:6px;position:sticky;top:0;background:#fff;z-index:7}
+.sre-tab{border:none;background:none;padding:10px 16px;font:inherit;font-weight:700;font-size:13px;color:#64748b;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
+.sre-tab:hover{color:var(--primary)}.sre-tab.on{color:var(--primary);border-bottom-color:var(--primary)}
+.sre-n{background:#e0f2fe;color:#075985;border-radius:99px;font-size:11px;padding:0 7px;margin-left:4px}
+.sr-exec-card .sg-wrap{max-height:calc(94vh - 330px);min-height:200px}
+@media(max-width:700px){.task-modal-card.sr-exec-card{max-width:100vw;width:100vw;max-height:100vh;border-radius:0}.task-modal-overlay:has(.sr-exec-card){padding:0}.sre-tabs{padding:0 12px}}
+@media print{.sre-tabs{display:none!important}.sre-pane{display:block!important}}
 @media print{.sg-wrap{max-height:none;overflow:visible}.sg-lab{position:static}}
 .sg-det{margin-top:8px}.sg-det-box{background:#f0f9ff;border-left:3px solid #0284c7;border-radius:8px;padding:10px 12px}
 .sg-det-t{font-weight:700;margin-bottom:6px;color:var(--primary)}.sg-kv{display:grid;grid-template-columns:100px 1fr;gap:4px 10px;font-size:12.5px}.sg-kv span{color:var(--text-faint)}
@@ -10145,7 +10156,8 @@ function srGanttHtml_(entregas,rid){
   min=new Date(min.getTime()-((min.getDay()+6)%7)*srcDIA_);
   max=new Date(max.getTime()+(6-((max.getDay()+6)%7))*srcDIA_);
   const dias=Math.round((max-min)/srcDIA_)+1;
-  const W=dias<=56?22:dias<=112?14:dias<=240?9:6, TW=dias*W, LAB=220;
+  const LAB=220, avail=Math.max(600,Math.min(1500,window.innerWidth*0.96)-120-LAB);
+  const W=Math.max(dias<=240?9:6,Math.min(26,Math.floor(avail/dias))), TW=dias*W;
   const meses=[]; let cur=null,ini=null,span=0;
   for(let i=0;i<dias;i++){ const d=new Date(min.getTime()+i*srcDIA_); const k=d.getFullYear()*12+d.getMonth(); if(k!==cur){ if(cur!==null) meses.push([ini,span]); cur=k; ini=d; span=0; } span++; }
   meses.push([ini,span]);
@@ -10172,6 +10184,11 @@ function srCronogramaExecHtml_(r){
   return '<div class="sr-exec-section"><div class="sr-exec-section-title">Cronograma de Entregas das Sprints</div>'+srGanttHtml_(r.cronograma||[],r.id)+'</div>';
 }
 document.addEventListener('click',ev=>{
+  const tb=ev.target.closest&&ev.target.closest('.sre-tab'); if(tb){
+    const doc=tb.closest('.sr-exec-doc'); if(!doc) return;
+    doc.querySelectorAll('.sre-tab').forEach(b=>b.classList.toggle('on',b===tb));
+    doc.querySelectorAll('.sre-pane').forEach(p=>{ p.style.display=p.dataset.pane===tb.dataset.sre?'':'none'; });
+    const body=document.getElementById('sr-exec-modal-body'); if(body) body.scrollTop=0; return; }
   const el=ev.target.closest&&ev.target.closest('[data-sg]'); if(!el) return;
   const [rid,eid]=el.dataset.sg.split('|'); const r=STATUS_REPORTS.find(x=>x.id===rid); if(!r) return;
   const e=(r.cronograma||[]).find(x=>x.id_entrega===eid); const box=document.getElementById('sg-det-'+rid); if(!e||!box) return;
@@ -10484,6 +10501,9 @@ function renderStatusReportExecutivo(r){
     '<div class="sr-exec-infocard"><span class="lbl">Criticidade</span><span class="val"><span class="dot" style="background:'+critCor+'"></span>'+(r.criticidade||'—')+'</span></div>'+
     '<div class="sr-exec-infocard"><span class="lbl">Nível de Risco</span><span class="val"><span class="dot" style="background:'+riscoCor+'"></span>'+(r.nivel_risco||'—')+'</span></div>'+
   '</div>';
+  const nCron=(r.cronograma||[]).length;
+  h+='<div class="sre-tabs"><button type="button" class="sre-tab on" data-sre="resumo">Resumo</button><button type="button" class="sre-tab" data-sre="crono">📅 Cronograma'+(nCron?' <span class="sre-n">'+nCron+'</span>':'')+'</button></div>';
+  h+='<div class="sre-pane" data-pane="resumo">';
   if(r.resumo_executivo){
     h+='<div class="sr-exec-section"><div class="sr-exec-section-title">Resumo Executivo</div><p class="sr-exec-texto">'+r.resumo_executivo.replace(/\n/g,'<br>')+'</p></div>';
   }
@@ -10501,7 +10521,7 @@ function renderStatusReportExecutivo(r){
       atividades.map(a=>'<tr><td>'+(a.atividade||'—')+'</td><td>'+(a.responsavel||'—')+'</td><td>'+(a.status||'—')+'</td></tr>').join('')+
     '</tbody></table></div>';
   }
-  h+=srCronogramaExecHtml_(r);
+  h+='</div><div class="sre-pane" data-pane="crono" style="display:none">'+srCronogramaExecHtml_(r)+'</div>';
   h+='<div class="sr-exec-footer"><span>Status Report · '+(r.previsao_proxima_fase||srFmtBr(r.semana_inicio))+'</span><span>Elaborado por Be Solution</span></div>';
   h+='</div>';
   return h;
