@@ -10506,18 +10506,31 @@ function srColetarAtividades(){
   const out=[];
   linhas.forEach(row=>{
     const atividade=row.querySelector('[data-f=atividade]').value.trim();
-    const responsavel=row.querySelector('[data-f=responsavel]').value.trim();
+    const sel=row.querySelector('[data-f=responsavel]').value, ext=sel==='__ext';
+    const responsavel=(ext?row.querySelector('[data-f=responsavel_ext]').value:sel).trim();
     const descricao=row.querySelector('[data-f=descricao]').value.trim();
     const status=row.querySelector('[data-f=status]').value;
-    if(atividade||responsavel||descricao) out.push({atividade,responsavel,descricao,status});
+    if(atividade||responsavel||descricao) out.push({atividade,responsavel,responsavel_tipo:ext?'externo':'interno',descricao,status});
   });
   return out;
+}
+// Responsável do Plano de Ação: pessoas VINCULADAS ao projeto (nome = Pessoas_Area.Assinatura) ou "Externo / Cliente" (texto livre).
+function srAtivRespHtml_(a){
+  const pes=srCronoPessoas_(false), resp=String(a.responsavel||'').trim();
+  const interno=resp&&pes.some(p=>p.n===resp);
+  const ext=a.responsavel_tipo==='externo'||(resp&&!interno&&a.responsavel_tipo!=='interno');
+  const foraLista=!ext&&resp&&!interno;
+  return '<div><select data-f="responsavel"><option value="">— Responsável —</option>'
+    +pes.map(p=>'<option value="'+srcE_(p.n)+'"'+(!ext&&resp===p.n?' selected':'')+'>'+srcE_(p.n)+'</option>').join('')
+    +(foraLista?'<option value="'+srcE_(resp)+'" selected>'+srcE_(resp)+' (fora dos vínculos do projeto)</option>':'')
+    +'<option value="__ext"'+(ext?' selected':'')+'>Externo / Cliente…</option></select>'
+    +'<input type="text" data-f="responsavel_ext" maxlength="120" placeholder="Nome do responsável externo / cliente" value="'+(ext?srcE_(resp):'')+'" style="margin-top:4px;'+(ext?'':'display:none')+'"></div>';
 }
 function srAtividadeRowHtml(a){
   a=a||{atividade:'',responsavel:'',descricao:'',status:'Pendente'};
   return '<div class="sr-ativ-row">'+
     '<input type="text" data-f="atividade" placeholder="Atividade" value="'+(a.atividade||'').replace(/"/g,'&quot;')+'">'+
-    '<input type="text" data-f="responsavel" placeholder="Responsável" value="'+(a.responsavel||'').replace(/"/g,'&quot;')+'">'+
+    srAtivRespHtml_(a)+
     '<input type="text" data-f="descricao" placeholder="Descrição / Impacto" value="'+(a.descricao||'').replace(/"/g,'&quot;')+'">'+
     '<select data-f="status">'+SR_ATIVIDADE_STATUS_OPCOES.map(s=>'<option value="'+s+'"'+(a.status===s?' selected':'')+'>'+s+'</option>').join('')+'</select>'+
     '<button type="button" class="sr-ativ-remove" title="Remover">✕</button>'+
@@ -10631,6 +10644,10 @@ function renderStatusReport(){
     const critCloseBtn=document.getElementById('sr-crit-popover-close');
     if(critCloseBtn) critCloseBtn.onclick=()=>critPopover.classList.remove('show');
   }
+  document.getElementById('sr-ativ-body').addEventListener('change',(e)=>{
+    const sel=e.target.closest&&e.target.closest('select[data-f=responsavel]'); if(!sel) return;
+    const inp=sel.parentElement.querySelector('[data-f=responsavel_ext]'); inp.style.display=sel.value==='__ext'?'':'none'; if(sel.value==='__ext') inp.focus();
+  });
   document.getElementById('sr-ativ-body').addEventListener('click',(e)=>{
     const rm=e.target.closest('.sr-ativ-remove');
     if(rm){ const rows=document.querySelectorAll('#sr-ativ-body .sr-ativ-row'); if(rows.length>1) rm.closest('.sr-ativ-row').remove(); }
@@ -10797,7 +10814,7 @@ function renderStatusReportExecutivo(r){
   }
   if(atividades.length>0){
     h+='<div class="sr-exec-section sr-exec-plano"><div class="sr-exec-section-title">Plano de Ação</div><table><thead><tr><th>Atividade</th><th>Responsável</th><th>Status</th></tr></thead><tbody>'+
-      atividades.map(a=>'<tr><td>'+(a.atividade||'—')+'</td><td>'+(a.responsavel||'—')+'</td><td>'+(a.status||'—')+'</td></tr>').join('')+
+      atividades.map(a=>'<tr><td>'+(a.atividade||'—')+'</td><td>'+(a.responsavel||'—')+(a.responsavel&&a.responsavel_tipo==='externo'?' <span class="da-pill">Externo</span>':'')+'</td><td>'+(a.status||'—')+'</td></tr>').join('')+
     '</tbody></table></div>';
   }
   h+='</div><div class="sre-pane" data-pane="crono" style="display:none">'+srCronogramaExecHtml_(r)+'</div>';
