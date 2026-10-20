@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzJbPuTVwiTYtrVVZSiuGncII8lf0GpS9HAngrYZmts4T8szgAUH2gicSkdIZ3V_iFgFg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwRakd2ZXA6v5q2OS6KeB4Ctqy5SF3R3EACot_0SK1-tfu23KmqGLfEzsefvYuyl5PqSw/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -692,6 +692,39 @@ tbody tr.row-danger:hover{background:var(--st-bloqueado-bg);}
 .da-big{font-size:26px;font-weight:700;color:var(--primary)}.da-hl{background:#dcfce7}
 .da-sug{border:1px solid var(--border);border-radius:10px;padding:9px 11px;margin-bottom:8px}
 .da-pill{font-size:11px;background:#e0f2fe;color:#075985;padding:1px 8px;border-radius:99px}.da-pc{cursor:pointer}
+/* v17.4 — Cronograma de Entregas / Gantt */
+.src-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.src-note{font-size:11px;color:var(--text-faint)}.src-warn{color:#92400e}
+.src-empty{text-align:center;padding:22px 10px;color:var(--text-faint);font-size:13px}
+.src-t{width:100%;border-collapse:collapse;font-size:12.5px}.src-t th{font-size:11px;text-align:left;color:var(--text-faint);font-weight:600;padding:5px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
+.src-t td{padding:5px 6px;border-bottom:1px solid #edf3f8;vertical-align:middle}.src-t input,.src-t select{padding:5px 7px;border:1px solid var(--border);border-radius:7px;background:#fff;font:inherit}
+.src-novo td{background:#f0f9ff}.src-mod td{background:#fffbeb}.src-dirty{font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:99px;margin-left:4px}
+.src-err{color:#b91c1c;font-size:11px}.src-del{border-color:#dc2626!important;color:#dc2626!important}
+.src-hint{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:8px;padding:6px 9px;font-size:12px;margin:4px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.src-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap}
+.src-and{background:#dbeafe;color:#1d4ed8}.src-blq{background:#fee2e2;color:#991b1b}.src-ent{background:#dcfce7;color:#166534}
+.src-av{width:22px;height:22px;border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;margin-right:6px;vertical-align:middle;flex:none}
+.src-pct{display:flex;gap:6px;align-items:center}.src-tr{width:60px;height:7px;background:#e5eef5;border-radius:9px;overflow:hidden}.src-tr i{display:block;height:100%;background:#2563eb}
+.sg-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin:6px 0}.sg-legend span{display:inline-flex;align-items:center;gap:5px}.sg-sw{width:22px;height:11px;border-radius:3px;display:inline-block}
+.sg-wrap{border:1px solid var(--border);border-radius:10px;overflow:auto;max-height:520px;background:#fff}
+.sg-row{display:flex;height:34px;border-bottom:1px solid #eef3f8}.sg-head{position:sticky;top:0;z-index:5;background:#f4f9fd}
+.sg-lab{position:sticky;left:0;z-index:4;width:220px;min-width:220px;background:#fff;border-right:1px solid var(--border);padding:0 8px;display:flex;align-items:center;gap:4px;cursor:pointer;overflow:hidden}
+.sg-lab:hover{background:#f0f9ff}.sg-lab b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;font-size:12px}
+.sg-lab-h{cursor:default;font-weight:700;color:var(--text-faint);font-size:11px;align-items:flex-end;padding-bottom:4px;background:#f4f9fd}
+.sg-track{position:relative;flex:none}.sg-mon,.sg-wk{display:flex}
+.sg-mon div{font-size:11px;font-weight:700;color:var(--primary);border-left:1px solid var(--border);padding:2px 5px;overflow:hidden;white-space:nowrap}
+.sg-wk div{font-size:10px;color:var(--text-faint);border-left:1px solid var(--border);padding:1px 3px;line-height:1.15;overflow:hidden;white-space:nowrap}
+.sg-bar{position:absolute;top:6px;height:22px;border-radius:5px;cursor:pointer;overflow:hidden;display:flex;align-items:center;font-size:11px;font-weight:600;color:#fff;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.sg-fill{position:absolute;left:0;top:0;bottom:0;background:rgba(0,0,0,.25)}.sg-bar span{position:relative;padding:0 6px;white-space:nowrap}
+.sgb-and{background:#3b82f6}.sgb-blq{background:repeating-linear-gradient(45deg,#dc2626,#dc2626 6px,#ef4444 6px,#ef4444 12px)}.sgb-ent{background:#166534}
+.sg-out{position:absolute;top:10px;font-size:11px;color:#12324a;white-space:nowrap}
+.sg-dia{position:absolute;top:9px;width:14px;height:14px;transform:rotate(45deg);border:2px solid;background:#fff}
+.sg-hoje{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed #e11d48;z-index:3;pointer-events:none}
+.sg-hoje i{position:absolute;top:0;left:-18px;background:#e11d48;color:#fff;font-size:10px;font-style:normal;padding:0 5px;border-radius:0 0 5px 5px;z-index:6}
+.sg-vl{position:absolute;top:0;bottom:0;width:1px;background:#edf3f8}.sg-fs{position:absolute;top:0;bottom:0;background:rgba(2,132,199,.04)}
+@media print{.sg-wrap{max-height:none;overflow:visible}.sg-lab{position:static}}
+.sg-det{margin-top:8px}.sg-det-box{background:#f0f9ff;border-left:3px solid #0284c7;border-radius:8px;padding:10px 12px}
+.sg-det-t{font-weight:700;margin-bottom:6px;color:var(--primary)}.sg-kv{display:grid;grid-template-columns:100px 1fr;gap:4px 10px;font-size:12.5px}.sg-kv span{color:var(--text-faint)}
 .empty-state{
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
   padding:50px 20px; color:var(--text-faint); text-align:center;
@@ -2486,7 +2519,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v17.3';
+const APP_VERSION='v17.4';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2716,8 +2749,9 @@ async function attemptLoadWithToken(token, viewAsEmail){
 //
 // Atualize esta data junto com qualquer alteração no array abaixo — ela
 // aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='16/10/2026';
+const NOVIDADES_ATUALIZADO_EM='20/10/2026';
 const NOVIDADES=[
+  {icone:'📅', bg:'#eff6ff', cor:'#2563eb', titulo:'Cronograma Gantt no Status Report', descricao:'Novo bloco "Cronograma de Entregas das Sprints" no Status Report: cadastre várias entregas (título, início, previsão de entrega, status, responsável e % de conclusão), edite ou exclua cada uma individualmente e use "Copiar do report anterior" para não digitar tudo de novo. A visualização do Status Report mostra o cronograma em gráfico Gantt, com semanas, linha de hoje, status por cor e ícone, % concluído e detalhes ao clicar. Nada muda sozinho: status e percentual só mudam por ação sua. Reports antigos continuam como estavam.', paginas:['statusreport','statusreportpainel','projdetail'], data:'2026-10-20', tag:'Nova', tagCor:'nova'},
   {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Decisão de Alocação', descricao:'Nova aba em Inteligência de Alocação para apoiar a decisão do gestor: ranking de candidatos para uma nova demanda (área, senioridade, complexidade, horas), pressão de trabalho explicada, capacidade livre para 7/15/30 dias, comparação de profissionais, simulador de alocação e sugestão de para qual projeto realocar cada pessoa para acelerar a entrega. Usa as horas estimadas e apontadas das tarefas abertas; sem dados suficientes mostra "Dados insuficientes para avaliar". Nada é gravado: as simulações são só visuais. A aba Carga e Risco continua como estava.', paginas:['inteligencia'], data:'2026-10-16', tag:'Nova', tagCor:'nova'},
   {icone:'🧹', bg:'#f1f5f9', cor:'#475569', titulo:'Páginas Alocações e Entrega e Produtividade removidas', descricao:'As páginas Alocações e Entrega e Produtividade não fazem mais parte do Portal e saíram do menu. Os dados continuam disponíveis nas demais páginas (por exemplo, Carga e Risco de Alocação, Gestão da Área e Detalhamento do Projeto).', paginas:[], data:'2026-10-16', tag:'Mudança', tagCor:'mudanca'},
   {icone:'📊', bg:'#ecfdf5', cor:'#059669', titulo:'Participa das Análises também em Pendências, Horas Apontadas e Relatório de Equipes', descricao:'A regra do campo Participa_Analises agora vale também para Pendências de Tarefas (responsável fora das análises não é contado; a tarefa permanece se houver outro responsável ou nenhum), Gestão de Horas Apontadas (a pessoa sai da lista, dos totais e dos gráficos — você continua vendo as suas próprias horas) e Relatório de Projetos e Equipes (equipe, contagem e organograma). Projetos, tarefas e lançamentos não são excluídos.', paginas:['pend','horasapontadas','relatorioprojetos'], data:'2026-10-16', tag:'Melhoria', tagCor:'melhoria'},
@@ -9960,7 +9994,192 @@ function srCriticidadeBadge(valor){
   return '<span class="status-pill" style="border-left:3px solid '+info.cor+';color:'+info.cor+';font-weight:700">'+info.emoji+' '+info.v+'</span>';
 }
 const SR_ATIVIDADE_STATUS_OPCOES=['Pendente','Em Andamento','Concluído','Bloqueado'];
-let SR_STATE={ weekOffset:0, atividades:[], reportAtual:null };
+let SR_STATE={ weekOffset:0, atividades:[], reportAtual:null, entregas:[], excluidas:[], cronEditK:null };
+// ============================================================
+// v17.4 — CRONOGRAMA DE ENTREGAS DAS SPRINTS (Gantt do Status Report)
+// Cada entrega é uma linha própria na aba Status_Report_Cronograma, ligada ao
+// Status Report (id_status_report). O formulário só envia ao servidor as
+// entregas NOVAS, ALTERADAS ou EXCLUÍDAS (uma chamada pequena por entrega).
+// Nada muda sozinho: status/percentual/datas só mudam por ação do usuário.
+// ============================================================
+const SRC_STATUS=[{v:'Em andamento',k:'and',ic:'▶'},{v:'Bloqueado/Atrasado',k:'blq',ic:'⚠'},{v:'Entregue',k:'ent',ic:'✔'}];
+const srcInfo_=v=>SRC_STATUS.find(s=>s.v===v)||SRC_STATUS[0];
+const SRC_COR=['#0284c7','#7c3aed','#db2777','#ea580c','#0d9488','#4f46e5','#b45309','#475569'];
+let SRC_SEQ=0;
+const srcE_=v=>feEsc_(v);
+function srcCorPessoa_(n){ let h=0; String(n||'').split('').forEach(c=>{h=(h*31+c.charCodeAt(0))>>>0;}); return SRC_COR[h%SRC_COR.length]; }
+function srcAv_(n){ return '<span class="src-av" style="background:'+srcCorPessoa_(n)+'">'+srcE_(String(n||'?').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase())+'</span>'; }
+function srcChip_(st){ const i=srcInfo_(st); return '<span class="src-chip src-'+i.k+'">'+i.ic+' '+srcE_(i.v)+'</span>'; }
+function srcBr_(iso){ return iso?srFmtBr(iso):'—'; }
+function srcHojeISO_(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function srcData_(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+const srcDIA_=86400000;
+function srcOrdenar_(L){ return L.slice().sort((a,b)=>(a.data_inicio+a.data_previsao_entrega).localeCompare(b.data_inicio+b.data_previsao_entrega)); }
+function srcVencida_(e){ return e.status!=='Entregue' && e.data_previsao_entrega && e.data_previsao_entrega<srcHojeISO_(); }
+
+// ---------- estado ----------
+function srCronoCarregar_(rep){
+  SR_STATE.entregas=((rep&&rep.cronograma)||[]).map(e=>Object.assign({},e,{_k:++SRC_SEQ,_estado:'salvo'}));
+  SR_STATE.excluidas=[]; SR_STATE.cronEditK=null;
+}
+function srCronoPessoas_(){
+  return (D.p||[]).filter(pessoaEstaAtiva).map(p=>({n:p.a,e:(p.email||'').toLowerCase()})).filter(p=>p.n).sort((a,b)=>a.n.localeCompare(b.n,'pt-BR'));
+}
+function srCronoPendencias_(){
+  return { up:SR_STATE.entregas.filter(e=>e._estado!=='salvo'), del:SR_STATE.excluidas.slice() };
+}
+
+// ---------- formulário ----------
+function srCronoCardHtml_(podeEditar){
+  return '<div class="card" style="margin-bottom:16px" id="sr-cron-card"><div class="card-title"><h3>Cronograma de Entregas das Sprints</h3></div><div id="sr-cron-box"></div></div>';
+}
+function srCronoRender_(podeEditar){
+  const box=document.getElementById('sr-cron-box'); if(!box) return;
+  const L=srcOrdenar_(SR_STATE.entregas), pend=srCronoPendencias_();
+  const npend=pend.up.length+pend.del.length;
+  let h='<div class="src-bar"><span class="src-note">'+L.length+' entrega(s)'+(npend?' · <b class="src-warn">'+npend+' alteração(ões) pendente(s)</b> — só elas serão enviadas ao salvar':'')+'</span>'
+   +(podeEditar?'<span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="filter-clear" id="src-copiar" title="Traz as entregas do report anterior deste projeto como novas linhas">⧉ Copiar do report anterior</button><button type="button" class="sr-btn sr-btn-primary" id="src-add">+ Adicionar entrega</button></span>':'')+'</div>';
+  if(!podeEditar&&L.length===0) h+='<div class="src-empty">Nenhuma entrega cadastrada neste Status Report.</div>';
+  else if(L.length===0) h+='<div class="src-empty">Nenhuma entrega cadastrada neste Status Report. Use <b>Adicionar entrega</b>.</div>';
+  else {
+    h+='<div class="table-wrap"><table class="src-t"><thead><tr><th>#</th><th>Título da entrega da Sprint</th><th>Início</th><th>Previsão de entrega</th><th>Status</th><th>Responsável</th><th>% conclusão</th>'+(podeEditar?'<th style="text-align:right">Ações</th>':'')+'</tr></thead><tbody>'
+      +L.map((e,i)=>e._k===SR_STATE.cronEditK?srCronoLinhaEdit_(e,i):srCronoLinhaView_(e,i,podeEditar)).join('')+'</tbody></table></div>';
+  }
+  box.innerHTML=h;
+  box.querySelectorAll('[data-sra]').forEach(b=>b.onclick=()=>srCronoAcao_(b.dataset.sra.split('|')[0],+b.dataset.sra.split('|')[1],podeEditar));
+  const add=document.getElementById('src-add'); if(add) add.onclick=()=>{
+    if(SR_STATE.cronEditK!==null){ srFeedback('Confirme ou cancele a entrega em edição antes de adicionar outra.',false); return; }
+    const hoje=srcHojeISO_(); const fim=new Date(Date.now()+14*srcDIA_); const f=fim.getFullYear()+'-'+String(fim.getMonth()+1).padStart(2,'0')+'-'+String(fim.getDate()).padStart(2,'0');
+    const e={_k:++SRC_SEQ,_estado:'novo',titulo:'',data_inicio:hoje,data_previsao_entrega:f,status:'Em andamento',responsavel_nome:'',responsavel_email:'',percentual:0};
+    SR_STATE.entregas.push(e); SR_STATE.cronEditK=e._k; srCronoRender_(podeEditar); };
+  const cp=document.getElementById('src-copiar'); if(cp) cp.onclick=()=>srCronoCopiar_(podeEditar);
+  if(document.getElementById('src-pr')){ const pr=document.getElementById('src-pr'),pn=document.getElementById('src-p'); pr.oninput=()=>pn.value=pr.value; pn.oninput=()=>pr.value=pn.value; }
+}
+function srCronoSug_(e){
+  let h='';
+  if(e.status==='Entregue'&&e.percentual<100) h+='<div class="src-hint">💡 Entregue com '+e.percentual+'% — aplicar 100%? <button type="button" class="filter-clear" data-sra="p100|'+e._k+'">Aplicar 100%</button><button type="button" class="filter-clear" data-sra="manter|'+e._k+'">Manter '+e.percentual+'%</button></div>';
+  if(e.percentual===100&&e.status!=='Entregue') h+='<div class="src-hint">💡 100% concluído — marcar como Entregue? <button type="button" class="filter-clear" data-sra="ent|'+e._k+'">Marcar Entregue</button><button type="button" class="filter-clear" data-sra="manter|'+e._k+'">Manter status</button></div>';
+  return h;
+}
+function srCronoLinhaView_(e,i,ed){
+  return '<tr class="'+(e._estado==='novo'?'src-novo':e._estado==='mod'?'src-mod':'')+'"><td>'+(i+1)+'</td><td><b>'+srcE_(e.titulo)+'</b>'+(e._estado!=='salvo'?'<span class="src-dirty">'+(e._estado==='novo'?'nova':'alterada')+'</span>':'')+(srcVencida_(e)?' <span class="src-note" title="Informativo: o status não é alterado automaticamente">⏰ prazo passou</span>':'')+(ed?srCronoSug_(e):'')+'</td><td>'+srcBr_(e.data_inicio)+'</td><td>'+srcBr_(e.data_previsao_entrega)+'</td><td>'+srcChip_(e.status)+'</td><td>'+srcAv_(e.responsavel_nome)+srcE_(e.responsavel_nome)+'</td><td><div class="src-pct"><div class="src-tr"><i style="width:'+e.percentual+'%"></i></div>'+e.percentual+'%</div></td>'
+   +(ed?'<td style="text-align:right;white-space:nowrap"><button type="button" class="filter-clear" data-sra="edit|'+e._k+'">✎ Editar</button> <button type="button" class="filter-clear src-del" data-sra="del|'+e._k+'">🗑 Excluir</button></td>':'')+'</tr>';
+}
+function srCronoLinhaEdit_(e,i){
+  const pes=srCronoPessoas_(); const achou=pes.some(p=>p.n===e.responsavel_nome);
+  return '<tr class="src-novo"><td>'+(i+1)+'</td><td><input type="text" id="src-t" maxlength="200" value="'+srcE_(e.titulo)+'" placeholder="Título da entrega" style="width:100%;min-width:170px"><div class="src-err" id="src-er-t"></div></td>'
+   +'<td><input type="date" id="src-i" value="'+srcE_(e.data_inicio)+'"></td><td><input type="date" id="src-f" value="'+srcE_(e.data_previsao_entrega)+'"><div class="src-err" id="src-er-f"></div></td>'
+   +'<td><select id="src-s">'+SRC_STATUS.map(s=>'<option value="'+srcE_(s.v)+'"'+(e.status===s.v?' selected':'')+'>'+srcE_(s.v)+'</option>').join('')+'</select></td>'
+   +'<td><select id="src-r"><option value="">— Selecione —</option>'+(e.responsavel_nome&&!achou?'<option value="'+srcE_(e.responsavel_nome)+'" selected>'+srcE_(e.responsavel_nome)+'</option>':'')+pes.map(p=>'<option value="'+srcE_(p.n)+'"'+(e.responsavel_nome===p.n?' selected':'')+'>'+srcE_(p.n)+'</option>').join('')+'</select><div class="src-err" id="src-er-r"></div></td>'
+   +'<td><div class="src-pct"><input type="range" id="src-pr" min="0" max="100" step="5" value="'+e.percentual+'" style="width:70px"><input type="number" id="src-p" min="0" max="100" value="'+e.percentual+'" style="width:56px">%</div><div class="src-err" id="src-er-p"></div></td>'
+   +'<td style="text-align:right;white-space:nowrap"><button type="button" class="sr-btn sr-btn-primary" data-sra="ok|'+e._k+'">✓ Confirmar</button> <button type="button" class="filter-clear" data-sra="cancel|'+e._k+'">✕</button></td></tr>';
+}
+function srCronoAcao_(a,k,ed){
+  const e=SR_STATE.entregas.find(x=>x._k===k); if(!e&&a!=='manter') return;
+  const marcar=()=>{ if(e._estado==='salvo') e._estado='mod'; };
+  if(a==='edit'){ if(SR_STATE.cronEditK!==null&&SR_STATE.cronEditK!==k){ srFeedback('Confirme ou cancele a entrega em edição antes de editar outra.',false); return; } SR_STATE.cronEditK=k; }
+  else if(a==='cancel'){ if(e._estado==='novo'&&!e.id_entrega) SR_STATE.entregas=SR_STATE.entregas.filter(x=>x._k!==k); SR_STATE.cronEditK=null; }
+  else if(a==='ok'){
+    const g=id=>document.getElementById(id);
+    const t=g('src-t').value.trim(), i=g('src-i').value, f=g('src-f').value, r=g('src-r').value, p=Number(g('src-p').value), s=g('src-s').value;
+    ['t','f','r','p'].forEach(x=>g('src-er-'+x).textContent=''); let bad=false;
+    if(!t){ g('src-er-t').textContent='Informe o título.'; bad=true; }
+    if(!i||!f||f<i){ g('src-er-f').textContent='A previsão deve ser igual ou posterior ao início.'; bad=true; }
+    if(!r){ g('src-er-r').textContent='Selecione o responsável.'; bad=true; }
+    if(!Number.isFinite(p)||p<0||p>100){ g('src-er-p').textContent='Use um valor de 0 a 100.'; bad=true; }
+    if(bad) return;
+    const pes=srCronoPessoas_().find(x=>x.n===r);
+    const mudou=e.titulo!==t||e.data_inicio!==i||e.data_previsao_entrega!==f||e.responsavel_nome!==r||e.percentual!==Math.round(p)||e.status!==s;
+    Object.assign(e,{titulo:t,data_inicio:i,data_previsao_entrega:f,responsavel_nome:r,responsavel_email:pes?pes.e:(e.responsavel_email||''),percentual:Math.round(p),status:s});
+    if(e._estado==='salvo'&&mudou) e._estado='mod';
+    SR_STATE.cronEditK=null;
+  }
+  else if(a==='del'){
+    if(!confirm('Excluir a entrega "'+e.titulo+'" ('+srcBr_(e.data_inicio)+' – '+srcBr_(e.data_previsao_entrega)+')?\n\nSó esta entrega será removida; o Status Report e as outras entregas não são afetados. A exclusão só vale depois de salvar o report.')) return;
+    if(e.id_entrega) SR_STATE.excluidas.push(e.id_entrega);
+    SR_STATE.entregas=SR_STATE.entregas.filter(x=>x._k!==k); if(SR_STATE.cronEditK===k) SR_STATE.cronEditK=null;
+  }
+  else if(a==='p100'){ e.percentual=100; marcar(); }
+  else if(a==='ent'){ e.status='Entregue'; marcar(); }
+  else if(a==='manter'){ srFeedback('Mantido como informado — nada é alterado automaticamente.',true); }
+  srCronoRender_(ed);
+}
+function srCronoCopiar_(ed){
+  const projeto=document.getElementById('f-sr-projeto').value, [monISO]=srSemanaAtual();
+  const anteriores=STATUS_REPORTS.filter(r=>r.projeto===projeto&&r.semana_inicio<monISO&&(r.cronograma||[]).length>0).sort((a,b)=>b.semana_inicio.localeCompare(a.semana_inicio));
+  if(!anteriores.length){ srFeedback('Não há report anterior deste projeto com entregas para copiar.',false); return; }
+  const ref=anteriores[0];
+  if(SR_STATE.entregas.length&&!confirm('Já existem entregas neste report. Copiar as '+ref.cronograma.length+' entregas da semana de '+srFmtBr(ref.semana_inicio)+' mesmo assim? Elas entram como novas linhas.')) return;
+  ref.cronograma.forEach(c=>SR_STATE.entregas.push({_k:++SRC_SEQ,_estado:'novo',titulo:c.titulo,data_inicio:c.data_inicio,data_previsao_entrega:c.data_previsao_entrega,status:c.status,responsavel_nome:c.responsavel_nome,responsavel_email:c.responsavel_email||'',percentual:c.percentual}));
+  srFeedback(ref.cronograma.length+' entrega(s) copiadas da semana de '+srFmtBr(ref.semana_inicio)+'. Revise e salve o report para gravá-las.',true);
+  srCronoRender_(ed);
+}
+async function srCronoChamar_(acao,payload){
+  const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+  const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action='+acao+'&payload='+encodeURIComponent(JSON.stringify(payload));
+  return await loadDataJSONPComRetry(url,1);
+}
+// Envia só o que mudou. Devolve {ok,mensagem}. Exclusões primeiro, depois novas/alteradas.
+async function srCronoSincronizar_(idReport){
+  const pend=srCronoPendencias_();
+  for(const idEnt of pend.del.slice()){
+    const r=await srCronoChamar_('deleteEntregaCronograma',{id_status_report:idReport,id_entrega:idEnt});
+    if(!r||!r.ok) return {ok:false,mensagem:(r&&r.message)||'Não foi possível excluir uma entrega do cronograma.'};
+    SR_STATE.excluidas=SR_STATE.excluidas.filter(x=>x!==idEnt);
+  }
+  for(const e of pend.up){
+    const r=await srCronoChamar_('saveEntregaCronograma',{id_status_report:idReport,id_entrega:e.id_entrega||undefined,titulo:e.titulo,data_inicio:e.data_inicio,data_previsao_entrega:e.data_previsao_entrega,status:e.status,responsavel_nome:e.responsavel_nome,responsavel_email:e.responsavel_email,percentual:e.percentual});
+    if(!r||!r.ok) return {ok:false,mensagem:'Entrega "'+e.titulo+'": '+((r&&r.message)||'não foi possível salvar.')};
+    Object.assign(e,r.record,{_estado:'salvo'});
+  }
+  return {ok:true};
+}
+
+// ---------- Gantt (visualização) ----------
+function srcSemanaISO_(d){ const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())); const n=t.getUTCDay()||7; t.setUTCDate(t.getUTCDate()+4-n); const y=new Date(Date.UTC(t.getUTCFullYear(),0,1)); return Math.ceil(((t-y)/srcDIA_+1)/7); }
+const SRC_MES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+function srGanttHtml_(entregas,rid){
+  const L=srcOrdenar_((entregas||[]).filter(e=>e.data_inicio&&e.data_previsao_entrega));
+  if(!L.length) return '<p class="sr-exec-empty">Este Status Report ainda não tem entregas cadastradas no cronograma.</p>';
+  let min=srcData_(L.reduce((a,e)=>e.data_inicio<a?e.data_inicio:a,L[0].data_inicio)), max=srcData_(L.reduce((a,e)=>e.data_previsao_entrega>a?e.data_previsao_entrega:a,L[0].data_previsao_entrega));
+  min=new Date(min.getTime()-((min.getDay()+6)%7)*srcDIA_);
+  max=new Date(max.getTime()+(6-((max.getDay()+6)%7))*srcDIA_);
+  const dias=Math.round((max-min)/srcDIA_)+1;
+  const W=dias<=56?22:dias<=112?14:dias<=240?9:6, TW=dias*W, LAB=220;
+  const meses=[]; let cur=null,ini=null,span=0;
+  for(let i=0;i<dias;i++){ const d=new Date(min.getTime()+i*srcDIA_); const k=d.getFullYear()*12+d.getMonth(); if(k!==cur){ if(cur!==null) meses.push([ini,span]); cur=k; ini=d; span=0; } span++; }
+  meses.push([ini,span]);
+  const mesesH=meses.map(([d,s])=>'<div style="width:'+s*W+'px">'+SRC_MES[d.getMonth()]+'/'+String(d.getFullYear()).slice(2)+'</div>').join('');
+  let semsH='',vl='',fs='';
+  for(let w=0;w<dias/7;w++){ const d=new Date(min.getTime()+w*7*srcDIA_); semsH+='<div style="width:'+7*W+'px">S'+srcSemanaISO_(d)+'<br>'+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'</div>'; vl+='<div class="sg-vl" style="left:'+w*7*W+'px"></div>'; fs+='<div class="sg-fs" style="left:'+(w*7+5)*W+'px;width:'+2*W+'px"></div>'; }
+  const hoje=srcData_(srcHojeISO_()); const hojeDentro=hoje>=min&&hoje<=max; const hx=Math.round((hoje-min)/srcDIA_)*W+W/2;
+  const rows=L.map(e=>{
+    const i=srcInfo_(e.status), x=Math.round((srcData_(e.data_inicio)-min)/srcDIA_)*W, w=(Math.round((srcData_(e.data_previsao_entrega)-srcData_(e.data_inicio))/srcDIA_)+1)*W;
+    const tit=w>150?'<span>'+i.ic+' '+srcE_(e.titulo)+' · '+e.percentual+'%</span>':'<span>'+i.ic+' '+e.percentual+'%</span>';
+    const cor=e.status==='Entregue'?'#166534':e.status==='Bloqueado/Atrasado'?'#dc2626':'#2563eb';
+    return '<div class="sg-row"><div class="sg-lab" data-sg="'+srcE_(rid)+'|'+srcE_(e.id_entrega)+'" title="'+srcE_(e.titulo)+'">'+srcAv_(e.responsavel_nome)+'<b>'+srcE_(e.titulo)+'</b></div><div class="sg-track" style="width:'+TW+'px">'+fs+vl
+      +'<div class="sg-bar sgb-'+i.k+'" data-sg="'+srcE_(rid)+'|'+srcE_(e.id_entrega)+'" style="left:'+x+'px;width:'+w+'px" title="'+srcE_(e.titulo)+' — '+e.percentual+'%"><div class="sg-fill" style="width:'+e.percentual+'%"></div>'+tit+'</div>'
+      +(w<=150?'<span class="sg-out" style="left:'+(x+w+14)+'px">'+srcE_(e.titulo)+'</span>':'')
+      +'<div class="sg-dia" style="left:'+(x+w-7)+'px;border-color:'+cor+';'+(e.status==='Entregue'?'background:'+cor:'')+'" title="Previsão de entrega: '+srcBr_(e.data_previsao_entrega)+'"></div></div></div>';
+  }).join('');
+  return '<div class="sg-legend"><span><i class="sg-sw sgb-and"></i>▶ Em andamento</span><span><i class="sg-sw sgb-blq"></i>⚠ Bloqueado/Atrasado</span><span><i class="sg-sw sgb-ent"></i>✔ Entregue</span><span><i class="sg-sw" style="background:rgba(0,0,0,.35)"></i>parte escura = % concluído</span><span>◆ previsão de entrega (cheio = entregue)</span>'+(hojeDentro?'<span style="color:#e11d48">┆ Hoje</span>':'')+'</div>'
+   +'<div class="sg-wrap"><div style="position:relative;width:'+(TW+LAB)+'px">'
+   +'<div class="sg-head"><div class="sg-row" style="height:auto"><div class="sg-lab sg-lab-h" style="height:auto;min-height:56px">Entrega · responsável</div><div class="sg-track" style="width:'+TW+'px"><div class="sg-mon">'+mesesH+'</div><div class="sg-wk">'+semsH+'</div></div></div></div>'
+   +'<div style="position:relative">'+rows+(hojeDentro?'<div class="sg-hoje" style="left:'+(LAB+hx)+'px"><i>Hoje</i></div>':'')+'</div></div></div>'
+   +'<div class="sg-det" id="sg-det-'+srcE_(rid)+'"><span class="src-note">Clique numa barra ou no título para ver os detalhes da entrega. Ordenado por data de início.</span></div>';
+}
+function srCronogramaExecHtml_(r){
+  return '<div class="sr-exec-section"><div class="sr-exec-section-title">Cronograma de Entregas das Sprints</div>'+srGanttHtml_(r.cronograma||[],r.id)+'</div>';
+}
+document.addEventListener('click',ev=>{
+  const el=ev.target.closest&&ev.target.closest('[data-sg]'); if(!el) return;
+  const [rid,eid]=el.dataset.sg.split('|'); const r=STATUS_REPORTS.find(x=>x.id===rid); if(!r) return;
+  const e=(r.cronograma||[]).find(x=>x.id_entrega===eid); const box=document.getElementById('sg-det-'+rid); if(!e||!box) return;
+  const d=Math.round((srcData_(e.data_previsao_entrega)-srcData_(e.data_inicio))/srcDIA_)+1;
+  box.innerHTML='<div class="sg-det-box"><div class="sg-det-t">'+srcE_(e.titulo)+'</div><div class="sg-kv"><span>Período</span><b>'+srcBr_(e.data_inicio)+' → '+srcBr_(e.data_previsao_entrega)+' ('+d+' dias)</b><span>Responsável</span><b>'+srcAv_(e.responsavel_nome)+srcE_(e.responsavel_nome)+'</b><span>Status</span><b>'+srcChip_(e.status)+'</b><span>Conclusão</span><b><div class="src-pct"><div class="src-tr" style="width:110px"><i style="width:'+e.percentual+'%"></i></div>'+e.percentual+'%</div></b></div>'
+   +(srcVencida_(e)?'<div class="src-hint" style="margin-top:6px">⏰ A previsão de entrega já passou e a entrega não consta como Entregue. Informativo: o status não é alterado automaticamente.</div>':'')+'</div>';
+});
+
 
 function initStatusReport(){
   const projetos=[...new Set(D.pj.map(p=>p.pj))].sort();
@@ -10064,6 +10283,8 @@ function renderStatusReport(){
     '<div id="sr-ativ-body">'+atividadesIniciais.map(a=>srAtividadeRowHtml(a)).join('')+'</div>'+
     (podeEditar?'<button type="button" class="sr-ativ-add" id="sr-ativ-add-btn">+ Adicionar atividade</button>':'')+
   '</div>';
+  srCronoCarregar_(existente);
+  h+=srCronoCardHtml_(podeEditar);
 
   if(podeEditar){
     h+='<div class="sr-actions">'+
@@ -10077,6 +10298,7 @@ function renderStatusReport(){
   h+='<div id="sr-hist-inline-wrap" style="margin-top:24px">'+buildHistoricoStatusReportHtml(projeto,false,'sr-hist-inline-wrap')+'</div>';
 
   document.getElementById('sr-content').innerHTML=h;
+  srCronoRender_(podeEditar);
 
   // Wiring pós-render
   if(podeEditar){
@@ -10279,6 +10501,7 @@ function renderStatusReportExecutivo(r){
       atividades.map(a=>'<tr><td>'+(a.atividade||'—')+'</td><td>'+(a.responsavel||'—')+'</td><td>'+(a.status||'—')+'</td></tr>').join('')+
     '</tbody></table></div>';
   }
+  h+=srCronogramaExecHtml_(r);
   h+='<div class="sr-exec-footer"><span>Status Report · '+(r.previsao_proxima_fase||srFmtBr(r.semana_inicio))+'</span><span>Elaborado por Be Solution</span></div>';
   h+='</div>';
   return h;
@@ -10356,11 +10579,18 @@ async function srSalvar(finalizar){
     srFeedback('Selecione a Criticidade antes de finalizar.',false);
     return;
   }
+  if(SR_STATE.cronEditK!==null){
+    srFeedback('Confirme ou cancele a entrega do cronograma que está em edição antes de salvar.',false);
+    return;
+  }
+  const pendCron=srCronoPendencias_();
+  const temOpsCron=pendCron.up.length>0||pendCron.del.length>0;
   const dados={
     id: SR_STATE.reportAtual?SR_STATE.reportAtual.id:undefined,
     projeto: projeto, cliente: proj?proj.cl:'',
     semana_inicio: monISO, semana_fim: sunISO,
-    status_preenchimento: finalizar?'Finalizado':'Rascunho',
+    // Com entregas pendentes, finaliza em 2 passos: o servidor não aceita gravar entregas num report já finalizado.
+    status_preenchimento: (finalizar&&!temOpsCron)?'Finalizado':'Rascunho',
     status_projeto: statusProjeto, nivel_risco: nivelRisco, criticidade: criticidade,
     resumo_executivo: resumo,
     decisoes_pontos_atencao: document.getElementById('sr-decisoes').value.trim(),
@@ -10377,10 +10607,28 @@ async function srSalvar(finalizar){
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=saveStatusReport&payload='+encodeURIComponent(JSON.stringify(dados));
-    const r=await loadDataJSONPComRetry(url,1);
+    let r=await loadDataJSONPComRetry(url,1);
+    let falhaCron=null;
+    if(r && r.ok && temOpsCron){
+      const sinc=await srCronoSincronizar_(r.record.id);
+      if(!sinc.ok) falhaCron=sinc.mensagem;
+      else if(finalizar){
+        const dados2=Object.assign({},dados,{id:r.record.id,status_preenchimento:'Finalizado'});
+        const r2=await loadDataJSONPComRetry(DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=saveStatusReport&payload='+encodeURIComponent(JSON.stringify(dados2)),1);
+        if(r2&&r2.ok) r=r2; else falhaCron='As entregas foram salvas, mas não foi possível finalizar o report. Tente finalizar novamente.';
+      }
+    }
     if(r && r.ok){
+      r.record.cronograma=SR_STATE.entregas.filter(e=>e._estado==='salvo'&&e.id_entrega).map(e=>({id_entrega:e.id_entrega,id_status_report:r.record.id,titulo:e.titulo,data_inicio:e.data_inicio,data_previsao_entrega:e.data_previsao_entrega,status:e.status,responsavel_nome:e.responsavel_nome,responsavel_email:e.responsavel_email,percentual:e.percentual}));
       const idx=STATUS_REPORTS.findIndex(x=>x.id===r.record.id);
       if(idx!==-1) STATUS_REPORTS[idx]=r.record; else STATUS_REPORTS.push(r.record);
+      if(falhaCron){
+        // report salvo como rascunho; o que não foi enviado continua pendente na tela para nova tentativa
+        SR_STATE.reportAtual=r.record;
+        srCronoRender_(true);
+        srFeedback('Rascunho salvo, mas o cronograma não foi totalmente gravado: '+falhaCron,false);
+        esconderLoadingGlobal(); srSetBotoesDisabled(false); return;
+      }
       srFeedback(finalizar?'Status Report finalizado com sucesso.':'Rascunho salvo com sucesso.',true);
       renderStatusReport();
       srMostrarConfirmacaoSalvo(finalizar);
