@@ -761,6 +761,29 @@ footer{text-align:center; padding:20px; color:var(--text-faint); font-size:11px;
   .bullet-row{grid-template-columns:100px 1fr 36px;}
 }
 
+
+/* v17.5 — Relógio da sessão (tempo restante do token) */
+.sess-clk{display:none;align-items:center;gap:6px;border:1px solid #bbf7d0;background:#f0fdf4;color:#166534;border-radius:99px;padding:4px 11px 4px 9px;font:600 12.5px var(--font-body);font-variant-numeric:tabular-nums;cursor:default;position:relative;white-space:nowrap}
+.sess-clk.on{display:inline-flex}
+.sess-clk svg{width:14px;height:14px;flex-shrink:0}
+.sess-clk .sess-dot{width:7px;height:7px;border-radius:50%;background:#16a34a;animation:sessp 2s infinite}
+@keyframes sessp{50%{opacity:.35}}
+.sess-clk.warn{border-color:#fde68a;background:#fffbeb;color:#92400e}.sess-clk.warn .sess-dot{background:#f59e0b}
+.sess-clk.crit{border-color:#fdba74;background:#fff7ed;color:#c2410c}.sess-clk.crit .sess-dot{background:#ea580c}
+.sess-clk.exp{border-color:#fca5a5;background:#fef2f2;color:#b91c1c}.sess-clk.exp .sess-dot{background:#dc2626;animation:none}
+html[data-theme="dark"] .sess-clk{background:#0f3b24;border-color:#166534;color:#86efac}
+html[data-theme="dark"] .sess-clk.warn{background:#3b2e0a;border-color:#92400e;color:#fcd34d}
+html[data-theme="dark"] .sess-clk.crit{background:#3b1d0a;border-color:#c2410c;color:#fdba74}
+html[data-theme="dark"] .sess-clk.exp{background:#451a1a;border-color:#b91c1c;color:#fca5a5}
+.sess-tip{display:none;position:absolute;top:calc(100% + 8px);right:0;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:9px 12px;font:400 12px/1.5 var(--font-body);white-space:nowrap;z-index:10002;text-align:left}
+.sess-clk:hover .sess-tip,.sess-clk:focus .sess-tip{display:block}
+.sess-banner{display:none;padding:9px 20px;background:#fef2f2;border-bottom:1px solid #fecaca;color:#991b1b;font-size:13px;align-items:center;gap:12px;flex-wrap:wrap}
+.sess-banner.on{display:flex}
+.sess-banner button{border:0;background:#dc2626;color:#fff;border-radius:8px;padding:5px 12px;font:600 12.5px var(--font-body);cursor:pointer}
+html[data-theme="dark"] .sess-banner{background:#451a1a;border-color:#7f1d1d;color:#fecaca}
+.sess-toast{display:none;position:fixed;right:18px;top:70px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:12px;padding:10px 14px;box-shadow:0 10px 28px rgba(15,23,42,.15);font-size:13px;max-width:300px;z-index:10003}
+.sess-toast.on{display:block}
+@media(max-width:700px){.sess-lbl{display:none}.sess-clk{padding:4px 9px 4px 8px}}
 </style>
 <style>
 .brand-logo img{height:34px;width:auto;display:block}
@@ -1715,6 +1738,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
         <div class="viewas-list" id="viewas-list"></div>
       </div>
     </div>
+    <span class="sess-clk" id="sess-clk" tabindex="0" role="timer" aria-label="Tempo restante da sessão"><span class="sess-dot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span><span class="sess-lbl">Sessão </span><span id="sess-t">--:--</span></span><span class="sess-tip" id="sess-tip"></span></span>
     <div class="user-info" id="user-info" style="display:none">
       <span class="user-info-name" id="user-info-name"></span>
       <span class="user-info-perfil" id="user-info-perfil"></span>
@@ -1722,6 +1746,8 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
     </div>
     <div class="theme-toggle" id="themeToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><div class="theme-switch"></div></div>
   </header>
+  <div class="sess-banner" id="sess-banner" role="alert"><span>⚠ <b>Sua sessão expirou.</b> Os dados na tela continuam visíveis, mas novas consultas e gravações não funcionam até você entrar de novo.</span><button type="button" id="sess-relogin">Entrar novamente</button></div>
+  <div class="sess-toast" id="sess-toast" role="status">⏳ <b>Sua sessão expira em 5 minutos.</b> Salve o que estiver editando.</div>
   <nav class="nav-menu" id="nav-menu">
       <div class="nav-cat" data-cat="exec">
         <button class="nav-cat-trigger" type="button" title="Visão Executiva"><span class="nav-cat-ic" aria-hidden="true">◉</span><span class="nav-cat-lbl">Visão Executiva</span><svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -2764,6 +2790,8 @@ async function attemptLoadWithToken(token, viewAsEmail){
 // aparece no card "Última atualização" no topo da tela de Novidades.
 const NOVIDADES_ATUALIZADO_EM='20/10/2026';
 const NOVIDADES=[
+  {icone:'🕒', bg:'#f0fdf4', cor:'#16a34a', titulo:'Relógio da sessão no topo', descricao:'No canto superior direito agora há um relógio com o tempo restante da sua sessão (verde, amarelo, laranja e vermelho). Passe o mouse para ver a hora do login e da expiração. Faltando 5 minutos aparece um aviso; quando a sessão expira, uma faixa com o botão "Entrar novamente" avisa, sem apagar o que está na tela.', paginas:['cliente'], data:'2026-10-22', tag:'Novo', tagCor:'nova'},
+  {icone:'⏱️', bg:'#eff6ff', cor:'#2563eb', titulo:'Período de análise ajusta as horas apontadas', descricao:'Em Carga e Risco de Alocação, trocar o Período de análise (7, 15 ou 30 dias) agora recalcula as Horas apontadas (últimos N dias, a partir do apontamento diário), mostra quanto isso representa da jornada de referência, e ajusta "Vencendo em N dias" e "Tarefas abertas com vencimento no período". Valem também no Comparar e nas listas da Visão executiva. O total histórico continua como referência no card Disponibilidade.', paginas:['inteligencia'], data:'2026-10-22', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🚩', bg:'#fef2f2', cor:'#dc2626', titulo:'Decisão de Alocação: visão executiva de riscos', descricao:'A aba Decisão de Alocação agora abre numa Visão executiva: 7 indicadores clicáveis (cada um abre a relação de registros que o justifica), lista priorizada de projetos que precisam de atenção — com motivo (confirmado, estimativa ou informação ausente) e ação recomendada —, reforço por área (reorganizar prioridades ou reforço de equipe) e painel de Qualidade dos dados. O ranking de candidatos continua em "Nova demanda (ranking)".', paginas:['inteligencia'], data:'2026-10-20', tag:'Novo', tagCor:'nova'},
   {icone:'🎓', bg:'#f0fdf4', cor:'#16a34a', titulo:'Senioridade reconhecida e dados faltantes explicados', descricao:'Níveis como Pleno II, Pleno III e Júnior II agora são reconhecidos (família + grau), em vez de aparecerem como "dados ausentes". Quando falta informação, a tela lista exatamente o que falta e se a limitação está na demanda ou no cadastro da pessoa; valores que não dá para interpretar aparecem para correção.', paginas:['inteligencia'], data:'2026-10-20', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🏷️', bg:'#fffbeb', cor:'#d97706', titulo:'Portfólio: Área Exigida e Senioridade Mínima', descricao:'Dois campos opcionais na Edição do Portfólio (seção Status e Classificação) para registrar o que o projeto exige de quem for alocado. A Decisão de Alocação usa esses campos para apontar demandas sem profissional compatível. As colunas são criadas automaticamente na planilha ao abrir a Edição do Portfólio.', paginas:['portfolioedit','inteligencia'], data:'2026-10-20', tag:'Novo', tagCor:'nova'},
@@ -4913,7 +4941,7 @@ function daBase_(p){
   const hojeISO=new Date().toISOString().slice(0,10);
   const lim7=new Date(Date.now()+7*86400000).toISOString().slice(0,10);
   const projs=alocProjetosDaPessoa(p).filter(daProjAtivo_);
-  const rows=[]; let nTot=0,sTot=0,late=0,blocked=0,near=0,pond=0;
+  const rows=[]; let nTot=0,sTot=0,late=0,blocked=0,near=0,pond=0; const vencTodas=[],vencNB=[];
   const vistos=new Set();
   projs.forEach(proj=>{
     if(vistos.has(proj.pj)) return; vistos.add(proj.pj);
@@ -4925,15 +4953,27 @@ function daBase_(p){
     nTot+=pa.n; sTot+=pa.s; pond+=daCxN_(proj.cx)||2;
     (PROJ_TASKS[proj.pj]||[]).forEach(t=>{
       const meu=(t.responsaveis||[]).some(r=>r.email===ek)||t.email===ek; if(!meu||daFechada_(t)) return;
-      if(daN_(t.status)==='blocked') blocked++;
+      const bl=daN_(t.status)==='blocked';
+      if(t.dt_venc_iso&&t.dt_venc_iso>=hojeISO){ vencTodas.push(t.dt_venc_iso); if(!bl) vencNB.push(t.dt_venc_iso); }
+      if(bl) blocked++;
       else if(t.dt_venc_iso&&t.dt_venc_iso<hojeISO) late++;
       else if(t.dt_venc_iso&&t.dt_venc_iso<=lim7) near++;
     });
   });
   const cov=nTot>0?Math.round((nTot-sTot)/nTot*100):null;
-  return {p,ek,rows,nTot,sTot,cov,late,blocked,near,pond,
+  return {p,ek,rows,nTot,sTot,cov,late,blocked,near,pond,vencTodas,vencNB,
     horasApontadas:PHAP[ek]||0,horasEstimadas:PHEST[ek]||0};
 }
+// ---------- período de análise: apontado (passado) e vencimentos (futuro) ----------
+function daIsoLocal_(off){ const d=new Date(); d.setDate(d.getDate()+off); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+// Horas apontadas nos últimos H dias (inclui hoje). null = apontamento diário não carregado.
+function daApont_(b,H){
+  if(!PM||!Object.keys(PM).length) return null;
+  const ini=daIsoLocal_(-(H-1)), fim=daIsoLocal_(0);
+  return Object.entries(PM[b.ek]||{}).filter(([d])=>d!=='sem-data'&&d>=ini&&d<=fim).reduce((s,[,v])=>s+((v&&v[0])||0),0);
+}
+function daApontTxt_(b,H){ const v=daApont_(b,H); return v===null?'—':daF_(v)+' h'; }
+function daVencN_(arr,H){ const lim=daIsoLocal_(H); return arr.filter(d=>d<=lim).length; }
 // ---------- cálculo por período (H dias) com carga extra opcional ----------
 function daCalc_(b,H,extra){
   const cap=DA_PARAM.horasSemana;
@@ -5171,7 +5211,7 @@ function daRender_(){
   if(!fb){ v.innerHTML='<div class="card"><div class="empty-state">Nenhuma pessoa elegível (ativa, fora de Head e com participação nas análises).</div></div>'; return; }
   v.innerHTML=({vis:daVVis_,exec:daVExec_,ind:daVInd_,cmp:daVCmp_,sim:daVSim_,rel:daVRel_})[DA.tab](f,d);
 }
-function daKpi_(v,l){ return '<div class="da-kpi"><b>'+v+'</b><span>'+l+'</span></div>'; }
+function daKpi_(v,l,x){ return '<div class="da-kpi"><b>'+v+'</b><span>'+l+'</span>'+(x?'<span style="color:var(--text-muted);margin-top:2px">'+x+'</span>':'')+'</div>'; }
 
 // ============================================================
 // v17.5 · VISÃO EXECUTIVA — riscos dos projetos → necessidade de capacidade → decisão
@@ -5334,7 +5374,7 @@ function daVVis_(f,d){
 function daDetKpi_(id,c){
   const T=(t,o,body)=>'<div class="card" style="border-left:4px solid #0284c7"><div class="card-title"><h3>Relação que justifica: “'+t+'”</h3><span class="sub">clique em outro indicador para trocar</span></div><div class="da-note" style="margin-bottom:6px"><b>Origem do número:</b> '+o+'</div>'+body+'</div>';
   const proj=L=>'<div class="table-wrap"><table class="da-t"><thead><tr><th>Projeto</th><th>Cliente</th><th>Entrega</th><th>Motivos</th></tr></thead><tbody>'+(L.map(p=>'<tr><td>'+projetoLinkHtml(p.proj.pj)+'</td><td>'+daE_(p.proj.cl||'—')+'</td><td class="da-nw">'+daEntregaTxt_(p)+'</td><td>'+daMotivosHtml_(p.motivos.concat(p.aus))+'</td></tr>').join('')||'<tr><td colspan="4" class="da-note">Nenhum registro.</td></tr>')+'</tbody></table></div>';
-  const pess=(L,col)=>'<div class="table-wrap"><table class="da-t"><thead><tr><th>Profissional</th><th>Área · senioridade</th><th>Pressão</th><th>'+col+'</th></tr></thead><tbody>'+(L.map(x=>'<tr><td>'+daAv_(x.p.a)+'<b>'+daE_(x.p.a)+'</b></td><td>'+daE_(x.p.area||'—')+' · '+daE_(x.p.nv||'—')+'</td><td>'+daChip_(x.c.lvl)+'</td><td>'+(col==='Folga aproveitável'?daF_(daLivreUtil_(x))+' h/sem':Math.round(x.c.util)+'% de utilização · '+x.b.late+' atrasada(s)')+'</td></tr>').join('')||'<tr><td colspan="4" class="da-note">Nenhum registro.</td></tr>')+'</tbody></table></div>';
+  const pess=(L,col)=>'<div class="table-wrap"><table class="da-t"><thead><tr><th>Profissional</th><th>Área · senioridade</th><th>Pressão</th><th>Apontado ('+c.H+'d)</th><th>'+col+'</th></tr></thead><tbody>'+(L.map(x=>'<tr><td>'+daAv_(x.p.a)+'<b>'+daE_(x.p.a)+'</b></td><td>'+daE_(x.p.area||'—')+' · '+daE_(x.p.nv||'—')+'</td><td>'+daChip_(x.c.lvl)+'</td><td>'+daApontTxt_(x.b,c.H)+'</td><td>'+(col==='Folga aproveitável'?daF_(daLivreUtil_(x))+' h/sem':Math.round(x.c.util)+'% de utilização · '+x.b.late+' atrasada(s)')+'</td></tr>').join('')||'<tr><td colspan="5" class="da-note">Nenhum registro.</td></tr>')+'</tbody></table></div>';
   if(id==='k2') return T('Entrega ≤15 dias com risco','projetos ativos com previsão atual em até 15 dias <b>e</b> (tarefa atrasada <b>ou</b> equipe acima da capacidade).',proj(c.prox));
   if(id==='k3') return T('Projetos com tarefas atrasadas','tarefas abertas, não bloqueadas, com vencimento anterior a hoje (bloqueadas e concluídas não entram).',proj(c.comLate));
   if(id==='k4') return T('Áreas com possível déficit','áreas em que a carga acima do limite de '+DA_PARAM.utilMaxRealoc+'% por pessoa é maior que a folga das demais pessoas da própria área.','<div class="table-wrap"><table class="da-t"><thead><tr><th>Área</th><th>Acima do limite</th><th>Folga</th><th>Falta</th></tr></thead><tbody>'+(c.areasDef.map(a=>'<tr><td><b>'+daE_(a.area)+'</b></td><td>'+daF_(a.exc)+' h/sem</td><td>'+daF_(a.livre)+' h/sem</td><td><b class="da-neg">'+daF_(a.falta)+' h/sem</b></td></tr>').join('')||'<tr><td colspan="4" class="da-note">Nenhuma área com déficit.</td></tr>')+'</tbody></table></div>');
@@ -5375,10 +5415,11 @@ function daVInd_(f,d){
   if(!x) x=todos[0]||lista[0]; if(!x) return '';
   DA.sel=daId_(x.p);
   const r=daAvaliar_(x,d,H), c=x.c, b=x.b;
+  const apH=daApont_(b,H), capP=DA_PARAM.horasSemana*H/7;
   const wk=[1,2,3,4].map(w=>b.rows.reduce((s,rr)=>s+(rr.diasEf>(w-1)*7?rr.taxa*Math.min(1,(rr.diasEf-(w-1)*7)/7):0),0));
   const rf=daReforco_(x,H), sd=c.util>DA_PARAM.pressao.aten?daSaida_(x):null;
   return '<div class="card"><div class="da-top"><div>'+daAv_(x.p.a)+'<b style="font-size:16px">'+daE_(x.p.a)+'</b> '+daChip_(c.lvl)+'<div class="da-note">'+daE_(x.p.cargo||'sem cargo')+' · '+daE_(x.p.area||'sem área')+' · Senioridade: '+daNvRotulo_(x.p)+'</div></div><div><select data-dasel="ind">'+lista.map(o=>daOpt_(daId_(o.p),o.p.a,daId_(x.p))).join('')+'</select> <button class="da-btn p" data-da="cmp|'+daId_(x.p)+'">Comparar</button> <button class="da-btn p" data-da="sim|'+daId_(x.p)+'">Simular alocação</button> <button class="da-btn p" data-da="rel|'+daId_(x.p)+'">Sugerir realocação</button></div></div></div>'
-  +'<div class="da-kpis">'+daKpi_(b.rows.length,'Projetos ativos (carga ponderada '+b.pond+')')+daKpi_(c.insuf?'—':daF_(c.pl)+'h','Planejadas/sem ('+H+'d) · capacidade '+c.cap+'h')+daKpi_(daF_(b.horasApontadas)+'h','Horas apontadas (total) — não é carga futura')+daKpi_(c.insuf?'—':daF_(Math.max(0,c.free))+'h','Capacidade teórica livre/sem')+daKpi_(b.nTot,'Tarefas abertas')+daKpi_(b.late,'Atrasadas')+daKpi_(b.blocked,'Bloqueadas (≠ atrasadas)')+daKpi_(b.near,'Vencendo em 7 dias')+'</div>'
+  +'<div class="da-kpis">'+daKpi_(b.rows.length,'Projetos ativos (carga ponderada '+b.pond+')')+daKpi_(c.insuf?'—':daF_(c.pl)+'h','Planejadas/sem ('+H+'d) · capacidade '+c.cap+'h')+daKpi_(apH===null?'—':daF_(apH)+'h','Horas apontadas — últimos '+H+' dias',apH===null?'apontamento diário indisponível':Math.round(apH/capP*100)+'% da jornada de referência ('+daF_(capP)+'h)')+daKpi_(c.insuf?'—':daF_(Math.max(0,c.free))+'h','Capacidade teórica livre/sem')+daKpi_(b.nTot,'Tarefas abertas',daVencN_(b.vencTodas,H)+' com vencimento em '+H+' dias')+daKpi_(b.late,'Atrasadas')+daKpi_(b.blocked,'Bloqueadas (≠ atrasadas)')+daKpi_(daVencN_(b.vencNB,H),'Vencendo em '+H+' dias')+'</div>'
   +'<div class="da-grid2"><div>'
   +'<div class="card"><div class="card-title"><h3>Projetos ativos e próximas entregas</h3></div><div class="table-wrap"><table class="da-t"><thead><tr><th>Projeto</th><th>Complex.</th><th>Prior.</th><th>Restante</th><th>Tarefas</th><th>Entrega</th><th>Risco do projeto</th></tr></thead><tbody>'
   +(b.rows.slice().sort((a,b2)=>(a.dias??9999)-(b2.dias??9999)).map(rr=>{ const m=daProjetos_(H)[rr.proj.pj]; return '<tr><td>'+projetoLinkHtml(rr.proj.pj)+'</td><td>'+daE_(rr.proj.cx||'—')+'</td><td>'+daE_(rr.proj.pr||'—')+'</td><td>'+daF_(rr.pa.h)+'h</td><td>'+rr.pa.n+(rr.pa.s?' <span class="da-note">('+rr.pa.s+' sem estimativa)</span>':'')+'</td><td>'+(rr.dias===null?'sem previsão':rr.dias<0?'vencida '+(-rr.dias)+'d':rr.dias+' dias')+'</td><td>'+(m?daRiscoChip_(m.lvl):'—')+'</td></tr>'; }).join('')||'<tr><td colspan="7" class="da-note">Sem projetos ativos.</td></tr>')+'</tbody></table></div></div>'
@@ -5386,7 +5427,8 @@ function daVInd_(f,d){
   +'</div><div>'
   +'<div class="card"><div class="card-title"><h3>Aderência à demanda</h3></div><div class="da-big">'+(r.ad.score===null?'n/d':r.ad.score+'<span class="da-note"> / 100</span>')+'</div><div class="da-why"><b>'+daE_(r.ver)+'</b>'+(r.score!=null?' · nota final '+r.score:'')+'<ul>'+daLi_(r.ad.ex)+'<li>Capacidade: '+(c.insuf?'dados insuficientes':daF_(c.free)+'h livres/sem para '+d.h+'h pedidas — '+(c.free>=d.h?'<span class="da-pos">cabe</span>':'<span class="da-neg">não cabe integralmente</span>'))+'</li>'+(c.insuf?'':'<li>Com a demanda: utilização '+Math.round(r.cDep.util)+'% (risco de alocação <b>'+(r.risco||'—')+'</b>)</li>')+'</ul>'+daFaltHtml_(r.ad.falt)+'</div></div>'
   +'<div class="card"><div class="card-title"><h3>Pressão de trabalho</h3></div><div class="da-why"><b>'+(c.lvl<0?'Dados insuficientes para avaliar':DA_LV[c.lvl])+'</b><ul>'+c.why.map(w=>'<li>'+daE_(w)+'</li>').join('')+'</ul></div>'+(b.cov!==null?'<div class="da-note" style="margin-top:6px">Cobertura de horas estimadas: '+b.cov+'% das tarefas abertas.</div>':'')+'</div>'
-  +'<div class="card"><div class="card-title"><h3>Disponibilidade</h3><span class="sub">teórica ≠ planejada ≠ confirmada</span></div><div class="da-row"><span>Capacidade teórica ('+H+' dias)</span><b>'+daF_(c.cap*H/7)+' h</b></div><div class="da-row"><span>Horas planejadas restantes (tarefas abertas)</span><b>'+(c.insuf?'—':daF_(c.pl*H/7)+' h')+'</b></div><div class="da-row"><span>Horas já executadas (total apontado)</span><b>'+daF_(b.horasApontadas)+' h</b></div><div class="da-row"><span>Capacidade estimada restante</span><b>'+(c.insuf?'—':daF_(Math.max(0,c.free)*H/7)+' h')+'</b></div><div class="da-row"><span>Disponibilidade confirmada</span><b>não confirmada</b></div><div class="da-note">Horas executadas não são carga futura. O restante é uma <b>estimativa</b> (feriados e ausências ainda não entram); só o gestor confirma a disponibilidade.</div></div>'
+  +'<div class="card"><div class="card-title"><h3>Disponibilidade</h3><span class="sub">teórica ≠ planejada ≠ confirmada</span></div><div class="da-row"><span>Capacidade teórica ('+H+' dias)</span><b>'+daF_(c.cap*H/7)+' h</b></div><div class="da-row"><span>Horas planejadas restantes (tarefas abertas)</span><b>'+(c.insuf?'—':daF_(c.pl*H/7)+' h')+'</b></div><div class="da-row"><span>Horas já executadas (últimos '+H+' dias)</span><b>'+(apH===null?'—':daF_(apH)+' h')+'</b></div><div class="da-row"><span>Total histórico apontado (referência)</span><b>'+daF_(b.horasApontadas)+' h</b></div><div class="da-row"><span>Capacidade estimada restante</span><b>'+(c.insuf?'—':daF_(Math.max(0,c.free)*H/7)+' h')+'</b></div><div class="da-row"><span>Disponibilidade confirmada</span><b>não confirmada</b></div><div class="da-note">Horas apontadas são passado, não carga futura. O restante é uma <b>estimativa</b> (feriados e ausências ainda não entram); só o gestor confirma a disponibilidade.</div></div>'
+  +'<div class="card"><div class="card-title"><h3>Apontado × jornada de referência</h3><span class="sub">últimos '+H+' dias</span></div>'+(apH===null?'<div class="da-note">Apontamento diário indisponível.</div>':'<div class="da-row"><span>Apontado</span><b>'+daF_(apH)+' h</b></div><div class="da-row"><span>Jornada de referência ('+DA_PARAM.horasSemana+'h/sem proporcional)</span><b>'+daF_(capP)+' h</b></div>'+daBar_(apH/capP*100)+'<div class="da-note" style="margin-top:4px">'+Math.round(apH/capP*100)+'% da jornada · diferença '+(apH-capP>=0?'+':'−')+daF_(Math.abs(apH-capP))+' h · feriados e ausências não são descontados</div>')+'</div>'
   +'<div class="card"><div class="card-title"><h3>Demandas compatíveis com o perfil</h3></div>'+daCompatPerfilHtml_(x,H,rf)+'</div>'
   +'<div class="card"><div class="card-title"><h3>Realocação — resumo</h3></div>'
   +(sd?(sd.lista.length?'<div>Pessoa acima de '+DA_PARAM.pressao.aten+'%: sugere-se liberar horas de <b>'+daE_(sd.lista[0].r.proj.pj)+'</b>.</div>':'<div class="da-note">Sem opção segura de liberação.</div>')
@@ -5415,7 +5457,7 @@ function daVCmp_(f,d){
   if(!xs.length) return '<div class="card"><div class="da-note">Escolha pessoas pelo botão <b>Comparar</b> na Visão executiva (até 3).</div></div>';
   const rs=xs.map(x=>daAvaliar_(x,d,H));
   const num=(fn)=>{ const v=rs.map(fn).filter(z=>typeof z==='number'); return v.length>1?Math.max(...v):null; };
-  const defs=[['Área / senioridade',r=>daE_((r.p.area||'—')+' · '+(r.p.nv||'—')),null],['Aderência (0–100)',r=>r.ad.score===null?'n/d':r.ad.score,r=>r.ad.score],['Livre no período (h/sem)',r=>r.c.insuf?'—':daF_(r.c.free),r=>r.c.insuf?null:r.c.free],['Utilização atual',r=>r.c.insuf?'—':Math.round(r.c.util)+'%',null],['Utilização com a demanda',r=>r.c.insuf?'—':Math.round(r.cDep.util)+'%',null],['Pressão atual',r=>daChip_(r.c.lvl),null],['Atrasadas / bloqueadas',r=>r.x.b.late+' / '+r.x.b.blocked,null],['Entregas em ≤15 dias',r=>r.c.ent15,null],['Risco de alocação',r=>r.risco||'—',null],['Nota final',r=>r.score??'—',r=>r.score],['Veredito',r=>daE_(r.ver),null]];
+  const defs=[['Área / senioridade',r=>daE_((r.p.area||'—')+' · '+(r.p.nv||'—')),null],['Aderência (0–100)',r=>r.ad.score===null?'n/d':r.ad.score,r=>r.ad.score],['Livre no período (h/sem)',r=>r.c.insuf?'—':daF_(r.c.free),r=>r.c.insuf?null:r.c.free],['Horas apontadas (últimos '+H+' dias)',r=>daApontTxt_(r.x.b,H),null],['Utilização atual',r=>r.c.insuf?'—':Math.round(r.c.util)+'%',null],['Utilização com a demanda',r=>r.c.insuf?'—':Math.round(r.cDep.util)+'%',null],['Pressão atual',r=>daChip_(r.c.lvl),null],['Atrasadas / bloqueadas',r=>r.x.b.late+' / '+r.x.b.blocked,null],['Entregas em ≤15 dias',r=>r.c.ent15,null],['Risco de alocação',r=>r.risco||'—',null],['Nota final',r=>r.score??'—',r=>r.score],['Veredito',r=>daE_(r.ver),null]];
   return '<div class="card"><div class="card-title"><h3>Comparação (até 3 profissionais)</h3></div><div class="table-wrap"><table class="da-t"><thead><tr><th></th>'+rs.map(r=>'<th>'+daE_(r.p.a)+' <button class="da-btn" data-da="rm|'+daId_(r.p)+'">×</button></th>').join('')+'</tr></thead><tbody>'
   +defs.map(([l,fn,num2])=>{ const best=num2?num(num2):null; return '<tr><td class="da-note">'+l+'</td>'+rs.map(r=>'<td class="'+(best!==null&&num2(r)===best?'da-hl':'')+'">'+fn(r)+'</td>').join('')+'</tr>'; }).join('')
   +'</tbody></table></div><div class="da-note" style="margin-top:4px">Verde = melhor valor da linha.</div><div class="da-grid3" style="margin-top:8px">'+rs.map(r=>'<div class="da-why"><b>'+daE_(r.p.a)+'</b><ul>'+daLi_(r.ad.ex)+r.c.why.map(w=>'<li class="da-mut">'+daE_(w)+'</li>').join('')+'</ul>'+daFaltHtml_(r.ad.falt)+'</div>').join('')+'</div></div>';
@@ -11334,7 +11376,7 @@ async function excluirStatusReportPainel_(id,btn){
 // este mapa (ver comentário lá).
 const PAGINA_CAMPOS_NECESSARIOS={
   cliente:['PROJ_TASKS'],
-  inteligencia:['PROJ_TASKS','PSTAT','PHEST','PHAP','PALOC'],
+  inteligencia:['PROJ_TASKS','PSTAT','PHEST','PHAP','PALOC','PM'],
   pessoa:['PM','PM_PROJ','PROJ_TASKS','CD','CTOK','PSTAT','PPREVISTO','PHEST','PHAP','HM','PVENC'],
   area:['PPREVISTO','PM'],
   // DESVIO da lista original (achado ao auditar chamadas fora das páginas
@@ -12719,5 +12761,32 @@ function sincronizarAlturaTopbar_(){
 }
 document.addEventListener('DOMContentLoaded',sincronizarAlturaTopbar_);
 document.addEventListener('DOMContentLoaded',initGoogleAuth);
+})();
+
+// ---------- v17.5: Relógio da sessão — tempo restante do token do Google (só leitura, roda no navegador) ----------
+(function(){
+  let avisado=false, tokenVisto=null, exp=0, iat=0;
+  const $=id=>document.getElementById(id), p2=n=>String(n).padStart(2,'0');
+  function lerToken_(t){ try{ const b=t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'); const j=JSON.parse(decodeURIComponent(escape(atob(b+'==='.slice((b.length+3)%4))))); return {exp:(+j.exp||0)*1000,iat:(+j.iat||0)*1000}; }catch(e){ return null; } }
+  function hm_(ms){ return new Date(ms).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
+  function tick_(){
+    const el=$('sess-clk'); if(!el) return;
+    let tk=null; try{ tk=sessionStorage.getItem('dash_id_token'); }catch(e){}
+    const ui=$('user-info'); const logado=!!tk&&ui&&ui.style.display!=='none';
+    if(!logado){ el.classList.remove('on'); $('sess-banner').classList.remove('on'); tokenVisto=null; return; }
+    if(tk!==tokenVisto){ tokenVisto=tk; const d=lerToken_(tk); exp=d?d.exp:0; iat=d?d.iat:0; avisado=false; }
+    if(!exp){ el.classList.remove('on'); return; } // token ilegível: não mostra relógio (sem chute)
+    const rest=Math.max(0,Math.floor((exp-Date.now())/1000)), m=rest/60;
+    el.classList.add('on');
+    el.className='sess-clk on'+(rest<=0?' exp':m<=5?' crit':m<=15?' warn':'');
+    $('sess-t').textContent=rest<=0?'expirada':p2(Math.floor(rest/60))+':'+p2(rest%60);
+    const lbl=el.querySelector('.sess-lbl'); if(lbl) lbl.textContent=rest<=0?'Sessão ':'Sessão ';
+    const conectado=iat?Math.max(0,Math.floor((Date.now()-iat)/1000)):null;
+    $('sess-tip').innerHTML=(iat?'Login às '+hm_(iat)+' · ':'')+'Expira às '+hm_(exp)+(conectado!==null?'<br>Conectado há '+p2(Math.floor(conectado/3600))+':'+p2(Math.floor(conectado%3600/60))+':'+p2(conectado%60):'')+(rest<=0?'<br><b>Token expirado</b>':'');
+    $('sess-banner').classList.toggle('on',rest<=0);
+    if(rest>0&&m<=5&&!avisado){ avisado=true; const t=$('sess-toast'); t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),6000); }
+  }
+  function iniciar_(){ const b=$('sess-relogin'); if(b) b.onclick=()=>{ try{ sessionStorage.removeItem('dash_id_token'); }catch(e){} location.reload(); }; tick_(); setInterval(tick_,1000); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',iniciar_); else iniciar_();
 })();
 </script></body></html>
