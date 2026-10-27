@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxgTBlCN17pbydl40LMDdidJwH-FUlQGxLL0LEjAnl8Q8_2n22fpcosDhpAuKuf0XTZ-Q/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycby3gLoAP1ec45R0bfUaZEZXxE0SZcnUXYI5m23POJfKPvSa2VosPB61XoBZ5sXVAIY-aA/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -378,6 +378,39 @@ html[data-theme="dark"] .theme-switch::after{transform:translateX(15px);}
 main{flex:1; padding:22px 24px 60px; max-width:1520px; width:100%; margin:0 auto;}
 .page{display:none;}
 .page.active{display:block; animation:fadeIn .25s ease;}
+/* ===== Wiki / Documentação (v17.6) ===== */
+.wk-wrap{display:grid;grid-template-columns:270px minmax(0,1fr);gap:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;min-height:560px}
+.wk-side{background:var(--surface-alt);border-right:1px solid var(--border);padding:12px;max-height:calc(100vh - 150px);overflow:auto;position:sticky;top:70px;align-self:start}
+.wk-side input{width:100%;padding:8px 10px;border:1px solid var(--border-strong);border-radius:8px;background:var(--surface);color:var(--text);font:inherit;margin-bottom:8px}
+.wk-home,.wk-cb{width:100%;text-align:left;background:none;border:0;color:var(--text);font:inherit;font-weight:600;padding:6px;border-radius:6px;cursor:pointer;display:flex;justify-content:space-between;gap:8px}
+.wk-home:hover,.wk-cb:hover{background:var(--surface-hover)}
+.wk-n{color:var(--text-faint);font-weight:500}
+.wk-cat ul{list-style:none;margin:0 0 4px 10px;padding:0;display:none}.wk-cat.open ul{display:block}
+.wk-cat li a{display:block;padding:4px 8px;border-radius:6px;color:var(--text-muted);cursor:pointer;font-size:13px}
+.wk-cat li a:hover,.wk-cat li a.cur{background:var(--primary-100);color:var(--primary)}
+.wk-main{padding:18px 20px;min-width:0}
+.wk-main h2{margin:0 0 4px;font-size:20px}.wk-main h3{font-size:14px;margin:16px 0 8px}
+.wk-crumb,.wk-s,.wk-meta{color:var(--text-muted);font-size:12.5px}.wk-meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:4px 0 10px}
+.wk-note{border-left:4px solid var(--accent);background:var(--accent-100);padding:8px 12px;border-radius:6px;margin:8px 0;color:var(--text)}
+.wk-kp{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.wk-kp div{flex:1;min-width:110px;border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;background:var(--surface);font-size:12px;color:var(--text-muted)}.wk-kp b{display:block;font-size:20px;color:var(--text)}
+.wk-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.wk-tile{border:1px solid var(--border);border-radius:10px;padding:10px;cursor:pointer;background:var(--surface)}.wk-tile:hover{border-color:var(--accent)}.wk-tile b{display:block;font-size:13px}.wk-tile span{color:var(--text-muted);font-size:12px}
+.wk-res{border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin:6px 0;cursor:pointer;background:var(--surface)}.wk-res:hover{border-color:var(--accent)}
+.wk-id{display:inline-block;padding:1px 8px;border-radius:99px;font:600 11.5px ui-monospace,monospace;background:var(--primary-100);color:var(--primary)}
+.wk-b{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.wk-b.ok{background:var(--st-feito-bg);color:var(--st-feito)}.wk-b.pa{background:#FEF3C7;color:#92400E}.wk-b.pl{background:#EDE9FE;color:#5B21B6}.wk-b.pv{background:var(--st-bloqueado-bg);color:var(--st-bloqueado)}
+.wk-rule{border:1px solid var(--border);border-radius:10px;margin:10px 0;overflow:hidden}
+.wk-rh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 12px;background:var(--surface-alt);cursor:pointer}.wk-rh b{flex:1;min-width:160px}
+.wk-rb{display:none;padding:10px 12px}.wk-rule.open .wk-rb{display:block}
+.wk-rb dl,.wk-dl{display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 12px;margin:0}.wk-rb dt,.wk-dl dt{color:var(--text-muted);font-weight:600}.wk-rb dd,.wk-dl dd{margin:0;overflow-wrap:anywhere}
+.wk-rb ul{margin:4px 0;padding-left:18px}
+.wk-main code{background:var(--surface-alt);padding:0 4px;border-radius:4px;font-size:12px;border:1px solid var(--border)}
+.wk-main a[data-w]{color:var(--primary);cursor:pointer;text-decoration:underline dotted}
+.wk-tbl{overflow-x:auto}.wk-tbl table{width:100%;border-collapse:collapse;font-size:13px}.wk-tbl th,.wk-tbl td{border-bottom:1px solid var(--border);padding:6px 8px;text-align:left;vertical-align:top}.wk-tbl th{background:var(--surface-alt);color:var(--text-muted)}
+.wk-main details{border:1px solid var(--border);border-radius:8px;padding:8px 12px;margin:6px 0}.wk-main summary{cursor:pointer;font-weight:600}
+.wk-chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.wk-chip{border:1px solid var(--border-strong);background:var(--surface);color:var(--text);border-radius:99px;padding:3px 12px;cursor:pointer;font:inherit;font-size:12.5px}.wk-chip.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+@media(max-width:900px){.wk-wrap{grid-template-columns:1fr}.wk-side{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--border)}.wk-rb dl,.wk-dl{grid-template-columns:1fr}}
+
 @keyframes fadeIn{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
 
 /* Faixa de voltar — fina, discreta, logo abaixo do menu (não mais colada no
@@ -1802,6 +1835,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
           <button class="nav-tab" data-page="avisos">Gestão de Avisos</button>
           <button class="nav-tab" data-page="manutencao">Modo Manutenção</button>
           <button class="nav-tab" data-page="logalteracoes">Log de Alterações</button>
+          <button class="nav-tab" data-page="wiki">Wiki / Documentação</button>
         </div>
       </div>
       <div class="nav-util">
@@ -2158,6 +2192,15 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
             <button type="button" class="ha-btn sm" data-ha-x="d">Resumo diário</button><button type="button" class="ha-btn sm" data-ha-x="s">Resumo semanal</button><button type="button" class="ha-btn sm" data-ha-x="r">Detalhamento</button><button type="button" class="ha-btn sm" data-ha-x="u">Análise por usuário</button></span>
         </div>
         <div id="ha-pane"></div>
+      </div>
+    </section>
+
+    <!-- PAGE WIKI / DOCUMENTAÇÃO (v17.6) — só Administrador; conteúdo estático em WIKI_PAGINAS -->
+    <section class="page" id="page-wiki">
+      <div class="page-header"><div><h1>Wiki / Documentação</h1><p>Regras de negócio, cálculos, permissões e fontes de dados da Central de Projetos — exclusivo do perfil Administrador.</p></div></div>
+      <div class="wk-wrap">
+        <aside class="wk-side"><input id="wk-q" type="search" placeholder="Pesquisar regra, indicador, tabela…" aria-label="Pesquisar na Wiki"><div id="wk-nav"></div></aside>
+        <div class="wk-main" id="wk-main"></div>
       </div>
     </section>
 
@@ -2558,7 +2601,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v17.5';
+const APP_VERSION='v17.6';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2788,8 +2831,10 @@ async function attemptLoadWithToken(token, viewAsEmail){
 //
 // Atualize esta data junto com qualquer alteração no array abaixo — ela
 // aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='20/10/2026';
+const NOVIDADES_ATUALIZADO_EM='27/10/2026';
 const NOVIDADES=[
+  {icone:'📖', bg:'#eff6ff', cor:'#2563eb', titulo:'Wiki / Documentação', descricao:'Nova página em Administração com a documentação das regras de negócio, fórmulas dos indicadores, permissões por perfil, fontes de dados e divergências encontradas, com busca, categorias, links entre regras e status de cada regra (implementada, parcial, planejada ou pendente de validação). Exclusiva do Administrador; não lê nenhuma planilha.', paginas:['wiki'], data:'2026-10-27', tag:'Nova página', tagCor:'nova'},
+  {icone:'👥', bg:'#eff6ff', cor:'#2563eb', titulo:'Requisitos de equipe por projeto (vários perfis)', descricao:'Na Edição do Portfólio, cada projeto agora aceita vários requisitos de equipe: Área exigida + Senioridade mínima (inclui Júnior II, Pleno II, Pleno III…) + Quantidade de profissionais. Em Carga e Risco de Alocação, cada requisito mostra quantos profissionais são necessários, já alocados, elegíveis (perfil) e disponíveis (perfil + capacidade livre no período), o déficit potencial, o risco e o porquê — sem contar a mesma pessoa em dois requisitos. Projetos antigos aparecem com o requisito migrado (quantidade 1, a confirmar). Edição só para Administrador.', paginas:['portfolioedit','inteligencia'], data:'2026-10-27', tag:'Nova', tagCor:'nova'},
   {icone:'🕒', bg:'#f0fdf4', cor:'#16a34a', titulo:'Relógio da sessão no topo', descricao:'No canto superior direito agora há um relógio com o tempo restante da sua sessão (verde, amarelo, laranja e vermelho). Passe o mouse para ver a hora do login e da expiração. Faltando 5 minutos aparece um aviso; quando a sessão expira, uma faixa com o botão "Entrar novamente" avisa, sem apagar o que está na tela.', paginas:['cliente'], data:'2026-10-22', tag:'Novo', tagCor:'nova'},
   {icone:'⏱️', bg:'#eff6ff', cor:'#2563eb', titulo:'Período de análise ajusta as horas apontadas', descricao:'Em Carga e Risco de Alocação, trocar o Período de análise (7, 15 ou 30 dias) agora recalcula as Horas apontadas (últimos N dias, a partir do apontamento diário), mostra quanto isso representa da jornada de referência, e ajusta "Vencendo em N dias" e "Tarefas abertas com vencimento no período". Valem também no Comparar e nas listas da Visão executiva. O total histórico continua como referência no card Disponibilidade.', paginas:['inteligencia'], data:'2026-10-22', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🚩', bg:'#fef2f2', cor:'#dc2626', titulo:'Decisão de Alocação: visão executiva de riscos', descricao:'A aba Decisão de Alocação agora abre numa Visão executiva: 7 indicadores clicáveis (cada um abre a relação de registros que o justifica), lista priorizada de projetos que precisam de atenção — com motivo (confirmado, estimativa ou informação ausente) e ação recomendada —, reforço por área (reorganizar prioridades ou reforço de equipe) e painel de Qualidade dos dados. O ranking de candidatos continua em "Nova demanda (ranking)".', paginas:['inteligencia'], data:'2026-10-20', tag:'Novo', tagCor:'nova'},
@@ -4044,7 +4089,7 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','calendario','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','statusreport','statusreportpainel','logalteracoes','andamento','relatorioprojetos','permissoes','pessoasadmin','feriados','manutencao','avisos','novidades'],
+  'Administrador':  ['cliente','calendario','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','statusreport','statusreportpainel','logalteracoes','andamento','relatorioprojetos','permissoes','pessoasadmin','feriados','manutencao','avisos','novidades','wiki'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
@@ -4089,7 +4134,7 @@ if(PERM_MENU['Administrador']) PERM_MENU['Administrador'].push('horasapontadas')
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',horasapontadas:'Gestão de Horas Apontadas',manutencao:'Modo Manutenção',relatorioprojetos:'Relatório de Projetos e Equipes',novidades:'Novidades'};
+const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',horasapontadas:'Gestão de Horas Apontadas',manutencao:'Modo Manutenção',relatorioprojetos:'Relatório de Projetos e Equipes',novidades:'Novidades',wiki:'Wiki / Documentação'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 // EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
 // PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
@@ -4107,7 +4152,7 @@ let EFFECTIVE_EXCECOES={add:[],remove:[]};
 // "novidades" também fica fora: é a tela de entrada exclusiva do
 // Administrador (ver #shell-novidades-placeholder), não uma página de
 // dados com escopo por perfil — não faz sentido liberá-la por exceção.
-const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='feriados' && p!=='manutencao' && p!=='relatorioprojetos' && p!=='avisos' && p!=='novidades' && p!=='calendario');
+const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='feriados' && p!=='manutencao' && p!=='relatorioprojetos' && p!=='avisos' && p!=='novidades' && p!=='calendario' && p!=='wiki');
 
 // v15.7: "novidades" é página inicial de TODOS os perfis — sempre liberada
 // (não é gerenciável em Permissões e nenhuma exceção a remove).
@@ -4897,6 +4942,7 @@ const DA_PARAM={
   rank:{aderencia:.4,capacidade:.3,pressao:.3},  // nota final de candidato
   aderencia:{area:.5,nivel:.3,cx:.2},            // composição da aderência
   realoc:{necessidade:.4,fit:.35,capacidade:.25},// nota de destino de realocação
+  horasVaga:16,                                  // v17.6: livre útil mínimo (h/sem) para um elegível contar como DISPONÍVEL num requisito de equipe
   folgaMinH:4, utilMaxRealoc:90, utilSaida:85,   // folga mínima (h/sem), teto de utilização após realocar, alvo ao liberar
   semanasSemData:4,                              // projeto sem previsão de entrega: dilui o esforço em N semanas (premissa sinalizada)
   areasAfins:{}                                  // ex.: {'engenharia de dados':['ciencia de dados e ia']} — vazio até os gestores definirem
@@ -5228,11 +5274,110 @@ function daCompat_(todos,area,fam,folga){
 const daLivreUtil_=x=>Math.max(0,Math.min(x.c.free,x.c.cap*DA_PARAM.utilMaxRealoc/100-x.c.pl));
 const daMotivoChip_=k=>'<span class="da-pill" style="background:'+(k==='conf'?'#fee2e2;color:#991b1b':k==='est'?'#fef3c7;color:#92400e':'#e2e8f0;color:#334155')+'">'+DA_TIPO_MOTIVO[k][0]+'</span>';
 
+
+// ============================================================
+// v17.6 · REQUISITOS DE EQUIPE — vários requisitos por projeto (Área exigida + Senioridade mínima + Quantidade)
+// Elegível (perfil) ≠ Disponível (perfil + capacidade livre no período). Cada pessoa disponível cobre UMA vaga por vez.
+// ============================================================
+function daReqLista_(proj){
+  if(proj&&Array.isArray(proj.reqs)) return proj.reqs;
+  if(proj&&(proj.area_ex||proj.nv_min)) return [{id:'legado',area:proj.area_ex||'',nv:proj.nv_min||'',qtd:1,conf:false,origem:'Migrado',virtual:true}]; // backend anterior à v17.6
+  return [];
+}
+const daReqRotulo_=r=>(r.area||'área a definir')+(r.nv?' · '+r.nv+'+':' · qualquer senioridade');
+// Elegibilidade de uma pessoa a um requisito → {r:'sim'|'nao'|'indet', m, t:'aus'|'int'}. aus = ausência real; int = falha de interpretação.
+function daElegivel_(p,rq,mi){
+  if(!rq.area) return {r:'indet',m:'área exigida não definida',t:'aus'};
+  if(daN_(p.area)!==daN_(rq.area)) return {r:'nao',m:'área diferente ('+(p.area||'sem área')+')'};
+  if(!rq.nv) return {r:'sim'};
+  mi=mi||daNvInfo_({nv:rq.nv});
+  if(mi.est!=='ok') return {r:'indet',m:'senioridade mínima “'+rq.nv+'” não interpretada',t:'int'};
+  const pi=daNvInfo_(p);
+  if(pi.est==='ausente') return {r:'indet',m:'nível vazio no cadastro da pessoa',t:'aus'};
+  if(pi.est==='invalido') return {r:'indet',m:'nível “'+pi.rot+'” não interpretável',t:'int'};
+  if(pi.fam>mi.fam) return {r:'sim'};
+  if(pi.fam<mi.fam) return {r:'nao',m:'senioridade abaixo do mínimo ('+pi.rot+')'};
+  if(!mi.grau) return {r:'sim'};
+  if(!pi.grau) return {r:'indet',m:'nível “'+pi.rot+'” sem grau; o mínimo exige grau '+mi.grau,t:'int'};
+  return pi.grau>=mi.grau?{r:'sim'}:{r:'nao',m:'grau abaixo do mínimo ('+pi.rot+')'};
+}
+function daReqAnalise_(proj,todos,usados,ctx){
+  const jaP=new Set();
+  return daReqLista_(proj).map(rq=>{
+    const o={rq,area:rq.area,nv:rq.nv,qtd:rq.qtd,aloc:[],el:[],disp:[],usa:[],res:[],nodisp:[],semCap:[],indet:[],falt:[],def:0,risco:-1,motivos:[],ind:false};
+    const mi=rq.nv?daNvInfo_({nv:rq.nv}):null;
+    if(!rq.area) o.falt.push({t:'aus',m:'área exigida não definida (requisito migrado só com senioridade)'});
+    else if(!ctx.areas.has(daN_(rq.area))) o.falt.push({t:'int',m:'área “'+rq.area+'” não existe em Pessoas_Area'});
+    if(mi&&mi.est!=='ok') o.falt.push({t:'int',m:'senioridade mínima “'+rq.nv+'” não pôde ser interpretada'});
+    if(o.falt.length){ o.ind=true; return o; }
+    todos.forEach(x=>{
+      const e=daElegivel_(x.p,rq,mi);
+      if(e.r==='nao') return;
+      if(e.r==='indet'){ o.indet.push({x,m:e.m,t:e.t}); return; }
+      o.el.push(x);
+      if(x.b.rows.some(r=>r.proj.pj===proj.pj)){ if(!jaP.has(x.b.ek)){ jaP.add(x.b.ek); o.aloc.push(x); } return; }
+      if(x.c.insuf){ o.semCap.push(x); return; }
+      if(daLivreUtil_(x)<DA_PARAM.horasVaga){ o.nodisp.push(x); return; }
+      if(usados.has(x.b.ek)){ o.res.push(x); return; }
+      o.disp.push(x);
+    });
+    o.disp.sort((a,b)=>daLivreUtil_(b)-daLivreUtil_(a));
+    const vagas=Math.max(0,o.qtd-o.aloc.length);
+    o.usa=o.disp.slice(0,vagas); o.usa.forEach(x=>usados.add(x.b.ek));
+    o.def=Math.max(0,vagas-o.usa.length);
+    if(!o.el.length&&o.indet.length){ o.ind=true; o.def=0; o.falt=o.indet.slice(0,6).map(i=>({t:i.t,m:i.x.p.a+' — '+i.m})); if(o.indet.length>6) o.falt.push({t:'aus',m:'… e mais '+(o.indet.length-6)+' pessoa(s)'}); return o; }
+    const urg=(ctx.dias!==null&&ctx.dias<=15)||ctx.crit>=3||ctx.late>=3;
+    if(o.def>0){ o.risco=urg?3:2; }
+    else { const fragil=o.aloc.concat(o.usa).some(x=>!x.c.insuf&&x.c.util>DA_PARAM.pressao.alta); o.risco=fragil?2:1; }
+    o.urg=urg; return o;
+  });
+}
+const daReqRiscoChip_=n=>n===3?'<span class="da-chip da-crit">Alta</span>':n===2?'<span class="da-chip da-aten">Média</span>':n===1?'<span class="da-chip da-ok">Baixa</span>':'<span class="da-chip da-ins">Indeterminado</span>';
+function daReqDetHtml_(p,r,H){
+  const L=[];
+  r.aloc.forEach(x=>L.push([x,'Já alocado neste projeto — cobre 1 vaga']));
+  r.usa.forEach(x=>L.push([x,'<b class="da-pos">Disponível</b> — livre útil '+daF_(daLivreUtil_(x))+' h/sem ≥ '+DA_PARAM.horasVaga+' h']));
+  r.disp.filter(x=>!r.usa.includes(x)).forEach(x=>L.push([x,'Disponível, mas além da quantidade necessária']));
+  r.res.forEach(x=>L.push([x,'Disponível, porém já reservado a outro requisito (não conta duas vezes)']));
+  r.nodisp.forEach(x=>L.push([x,'Elegível, <b class="da-neg">sem capacidade</b> — livre útil '+daF_(daLivreUtil_(x))+' h/sem &lt; '+DA_PARAM.horasVaga+' h']));
+  r.semCap.forEach(x=>L.push([x,'Elegível, capacidade desconhecida — horas estimadas insuficientes']));
+  r.indet.forEach(i=>L.push([i.x,'<span class="da-pill">não avaliável</span> '+daE_(i.m)+' <span class="da-note">('+(i.t==='aus'?'ausência real':'falha de interpretação')+')</span>']));
+  let h='';
+  if(r.ind){ h+='<div class="da-why"><b>Dados insuficientes para avaliar este requisito.</b><ul>'+r.falt.map(f=>'<li>'+daE_(f.m)+' <span class="da-pill">'+(f.t==='aus'?'ausência real':'falha de interpretação')+'</span></li>').join('')+'</ul><div class="da-note">Ausência real = preencher o cadastro. Falha de interpretação = o valor existe, mas precisa ser corrigido para um valor reconhecido.</div></div>'; return h; }
+  h+='<div class="table-wrap"><table class="da-t"><thead><tr><th>Pessoa</th><th>Nível</th><th>Utilização</th><th>Situação ('+H+' dias)</th></tr></thead><tbody>'
+   +(L.map(([x,t])=>'<tr><td>'+daE_(x.p.a)+'</td><td>'+daE_(x.p.nv||'—')+'</td><td>'+(x.c.insuf?'—':Math.round(x.c.util)+'%')+'</td><td>'+t+'</td></tr>').join('')||'<tr><td colspan="4" class="da-note">Ninguém elegível encontrado.</td></tr>')+'</tbody></table></div>'
+   +'<div class="da-note" style="margin-top:4px">Déficit = '+r.qtd+' necessário − '+r.aloc.length+' já alocado(s) − '+r.usa.length+' disponível(is) usado(s) = <b>'+r.def+'</b>. '
+   +(r.def>0?daMotivoChip_('est')+' calculado com horas estimadas; '+(r.urg?daMotivoChip_('conf')+' prazo/criticidade/atrasos elevam o risco.':'sem urgência confirmada.'):'Sem déficit neste período.')
+   +' Cada pessoa disponível cobre uma vaga só.</div>';
+  return h;
+}
+function daReqCardHtml_(PL,H){
+  const L=PL.filter(p=>p.ra.length);
+  let h='<div class="card"><div class="card-title"><h3>Requisitos de equipe por projeto</h3><span class="sub">elegível ≠ disponível · disponível = livre útil ≥ '+DA_PARAM.horasVaga+' h/sem em '+H+' dias</span></div>';
+  if(!L.length) return h+'<div class="da-why">Nenhum projeto ativo tem requisitos de equipe cadastrados. Cadastre em <b>Edição do Portfólio</b> (bloco Requisitos de equipe) para ver cobertura e déficit por área e senioridade.</div></div>';
+  h+='<div class="table-wrap"><table class="da-t"><thead><tr><th>Projeto</th><th>Área exigida</th><th>Senioridade mín.</th><th>Necessário</th><th>Já alocados</th><th>Elegíveis</th><th>Disponíveis</th><th>Déficit</th><th>Risco</th></tr></thead><tbody>';
+  L.forEach(p=>p.ra.forEach(r=>{
+    h+='<tr><td>'+projetoLinkHtml(p.proj.pj)+'</td><td>'+daE_(r.area||'—')+'</td><td>'+(r.nv?daE_(r.nv)+'+':'qualquer')+(r.rq.origem==='Migrado'&&!r.rq.conf?' <span class="da-pill" title="Veio das colunas antigas do Portfólio; confirme a quantidade na Edição do Portfólio">qtd. a confirmar</span>':'')+'</td>'
+     +(r.ind?'<td>'+r.qtd+'</td><td>—</td><td>—</td><td>—</td><td>—</td><td>'+daReqRiscoChip_(-1)+'</td>'
+           :'<td>'+r.qtd+'</td><td>'+r.aloc.length+'</td><td>'+r.el.length+(r.indet.length?' <span class="da-note">(+'+r.indet.length+' não avaliável)</span>':'')+'</td><td>'+r.usa.length+(r.disp.length>r.usa.length?' <span class="da-note">('+r.disp.length+' livres)</span>':'')+'</td><td><b class="'+(r.def?'da-neg':'da-pos')+'">'+r.def+'</b></td><td>'+daReqRiscoChip_(r.risco)+'</td>')
+     +'</tr><tr><td colspan="9" style="padding:0 8px 6px"><details><summary class="da-note" style="cursor:pointer">Por quê?</summary>'+daReqDetHtml_(p,r,H)+'</details></td></tr>';
+  }));
+  return h+'</tbody></table></div></div>';
+}
+
 function daVisao_(H){
   const k='vis'+H; if(DA.memoPorH[k]) return DA.memoPorH[k];
   const hoje=new Date().toISOString().slice(0,10);
   const todos=daCalcTodos_(H), mp=daProjetos_(H), folga=DA_PARAM.folgaMinH;
   const refs=todos.map(x=>({x,r:daReforco_(x,H)}));
+  // v17.6 — requisitos de equipe: projetos mais críticos/urgentes escolhem primeiro; cada pessoa disponível cobre 1 vaga só
+  const areasSet=new Set((D.p||[]).map(p=>daN_(p.area)).filter(Boolean)), usadosReq=new Set(), raMap={}, vistosRq=new Set();
+  (D.pj||[]).filter(daProjAtivo_).filter(pj=>{ if(vistosRq.has(pj.pj)||!daReqLista_(pj).length) return false; vistosRq.add(pj.pj); return true; })
+    .map(proj=>{ const pr=iaPrazoInfoProjeto_(proj), dd=(pr.diasRestantes===undefined||pr.diasRestantes===null)?null:pr.diasRestantes;
+      const lt=(PROJ_TASKS[proj.pj]||[]).filter(t=>!daFechada_(t)&&daN_(t.status)!=='blocked'&&t.dt_venc_iso&&t.dt_venc_iso<hoje).length;
+      return {proj,ctx:{areas:areasSet,dias:dd,crit:daCxN_(proj.pr)||0,late:lt}}; })
+    .sort((a,b)=>b.ctx.crit-a.ctx.crit||(a.ctx.dias===null?99999:a.ctx.dias)-(b.ctx.dias===null?99999:b.ctx.dias))
+    .forEach(({proj,ctx})=>{ raMap[proj.pj]=daReqAnalise_(proj,todos,usadosReq,ctx); });
   const vistos=new Set(), projs=[];
   (D.pj||[]).filter(daProjAtivo_).forEach(proj=>{
     if(vistos.has(proj.pj)) return; vistos.add(proj.pj);
@@ -5254,39 +5399,41 @@ function daVisao_(H){
     if(dias===null) aus.push({k:'aus',t:'Sem previsão de entrega cadastrada'});
     if(m&&m.insuf) aus.push({k:'aus',t:'Horas estimadas insuficientes para validar a carga'});
     if(crit===null) aus.push({k:'aus',t:'Criticidade (prioridade) não informada'});
-    const areaEx=proj.area_ex||'', nvFam=daNvMinFam_(proj);
-    if(proj.nv_min&&nvFam===null) aus.push({k:'aus',t:'Senioridade mínima “'+proj.nv_min+'” não pôde ser interpretada'});
-    const areasNec=areaEx?[areaEx]:(m?[...m.areas]:[]);
-    let semCompat=false, compat=[];
-    if(areaEx||nvFam!==null){ compat=daCompat_(todos,areaEx,nvFam,folga); semCompat=compat.length===0;
-      if(semCompat) motivos.push({k:'est',t:'Nenhum profissional compatível ('+(areaEx||'qualquer área')+(nvFam!==null?' · '+DA_NIVEL_NOME[nvFam]+'+':'')+') com folga ≥ '+folga+' h/sem'}); }
+    const ra=raMap[proj.pj]||[], defR=ra.filter(r=>r.def>0);
+    ra.forEach(r=>{
+      if(r.def>0) motivos.push({k:'est',t:'Requisito '+daReqRotulo_(r)+': faltam '+r.def+' de '+r.qtd+' ('+r.aloc.length+' alocado(s), '+r.usa.length+' disponível(is) de '+r.el.length+' elegível(is))'});
+      if(r.ind) r.falt.forEach(f=>aus.push({k:'aus',t:'Requisito '+daReqRotulo_(r)+': '+f.m}));
+    });
+    const areasNec=ra.length?[...new Set(ra.map(r=>r.area).filter(Boolean))]:(m?[...m.areas]:[]);
+    const semCompat=defR.length>0, compat=[...new Set(ra.flatMap(r=>r.disp))];
+    const areaEx=ra.length===1?ra[0].area:'', nvFam=null;
     let acao='',tipoAcao='';
     const precisa=(m&&m.gap>0.5&&!m.insuf)||semCompat;
     if(precisa){
       let melhor=null;
       refs.forEach(({x,r})=>{ const e=(r.lista||[]).find(z=>z.m.proj.pj===proj.pj); if(!e) return;
-        if(areaEx&&daN_(x.p.area)!==daN_(areaEx)) return; if(nvFam!==null&&!(daNv_(x.p)!==null&&daNv_(x.p)>=nvFam)) return;
+        if(defR.length&&!defR.some(r=>daElegivel_(x.p,r.rq).r==='sim')) return;
         if(!melhor||e.sc>melhor.e.sc) melhor={x,e}; });
       if(melhor&&!semCompat){ acao='Realocar ~'+melhor.e.h+' h/sem de '+melhor.x.p.a+(melhor.x.p.area?' ('+melhor.x.p.area+')':''); tipoAcao='realocar'; }
       else {
-        const pool=todos.filter(x=>!x.c.insuf&&(!areasNec.length||areasNec.some(a=>daN_(a)===daN_(x.p.area)))&&(nvFam===null||(daNv_(x.p)!==null&&daNv_(x.p)>=nvFam)));
+        const pool=todos.filter(x=>!x.c.insuf&&(defR.length?defR.some(r=>daElegivel_(x.p,r.rq).r==='sim'):(!areasNec.length||areasNec.some(a=>daN_(a)===daN_(x.p.area)))));
         const poolFree=pool.reduce((s,x)=>s+daLivreUtil_(x),0), need=m?m.gap:folga, falta=Math.max(0,need-poolFree);
-        const alvo=(areasNec.join(', ')||'área não definida')+(nvFam!==null?' · '+DA_NIVEL_NOME[nvFam]+'+':'');
-        if(semCompat||falta>0.5){ acao='Reforço de equipe ('+alvo+') — faltam ~'+daF_(Math.max(falta,folga))+' h/sem'; tipoAcao='reforco'; }
+        const alvo=defR.length?defR.map(r=>r.def+' × '+daReqRotulo_(r)).join('; '):(areasNec.join(', ')||'área não definida');
+        if(semCompat||falta>0.5){ acao=defR.length?'Reforço de equipe — faltam '+alvo:'Reforço de equipe ('+alvo+') — faltam ~'+daF_(Math.max(falta,folga))+' h/sem'; tipoAcao='reforco'; }
         else { acao='Há ~'+daF_(poolFree)+' h/sem livres em '+alvo+' — alocar ou redistribuir tarefas'; tipoAcao='reorg'; }
       }
     } else if(motivos.some(z=>z.t.indexOf('Dependência')===0)&&top){ acao='Redistribuir tarefas de '+top.x.p.a+' entre outras pessoas elegíveis'; tipoAcao='reorg'; }
     else if(late){ acao='Replanejar as '+late+' tarefa(s) atrasada(s) com o responsável'; tipoAcao='replan'; }
     else if(!motivos.length&&aus.length){ acao='Completar o cadastro: '+aus.map(z=>z.t.toLowerCase()).join('; '); tipoAcao='cadastro'; }
-    projs.push({proj,ntasks:tasks.length,late,blocked,prox,m,dias,crit,motivos,aus,areaEx,nvFam,areasNec,semCompat,compat,top,acao,tipoAcao});
+    projs.push({proj,ntasks:tasks.length,late,blocked,prox,m,dias,crit,motivos,aus,areaEx,nvFam,areasNec,semCompat,compat,ra,top,acao,tipoAcao});
   });
   // capacidade por área (base: área de quem executa)
   const am={};
   todos.forEach(x=>{ const a=String(x.p.area||'').trim()||'(sem área)'; const o=am[a]=am[a]||{area:a,n:0,insuf:0,cap:0,pl:0,exc:0,livre:0};
     o.n++; if(x.c.insuf){o.insuf++;return;} const lim=x.c.cap*DA_PARAM.utilMaxRealoc/100; o.cap+=x.c.cap; o.pl+=x.c.pl; o.exc+=Math.max(0,x.c.pl-lim); o.livre+=Math.max(0,lim-x.c.pl); });
   const areas=Object.values(am).map(o=>{ o.falta=Math.max(0,o.exc-o.livre); o.concl=o.exc<=0.5?'ok':(o.livre>=o.exc?'reorg':'reforco'); return o; }).sort((a,b)=>b.falta-a.falta||b.exc-a.exc);
-  const temReq=(D.pj||[]).some(p=>p.area_ex||p.nv_min);
-  const colExiste=(D.pj||[]).some(p=>p.area_ex!==null&&p.area_ex!==undefined);
+  const temReq=(D.pj||[]).some(p=>daReqLista_(p).length>0);
+  const colExiste=(D.pj||[]).some(p=>Array.isArray(p.reqs)||(p.area_ex!==null&&p.area_ex!==undefined));
   return DA.memoPorH[k]={projs,areas,temReq,colExiste,todos};
 }
 function daVisFiltros_(f){ const cli=(document.getElementById('da-f-cli')||{}).value||'';
@@ -5307,10 +5454,11 @@ function daQualidade_(){
   const ativos=(D.pj||[]).filter(daProjAtivo_), nomes=new Set((D.p||[]).map(p=>daN_(p.a)));
   const semPrev=ativos.filter(p=>iaPrazoInfoProjeto_(p).diasRestantes==null).map(p=>p.pj);
   const semCrit=ativos.filter(p=>daCxN_(p.pr)===null).map(p=>p.pj);
-  const semReq=ativos.filter(p=>!p.area_ex&&!p.nv_min).length, colExiste=ativos.some(p=>p.area_ex!==null&&p.area_ex!==undefined);
+  const semReq=ativos.filter(p=>!daReqLista_(p).length).length, colExiste=ativos.some(p=>Array.isArray(p.reqs)||(p.area_ex!==null&&p.area_ex!==undefined));
+  const reqMig=ativos.reduce((t,p)=>t+daReqLista_(p).filter(r=>r.origem==='Migrado'&&!r.conf).length,0);
   const pf=new Set(); ativos.forEach(p=>['gp','sm','lider','po'].forEach(c=>{ const v=String(p[c]||'').trim(); if(v&&!PLACEHOLDER_NOMES.has(v)&&v!=='Sem Gerente'&&v!=='#N/T'&&v!==NOME_NAO_CADASTRADO&&!nomes.has(daN_(v))) pf.add(v); }));
   const V=daVisao_(daFiltros_().H), insufH=V.projs.filter(p=>p.m&&p.m.insuf).map(p=>p.proj.pj);
-  return {pes:pes.length,nv,semArea,semPrev,semCrit,semReq,colExiste,pf:[...pf],insufH,ativos:ativos.length};
+  return {pes:pes.length,nv,semArea,semPrev,semCrit,semReq,reqMig,colExiste,pf:[...pf],insufH,ativos:ativos.length};
 }
 function daListaDet_(titulo,arr){ return arr.length?'<details style="margin-top:2px"><summary class="da-note" style="cursor:pointer">'+titulo+' ('+arr.length+')</summary><div class="da-note" style="margin:3px 0 0 10px">'+arr.slice(0,40).map(daE_).join(' · ')+(arr.length>40?' …':'')+'</div></details>':''; }
 function daQualidadeHtml_(){
@@ -5323,7 +5471,7 @@ function daQualidadeHtml_(){
   +(q.semPrev.length?'<div class="da-al">❌ <b>Sem previsão de entrega:</b> '+q.semPrev.length+' de '+q.ativos+' projetos ativos'+daListaDet_('ver projetos',q.semPrev)+'</div>':'')
   +(q.semCrit.length?'<div class="da-al">❌ <b>Sem criticidade (prioridade):</b> '+q.semCrit.length+daListaDet_('ver projetos',q.semCrit)+'</div>':'')
   +(q.insufH.length?'<div class="da-al">⚠ <b>Horas estimadas insuficientes</b> (&lt; '+DA_PARAM.coberturaMin+'% das tarefas): '+q.insufH.length+daListaDet_('ver projetos',q.insufH)+'</div>':'')
-  +'<div class="da-al">'+(q.colExiste?'ℹ <b>Área exigida / Senioridade mínima:</b> '+(q.ativos-q.semReq)+' de '+q.ativos+' projetos preenchidos (Edição do Portfólio)':'ℹ <b>Área exigida / Senioridade mínima:</b> as colunas serão criadas ao abrir a Edição do Portfólio; enquanto isso, o déficit usa a área de quem executa')+'</div>'
+  +'<div class="da-al">'+(q.colExiste?'ℹ <b>Requisitos de equipe:</b> '+(q.ativos-q.semReq)+' de '+q.ativos+' projetos ativos com requisitos cadastrados (Edição do Portfólio)'+(q.reqMig?' · '+q.reqMig+' requisito(s) migrado(s) com quantidade a confirmar':''):'ℹ <b>Requisitos de equipe:</b> republique o Apps Script (v17.6) para habilitar o cadastro; enquanto isso, o déficit usa a área de quem executa')+'</div>'
   +(q.pf.length?'<div class="da-al">⚠ <b>Nomes do Portfólio (Gerente/SM/Líder/PO) sem correspondência em Pessoas_Area:</b> '+q.pf.length+daListaDet_('ver nomes',q.pf)+'</div>':'')
   +'</div>';
 }
@@ -5338,7 +5486,7 @@ function daVVis_(f,d){
   const comLate=PL.filter(p=>p.late), nLate=comLate.reduce((s,p)=>s+p.late,0);
   const areasDef=V.areas.filter(a=>(!f.area||a.area===f.area)&&a.concl==='reforco');
   const comFolga=pessoas.filter(x=>!x.c.insuf&&daLivreUtil_(x)>=DA_PARAM.folgaMinH), livreH=pessoas.reduce((s,x)=>s+(x.c.insuf?0:daLivreUtil_(x)),0)*H/7;
-  const semC=PL.filter(p=>p.semCompat), comReq=PL.filter(p=>p.areaEx||p.nvFam!==null);
+  const semC=PL.filter(p=>p.semCompat), comReq=PL.filter(p=>p.ra&&p.ra.length), defPes=PL.reduce((t,p)=>t+p.ra.reduce((u,r)=>u+r.def,0),0);
   let h='<div class="da-kpis">'
    +daKpiClk_('k1',att.length,'🚩 Projetos que precisam de atenção','de '+PL.length+' ativos')
    +daKpiClk_('k2',prox.length,'📆 Entrega ≤15 dias com risco',prox.filter(p=>p.late).length+' com atraso confirmado')
@@ -5346,7 +5494,7 @@ function daVVis_(f,d){
    +daKpiClk_('k4',areasDef.length,'🧩 Áreas com possível déficit',areasDef.map(a=>a.area).slice(0,2).join(' · ')||'nenhuma')
    +daKpiClk_('k5',alta.length,'🔥 Pessoas em alta pressão','≥ '+DA_PARAM.pressao.aten+'% de utilização')
    +daKpiClk_('k6',Math.round(livreH)+' h','🟢 Capacidade livre estimada',comFolga.length+' pessoa(s) com folga ≥ '+DA_PARAM.folgaMinH+'h/sem · '+H+' dias')
-   +daKpiClk_('k7',V.temReq?semC.length:'—','❓ Demandas sem profissional compatível',V.temReq?'de '+comReq.length+' com exigência cadastrada':'preencha Área/Senioridade exigida')
+   +daKpiClk_('k7',V.temReq?semC.length:'—','❓ Projetos com déficit de equipe',V.temReq?'de '+comReq.length+' com requisitos · '+defPes+' pessoa(s) faltando':'cadastre os requisitos de equipe')
    +'</div>';
   h+=daDetKpi_(DA.kd||'k1',{PL,att,insufOnly,prox,comLate,areasDef,alta,comFolga,livreH,semC,comReq,V,H,pessoas});
   // lista priorizada
@@ -5363,12 +5511,7 @@ function daVVis_(f,d){
    +(V.areas.filter(a=>!f.area||a.area===f.area).map(a=>'<tr><td><b>'+daE_(a.area)+'</b>'+(a.insuf?'<div class="da-note">'+a.insuf+' sem horas estimadas (fora do cálculo)</div>':'')+'</td><td>'+a.n+'</td><td>'+Math.round(a.pl)+' h/sem de '+Math.round(a.cap)+'</td><td>'+(a.exc>0.5?'<b class="da-neg">'+daF_(a.exc)+' h/sem</b>':'—')+'</td><td>'+daF_(a.livre)+' h/sem</td><td>'+(a.concl==='ok'?'<span class="da-chip da-ok">Capacidade compatível</span>':a.concl==='reorg'?'<span class="da-chip da-aten">Reorganizar prioridades</span><div class="da-note">há folga na própria área para cobrir o excesso</div>':'<span class="da-chip da-crit">Reforço de equipe</span><div class="da-note">faltam ~'+daF_(a.falta)+' h/sem (≈ '+Math.round(a.falta*H/7)+' h em '+H+' dias)</div>')+'</td></tr>').join('')||'<tr><td colspan="6" class="da-note">Sem dados.</td></tr>')
    +'</tbody></table></div><div class="da-note" style="margin-top:6px">Acima do limite = carga que passa de '+DA_PARAM.utilMaxRealoc+'% da capacidade de cada pessoa. Folga = o que ainda cabe em quem está abaixo desse limite. Se a folga cobre o excesso, basta reorganizar; se não, é reforço.</div></div>'
    +'<div>'+daQualidadeHtml_()+'</div></div>';
-  // exigências cadastradas
-  h+='<div class="card"><div class="card-title"><h3>Projetos com exigência de área / senioridade</h3><span class="sub">campos “Área Exigida” e “Senioridade Mínima” do Portfólio</span></div>';
-  if(!comReq.length) h+='<div class="da-why">Nenhum projeto ativo tem “Área exigida” ou “Senioridade mínima” preenchida. Cadastre em <b>Edição do Portfólio</b> (seção Status e Classificação) para o sistema identificar demandas sem profissional compatível. Enquanto isso, o déficit por área usa a área de quem já executa o projeto.</div>';
-  else h+='<div class="table-wrap"><table class="da-t"><thead><tr><th>Projeto</th><th>Área exigida</th><th>Senioridade mín.</th><th>Carga (h/sem)</th><th>Compatíveis com folga</th><th>Situação</th></tr></thead><tbody>'
-    +comReq.map(p=>{ const livre=p.compat.reduce((s,x)=>s+daLivreUtil_(x),0), need=p.m?p.m.need:0; return '<tr><td>'+projetoLinkHtml(p.proj.pj)+'</td><td>'+daE_(p.areaEx||'—')+'</td><td>'+(p.nvFam!==null?DA_NIVEL_NOME[p.nvFam]+'+':'—')+'</td><td>'+(p.m?daF_(need):'—')+'</td><td>'+(p.compat.length?p.compat.slice(0,4).map(x=>daE_(x.p.a)).join(', ')+(p.compat.length>4?' …':''):'—')+'</td><td>'+(p.semCompat?'<span class="da-chip da-crit">Sem profissional compatível</span>':livre<need?'<span class="da-chip da-aten">Folga menor que a carga</span>':'<span class="da-chip da-ok">Há profissional compatível</span>')+'</td></tr>'; }).join('')+'</tbody></table></div>';
-  h+='</div>';
+  h+=daReqCardHtml_(PL,H);
   return h;
 }
 function daDetKpi_(id,c){
@@ -5380,7 +5523,7 @@ function daDetKpi_(id,c){
   if(id==='k4') return T('Áreas com possível déficit','áreas em que a carga acima do limite de '+DA_PARAM.utilMaxRealoc+'% por pessoa é maior que a folga das demais pessoas da própria área.','<div class="table-wrap"><table class="da-t"><thead><tr><th>Área</th><th>Acima do limite</th><th>Folga</th><th>Falta</th></tr></thead><tbody>'+(c.areasDef.map(a=>'<tr><td><b>'+daE_(a.area)+'</b></td><td>'+daF_(a.exc)+' h/sem</td><td>'+daF_(a.livre)+' h/sem</td><td><b class="da-neg">'+daF_(a.falta)+' h/sem</b></td></tr>').join('')||'<tr><td colspan="4" class="da-note">Nenhuma área com déficit.</td></tr>')+'</tbody></table></div>');
   if(id==='k5') return T('Pessoas em alta pressão','utilização planejada acima de '+DA_PARAM.pressao.aten+'% (pior janela entre 7 dias e o período), com escalonamento por atrasos/entregas próximas. Pessoas sem horas estimadas suficientes ficam de fora.',pess(c.alta,'Utilização'));
   if(id==='k6') return T('Capacidade livre estimada','soma, por pessoa, do menor valor entre a folga sobre '+DA_PARAM.horasSemana+'h/sem e o que cabe até '+DA_PARAM.utilMaxRealoc+'% de utilização, vezes '+c.H+'/7 semanas. É capacidade <b>teórica</b>: feriados e ausências ainda não entram.',pess(c.comFolga,'Folga aproveitável'));
-  if(id==='k7') return T('Demandas sem profissional compatível','projetos com “Área exigida” e/ou “Senioridade mínima” cadastrada em que ninguém da área/nível exigido tem folga ≥ '+DA_PARAM.folgaMinH+' h/sem.',c.V.temReq?proj(c.semC):'<div class="da-why">Nenhum projeto tem exigência cadastrada — preencha em Edição do Portfólio.</div>');
+  if(id==='k7') return T('Projetos com déficit de equipe','projetos com requisito de equipe em que faltam profissionais disponíveis (livre útil ≥ '+DA_PARAM.horasVaga+' h/sem) para a quantidade necessária — detalhe por requisito em “Requisitos de equipe por projeto”.',c.V.temReq?proj(c.semC):'<div class="da-why">Nenhum projeto tem requisitos cadastrados — preencha em Edição do Portfólio.</div>');
   return T('Projetos que precisam de atenção','projetos ativos com ao menos um alerta confirmado ou estimado (atraso, entrega vencida, carga acima da capacidade, dependência de uma pessoa, pessoa-chave sob pressão ou falta de profissional compatível). Projetos só com informação ausente aparecem à parte, como “dados insuficientes”.',proj(c.att.concat(c.insufOnly)));
 }
 
@@ -5438,17 +5581,17 @@ function daVInd_(f,d){
 
 function daCompatPerfilHtml_(x,H,rf){
   const V=daVisao_(H), fam=daNv_(x.p), itens=[];
-  V.projs.forEach(p=>{ if(!(p.areaEx||p.nvFam!==null)) return;
-    const okA=!p.areaEx||daN_(p.areaEx)===daN_(x.p.area), okN=p.nvFam===null||(fam!==null&&fam>=p.nvFam);
-    if(okA&&okN) itens.push({t:projetoLinkHtml(p.proj.pj)+' <span class="da-note">exige '+daE_(p.areaEx||'qualquer área')+(p.nvFam!==null?' · '+DA_NIVEL_NOME[p.nvFam]+'+':'')+'</span>',pos:true,m:p.semCompat?'hoje sem ninguém compatível com folga':''});
-    else itens.push({t:projetoLinkHtml(p.proj.pj)+' <span class="da-note">exige '+daE_(p.areaEx||'qualquer área')+(p.nvFam!==null?' · '+DA_NIVEL_NOME[p.nvFam]+'+':'')+'</span>',pos:false,m:!okA?'área diferente ('+daE_(x.p.area||'sem área')+')':(fam===null?'senioridade da pessoa indisponível':'senioridade abaixo do mínimo')}); });
+  V.projs.forEach(p=>(p.ra||[]).forEach(r=>{ if(r.ind) return; const e=daElegivel_(x.p,r.rq);
+    const t=projetoLinkHtml(p.proj.pj)+' <span class="da-note">exige '+daE_(daReqRotulo_(r))+' · '+r.qtd+' vaga(s)</span>';
+    if(e.r==='sim') itens.push({t,pos:true,m:r.def>0?'projeto com déficit de '+r.def+' profissional(is)':''});
+    else itens.push({t,pos:false,m:e.r==='indet'?'não avaliável: '+e.m:e.m}); }));
   const pos=itens.filter(i=>i.pos), neg=itens.filter(i=>!i.pos);
   let h='';
   if(rf&&rf.lista&&rf.lista.length) h+='<div class="da-al"><b>Projetos que podem receber reforço dela:</b><ul style="margin:3px 0 0 16px;padding:0">'+rf.lista.slice(0,3).map(z=>'<li>'+projetoLinkHtml(z.m.proj.pj)+' — ~'+z.h+' h/sem · encaixe '+z.f.s+'/100</li>').join('')+'</ul></div>';
   else h+='<div class="da-al da-note">'+(rf&&rf.insuf?'Dados insuficientes para avaliar reforço (poucas horas estimadas).':'Sem projeto com necessidade que combine com a área dela e caiba na folga atual.')+'</div>';
   if(pos.length) h+='<div class="da-al"><b class="da-pos">✔ Atende exigências cadastradas:</b><ul style="margin:3px 0 0 16px;padding:0">'+pos.map(i=>'<li>'+i.t+(i.m?' <span class="da-note">('+i.m+')</span>':'')+'</li>').join('')+'</ul></div>';
   if(neg.length) h+='<div class="da-al"><b class="da-neg">✖ Não atende:</b><ul style="margin:3px 0 0 16px;padding:0">'+neg.slice(0,5).map(i=>'<li>'+i.t+' <span class="da-note">('+i.m+')</span></li>').join('')+'</ul></div>';
-  if(!itens.length) h+='<div class="da-note">Nenhum projeto tem “Área exigida / Senioridade mínima” cadastrada — preencha em Edição do Portfólio para ver compatibilidade por exigência.</div>';
+  if(!itens.length) h+='<div class="da-note">Nenhum projeto tem requisitos de equipe cadastrados — preencha em Edição do Portfólio para ver compatibilidade por exigência.</div>';
   return h;
 }
 function daVCmp_(f,d){
@@ -6088,7 +6231,7 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos, cliente){
   };
   // Agrupa os campos por seção, preservando a ordem original dentro de cada uma
   const secoes={ 'Identificação':[], 'Status e Classificação':[], 'Cronograma':[], 'Equipe':[], 'Outras Informações':[] };
-  campos.forEach((c,i)=>{ secoes[peClassificarSecao(peNormalizarHeader(c.header),i)].push({c,i}); });
+  campos.forEach((c,i)=>{ if(PE_CAMPOS_DEMANDA.includes(peNormalizarHeader(c.header))) return; /* v17.6: substituídos pelo bloco Requisitos de equipe; os valores antigos ficam intactos na planilha */ secoes[peClassificarSecao(peNormalizarHeader(c.header),i)].push({c,i}); });
 
   // "Gestão do Projeto" (Gerente do Projeto, SM, Líder Responsável — e
   // qualquer papel não mapeado nos blocos nomeados) sai da seção Equipe pra
@@ -6154,6 +6297,7 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos, cliente){
     }
   });
 
+  h+=peReqCardHtml_();
   h+='<div class="sr-actions">'+
     '<button type="button" class="sr-btn sr-btn-primary" id="pe-btn-salvar">💾 Salvar Alterações</button>'+
     '<button type="button" class="sr-btn" id="pe-btn-excluir" style="border-color:var(--st-bloqueado);color:var(--st-bloqueado)">🗑️ Excluir Projeto</button>'+
@@ -6171,6 +6315,81 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos, cliente){
     };
   });
   peInicializarCombosPessoa();
+  peReqDesenhar_();
+}
+
+
+// ---------- v17.6 · REQUISITOS DE EQUIPE (bloco da Edição do Portfólio; salva por conta própria) ----------
+let PE_REQ=null;
+const PE_REQ_NV_BASE=['Estagiário','Júnior','Pleno','Sênior','Especialista'];
+function peReqNiveis_(){
+  const m=new Map(); PE_REQ_NV_BASE.forEach(n=>m.set(daN_(n),n));
+  (D.p||[]).forEach(p=>{ const v=String(p.nv||'').trim(); if(v&&daNvInfo_({nv:v}).est==='ok'&&!m.has(daN_(v))) m.set(daN_(v),v); });
+  const ord=v=>{ const i=daNvInfo_({nv:v}); return i.fam*10+(i.grau||0); };
+  return [...m.values()].sort((a,b)=>ord(a)-ord(b)||a.localeCompare(b,'pt-BR'));
+}
+function peReqAreas_(){ return [...new Set((D.p||[]).map(p=>String(p.area||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')); }
+function peReqCardHtml_(){
+  const L=PE_ULTIMA_LEITURA; if(!L) return '';
+  const pj=(D.pj||[]).find(p=>p.pj===L.projeto&&String(p.cl||'')===String(L.cliente||''))||(D.pj||[]).find(p=>p.pj===L.projeto)||null;
+  PE_REQ={projeto:L.projeto,cliente:L.cliente||'',idpj:(pj&&pj.idpj)||'',pj,erros:{},
+    lista:(pj?daReqLista_(pj):[]).map(r=>({id:r.id,area:r.area||'',nv:r.nv||'',qtd:r.qtd,conf:!!r.conf,origem:r.origem||'Cadastro'}))};
+  return '<div class="card" id="pe-req-card" style="margin-bottom:16px"><div class="card-title"><h3>Requisitos de equipe</h3><span class="sub">usados na Decisão de Alocação · salvam separadamente do projeto</span></div><div id="pe-req-body"></div></div>';
+}
+function peReqDesenhar_(){
+  const box=document.getElementById('pe-req-body'); if(!box||!PE_REQ) return;
+  const areas=peReqAreas_(), niveis=peReqNiveis_();
+  const opt=(arr,v,ph)=>'<option value="">'+ph+'</option>'+arr.concat(v&&!arr.includes(v)?[v]:[]).map(x=>'<option'+(x===v?' selected':'')+'>'+feEsc_(x)+'</option>').join('');
+  const er=PE_REQ.erros||{};
+  let h='<div class="table-wrap"><table class="da-t"><thead><tr><th style="width:32%">Área exigida *</th><th style="width:26%">Senioridade mínima</th><th style="width:12%">Qtd. *</th><th>Origem</th><th></th></tr></thead><tbody>';
+  h+=PE_REQ.lista.map((r,i)=>{ const e=er[i]||{}; const bad='border-color:#dc2626;background:#fef2f2';
+    return '<tr data-rq="'+i+'"><td><select data-k="area" style="width:100%;'+(e.area?bad:'')+'">'+opt(areas,r.area,'— Selecione —')+'</select>'+(e.area?'<div style="color:#b91c1c;font-size:11.5px">'+feEsc_(e.area)+'</div>':'')+'</td>'
+     +'<td><select data-k="nv" style="width:100%;'+(e.nv?bad:'')+'">'+opt(niveis,r.nv,'Qualquer senioridade')+'</select>'+(e.nv?'<div style="color:#b91c1c;font-size:11.5px">'+feEsc_(e.nv)+'</div>':'')+'</td>'
+     +'<td><input type="number" data-k="qtd" min="1" max="50" step="1" value="'+(r.qtd==null?'':r.qtd)+'" style="width:100%;'+(e.qtd?bad:'')+'">'+(e.qtd?'<div style="color:#b91c1c;font-size:11.5px">'+feEsc_(e.qtd)+'</div>':'')+'</td>'
+     +'<td>'+(r.origem==='Migrado'&&!r.conf?'<span class="da-pill">Migrado</span> <span class="da-pill">qtd. a confirmar</span>':'<span class="da-pill">'+(r.origem==='Migrado'?'Migrado':'Cadastro')+'</span>')+'</td>'
+     +'<td><button type="button" class="sr-btn" data-del="'+i+'" style="border-color:var(--st-bloqueado);color:var(--st-bloqueado)">Remover</button></td></tr>'; }).join('')
+    ||'<tr><td colspan="5" class="da-note">Nenhum requisito cadastrado.</td></tr>';
+  h+='</tbody></table></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="sr-ativ-add" id="pe-req-add">+ Adicionar requisito</button><button type="button" class="sr-btn sr-btn-primary" id="pe-req-salvar">Salvar requisitos</button></div>'
+   +'<div class="da-note" style="margin-top:6px">* obrigatório. Área = áreas de Pessoas_Area; Senioridade vazia = qualquer; Quantidade = total de profissionais com esse perfil no projeto (inclui quem já está alocado), inteiro de 1 a 50. Não repita o mesmo par Área + Senioridade.'+(PE_REQ.idpj?'':' Este projeto ainda não tem ID oficial (sem tarefas); o vínculo usa Cliente + Projeto.')+'</div>';
+  box.innerHTML=h;
+  box.querySelectorAll('[data-k]').forEach(el=>el.onchange=()=>{ const i=+el.closest('tr').dataset.rq, k=el.dataset.k, r=PE_REQ.lista[i];
+    if(k==='qtd'){ r.qtd=el.value===''?null:Number(el.value); r.conf=true; } else if(k==='area') r.area=el.value; else r.nv=el.value;
+    if(PE_REQ.erros[i]) delete PE_REQ.erros[i][k]; });
+  box.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{ PE_REQ.lista.splice(+b.dataset.del,1); PE_REQ.erros={}; peReqDesenhar_(); });
+  document.getElementById('pe-req-add').onclick=()=>{ PE_REQ.lista.push({id:'',area:'',nv:'',qtd:1,conf:true,origem:'Cadastro'}); peReqDesenhar_(); };
+  document.getElementById('pe-req-salvar').onclick=peReqSalvar_;
+}
+function peReqValidar_(){
+  const er={}, vistos={}, areas=new Set(peReqAreas_().map(daN_));
+  PE_REQ.lista.forEach((r,i)=>{ const e={};
+    if(!r.area) e.area='Escolha a área exigida.'; else if(!areas.has(daN_(r.area))) e.area='Área não existe em Pessoas_Area.';
+    else { const k=daN_(r.area)+'|'+daN_(r.nv||''); if(vistos[k]!==undefined) e.area='Par Área + Senioridade repetido.'; vistos[k]=i; }
+    if(r.nv&&daNvInfo_({nv:r.nv}).est!=='ok') e.nv='Senioridade não reconhecida.';
+    if(!(Number.isInteger(r.qtd)&&r.qtd>=1&&r.qtd<=50)) e.qtd='Inteiro de 1 a 50.';
+    if(Object.keys(e).length) er[i]=e; });
+  PE_REQ.erros=er; return !Object.keys(er).length;
+}
+async function peReqSalvar_(){
+  if(!PE_REQ) return;
+  if(!peReqValidar_()){ peReqDesenhar_(); peFeedback('Corrija os campos destacados nos requisitos.',false); return; }
+  const btn=document.getElementById('pe-req-salvar'); if(btn) btn.disabled=true;
+  mostrarLoadingGlobal('Salvando requisitos…');
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const payload={idpj:PE_REQ.idpj,lista:PE_REQ.lista.map(r=>({id:r.id,area:r.area,nv:r.nv,qtd:r.qtd,conf:!!r.conf}))};
+    const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=saveRequisitos&projeto='+encodeURIComponent(PE_REQ.projeto)+'&cliente='+encodeURIComponent(PE_REQ.cliente)+'&payload='+encodeURIComponent(JSON.stringify(payload));
+    const r=await loadDataJSONPComRetry(url,1);
+    if(r&&r.ok){
+      if(PE_REQ.pj) PE_REQ.pj.reqs=r.reqs||[];
+      PE_REQ.lista=(r.reqs||[]).map(x=>({id:x.id,area:x.area||'',nv:x.nv||'',qtd:x.qtd,conf:!!x.conf,origem:x.origem||'Cadastro'})); PE_REQ.erros={};
+      if(typeof DA!=='undefined'){ DA.memo=null; DA.memoPorH={}; }
+      peReqDesenhar_(); peFeedback('Requisitos de equipe salvos.',true);
+    }else{
+      const er={}; ((r&&r.erros)||[]).forEach(x=>{ (er[x.i]=er[x.i]||{})[x.campo]=x.msg; }); PE_REQ.erros=er; peReqDesenhar_();
+      peFeedback((r&&r.message)||'Não foi possível salvar os requisitos.',false);
+    }
+  }catch(e){ peFeedback('Erro ao salvar os requisitos: '+(e&&e.message||e),false); }
+  esconderLoadingGlobal();
 }
 
 // ---------- SALVAR ----------
@@ -11422,6 +11641,548 @@ function comCamposNecessarios_(nomePagina, fnOriginal){
   };
   return wrapped;
 }
+// ===== WIKI — conteúdo (categorias 3.1 a 3.7) =====
+const WIKI_CATS=[
+ ['3.1','Visão geral do sistema'],['3.2','Usuários, perfis e permissões'],['3.3','Portfólio e cadastro de projetos'],['3.4','Central de Comando e indicadores'],
+ ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
+ ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
+ ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
+const WIKI_VER='v17.6', WIKI_DATA='27/10/2026';
+const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
+const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
+const WIKI_PAGINAS=[
+
+/* ---------------- 3.1 ---------------- */
+WP('sis-objetivo','3.1','Objetivo, módulos e fluxo de uso','Para que serve a Central de Projetos, quais são seus módulos e como ela é usada no dia a dia.',[
+ WR('SIS-001','Objetivo e módulos do portal','ok','Geral',
+  'Portal interno da Be Solution que consolida portfólio de projetos, tarefas, horas, pessoas e capacidade, e permite gravar Status Reports, edição do portfólio, cadastros administrativos e avisos.',
+  'Menu em <code>index.html</code> (<code>nav-menu</code>) e <code>PAGE_LABELS</code>.','Todas as abas listadas em “Fontes de dados”.',
+  'Seis grupos de menu: Visão Executiva, Portfólio, Projetos, Pessoas e Capacidade, Gestão e Administração, mais Novidades e esta Wiki.',
+  'O que cada perfil vê depende de <a data-w="PERM-001">PERM-001</a>.','Todas as telas.','Entrar com um perfil e conferir o menu.','Descrição de objetivo deduzida do código e dos textos das telas; não há documento formal de escopo no repositório.')],
+`<h3>Módulos (menu atual)</h3><div class="wk-tbl"><table><tr><th>Grupo</th><th>Páginas</th></tr>
+<tr><td>Visão Executiva</td><td>Central de Comando · Destaques · Andamento dos Projetos</td></tr>
+<tr><td>Portfólio</td><td>Portfólio Geral · Calendário de Projetos · Edição do Portfólio</td></tr>
+<tr><td>Projetos</td><td>Meus Projetos · Projetos por Líder · Relatório de Projetos e Equipes · Status Report · Painel de Status Report · Pendências de Tarefas</td></tr>
+<tr><td>Pessoas e Capacidade</td><td>Minha Equipe · Desempenho por Pessoa · Carga e Risco de Alocação · Pessoas Disponíveis · Visão por Área · Gestão da Área</td></tr>
+<tr><td>Gestão</td><td>Gestão de Horas Apontadas</td></tr>
+<tr><td>Administração</td><td>Pessoas e Perfis · Permissões · Feriados · Gestão de Avisos · Modo Manutenção · Log de Alterações</td></tr>
+<tr><td>Utilitários</td><td>Novidades · Detalhamento do Projeto (abre ao clicar em um projeto) · Wiki / Documentação</td></tr></table></div>
+<h3>Fluxo geral</h3><ol><li>Login com conta Google do domínio corporativo (<a data-w="TRANS-020">TRANS-020</a>).</li><li>O servidor carrega primeiro os dados leves (<code>core</code>); cada página busca os campos pesados de que precisa na primeira abertura (<a data-w="TRANS-013">TRANS-013</a>).</li><li>Se houver aviso obrigatório pendente, ele precisa ser confirmado antes de qualquer dado ser entregue (<a data-w="AUD-003">AUD-003</a>).</li><li>A pessoa abre Novidades e navega pelo menu do seu perfil.</li></ol>`),
+
+WP('sis-arq','3.1','Arquitetura, componentes e integrações','Como o portal é construído e do que depende.',[
+ WR('SIS-010','Arquitetura em duas camadas','ok','Arquitetura',
+  'Front-end de arquivo único (<code>index.html</code>, JavaScript sem framework, hospedado no GitHub Pages) + back-end em Google Apps Script publicado como Web App, vinculado à planilha Google Sheets. A comunicação usa JSONP (tag <code>script</code>).',
+  '<code>index.html</code> (<code>APP_VERSION</code>) · <code>AppsScript_Code.gs</code> (<code>DASHBOARD_VERSION</code>, <code>doGet</code>).','Planilha Google Sheets (abas em <a data-w="FONTE-001">FONTE</a>).',
+  'O front envia o ID token Google; o <code>doGet</code> valida, aplica o escopo do perfil (<code>restrictDataForRole_</code>) e devolve JSON/JSONP. As gravações também passam por <code>doGet</code> (parâmetro <code>action</code>).',
+  'Versões do front e do back precisam ser iguais (<code>APP_VERSION = DASHBOARD_VERSION</code>); após mudar o back, o Apps Script deve ser republicado.','Todo o portal.','Conferir <code>_backendVersion</code> na resposta da API.','Não há ambiente de homologação identificado no repositório.'),
+ WR('SIS-011','Dependências e integrações externas','ok','Arquitetura',
+  'Google Identity (login e <code>tokeninfo</code>), BrasilAPI (feriados nacionais), MailApp (e-mail “Novo Contratado”), CacheService, LockService e Script Properties (Modo Manutenção). No navegador: Chart.js e ExcelJS (carregado sob demanda).',
+  '<code>verifyGoogleToken_</code>, <code>buscarFeriadosNacionaisBrasilApi_</code>, <code>enviarEmailNovoContratado_</code>, <code>calCarregarExcelJS_</code>.','—','—','—','Login, Feriados, Pessoas e Perfis, exportações.','—','A lista completa de bibliotecas carregadas por CDN não foi inventariada nesta revisão.')],
+''),
+
+WP('sis-governanca','3.1','Como esta Wiki é mantida','Regras de governança da documentação.',[
+ WR('SIS-020','Processo de atualização da Wiki','ok','Governança',
+  'Toda mudança de regra de negócio deve vir acompanhada da revisão das páginas afetadas, no mesmo pacote da versão. A Wiki é referência de apoio: não substitui o código, as permissões efetivas nem as regras formalmente aprovadas.',
+  'Constantes <code>WIKI_PAGINAS</code> e <code>WIKI_HISTORICO</code> em <code>index.html</code>.','—',
+  'Ao entregar uma versão, listar as páginas/regras afetadas e atualizar <code>upd</code>, <code>ver</code> e o histórico (3.15).',
+  'A documentação não é alterada para “esconder” uma divergência: ela é registrada em 3.15.','Wiki.','Comparar a regra com a função citada em “Fonte da regra”.','O alerta de “possivelmente desatualizada” depende da versão registrada em cada página; não detecta mudanças automaticamente.'),
+ WR('SIS-021','Estados de uma regra','ok','Governança',
+  '<b>Implementada</b>: comportamento encontrado no código. <b>Parcial</b>: existe, com limitação ou inconsistência. <b>Planejada</b>: solicitada, sem implementação confirmada. <b>Pendente de validação</b>: não foi possível comprovar.',
+  'Esta Wiki.','—','—','—','Todas as páginas.','—','—')],
+''),
+
+/* ---------------- 3.2 ---------------- */
+WP('perm-perfis','3.2','Perfis e páginas do menu','Quais perfis existem e quais páginas cada um enxerga.',[
+ WR('PERM-001','Menu por perfil (PERM_MENU)','ok','Permissões',
+  'O menu é montado a partir de <code>PERM_MENU[perfil efetivo]</code>. Perfil desconhecido usa “Sem Perfil Definido”. A página Novidades é sempre acrescentada.',
+  '<code>index.html</code> · <code>PERM_MENU</code>, <code>paginasPermitidas()</code>.','Perfil de acesso (Pessoas_Area) e <code>Permissoes_Excecoes</code>.',
+  'Páginas permitidas = base do perfil ± exceções do usuário (<a data-w="PERM-002">PERM-002</a>). Administrador: todas, exceto <code>manutencao</code>, que só aparece para as contas fixas autorizadas pelo servidor.',
+  'Administrador não sofre exceções.','Menu e navegação.','“Visualizar como” cada perfil e conferir o menu.','O menu do Administrador foi lido de forma resumida; a lista exata está em <code>PERM_MENU[\'Administrador\']</code>.'),
+ WR('PERM-003','Perfis existentes (16)','ok','Permissões',
+  'Chaves de <code>PERM_MENU</code>: Administrador, Head, Gestor, Tech Lead, PO, SM, Projetos, Corporativo, Infra, Analytics, Data, Dev, Negócios, Produto, Qualidade e Sem Perfil Definido. “Projetos” é o perfil do Gerente de Projeto; “SM” é o Scrum Master.',
+  '<code>PERM_MENU</code>, <code>PERFIS_VALIDOS_FALLBACK</code>, aba <code>Perfil</code> (<code>getPerfisValidos_</code>).','Aba <code>Perfil</code>.',
+  '—','Não existem, no código, os perfis “Administrador Geral”, “Membro” ou “Equipe” como chaves próprias. “Equipe” aparece apenas como conceito (membros de um projeto).','—','—','—','Se esses nomes são usados fora do portal (por exemplo, em outro sistema), isso não foi verificado.')],
+`<h3>Páginas por perfil (base, antes das exceções)</h3><div class="wk-tbl"><table><tr><th>Perfil</th><th>Páginas</th></tr>
+<tr><td>Administrador</td><td>Todas (inclui Calendário, Relatório de Projetos e Equipes, Painel de Status Report, Gestão de Horas Apontadas e as de Administração)</td></tr>
+<tr><td>Head · Gestor</td><td>Portfólio Geral, Carga e Risco, Desempenho por Pessoa, Visão por Área, Projetos por Líder, Meus Projetos, Minha Equipe, Pendências, Pessoas Disponíveis, Gestão da Área, Status Report, Detalhamento</td></tr>
+<tr><td>Tech Lead · PO</td><td>Portfólio Geral, Desempenho por Pessoa, Meus Projetos, Pendências, Status Report, Detalhamento</td></tr>
+<tr><td>Projetos (Gerente de Projeto)</td><td>Meus Projetos, Status Report, Detalhamento</td></tr>
+<tr><td>SM (Scrum Master)</td><td>Meus Projetos, Detalhamento</td></tr>
+<tr><td>Corporativo · Infra · Analytics · Data · Dev · Negócios · Produto · Qualidade · Sem Perfil</td><td>Portfólio Geral, Desempenho por Pessoa, Detalhamento</td></tr></table></div>
+<p class="wk-s">Todos os perfis também veem Novidades. Fonte: <code>PERM_MENU</code>. As exceções por usuário (<a data-w="PERM-002">PERM-002</a>) podem somar ou remover páginas.</p>`),
+
+WP('perm-excecoes','3.2','Exceções individuais de permissão','Como o Administrador libera ou remove páginas para uma pessoa.',[
+ WR('PERM-002','Exceções por usuário','ok','Permissões',
+  'Cada exceção é uma linha (e-mail, página, tipo add/remove). O perfil continua sendo a base; a exceção só ajusta o menu daquela pessoa.',
+  '<code>Permissoes_Excecoes</code> · <code>lerExcecoesPorEmail_</code>, <code>salvarExcecaoPermissao_</code>, <code>PAGINAS_GERENCIAVEIS_EXCECAO</code>.','Aba <code>Permissoes_Excecoes</code> (email, pagina, tipo, data_hora, usuario).',
+  'Não podem ser gerenciadas por exceção: Detalhamento do Projeto, Permissões, Pessoas e Perfis, Feriados, Modo Manutenção, Relatório de Projetos e Equipes, Gestão de Avisos, Novidades, Calendário e esta Wiki.',
+  'Administrador ignora exceções. A exceção altera o menu, não os dados: o recorte de dados continua sendo o do perfil (<a data-w="PERM-010">PERM-010</a>).','Menu, Administração › Permissões.','Adicionar exceção a um usuário de teste e conferir o menu em “Visualizar como”.','Gestão de Horas Apontadas é só do Administrador no menu e na consulta (v16.7); o comentário do código diz que exceções individuais continuam valendo para o menu, mas o servidor nega a consulta sem pessoa-alvo a quem não é Administrador.')],
+''),
+
+WP('perm-dados','3.2','Escopo de dados por perfil','Quais projetos e pessoas chegam ao navegador de cada perfil.',[
+ WR('PERM-010','Recorte de dados no servidor','ok','Permissões',
+  'O servidor calcula o escopo do perfil e filtra todos os dicionários (pessoas, projetos, horas, tarefas, pendências, Status Reports) antes de responder. O menu escondido é só conveniência; a proteção real dos dados é esta.',
+  '<code>computeScope_</code>, <code>restrictDataForRole_</code> (Apps Script).','Pessoas_Area, Portifolio, Tarefas e derivados.',
+  `<ul><li><b>Administrador:</b> sem restrição.</li><li><b>Head:</b> a(s) área(s) que lidera (Head mais frequente na coluna Head da área), as pessoas dessas áreas e os projetos com gente dessas áreas.</li><li><b>Gestor:</b> ele mesmo + liderados diretos (coluna Gestor, casando por Assinatura ou Nome Completo) e os projetos deles.</li><li><b>Tech Lead, PO, SM, Projetos:</b> projetos em que a pessoa aparece na equipe + todas as pessoas desses projetos.</li><li><b>Demais perfis:</b> só a própria pessoa e os projetos em que ela está.</li></ul>`,
+  'Pessoa não encontrada pelo e-mail em Pessoas_Area é procurada pelo nome autenticado; se nem assim, o escopo fica restrito. O campo Destaques (<code>EXECTOP</code>) é entregue vazio a quem não é Administrador.','Todas as telas de dados.','“Visualizar como” um perfil e comparar totais com o do Administrador.','Quando o e-mail não bate com nenhum cadastro e o nome também não, a pessoa vê muito pouco: o sintoma é “perfil X não vê nada”.'),
+ WR('PERM-011','“Visualizar como” (somente Administrador)','ok','Permissões',
+  'O Administrador pode ver o portal como outra pessoa. Para qualquer outro perfil o parâmetro é ignorado e a tentativa é registrada no log do Apps Script.',
+  '<code>doGet</code> (<code>viewAsEmail</code>), <code>lookupPerfilReadOnly_</code>.','Pessoas_Area.','As respostas refletem o perfil/escopo do alvo; <code>_usuario</code> e <code>_perfil</code> continuam sendo os reais.',
+  'Gravações usam sempre a identidade real, nunca a do alvo. Em “Visualizar como” o aviso obrigatório não bloqueia e nenhuma leitura é registrada.','Todas as telas.','Usar com Administrador e com não Administrador.','—')],
+''),
+
+WP('perm-acesso','3.2','Acesso direto, gravações e ações restritas','O que acontece ao tentar abrir uma página ou ação sem permissão.',[
+ WR('PERM-020','Guarda de rota no front','ok','Permissões',
+  'O portal é uma SPA sem rotas por URL. <code>goToPage()</code> recusa a abertura de qualquer página fora de <code>paginasPermitidas()</code> e mostra “Seu perfil não tem acesso à página…”. Não existe endereço direto por página.',
+  '<code>goToPage()</code>, <code>mostrarAcessoNegado()</code>.','—','—','—','Navegação.','Chamar <code>goToPage(\'permissoes\')</code> no console com perfil não Administrador.','Isso protege a tela; os dados são protegidos pelo servidor (<a data-w="PERM-010">PERM-010</a>).'),
+ WR('PERM-021','Ações de gravação exclusivas do Administrador','ok','Permissões',
+  'O servidor recusa para qualquer perfil diferente de Administrador: Portfólio (listar, ler, salvar, criar, excluir, requisitos), Pessoas e Perfis (todas as ações), Feriados, Avisos (cadastro/controle), Log de Alterações e Exceções de Permissão. Modo Manutenção é restrito a duas contas fixas.',
+  '<code>ACOES_PORTFOLIO</code>, <code>ACOES_PESSOAS</code>, <code>ACOES_FERIADOS</code>, <code>ACOES_AVISOS</code>, <code>ACOES_PERMISSAO</code>, <code>listarLogAlteracoes</code>, <code>MANUT_CONTAS</code>.','—','—','—','Administração e Edição do Portfólio.','Chamar a ação com token de perfil não Administrador.','—'),
+ WR('PERM-022','Gravação de Status Report por escopo de projeto','ok','Permissões',
+  'Salvar Status Report e entregas do cronograma é permitido a todo perfil, mas só para projetos do seu escopo. Excluir Status Report é só do Administrador.',
+  '<code>saveStatusReport</code>, <code>saveEntregaCronograma</code>, <code>excluirStatusReport_</code>.','—','—','—','Status Report.','Tentar salvar report de projeto fora do escopo.','O menu só oferece Status Report aos perfis listados em <a data-w="PERM-003">PERM-003</a>.'),
+ WR('PERM-023','Wiki / Documentação','ok','Permissões',
+  'Página <code>wiki</code> exclusiva do Administrador (menu e guarda de rota), fora das exceções individuais. Nenhuma planilha é lida por ela.',
+  '<code>PERM_MENU[\'Administrador\']</code>, <code>PAGINAS_GERENCIAVEIS_EXCECAO</code>.','—','—','—','Wiki.','Entrar como não Administrador: o item não aparece.','Decisão inicial; pode ser aberta a outros perfis no futuro.')],
+''),
+
+/* ---------------- 3.3 ---------------- */
+WP('port-cadastro','3.3','Cadastro, edição e identificação de projetos','Como um projeto é identificado, editado e excluído.',[
+ WR('PORT-001','Identificação do projeto','pa','Portfólio',
+  'A aba Portifolio não tem coluna de ID. O projeto é identificado por Cliente + Projeto (v15.5). O ID oficial (<code>idpj</code>) vem da aba Tarefas e é anexado ao projeto no servidor quando existe.',
+  '<code>acharLinhaPortifolioPorProjeto_</code>, laço de Tarefas em <code>buildDashboardData_</code>.','Portifolio (A=Cliente, B=Projeto), Tarefas (ID do projeto).',
+  'Dois projetos de clientes diferentes podem ter o mesmo nome; por isso agrupamentos de tarefas usam <code>cliente|projeto</code>.',
+  'Projeto sem tarefas não tem <code>idpj</code>.','Edição, Status Report, requisitos, Alocação.','Cadastrar o mesmo nome em dois clientes.','Várias rotinas do servidor ainda identificam o projeto só pelo nome (ex.: Status Report, dicionários de horas); nesses pontos nomes iguais podem colidir. Alcance exato a validar.'),
+ WR('PORT-002','Edição do Portfólio','ok','Portfólio',
+  'Os campos do formulário são descobertos do cabeçalho real da aba (linha 1); não há lista fixa. Ao salvar, o servidor compara com a leitura original e recusa se a planilha mudou entretanto. Alterações campo a campo vão ao Log de Alterações.',
+  '<code>lerProjetoParaEdicao_</code>, <code>salvarProjetoPortfolio_</code>, <code>peReqSalvar_</code>.','Portifolio.',
+  'Criar acrescenta linha; excluir remove a linha da planilha (com registro no log). Só Administrador.',
+  'Mensagem “A planilha mudou desde que este projeto foi aberto para edição” quando há conflito.','Edição do Portfólio, todas as telas que leem o portfólio.','Abrir o mesmo projeto em duas abas e salvar nas duas.','A exclusão é física (linha apagada); não há lixeira.'),
+ WR('PORT-003','Projetos fora de todas as análises','ok','Portfólio',
+  'Projetos cujo nome contenha “backup”/“bkp” e projetos que contenham “da venda ao faturamento” (comparação normalizada, sem acento) são descartados de tarefas, horas apontadas e horas estimadas.',
+  '<code>BKP_RE</code>, <code>isBackup_</code>, <code>PROJETOS_EXCLUIDOS_TERMOS</code>.','Portifolio, Tarefas, Tarefas_Horas_*.',
+  'O Portifolio também descarta backups e o projeto excluído por termo.',
+  '—','Todos os indicadores.','—','Se um projeto novo tiver “backup” no nome ele some sem aviso.')],
+''),
+
+WP('port-status','3.3','Status, datas, criticidade e complexidade','Significado dos principais campos do projeto.',[
+ WR('PORT-020','Status do projeto','ok','Portfólio',
+  'Valores usados na ordenação: Pré Venda, Em Andamento, Pausado, Concluído, Sustentação. “Projeto ativo” nos indicadores executivos = Em Andamento ou Sustentação.',
+  '<code>STATUS_ORDER</code> (front) e <code>ativos</code> em <code>buildDashboardData_</code>.','Portifolio.',
+  '—','Na Decisão de Alocação “ativo” é outra definição: sem data de entrega, não pausado, não concluído e não cancelado (<code>daProjAtivo_</code>).','Indicadores, Alocação.','—','Existem duas definições de “ativo” em módulos diferentes; ver <a data-w="ALOC-020">ALOC-020</a>.'),
+ WR('PORT-021','Datas do projeto','pa','Portfólio',
+  'Início (<code>di</code>), Previsão de Entrega Inicial (<code>pei</code>), Previsão Atual (<code>pea</code>) e Data de Entrega (<code>de</code>). O prazo exibido (<code>dd</code>) é um texto calculado, ex.: “Atraso 12d”.',
+  '<code>calcularPrazoTexto_</code>, <code>parseAtrasoDias</code>.','Portifolio.','—','Projeto pausado tem tratamento próprio de prazo.','Prazos, Ritmo, Calendário.','—','A regra completa de <code>calcularPrazoTexto_</code> não foi detalhada nesta revisão.'),
+ WR('PORT-022','Criticidade','ok','Portfólio',
+  'A criticidade não está no Portifolio: vem do Status Report mais recente do projeto (maior <code>semana_fim</code>). Quem não tem Status Report fica sem criticidade.',
+  '<code>calMontarCriticidade_</code> (front), coluna <code>criticidade</code> de Status_Report.','Status_Report.','—','—','Calendário de Projetos.','—','—'),
+ WR('PORT-023','Complexidade do projeto','pv','Portfólio',
+  'A Decisão de Alocação lê <code>proj.cx</code> (Alta/Média/Baixa); a coluna de origem na planilha não foi confirmada nesta revisão.',
+  '<code>daCxN_</code>.','Portifolio (coluna a confirmar).','—','—','Alocação.','—','Origem da coluna a validar.')],
+''),
+
+WP('port-equipe','3.3','Equipe do projeto e requisitos de equipe','Papéis, requisitos múltiplos e migração.',[
+ WR('PORT-010','Papéis da equipe do projeto','ok','Portfólio',
+  'As colunas de pessoas do Portifolio mapeiam papéis por posição: Gerente do Projeto, SM, Líder Responsável, PO, Analista de Negócios, UX, QA, Dados, Eng de IA, Tech Lead, Arquiteto Cloud, Dev FullStack, Dev Back e Dev Front. A equipe do projeto (<code>eq</code>) é a união dessas colunas.',
+  '<code>PORTIFOLIO_PAPEL_POR_COLUNA</code>.','Portifolio (colunas de pessoas).','—','Nomes de pessoas cadastradas são exibidos pela Assinatura (<a data-w="PESS-004">PESS-004</a>).','Equipe, escopos de perfil, Alocação.','—','O mapa é posicional: inserir uma coluna no meio da planilha desloca os papéis.'),
+ WR('PORT-011','Requisitos múltiplos de equipe','ok','Portfólio',
+  'Cada projeto pode ter vários requisitos: Área exigida + Senioridade mínima (opcional) + Quantidade. A quantidade é o total de profissionais daquele perfil no projeto, incluindo quem já está alocado.',
+  '<code>Portifolio_Requisitos</code> · <code>salvarRequisitosProjeto_</code>, <code>anexarRequisitos_</code> (back); <code>peReqSalvar_</code> (front).','Portifolio_Requisitos (id_requisito, id_projeto, cliente, projeto, area_exigida, senioridade_minima, quantidade, qtd_confirmada, origem, removido_em, …).',
+  'Validações no servidor: área obrigatória e existente em Pessoas_Area; senioridade vazia ou interpretável; quantidade inteira de 1 a 50; no máximo 40 itens; sem par Área+Senioridade repetido.',
+  'Edição só do Administrador. Remoção é lógica (<code>removido_em</code>). Vínculo por <code>idpj</code> com fallback Cliente+Projeto.','Edição do Portfólio, Decisão de Alocação, Qualidade dos dados.','Salvar com área vazia, duplicada ou quantidade 2,5: o servidor rejeita.','Validado com planilha simulada; gravação na planilha real ainda precisa ser conferida em produção.'),
+ WR('PORT-012','Migração dos campos antigos','ok','Portfólio',
+  'As colunas antigas Área Exigida e Senioridade Mínima não são alteradas. Quando um projeto não tem nenhuma linha em Portifolio_Requisitos, elas aparecem como um requisito virtual “Migrado”, quantidade 1, com selo “a confirmar”. Ler não grava nada.',
+  '<code>anexarRequisitos_</code>, <code>daReqLista_</code>.','Portifolio (colunas antigas), Portifolio_Requisitos.','—','Remover o requisito migrado grava um marcador para ele não voltar.','Edição do Portfólio, Alocação.','Abrir projeto antigo e conferir o selo.','—'),
+ WR('PORT-013','Log dos requisitos','pa','Portfólio',
+  'Inclusão, alteração e remoção de requisitos geram linhas no Log de Alterações com tabela <code>Portifolio_Requisitos</code> e operações “Inclusão”/“Remoção”.',
+  '<code>montarLinhaLogAlteracao_</code> em <code>salvarRequisitosProjeto_</code>.','Log_Alteracoes.','—','—','Log de Alterações.','Salvar um requisito e abrir o Log.','Os filtros da tela do Log só listam as tabelas Portifolio, Status_Report, Feriados e Avisos e os tipos Criação/Alteração/Exclusão; esses registros só aparecem com os filtros em “Todas/Todos”. Ver <a data-w="AUD-011">AUD-011</a>.')],
+''),
+
+/* ---------------- 3.4 ---------------- */
+WP('cmd-kpis','3.4','Central de Comando: cartões e medidores','Fórmulas dos indicadores da página inicial executiva.',[
+ WR('CMD-001','Cartões (KPIs)','ok','Central de Comando',
+  'Seis cartões: Projetos Ativos, Horas Executadas (mês), Pessoas Alocadas, Projetos Atrasados, Tarefas Bloqueadas e Alertas Críticos.',
+  '<code>renderFuturistic</code> (<code>index.html</code>).','D.pj, HM (horas por mês), SEM_ALOC, EXECTOP.',
+  `<ul><li><b>Ativos</b> = projetos em Em Andamento ou Sustentação.</li><li><b>Horas do mês</b> = soma das horas apontadas cuja data pertence ao mês selecionado.</li><li><b>Pessoas alocadas</b> = pessoas analisáveis − pessoas sem alocação (SEM_ALOC).</li><li><b>Atrasados</b> = ativos cujo texto de prazo contém “atraso”.</li><li><b>Bloqueadas</b> = tarefas cujo status contém “block”, em projetos ativos.</li><li><b>Alertas críticos</b> = clientes em risco + projetos “zumbi”.</li></ul>`,
+  'Pessoas com Participa_Analises = Não ficam fora. “Atual” = estado em tempo real; “mês” = mês selecionado.','Central de Comando.','Clicar no cartão abre o detalhamento.','Tarefas bloqueadas são contadas por correspondência de texto; um status novo contendo “block” também entraria.'),
+ WR('CMD-002','Medidores (percentuais)','pa','Central de Comando',
+  `<ul><li><b>Conclusão de Tarefas (mês)</b> = concluídas ÷ tarefas com vencimento no mês (concluída = tem data de conclusão ou status Done).</li><li><b>Entregas no Prazo</b> = (ativos − atrasados) ÷ ativos.</li><li><b>Consumo de Horas (mês)</b> = horas apontadas no mês ÷ soma das horas estimadas de todos os projetos ativos.</li><li><b>Ocupação do Time</b> = pessoas alocadas ÷ total de pessoas.</li><li><b>Portfólio no Ritmo</b> = projetos “No ritmo” ÷ projetos com ritmo calculável.</li></ul>`,
+  '<code>renderFuturistic</code>.','HM, horas_est, SEM_ALOC.','—','Divisão por zero retorna 0.','Central de Comando.','—','O “Consumo de Horas (mês)” compara as horas de um mês com a estimativa total dos projetos; ele não mede quanto cada projeto consumiu da sua própria estimativa. Interpretar como relação, não como saldo.'),
+ WR('CMD-003','Ritmo do projeto','ok','Central de Comando',
+  'Compara o % do cronograma decorrido (início → previsão de entrega) com o % das horas estimadas já apontadas. Diferença = consumo − cronograma: ≤ −20 Represado; entre −20 e −8 Abaixo do ritmo; −8 a +15 No ritmo; acima de +15 Ritmo acelerado.',
+  '<code>computeRitmoProjeto</code>.','Datas di/pei, horas_est, horas_apo.','—','Sem data de início, sem previsão, previsão ≤ início ou sem horas estimadas: não calculado (“sem dados”).','Portfólio, Meus Projetos, Central de Comando.','Projeto com 50% do prazo e 20% das horas: diferença −30 → Represado.','Usa a Previsão de Entrega Inicial (<code>pei</code>), não a atual.')],
+''),
+
+WP('cmd-destaques','3.4','Destaques (ranking executivo)','Como cada lista Top 5 do Destaques é calculada.',[
+ WR('CMD-010','Destaques positivos','ok','Destaques',
+  `<ul><li><b>Saúde do projeto</b>: % de tarefas concluídas − penalidade, onde penalidade = 5 × tarefas bloqueadas + 0,3 × (% das horas estimadas consumidas − 100) quando &gt; 100%. Só projetos ativos com pelo menos 3 tarefas.</li><li><b>Gerentes no prazo</b>: % de projetos ativos sem atraso; só gerentes com 2+ projetos ativos.</li><li><b>Aderência à estimativa</b>: pessoas com mais de 10 h estimadas e algum apontamento; ordena por |horas apontadas ÷ estimadas − 100%|, do menor para o maior.</li><li><b>Produtividade por área</b>: tarefas concluídas ÷ horas apontadas da área; só áreas com mais de 10 h.</li><li><b>Saúde por cliente</b>: média do % de conclusão dos projetos ativos (com 3+ tarefas).</li></ul>`,
+  '<code>buildDashboardData_</code> (bloco TOP EXECUTIVO).','Portifolio, Tarefas, Tarefas_Horas_*.','—','Pessoas fora das análises e gerentes “#N/T/#N/A” são ignorados. Cada lista mostra no máximo 5.','Destaques.','—','Pontuação não é normalizada entre listas diferentes.'),
+ WR('CMD-011','Destaques negativos','ok','Destaques',
+  `<ul><li><b>Atrasados</b>: dias de atraso extraídos do texto de prazo.</li><li><b>Estouro de horas</b>: horas estimadas &gt; 5 e apontadas &gt; estimadas.</li><li><b>Zumbi</b>: projeto ativo sem apontamento há 30 dias ou mais (ou nunca).</li><li><b>Sobrecarga</b>: nota = (horas da pessoa ÷ maior total de horas × 0,6 + tarefas abertas ÷ maior total de tarefas × 0,4) × 100.</li><li><b>Gerentes com mais atrasos</b>, <b>Projetos com tarefas bloqueadas</b>.</li><li><b>Clientes em risco</b>: nota = 10 × projetos atrasados + (100 − média de % de conclusão); entra quem tem atraso ou média abaixo de 70%.</li></ul>`,
+  '<code>buildDashboardData_</code>.','Mesmas do CMD-010.','—','Mesmas de CMD-010.','Destaques, Central de Comando (Alertas Críticos).','—','Pesos 0,6/0,4 e 10 são constantes do código, sem justificativa documentada.'),
+ WR('CMD-012','Acesso ao Destaques','ok','Destaques','Página exclusiva do Administrador. Para os demais perfis o servidor devolve as listas vazias.','<code>restrictDataForRole_</code>, <code>PERM_MENU</code>.','—','—','—','Destaques.','—','—')],
+''),
+
+WP('cmd-outros','3.4','Páginas executivas ainda não detalhadas','Andamento dos Projetos e demais telas, com a lacuna declarada.',[
+ WR('CMD-020','Andamento dos Projetos','pv','Andamento','Página exclusiva do Administrador que usa <code>PROJ_TASKS</code>. As fórmulas de cada coluna não foram lidas nesta revisão.','<code>initAndamento</code>.','PROJ_TASKS.','—','—','—','—','Lacuna a preencher.'),
+ WR('CMD-021','Visão por Área, Projetos por Líder, Gestão da Área, Calendário, Relatório de Projetos e Equipes','pv','Páginas',
+  'Existem e respeitam permissões e escopo, mas suas fórmulas e filtros específicos ainda não foram transcritos. O Calendário tem exportação Excel que respeita os filtros ativos (<a data-w="EXP-001">EXP-001</a>).','<code>PAGE_INIT_MAP</code>.','D.pj, AREAS.','—','—','—','—','Lacuna a preencher.')],
+''),
+
+/* ---------------- 3.5 ---------------- */
+WP('pess-cadastro','3.5','Cadastro de pessoas','Campos, status e participação nas análises.',[
+ WR('PESS-001','Colunas reconhecidas em Pessoas_Area','ok','Pessoas',
+  'O servidor reconhece por nome de cabeçalho (qualquer posição): Status, Nome Completo, Assinatura, Data Entrada, Data Distrato, Cargo, Nível, Resumo, Área, Gestor, Head, E-mail, Perfil de Acesso, Localidade, Estado/UF, Cidade, Participa_Analises e Último Acesso.',
+  '<code>lerColunasAcessoPessoasArea_</code>.','Pessoas_Area.','—','Colunas Estado, Cidade e Participa_Analises são criadas automaticamente no primeiro uso.','Todas as páginas de pessoas, login, avisos.','—','—'),
+ WR('PESS-002','Status Ativo/Inativo','ok','Pessoas',
+  'Célula vazia (ou coluna inexistente) conta como Ativo. A coluna de status com cabeçalho em branco também é reconhecida.',
+  '<code>resolverStatusPessoa_</code>, <code>idxColunaStatusSemCabecalho_</code>.','Pessoas_Area.','—','Pessoas inativas saem de listas de análise (por exemplo, <code>pessoaEstaAtiva</code> na Alocação).','Login, listas, Alocação.','—','—'),
+ WR('PESS-003','Participa_Analises','ok','Pessoas',
+  'Valor Sim/Não; vazio conta como Sim. Pessoa com Não sai de totais, médias, rankings e listas de pessoas das análises, mas seus projetos e tarefas não são excluídos e o campo não altera permissões nem login.',
+  '<code>participaAnalisesValor_</code>, <code>foraAnalise_</code>, <code>PESA_()</code>.','Pessoas_Area.','—','Em projetos com vários responsáveis só a contagem dela sai. Ela continua vendo as próprias horas.','Central de Comando, Destaques, Disponibilidade, Carga e Risco, Gestão da Área, Minha Equipe, Desempenho, Pendências, Gestão de Horas, Relatório de Equipes.','Marcar uma pessoa como Não e conferir que ela some da Carga e Risco.','O alcance foi conferido nas telas citadas nas Novidades de 16/10; telas criadas depois precisam seguir a mesma regra.'),
+ WR('PESS-004','Nome oficial: Pessoas_Area.Assinatura (coluna C)','pa','Pessoas',
+  'A única fonte de nome de exibição de pessoa cadastrada é a Assinatura. Sem correspondência válida mostra “Nome não cadastrado”, sem substituir por tarefa ou e-mail.',
+  '<code>NOME_NAO_CADASTRADO</code>, <code>displayNameForKey_</code> (v17.5).','Pessoas_Area (Assinatura).','—','—','Telas de análise e Alocação.','Cadastrar uma tarefa com um nome diferente da Assinatura.',
+  'Divergência encontrada: <code>horasApontadas_</code> usa Nome Completo antes de Assinatura para nomear usuários nas horas apontadas, e o cabeçalho do código cita uma aba “Acessos” que não é mais lida. Aplicação em Status Report, Avisos e Log ainda a conferir.'),
+ WR('PESS-005','Novo contratado e e-mail','ok','Pessoas',
+  'Ao cadastrar uma pessoa pelo formulário completo, o servidor envia o e-mail “[News] - Novo Contratado” com todos os campos aos destinatários escolhidos (no máximo 20, validados). É possível reenviar.',
+  '<code>criarPessoaCompleta_</code>, <code>enviarEmailNovoContratado_</code>.','Pessoas_Area.','—','Administrador somente.','Pessoas e Perfis.','—','Exige autorização do Google para envio de e-mail na publicação.')],
+''),
+
+WP('pess-equipe','3.5','Disponibilidade e equipe','Quem aparece como sem alocação, disponível ou com carga elevada.',[
+ WR('PESS-010','Sem alocação e alocado sem apontamento','ok','Pessoas',
+  '<b>Sem alocação</b>: pessoa analisável sem apontamento/tarefas (Zoho) e sem projeto ativo no Portifolio. <b>Alocada sem apontamento</b>: sem Zoho mas presente em projeto Em Andamento/Sustentação do Portifolio.',
+  '<code>buildDashboardData_</code> (<code>semAlocacao</code>, <code>alocSemApontamento</code>).','Portifolio, Tarefas, Tarefas_Horas_Apontadas.','—','Pessoas com Participa_Analises = Não ficam fora.','Pessoas Disponíveis, Central de Comando (Ocupação).','—','Depende da equipe estar preenchida no Portifolio.'),
+ WR('PESS-011','Status em Minha Equipe','ok','Pessoas',
+  '<b>Carga Elevada</b> = mais de 40 h executadas na semana. <b>Baixa Utilização</b> = está em SEM_ALOC ou ALOC_SEM_APONT. Caso contrário <b>Disponível</b>. Ordem: Carga Elevada, Disponível, Baixa Utilização.',
+  '<code>statusEquipe</code>.','PHAP/PM, SEM_ALOC.','—','—','Minha Equipe.','—','O termo “Disponível” aqui é diferente de “disponível” na Alocação (<a data-w="ALOC-011">ALOC-011</a>).'),
+ WR('PESS-012','Pessoas sem cadastro completo','pa','Pessoas',
+  'Tarefas de pessoas sem linha em Pessoas_Area entram nos cálculos por e-mail, mas não têm área, nível ou gestor; nas telas aparecem como “Nome não cadastrado” quando não casam com a Assinatura.',
+  '<code>resolverPessoaAlocacao_</code>, <code>NOME_NAO_CADASTRADO</code>.','Pessoas_Area, Tarefas.','—','—','Telas de análise.','—','Quantidade real de casos não foi medida.')],
+'')
+];
+
+// ===== WIKI — conteúdo (categorias 3.6 a 3.15) =====
+WIKI_PAGINAS.push(
+
+/* ---------------- 3.6 ---------------- */
+WP('aloc-param','3.6','Parâmetros, capacidade e pressão','Constantes e limites usados na Carga e Risco de Alocação e na Decisão de Alocação.',[
+ WR('ALOC-001','Parâmetros (DA_PARAM)','ok','Carga e Risco',
+  'Todos os limites ficam em um único objeto no código. Valores efetivos: jornada 40 h/semana; pressão 70/90/105 %; escalonamento com 3 tarefas atrasadas ou 2 entregas em até 7 dias; cobertura mínima de estimativas 50 %; folga mínima 4 h/sem; teto de utilização ao realocar 90 %; alvo ao liberar 85 %; projeto sem previsão dilui esforço em 4 semanas; vaga disponível exige 16 h/sem livres.',
+  '<code>DA_PARAM</code> (<code>index.html</code>).','—','—','<code>areasAfins</code> está vazio: nenhuma área é considerada afim a outra até os gestores definirem.','Carga e Risco, Decisão de Alocação.','Alterar o valor no código e comparar a classificação.','Alterar um parâmetro exige nova versão do portal; não há tela de configuração.'),
+ WR('ALOC-002','Utilização e nível de pressão','ok','Carga e Risco',
+  'Utilização = carga planejada por semana ÷ 40 × 100. A carga usa a PIOR janela entre os próximos 7 dias e o período escolhido. Níveis: até 70 % Disponível; até 90 % Atenção; até 105 % Alta pressão; acima Crítico. Sobe 1 nível com 3+ tarefas atrasadas ou 2+ entregas em 7 dias.',
+  '<code>daCalc_</code>.','PALOC (horas restantes por pessoa e projeto), PROJ_TASKS.',
+  'Taxa semanal de cada projeto = horas restantes ÷ (dias efetivos ÷ 7); dias efetivos = máx(7, dias até a entrega); sem previsão = 4 semanas; entrega vencida = 7 dias. Carga numa janela = soma das taxas ponderada pela fração da janela.',
+  'Pessoa sem projeto ativo: “Sem projetos ativos vinculados”. Tarefa bloqueada é informativa e não conta como atraso.','Carga e Risco, Decisão de Alocação.','Pessoa com 36 h planejadas por semana → 90 % (Atenção).','Horas restantes dependem de estimativas registradas; ver <a data-w="ALOC-003">ALOC-003</a>.'),
+ WR('ALOC-003','Cobertura de estimativas','ok','Carga e Risco',
+  'Se menos de 50 % das tarefas abertas da pessoa têm horas estimadas (ou não há tarefas abertas), o resultado fica “Dados insuficientes” (nível −1): o sistema não classifica a pessoa em vez de assumir carga zero.',
+  '<code>daCalc_</code>, <code>coberturaMin</code>.','PALOC.n e PALOC.s (tarefas sem estimativa).','—','—','Carga e Risco, Decisão de Alocação.','—','Uma pessoa “Dados insuficientes” não entra como disponível em requisitos.'),
+ WR('ALOC-004','Período de análise (7/15/30 dias)','ok','Carga e Risco',
+  'O filtro Período de análise vale para toda a página: carga futura (janela), tarefas “vencendo em N dias”, horas apontadas (últimos N dias contados de hoje, inclusive) e jornada de referência = 40 × N ÷ 7. O total histórico de horas apontadas é mantido como linha de referência.',
+  '<code>daApont_</code>, <code>daVencN_</code>.','PM (horas por dia), PALOC.','—','Se o apontamento diário não estiver carregado mostra “—”.','Carga e Risco, Visão executiva, Comparar.','Trocar 15 para 30 dias e ver o card de horas mudar.','—')],
+''),
+
+WP('aloc-req','3.6','Requisitos de equipe e déficit','Como o sistema decide se um projeto está coberto.',[
+ WR('ALOC-010','Elegibilidade (profissional elegível)','ok','Decisão de Alocação',
+  'Elegível = mesma área do requisito e senioridade ≥ mínimo. Compara a família (Estagiário, Júnior, Pleno, Sênior, Especialista) e, se o mínimo tem grau (I/II/III), compara também o grau. Mínimo vazio = qualquer senioridade.',
+  '<code>daElegivel_</code>, <code>daNvInfo_</code>.','Pessoas_Area (Área, Nível), Portifolio_Requisitos.','—',
+  'Pessoa com nível ausente, inválido ou sem grau quando o mínimo exige grau fica “não avaliável”: não conta como elegível e é listada à parte.','Decisão de Alocação.','Mínimo “Pleno III” e pessoa só “Pleno” → não avaliável.','—'),
+ WR('ALOC-011','Profissional com capacidade disponível','ok','Decisão de Alocação',
+  'Disponível = elegível, ainda não alocada no projeto, com dados suficientes (<a data-w="ALOC-003">ALOC-003</a>), com livre útil ≥ 16 h/semana e não usada para outro requisito. Livre útil = mín(livre, capacidade × 90 % − carga planejada).',
+  '<code>daLivreUtil_</code>, <code>daReqAnalise_</code>, <code>horasVaga</code>.','PALOC, Pessoas_Area.','Projetos são processados por criticidade (maior primeiro) e prazo; cada pessoa disponível cobre uma vaga só.','—','Decisão de Alocação.','—','Elegível ≠ disponível: uma pessoa elegível pode estar sem folga.'),
+ WR('ALOC-012','Déficit de equipe','ok','Decisão de Alocação',
+  'Já alocados = elegíveis que têm linhas no projeto. Déficit = máx(0, quantidade − alocados − disponíveis usados). O indicador “Projetos com déficit de equipe” conta projetos com déficit &gt; 0.',
+  '<code>daReqAnalise_</code>, <code>daVisao_</code>.','Portifolio_Requisitos, Portifolio (equipe), PALOC.','Requisito indeterminado (área ausente ou falha de interpretação) não gera déficit; aparece como “Indeterminado”.','—','Decisão de Alocação.','ED Pleno+ ×2 com 1 alocado e 2 livres → déficit 0.','Resultado estimado a partir de dados cadastrais; confirma-se com o gestor.'),
+ WR('ALOC-013','Risco do requisito','ok','Decisão de Alocação',
+  '<b>Alta</b>: déficit &gt; 0 e (entrega em até 15 dias, criticidade ≥ 3 ou 3+ tarefas atrasadas). <b>Média</b>: déficit &gt; 0 nos demais casos, ou cobertura apoiada em alguém acima de 105 % de utilização. <b>Baixa</b>: coberto sem alerta. <b>Indeterminado</b>: sem dados.',
+  '<code>daReqAnalise_</code>, <code>daReqRiscoChip_</code>.','—','—','—','Decisão de Alocação.','—','Limiares 15 dias e criticidade 3 são constantes do código.')],
+''),
+
+WP('aloc-dados','3.6','Dados ausentes, ranking e realocação','Como o sistema trata o que não sabe e como ordena candidatos.',[
+ WR('ALOC-020','Dado ausente × inválido × válido','ok','Carga e Risco',
+  '<b>Ausente</b>: campo vazio (ex.: Nível em branco). <b>Inválido</b>: preenchido, mas não interpretável (ex.: dois níveis no mesmo texto). <b>Válido</b>: interpretado. Ausente e inválido nunca viram valor “médio”: o motivo aparece na tela (“informação ausente” ou “falha de interpretação”).',
+  '<code>daNvInfo_</code>, motivos conf/est/aus.','Pessoas_Area, Portifolio_Requisitos.','—','—','Decisão de Alocação.','—','O conceito “projeto ativo” difere do usado em Indicadores Executivos (<a data-w="PORT-020">PORT-020</a>): na Alocação exclui projeto com data de entrega, pausado, concluído ou cancelado.'),
+ WR('ALOC-021','Risco confirmado × estimado','pa','Carga e Risco',
+  'Os motivos são marcados como confirmado (dado cadastrado/apontado), estimativa (ex.: esforço diluído em 4 semanas) ou ausência de informação. O portal não rotula globalmente cada resultado como “confirmado” ou “estimado”: a distinção está nos motivos.',
+  '<code>daCalc_</code> (<code>why</code>).','—','—','—','Carga e Risco.','—','Falta uma etiqueta única por resultado.'),
+ WR('ALOC-022','Nota de candidato (ranking)','ok','Decisão de Alocação',
+  'Nota final = aderência × 0,40 + capacidade × 0,30 + pressão × 0,30. Aderência = área × 0,5 + nível × 0,3 + complexidade × 0,2. Área: 100 igual, 35 afim, 0 diferente. Nível (diferença de família): 0 → 100; +1 → 90; +2 ou mais → 70; −1 → 50; menor → 20.',
+  '<code>DA_PARAM.rank</code>, <code>DA_PARAM.aderencia</code>, <code>daAderencia_</code>.','—','Dimensão sem dado é excluída do cálculo e listada como falta (não vira zero).','—','Decisão de Alocação (candidatos).','—','—'),
+ WR('ALOC-023','Nota de destino de realocação','pa','Decisão de Alocação',
+  'Pesos: necessidade 0,40; fit 0,35; capacidade 0,25. Teto de utilização após realocar 90 %; folga mínima 4 h/sem.',
+  '<code>DA_PARAM.realoc</code>.','—','—','—','Realocação.','—','A composição detalhada dos componentes (necessidade, fit, capacidade) não foi transcrita aqui.')],
+''),
+
+/* ---------------- 3.7 ---------------- */
+WP('tar-origem','3.7','Origem das tarefas e regras de inclusão','De onde vêm as tarefas e o que é excluído.',[
+ WR('TAR-001','Tarefas e identificador único','ok','Tarefas',
+  'A aba Tarefas tem uma linha por responsável. O servidor agrupa pela chave única da tarefa (<code>tarefaChaveUnica_</code>) para contá-la uma vez, reunindo todos os responsáveis em um array. Agrupamentos por projeto usam Cliente + Projeto.',
+  '<code>tarefaChaveUnica_</code>, <code>PROJ_TASKS</code>.','Tarefas.','—','Tarefa sem responsável (“Unassigned”) existe, sem pessoa.','Todas as páginas de tarefas, Pendências, Alocação.','Tarefa com 2 responsáveis aparece 1 vez.','—'),
+ WR('TAR-002','Exclusões gerais','ok','Tarefas',
+  'Projetos backup/BKP e “da venda ao faturamento” saem de tarefas, horas estimadas e apontadas (<a data-w="PORT-003">PORT-003</a>).',
+  '<code>isBackup_</code>, <code>projetoEstaExcluido_</code>.','Tarefas, Tarefas_Horas_*.','—','—','Todos os indicadores.','—','—'),
+ WR('TAR-003','Pendências de datas (escopo restrito)','ok','Pendências',
+  'Lista tarefas sem data de início e/ou de vencimento. Ignora status Done, Negócios, Reuniões, Backlog e Cancelado. Só considera tarefas com data de cadastro a partir de 01/06/2026 (<code>DATA_CORTE_TAREFAS_RECENTES</code>); tarefa sem data de cadastro fica de fora.',
+  '<code>buildDashboardData_</code> (PENDÊNCIAS DE DATAS).','Tarefas (dt_cadastro, dt_inicio, dt_venc, status).','—','A data de corte e a exclusão de Backlog/Reuniões valem apenas nesta lista; não foram generalizadas para os demais indicadores.','Pendências de Tarefas.','—','Alcance das demais telas sobre Backlog/Reuniões não foi confirmado.'),
+ WR('TAR-004','Tarefa bloqueada','ok','Tarefas',
+  'Status que contém “block” (ex.: Blocked). Na Alocação, bloqueada é informativa e não conta como atraso nem em vencimentos futuros.',
+  '<code>daBase_</code>, <code>buildDashboardData_</code>.','Tarefas.','—','—','Destaques, Central de Comando, Alocação.','—','—')],
+''),
+
+WP('tar-horas','3.7','Horas estimadas, apontadas e restantes','Origem, agregação e diferença entre estimado e executado.',[
+ WR('TAR-010','Horas estimadas × apontadas','ok','Horas',
+  'Estimadas vêm de Tarefas_Horas_Estimadas (já divididas entre os responsáveis); apontadas vêm de Tarefas_Horas_Apontadas. Os dicionários são indexados por e-mail e agregam por pessoa, projeto e dia.',
+  '<code>buildDashboardData_</code> (<code>PHEST</code>, <code>PHAP</code>, <code>PM</code>, <code>HM</code>).','Tarefas_Horas_Estimadas, Tarefas_Horas_Apontadas.','—','Pessoas fora das análises ficam fora dos totais por pessoa.','Desempenho, Destaques, Alocação.','—','—'),
+ WR('TAR-011','Leitura e descarte de horas apontadas','ok','Horas',
+  'Tipos de apontamento: Work Item (tarefa), Meeting (reunião), General; qualquer outro valor vira “Outros”. São descartados e contados: sem data, sem e-mail, horas inválidas (≤ 0 ou não numéricas). Horas ≥ 24 em um registro são sinalizadas. Período máximo de consulta: 400 dias.',
+  '<code>horasApontadas_</code>.','Tarefas_Horas_Apontadas.','Projetos backup são ignorados.','Quem não é Administrador só vê as próprias horas (ou as de pessoas do seu escopo no Desempenho).','Gestão de Horas Apontadas, Desempenho por Pessoa.','—','A coluna de tipo é opcional; sem ela “Tarefas × Reunião” não se aplica.'),
+ WR('TAR-012','Horas restantes por pessoa e projeto','ok','Horas',
+  'Restantes = estimadas da pessoa na tarefa − apontadas pela mesma pessoa na mesma tarefa, só de tarefas abertas (Done/Cancelado não entram). Tarefa sem estimativa é contada separadamente (cobertura) e nunca recebe um valor inventado.',
+  '<code>PALOC</code> (v17.3).','Tarefas_Horas_*.','—','—','Carga e Risco, Decisão de Alocação.','—','Se a pessoa apontou mais que o estimado, o restante não fica negativo (tratamento a confirmar no código).')],
+'')
+);
+
+/* ---------------- 3.8 a 3.13 ---------------- */
+WIKI_PAGINAS.push(
+WP('dese-ref','3.8','Referências de capacidade e jornada','Onde 8/40/200 horas são efetivamente usadas.',[
+ WR('DESE-001','Constantes de capacidade','ok','Desempenho',
+  '40 h/semana e 200 h/mês (<code>CAPACIDADE_SEMANAL_HORAS</code>, <code>CAPACIDADE_MENSAL_HORAS</code>) para classificar carga; 8 h/dia (<code>HA_JORNADA_DIA</code>) na Gestão de Horas Apontadas; 40 h/semana também em <code>DA_PARAM.horasSemana</code> (Alocação).',
+  '<code>index.html</code>.','—','Cada módulo tem sua constante; os valores coincidem mas não são a mesma variável.','—','Minha Equipe, Gestão de Horas, Alocação.','—','Mudar a jornada exige alterar mais de uma constante.'),
+ WR('DESE-002','Jornada, fins de semana e feriados na Gestão de Horas','ok','Desempenho',
+  'Jornada do dia = 8 h em dia útil e 0 em fim de semana ou feriado. Horas lançadas em dia sem jornada vão para “fora da jornada padrão”. Excedente = horas acima da jornada. Feriados vêm da aba Feriados; Estaduais e Municipais aplicam-se por Estado/Cidade da pessoa.',
+  '<code>haExc_</code>, <code>haDia_</code>, <code>listarFeriados_</code>.','Tarefas_Horas_Apontadas, Feriados, Pessoas_Area (Estado/Cidade).','—','Só Administrador na página (v16.7).','Gestão de Horas Apontadas, Desempenho por Pessoa.','—','Feriados não foram confirmados em outras telas de capacidade.')],
+''),
+WP('dese-periodo','3.8','Períodos, filtros e carga','Janelas de tempo e filtros das telas de desempenho.',[
+ WR('DESE-010','Filtros do Desempenho por Pessoa','ok','Desempenho',
+  'Abre com o filtro “Não Concluídos” (v15.0) e o filtro vale para a página inteira (projetos, horas, tarefas, status, semanal e mensal). Há filtro de status do projeto também na Carga e Risco.',
+  '<code>initPessoa</code> (v15.0, v14.9).','PM, PROJ_TASKS, PHAP, PHEST.','—','—','Desempenho por Pessoa.','—','As fórmulas semanais/mensais não foram transcritas nesta revisão.'),
+ WR('DESE-011','Tarefas próximas do vencimento','ok','Desempenho',
+  'Na Alocação, “próxima” = vencimento em até 7 dias, não bloqueada e não vencida; “atrasada” = vencimento antes de hoje, não bloqueada.',
+  '<code>daBase_</code>.','PROJ_TASKS.','—','—','Carga e Risco.','—','—')],
+''),
+
+WP('stat-report','3.9','Status Report semanal','Criação, edição, status e acesso.',[
+ WR('STAT-001','Estrutura e unicidade','ok','Status Report',
+  'Uma linha por projeto e semana na aba Status_Report. Colunas: projeto, cliente, gerente (nome/e-mail), semana início/fim, status de preenchimento, status do projeto, nível de risco, resumo executivo, decisões/pontos de atenção, riscos/bloqueios, previsão da próxima fase, atividades (JSON), datas e criticidade. Criar um segundo report para a mesma semana é recusado.',
+  '<code>STATUS_REPORT_COLS</code>, <code>salvarStatusReport_</code>.','Status_Report.','Colunas novas entram sempre no fim.','Reports antigos não têm criticidade.','Status Report, Painel, Calendário (criticidade).','Criar dois reports na mesma semana.','—'),
+ WR('STAT-002','Rascunho e finalização','ok','Status Report',
+  'status_preenchimento = Rascunho ou Finalizado. Um report Finalizado não pode mais ser editado pelo formulário. Ao finalizar, o report só vira Finalizado se não houver operações de cronograma pendentes (<code>temOpsCron</code>); caso contrário permanece Rascunho. Opções de status do projeto: Em Andamento, Bloqueado, Fase Final, Concluído. Atividades: Pendente, Em Andamento, Concluído, Bloqueado.',
+  '<code>podeEditar</code>, <code>SR_STATUS_PROJETO_OPCOES</code> (front).','Status_Report.','—','O Administrador pode excluir (<a data-w="PERM-022">PERM-022</a>).','Status Report.','—','A regra de <code>temOpsCron</code> não foi detalhada.'),
+ WR('STAT-003','Histórico e alterações','ok','Status Report',
+  'Cada alteração grava no Log campo a campo; campos de texto longo registram só “(alterado)”.',
+  '<code>salvarStatusReport_</code>.','Log_Alteracoes.','—','—','Log de Alterações.','—','—'),
+ WR('STAT-004','Painel de Status Report e exportação PDF','ok','Status Report',
+  'O Painel (Administrador) lista todos os reports, uma linha por semana, com filtros. O PDF do Status Report executivo usa a impressão do navegador (<code>window.print</code>).',
+  '<code>initStatusReportPainel</code>, <code>exportarStatusReportPdf</code>.','Status_Report.','—','—','Painel de Status Report.','—','O layout depende do navegador de quem imprime.')],
+''),
+WP('stat-gantt','3.9','Cronograma de entregas (Gantt)','Persistência e campos do cronograma.',[
+ WR('STAT-010','Cronograma de entregas','ok','Status Report',
+  'Uma linha por entrega na aba Status_Report_Cronograma, ligada ao report por id e ao projeto. Campos: título, início, previsão de entrega, status (Em andamento, Bloqueado/Atrasado, Entregue), responsável (nome, e-mail, tipo), percentual, descrição (até 200 caracteres). Salvar e excluir seguem o escopo de projetos do perfil.',
+  '<code>CRONOGRAMA_COLS</code>, <code>salvarEntregaCronograma_</code>.','Status_Report_Cronograma.','—','—','Status Report (Gantt).','—','Escala temporal, cores e linha de “hoje” são do front e não foram transcritas aqui.')],
+''),
+
+WP('fontes-catalogo','3.10','Catálogo de abas e fontes','Todas as abas e serviços que o portal lê ou grava.',[],
+`<div class="wk-tbl"><table><tr><th>Fonte</th><th>Finalidade</th><th>Identificador / relacionamentos</th><th>Lê / grava</th></tr>
+<tr><td><code>Pessoas_Area</code></td><td>Cadastro mestre de pessoas, perfil de acesso e participação nas análises</td><td>E-mail (login); Assinatura (nome oficial)</td><td>Lê e grava (Administrador)</td></tr>
+<tr><td><code>Perfil</code></td><td>Lista de perfis válidos (com fallback no código)</td><td>Nome do perfil</td><td>Lê</td></tr>
+<tr><td><code>Portifolio</code></td><td>Cadastro dos projetos e da equipe por papel</td><td>Cliente + Projeto (sem ID)</td><td>Lê e grava (Administrador)</td></tr>
+<tr><td><code>Portifolio_Requisitos</code></td><td>Requisitos de equipe</td><td>id_requisito; id_projeto ou Cliente|Projeto</td><td>Lê e grava (Administrador)</td></tr>
+<tr><td><code>Tarefas</code></td><td>Tarefas por responsável (origem do ID do projeto)</td><td>ID único da tarefa</td><td>Lê</td></tr>
+<tr><td><code>Tarefas_Horas_Estimadas</code></td><td>Horas estimadas por tarefa/pessoa</td><td>Projeto + tarefa + e-mail</td><td>Lê</td></tr>
+<tr><td><code>Tarefas_Horas_Apontadas</code></td><td>Apontamentos de horas</td><td>Projeto + tarefa + e-mail + data</td><td>Lê</td></tr>
+<tr><td><code>Status_Report</code> · <code>Status_Report_Cronograma</code></td><td>Relatórios semanais e entregas</td><td>id; id_status_report</td><td>Lê e grava</td></tr>
+<tr><td><code>Log_Alteracoes</code></td><td>Auditoria</td><td>data_hora + tabela + identificador</td><td>Lê e grava</td></tr>
+<tr><td><code>Feriados</code></td><td>Calendário de feriados</td><td>ID</td><td>Lê e grava (Administrador)</td></tr>
+<tr><td><code>Avisos</code> · <code>Avisos_Leituras</code></td><td>Avisos e confirmações</td><td>ID do aviso; ID + Assinatura</td><td>Lê e grava</td></tr>
+<tr><td><code>Permissoes_Excecoes</code></td><td>Exceções de página por usuário</td><td>e-mail + página</td><td>Lê e grava (Administrador)</td></tr>
+<tr><td>Propriedades do script</td><td>Chave do Modo Manutenção</td><td>—</td><td>Lê e grava</td></tr>
+<tr><td>BrasilAPI</td><td>Feriados nacionais por ano</td><td>Ano</td><td>Consulta</td></tr></table></div>
+<p class="wk-s">Abas criadas automaticamente no primeiro uso: Portifolio_Requisitos, Log_Alteracoes, Feriados, Avisos, Avisos_Leituras, Permissoes_Excecoes, Status_Report, Status_Report_Cronograma.</p>`),
+
+WP('fontes-regras','3.10','Regras e cuidados das fontes','Pontos de atenção ao mexer na planilha.',[
+ WR('FONTE-001','Colunas localizadas por nome de cabeçalho','ok','Fontes','Pessoas_Area, Tarefas_Horas_Apontadas e as colunas de demanda do Portifolio são localizadas por nome (qualquer posição). Mudar o texto do cabeçalho quebra a leitura daquela coluna.','<code>lerColunasAcessoPessoasArea_</code>, <code>horasApontadasIndices_</code>.','—','—','Há posição padrão de reserva em Tarefas_Horas_Apontadas.','Todo o portal.','—','—'),
+ WR('FONTE-002','Colunas por posição','pa','Fontes','As colunas de equipe do Portifolio (papéis) dependem da posição. Inserir ou mover colunas desloca os papéis.','<code>PORTIFOLIO_PAPEL_POR_COLUNA</code>.','Portifolio.','—','—','Equipe, escopos.','—','Risco operacional conhecido.'),
+ WR('FONTE-003','Cabeçalho único do Portifolio','ok','Fontes','Desde 29/09/2026 a aba Portifolio tem uma única linha de cabeçalho (dados a partir da linha 2). Funções antigas que supunham 2 linhas foram ajustadas.','v14.8.','Portifolio.','—','—','Portfólio.','—','—'),
+ WR('FONTE-004','Aba “Acessos” citada no código','pv','Fontes','O comentário do servidor ainda descreve uma aba “Acessos” (e-mail, perfil, nome, último acesso). A leitura efetiva de perfil e e-mail é feita em Pessoas_Area (<code>lerColunasAcessoPessoasArea_</code>). O texto é considerado desatualizado.','<code>AppsScript_Code.gs</code> (comentário “NÍVEIS DE ACESSO”).','Pessoas_Area.','—','—','Documentação do código.','—','A existência atual da aba “Acessos” na planilha não foi verificada.')],
+''),
+
+WP('aud-avisos','3.11','Avisos e confirmação de leitura','Cadastro, destinatários e obrigatoriedade.',[
+ WR('AUD-001','Cadastro de aviso','ok','Avisos',
+  'Campos: título (até 120), mensagem (até 1500), tipo (Informação, Atenção, Importante, Urgente), prioridade (Normal, Alta), status gravável (Rascunho, Ativo, Inativo), início, expiração opcional (não anterior ao início), obrigatório. Exclusão é lógica.',
+  '<code>validarAviso_</code>, <code>salvarAviso_</code>.','Avisos.','—','Só Administrador.','Gestão de Avisos.','—','—'),
+ WR('AUD-002','Destinatários e vigência','ok','Avisos',
+  'Destino por perfil (ou “*” para todos), por pessoa (Assinatura) ou ambos; precisa ao menos um. Vigente = status Ativo, hoje ≥ início e hoje ≤ expiração. Passada a expiração o status efetivo é “Expirado”.',
+  '<code>avisoDestinoDe_</code>, <code>avisoVigente_</code>.','Avisos, Pessoas_Area.','—','—','Modal pós-login.','—','—'),
+ WR('AUD-003','Confirmação e aviso obrigatório','ok','Avisos',
+  'A pessoa confirma com “Ciente / Lido”; a leitura é gravada uma vez por aviso e pessoa (data, hora, perfil). Enquanto houver aviso obrigatório pendente o servidor não entrega dados (exceto auth, avisosPendentes e confirmarAviso). “Visualizar como” do Administrador pula o bloqueio e nunca registra leitura.',
+  '<code>confirmarAviso_</code>, <code>avisosPendentesDoUsuario_</code>.','Avisos_Leituras.','—','—','Login, Controle de Visualizações.','—','—')],
+''),
+WP('aud-log','3.11','Log de Alterações','Auditoria de criações, alterações e exclusões.',[
+ WR('AUD-010','Estrutura do log','ok','Auditoria','Cada linha traz data/hora, usuário (e-mail e nome), tabela, identificador, tipo de operação, campo, valor anterior e valor novo. É gravado nas escritas do Portfólio, Pessoas, Feriados, Avisos, Status Report, Cronograma e Requisitos. Para as exceções de permissão o registro não foi confirmado.','<code>registrarLogAlteracao_</code>.','Log_Alteracoes.','—','Somente Administrador lê.','Log de Alterações.','—','Alterações feitas diretamente na planilha não passam pelo log.'),
+ WR('AUD-011','Filtros do Log','pa','Auditoria','A tela filtra por Tabela (Portifolio, Status_Report, Feriados, Avisos), Tipo (Criação, Alteração, Exclusão), Usuário e Período; exibição paginada de 100 em 100.','<code>#f-log-tabela</code>, <code>LOG_ALT_PAGE_SIZE</code>.','Log_Alteracoes.','—','—','Log de Alterações.','—','Registros de Pessoas_Area, Status_Report_Cronograma, Portifolio_Requisitos (tipos Inclusão/Remoção) e exceções só aparecem com “Todas/Todos”.'),
+ WR('AUD-012','Modo Manutenção','ok','Auditoria','Chave central nas propriedades do script: bloqueia todos exceto duas contas fixas, com aviso prévio, mensagem, previsão de retorno e histórico.','<code>manutSalvar_</code>, <code>MANUT_CONTAS</code>.','Propriedades do script.','—','—','Todo o portal.','—','—')],
+''),
+
+WP('exp-geral','3.12','Exportações, filtros e ordenação','O que pode ser exportado e como.',[
+ WR('EXP-001','Exportação Excel','ok','Exportações','Gerada no navegador com ExcelJS (carregado só no clique): Calendário de Projetos, Relatório de Projetos e Equipes, Gestão de Horas Apontadas e modelo de Feriados. Calendário e Horas respeitam os filtros ativos.','<code>calCarregarExcelJS_</code>, <code>haExportar_</code>.','Dados já carregados na tela.','—','Exige acesso à página.','Páginas citadas.','Aplicar filtro e exportar.','Respeito a filtros nas demais exportações não foi confirmado.'),
+ WR('EXP-002','Exportação PDF','pa','Exportações','Status Report executivo e Detalhamento do Projeto usam <code>window.print()</code> (impressão do navegador).','<code>exportarStatusReportPdf</code>, <code>pd-export-pdf</code>.','—','—','—','Status Report, Detalhamento.','—','Não é geração de arquivo no servidor.'),
+ WR('EXP-003','Ordenação e paginação','ok','Exportações','Clique no cabeçalho alterna crescente, decrescente e original (motor global). Paginação existe no Log de Alterações (100 por lote); nas demais tabelas não foi identificada.','<code>SORT_STATE</code>, <code>theadOrdenavel_</code>.','—','—','—','Tabelas do portal.','—','—')],
+''),
+
+WP('trans-ids','3.13','Nomes, identificadores e duplicidades','Padrões para identificar pessoas, projetos e tarefas.',[
+ WR('TRANS-001','Nomenclatura de pessoas','pa','Transversal','Ver <a data-w="PESS-004">PESS-004</a>: Assinatura é o nome oficial; a aplicação completa ainda tem pontos a conferir.','—','Pessoas_Area.','—','—','—','—','—'),
+ WR('TRANS-002','Identificadores oficiais','ok','Transversal','Pessoa: e-mail em minúsculas. Tarefa: chave única da tarefa. Projeto: <code>idpj</code> (de Tarefas) ou Cliente+Projeto. Requisito: id_requisito. Aviso/Feriado: ID. Status Report: id gerado de projeto + semana.','—','—','—','—','—','—','Pessoas sem e-mail usam a chave <code>sem-email:nome</code>.'),
+ WR('TRANS-003','Prevenção de duplicidade','ok','Transversal','Tarefas por chave única; requisitos por par Área+Senioridade; Status Report por projeto+semana; Feriados e Avisos com verificação de duplicado; requisitos usados não são contados duas vezes na Alocação.','—','—','—','—','—','—','—')],
+''),
+WP('trans-dados','3.13','Dados, datas, cache e erros','Comportamentos técnicos comuns.',[
+ WR('TRANS-010','Valores nulos e ausentes','ok','Transversal','Dado ausente não vira zero nem média: aparece como “—”, “sem dados” ou “Dados insuficientes”. Exceção: status de pessoa vazio = Ativo e Participa_Analises vazio = Sim.','—','—','—','—','—','—','—'),
+ WR('TRANS-011','Datas e fuso horário','pa','Transversal','O servidor usa o fuso da planilha/script para datas (<code>toDateIso_</code>, <code>avisosHoje_</code>). Parte do front usa <code>toISOString()</code> (UTC) para “hoje”.','<code>daBase_</code>.','—','—','Perto da meia-noite no Brasil, “hoje” em UTC pode adiantar um dia.','Alocação.','—','Impacto prático não medido.'),
+ WR('TRANS-012','Cache e atualização','ok','Transversal','O resultado do servidor fica em CacheService por 30 min (pedaços de 35 000 caracteres). Existe rotina agendada que o reaquece; gravações invalidam o cache.','<code>CACHE_TTL_SEGUNDOS</code>, <code>atualizarCacheDashboardAgendado</code>, <code>invalidarCacheDashboard_</code>.','—','—','—','Todas as telas.','—','O acionador agendado é configuração manual do Apps Script e pode não existir.'),
+ WR('TRANS-013','Carregamento sob demanda','ok','Transversal','O login traz <code>core</code>; cada página busca só os campos que precisa (<code>PAGINA_CAMPOS_NECESSARIOS</code>), uma vez por sessão, com tentativa de repetição.','<code>comCamposNecessarios_</code>.','—','—','—','Páginas pesadas.','—','—'),
+ WR('TRANS-014','Tratamento de erros','pa','Transversal','Falhas de carregamento mostram faixa de erro com “Tentar novamente”; gravações devolvem mensagens específicas de validação.','<code>mostrarErroLoadingGlobal</code>.','—','—','—','—','—','Cobertura por tela não verificada.')],
+''),
+WP('trans-seg','3.13','Autenticação, segurança e interface','Login, autorização e padrões de interface.',[
+ WR('TRANS-020','Autenticação','ok','Segurança','Login com Google. O servidor valida o ID token em <code>tokeninfo</code>: emitido para o Client ID do portal, e-mail verificado e domínio besolution.com.br. O token fica em <code>sessionStorage</code> e o portal não o renova: ao expirar é preciso entrar de novo (o relógio da sessão mostra o tempo restante).','<code>verifyGoogleToken_</code>.','—','—','—','Todo o portal.','—','—'),
+ WR('TRANS-021','Autorização','ok','Segurança','Ver <a data-w="PERM-010">PERM-010</a>, <a data-w="PERM-020">PERM-020</a>, <a data-w="PERM-021">PERM-021</a>.','—','—','—','—','—','—','—'),
+ WR('TRANS-022','Gravações seguras','ok','Segurança','Escritas usam trava (LockService), validam no servidor, registram no Log e invalidam o cache.','—','—','—','—','—','—','—'),
+ WR('TRANS-023','Responsividade e acessibilidade','pv','Interface','O menu tem versão móvel (hambúrguer) e recolhível. Não houve auditoria de acessibilidade (contraste, teclado, leitor de tela) nesta revisão.','—','—','—','—','—','—','Pendente de auditoria.')],
+'')
+);
+
+/* ---------------- 3.14 e 3.15 ---------------- */
+WIKI_PAGINAS.push(
+WP('gloss','3.14','Glossário','Termos usados nas telas e na documentação.',[],
+`<dl class="wk-dl">
+<dt>Ativo (projeto)</dt><dd>Nos indicadores executivos: status Em Andamento ou Sustentação. Na Alocação: sem entrega, pausa, conclusão ou cancelamento.</dd>
+<dt>Assinatura</dt><dd>Nome oficial da pessoa em Pessoas_Area (coluna C).</dd>
+<dt>Capacidade teórica</dt><dd>40 h por semana por pessoa (200 h por mês).</dd>
+<dt>Carga planejada</dt><dd>Horas restantes distribuídas pelas semanas até a entrega; não são horas já trabalhadas.</dd>
+<dt>Elegível</dt><dd>Atende à área e à senioridade mínima do requisito.</dd>
+<dt>Disponível (Alocação)</dt><dd>Elegível, fora do projeto, com pelo menos 16 h livres por semana.</dd>
+<dt>Déficit</dt><dd>Vagas do requisito que ainda não têm ninguém alocado nem disponível.</dd>
+<dt>Dado ausente / inválido / válido</dt><dd>Vazio / preenchido mas não interpretável / interpretado.</dd>
+<dt>Risco confirmado × estimado</dt><dd>Confirmado vem de dado cadastrado ou apontado; estimado usa premissa (por exemplo, esforço diluído em 4 semanas).</dd>
+<dt>Zumbi</dt><dd>Projeto ativo sem apontamento há 30 dias ou mais.</dd>
+<dt>Ritmo</dt><dd>Relação entre prazo decorrido e horas consumidas (<a data-w="CMD-003">CMD-003</a>).</dd>
+<dt>Participa_Analises</dt><dd>Sim/Não: se a pessoa entra nas estatísticas. Não altera acesso.</dd>
+<dt>Escopo</dt><dd>Conjunto de projetos e pessoas que o perfil pode ver.</dd>
+<dt>Requisito de equipe</dt><dd>Área + senioridade mínima + quantidade exigidas por um projeto.</dd></dl>`),
+
+WP('faq','3.14','Perguntas frequentes','Respostas rápidas e solução de problemas.',[],
+`<details><summary>Por que um perfil não vê nada?</summary><p>O e-mail pode não bater com Pessoas_Area; o servidor então tenta o nome. Sem correspondência o escopo é restrito (<a data-w="PERM-010">PERM-010</a>).</p></details>
+<details><summary>Por que uma pessoa sumiu das análises?</summary><p>Verifique Participa_Analises = Não e Status Inativo (<a data-w="PESS-003">PESS-003</a>).</p></details>
+<details><summary>Meu requisito de equipe mostra “a confirmar”?</summary><p>É o requisito migrado das colunas antigas, quantidade 1. Edite e salve na Edição do Portfólio (<a data-w="PORT-012">PORT-012</a>).</p></details>
+<details><summary>Por que uma pessoa aparece como “Dados insuficientes”?</summary><p>Menos de 50% das tarefas abertas têm horas estimadas (<a data-w="ALOC-003">ALOC-003</a>).</p></details>
+<details><summary>Por que uma tarefa não aparece nas Pendências?</summary><p>Status excluídos, cadastro anterior a 01/06/2026 ou projeto excluído (<a data-w="TAR-003">TAR-003</a>).</p></details>
+<details><summary>Entrou uma nova versão e as telas dão erro?</summary><p>Republique o Apps Script: <code>APP_VERSION</code> e <code>DASHBOARD_VERSION</code> devem ser iguais.</p></details>
+<details><summary>Fui desconectado sem avisar?</summary><p>O token Google expira e não é renovado; observe o relógio no canto superior direito (<a data-w="TRANS-020">TRANS-020</a>).</p></details>`),
+
+WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado diferente do esperado ou não pôde ser comprovado.',[],
+`<div class="wk-tbl"><table><tr><th>#</th><th>Achado</th><th>Estado</th></tr>
+<tr><td>D1</td><td>Comentário do código diz que Novidades é “exclusiva do Administrador”; a regra v15.7 a torna página inicial de todos e <code>paginasPermitidas()</code> sempre a inclui. Documentado o comportamento real.</td><td><span class="b ok">Documentado</span></td></tr>
+<tr><td>D2</td><td>Regra de nome (Assinatura): horas apontadas usam Nome Completo antes de Assinatura; Status Report, Avisos e Log não conferidos. <a data-w="PESS-004">PESS-004</a></td><td><span class="b pa">Parcial</span></td></tr>
+<tr><td>D3</td><td>Data de corte 01/06/2026 e exclusão de Backlog/Reuniões valem só em Pendências; alcance nas demais telas a confirmar. <a data-w="TAR-003">TAR-003</a></td><td><span class="b pa">Parcial</span></td></tr>
+<tr><td>D4</td><td>Requisitos múltiplos de equipe validados só com planilha simulada. <a data-w="PORT-011">PORT-011</a></td><td><span class="b pl">Validar em produção</span></td></tr>
+<tr><td>D5</td><td>Comentário do código cita aba “Acessos”; a leitura real é em Pessoas_Area. <a data-w="FONTE-004">FONTE-004</a></td><td><span class="b pv">Validar</span></td></tr>
+<tr><td>D6</td><td>Filtros do Log não listam Pessoas_Area, Status_Report_Cronograma e Portifolio_Requisitos, e os tipos Inclusão/Remoção. <a data-w="AUD-011">AUD-011</a></td><td><span class="b pa">Limitação</span></td></tr>
+<tr><td>D7</td><td>Páginas ainda sem fórmulas transcritas: Andamento, Visão por Área, Projetos por Líder, Gestão da Área, Desempenho (semanal/mensal), Relatório de Equipes, Calendário. <a data-w="CMD-020">CMD-020</a></td><td><span class="b pv">Pendente</span></td></tr>
+<tr><td>D8</td><td>“Consumo de Horas (mês)” compara horas do mês com a estimativa total dos ativos. <a data-w="CMD-002">CMD-002</a></td><td><span class="b pa">Interpretar com cuidado</span></td></tr>
+<tr><td>D9</td><td>Perfis “Administrador Geral”, “Membro” e “Equipe” não existem como chaves de perfil. <a data-w="PERM-003">PERM-003</a></td><td><span class="b pv">Validar</span></td></tr></table></div>`),
+
+WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
+);
+const WIKI_HISTORICO=[
+ {d:'27/10/2026',p:'Todas',desc:'Criação da Wiki com as 15 categorias, a partir da leitura do código atual (index.html e AppsScript_Code.gs).',m:'Solicitação do gestor de documentar regras, fórmulas, permissões e fontes de dados.',o:'Auditoria do código v17.6',v:'Pendente de validação pelo gestor'}
+];
+
+// ===== WIKI — motor (navegação, busca, regras) =====
+const WK={q:'',st:'',pg:'',idx:null,ok:false};
+const WK_ST={ok:['Implementada','ok'],pa:['Parcial','pa'],pl:['Planejada','pl'],pv:['Pendente de validação','pv']};
+function wkEsc_(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function wkTxt_(s){return String(s||'').replace(/<[^>]+>/g,' ').replace(/&[a-z]+;/g,' ').replace(/\s+/g,' ').trim();}
+function wkNorm_(s){return wkTxt_(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+function wkBadge_(s){const x=WK_ST[s]||WK_ST.pv; return '<span class="wk-b '+x[1]+'">'+x[0]+'</span>';}
+function wkIdx_(){
+  if(WK.idx) return WK.idx; WK.idx=[];
+  WIKI_PAGINAS.forEach(p=>{
+    WK.idx.push({p,r:null,txt:wkNorm_(p.t+' '+p.resumo+' '+p.corpo),plain:wkTxt_(p.resumo+' '+p.corpo)});
+    p.regras.forEach(r=>{ const pl=wkTxt_([r.id,r.n,r.mod,r.d,r.f,r.dados,r.c,r.ex,r.im,r.t,r.lim].join(' · ')); WK.idx.push({p,r,txt:wkNorm_(pl),plain:pl}); });
+  });
+  return WK.idx;
+}
+function wkRegra_(id){ for(const p of WIKI_PAGINAS){ const r=p.regras.find(x=>x.id===id); if(r) return {p,r}; } return null; }
+function wkContagem_(){ const c={ok:0,pa:0,pl:0,pv:0,total:0}; WIKI_PAGINAS.forEach(p=>p.regras.forEach(r=>{c[r.st]++;c.total++;})); return c; }
+function wkRegraHtml_(r,aberta){
+  const campo=(k,v)=>(v&&v!=='—')?'<dt>'+k+'</dt><dd>'+v+'</dd>':'';
+  return '<div class="wk-rule'+(aberta?' open':'')+'" id="wk-r-'+r.id+'"><div class="wk-rh" role="button" tabindex="0"><span class="wk-id">'+r.id+'</span><b>'+wkEsc_(r.n)+'</b>'+wkBadge_(r.st)+'</div><div class="wk-rb"><dl>'+
+    campo('Módulo',r.mod)+campo('Descrição',r.d)+campo('Fonte da regra',r.f)+campo('Dados utilizados',r.dados)+campo('Condição / lógica',r.c)+campo('Exceções',r.ex)+campo('Impactos',r.im)+campo('Como testar',r.t)+campo('Limitações',r.lim)+'</dl></div></div>';
+}
+function wkNav_(){
+  const el=document.getElementById('wk-nav'); if(!el) return;
+  const cur=WK.pg;
+  el.innerHTML='<button type="button" class="wk-home" data-wk-home="1">🏠 Início</button>'+WIKI_CATS.map(([n,t])=>{
+    const ps=WIKI_PAGINAS.filter(p=>p.cat===n); const aberta=ps.some(p=>p.id===cur);
+    return '<div class="wk-cat'+(aberta?' open':'')+'"><button type="button" class="wk-cb" data-wk-cat="'+n+'"><span>'+n+' '+t+'</span><span class="wk-n">'+ps.length+'</span></button><ul>'+ps.map(p=>'<li><a data-wk-page="'+p.id+'" class="'+(p.id===cur?'cur':'')+'">'+wkEsc_(p.t)+'</a></li>').join('')+'</ul></div>';
+  }).join('');
+}
+function wkHome_(){
+  WK.pg=''; WK.q=''; WK.st=''; const inp=document.getElementById('wk-q'); if(inp) inp.value=''; wkNav_();
+  const c=wkContagem_();
+  const pend=[]; WIKI_PAGINAS.forEach(p=>p.regras.forEach(r=>{ if(r.st!=='ok') pend.push({p,r}); }));
+  document.getElementById('wk-main').innerHTML='<h2>Wiki / Documentação da Central de Projetos</h2>'+
+   '<div class="wk-meta"><span>Revisão: '+WIKI_DATA+'</span><span>Versão do portal: '+APP_VERSION+'</span></div>'+
+   '<div class="wk-note">Esta documentação é uma referência de apoio. Ela descreve o que foi encontrado no código e <b>não substitui</b> o código, as permissões efetivas nem as regras de negócio formalmente aprovadas. Cada regra indica seu status e sua fonte.</div>'+
+   '<div class="wk-kp"><div><b>'+c.total+'</b>regras</div><div><b>'+c.ok+'</b>implementadas</div><div><b>'+c.pa+'</b>parciais</div><div><b>'+c.pl+'</b>planejadas</div><div><b>'+c.pv+'</b>pendentes de validação</div></div>'+
+   '<h3>Categorias</h3><div class="wk-tiles">'+WIKI_CATS.map(([n,t])=>{const ps=WIKI_PAGINAS.filter(p=>p.cat===n); const nr=ps.reduce((s,p)=>s+p.regras.length,0); return '<div class="wk-tile" data-wk-cat-open="'+n+'"><b>'+n+' '+t+'</b><span>'+ps.length+' página(s) · '+nr+' regra(s)</span></div>';}).join('')+'</div>'+
+   '<h3>Regras que pedem atenção ('+pend.length+')</h3>'+pend.map(x=>'<div class="wk-res" data-wk-rule="'+x.r.id+'"><span class="wk-id">'+x.r.id+'</span> <b>'+wkEsc_(x.r.n)+'</b> '+wkBadge_(x.r.st)+'<div class="wk-s">'+x.p.cat+' · '+wkEsc_(x.p.t)+'</div></div>').join('');
+}
+function wkPagina_(id,regraId){
+  const p=WIKI_PAGINAS.find(x=>x.id===id); if(!p) return wkHome_();
+  WK.pg=id; WK.q=''; const inp=document.getElementById('wk-q'); if(inp) inp.value=''; wkNav_();
+  const cn=(WIKI_CATS.find(c=>c[0]===p.cat)||[])[1]||'';
+  const velha=p.ver!==APP_VERSION?' <span class="wk-b pa" title="O portal está na '+APP_VERSION+'; esta página foi revisada na '+p.ver+'. Confira se alguma regra mudou.">Possivelmente desatualizada</span>':'';
+  document.getElementById('wk-main').innerHTML='<div class="wk-crumb">Wiki › '+p.cat+' '+cn+'</div><h2>'+wkEsc_(p.t)+'</h2>'+
+   '<div class="wk-meta"><span>Atualizada em '+p.upd+'</span><span>Revisada na '+p.ver+'</span><span>'+p.regras.length+' regra(s)</span>'+velha+'</div>'+
+   '<p class="wk-s">'+wkEsc_(p.resumo)+'</p>'+p.corpo+p.regras.map((r,i)=>wkRegraHtml_(r,regraId?r.id===regraId:i===0)).join('');
+  if(p.id==='rev-hist'){ const h=document.getElementById('wk-hist'); if(h) h.innerHTML='<div class="wk-tbl"><table><tr><th>Data</th><th>Página</th><th>Descrição</th><th>Motivo</th><th>Origem</th><th>Validação</th></tr>'+WIKI_HISTORICO.map(x=>'<tr><td>'+x.d+'</td><td>'+wkEsc_(x.p)+'</td><td>'+wkEsc_(x.desc)+'</td><td>'+wkEsc_(x.m)+'</td><td>'+wkEsc_(x.o)+'</td><td>'+wkEsc_(x.v)+'</td></tr>').join('')+'</table></div>'; }
+  if(regraId){ const el=document.getElementById('wk-r-'+regraId); if(el) setTimeout(()=>el.scrollIntoView({block:'center',behavior:'smooth'}),30); }
+}
+function wkCategoria_(n){ const f=WIKI_PAGINAS.find(p=>p.cat===n); if(f) wkPagina_(f.id); }
+function wkBuscar_(){
+  const q=wkNorm_(WK.q), st=WK.st;
+  if(!q&&!st) return wkHome_();
+  WK.pg=''; wkNav_();
+  const termos=q.split(' ').filter(Boolean);
+  const hits=wkIdx_().filter(x=>(!st||(x.r&&x.r.st===st))&&termos.every(t=>x.txt.indexOf(t)!==-1));
+  const sn=x=>{ const t=x.plain; const i=termos.length?wkNorm_(t).indexOf(termos[0]):0; const a=Math.max(0,i-60); let s=t.slice(a,a+170); return (a>0?'…':'')+wkEsc_(s)+'…'; };
+  const chips='<div class="wk-chips">'+[['','Todos'],['pa','Parciais'],['pl','Planejadas'],['pv','Pendentes']].map(([k,l])=>'<button type="button" class="wk-chip'+(WK.st===k?' on':'')+'" data-wk-st="'+k+'">'+l+'</button>').join('')+'</div>';
+  document.getElementById('wk-main').innerHTML='<div class="wk-crumb">Wiki › Pesquisa</div><h2>'+hits.length+' resultado(s)'+(WK.q?' para “'+wkEsc_(WK.q)+'”':'')+'</h2>'+chips+
+   (hits.length?hits.slice(0,60).map(x=>x.r?'<div class="wk-res" data-wk-rule="'+x.r.id+'"><span class="wk-id">'+x.r.id+'</span> <b>'+wkEsc_(x.r.n)+'</b> '+wkBadge_(x.r.st)+'<div class="wk-s">'+x.p.cat+' · '+wkEsc_(x.p.t)+'</div><div class="wk-s">'+sn(x)+'</div></div>':'<div class="wk-res" data-wk-page-open="'+x.p.id+'"><b>📄 '+wkEsc_(x.p.t)+'</b><div class="wk-s">'+x.p.cat+' · página</div><div class="wk-s">'+sn(x)+'</div></div>').join(''):'<div class="wk-note">Nada encontrado. Tente outro termo (ex.: “capacidade”, “Assinatura”, “Backlog”) ou navegue pelas categorias.</div>');
+}
+function initWiki(){
+  const root=document.getElementById('page-wiki'); if(!root) return;
+  if(!WK.ok){
+    WK.ok=true;
+    let t; root.querySelector('#wk-q').addEventListener('input',e=>{ clearTimeout(t); const v=e.target.value; t=setTimeout(()=>{ WK.q=v.trim(); WK.st=''; wkBuscar_(); },180); });
+    root.addEventListener('click',e=>{
+      const g=s=>e.target.closest(s);
+      let x;
+      if(g('[data-wk-home]')) return wkHome_();
+      if((x=g('[data-wk-cat-open]'))) return wkCategoria_(x.dataset.wkCatOpen);
+      if((x=g('[data-wk-cat]'))){ x.parentElement.classList.toggle('open'); return; }
+      if((x=g('[data-wk-page]'))) return wkPagina_(x.dataset.wkPage);
+      if((x=g('[data-wk-page-open]'))) return wkPagina_(x.dataset.wkPageOpen);
+      if((x=g('[data-wk-rule]'))){ const f=wkRegra_(x.dataset.wkRule); if(f) wkPagina_(f.p.id,f.r.id); return; }
+      if((x=g('a[data-w]'))){ e.preventDefault(); const f=wkRegra_(x.dataset.w); if(f) wkPagina_(f.p.id,f.r.id); return; }
+      if((x=g('[data-wk-st]'))){ WK.st=x.dataset.wkSt; wkBuscar_(); return; }
+      if((x=g('.wk-rh'))){ x.parentElement.classList.toggle('open'); return; }
+    });
+    root.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('wk-rh')){ e.preventDefault(); e.target.parentElement.classList.toggle('open'); } });
+  }
+  wkHome_();
+}
+
 const PAGE_INIT_MAP={
   cliente:comCamposNecessarios_('cliente',initCliente), inteligencia:comCamposNecessarios_('inteligencia',initInteligenciaAlocacao), portfolioedit:initPortfolioEdit, pessoa:comCamposNecessarios_('pessoa',initPessoa), area:comCamposNecessarios_('area',initArea), pend:comCamposNecessarios_('pend',initPend),
   ociosos:comCamposNecessarios_('ociosos',initOciosos), topexec:initTopExec, futuristic:comCamposNecessarios_('futuristic',renderFuturistic),
@@ -11437,7 +12198,8 @@ const PAGE_INIT_MAP={
   avisos:initAvisos,
   horasapontadas:initHorasApontadas,
   manutencao:initManutencao,
-  relatorioprojetos:initRelatorioProjetos
+  relatorioprojetos:initRelatorioProjetos,
+  wiki:initWiki
 };
 
 // ============================================================
