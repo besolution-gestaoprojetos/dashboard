@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycby3gLoAP1ec45R0bfUaZEZXxE0SZcnUXYI5m23POJfKPvSa2VosPB61XoBZ5sXVAIY-aA/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbz2V0wofIUh8lugnbbic6Oh8LMhi3WsI0HCwhl-rJUGXoc79j__ZdYb9IOsIVcxI18OHg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -250,11 +250,11 @@ a{color:inherit;}
   .nav-collapse-btn{border:none; background:transparent; cursor:pointer; font:600 12.5px var(--font-body); color:var(--text-faint);}
   .nav-collapse-btn:hover{background:var(--surface-alt); color:var(--text);}
   .nav-util .nav-tab.active{background:var(--primary); color:#fff; box-shadow:none;}
-  .viewas-banner, .voltar-strip, #main-shell, #app-footer{margin-left:var(--sb-w); transition:margin-left .2s ease;}
+  #mt-banner, .viewas-banner, .voltar-strip, #main-shell, #app-footer{margin-left:var(--sb-w); transition:margin-left .2s ease;}
   #main-shell{width:calc(100% - var(--sb-w)); margin-right:0;}
   body.nav-collapsed #main-shell{width:calc(100% - var(--sb-w-col));}
   body.nav-collapsed .nav-menu{width:var(--sb-w-col);}
-  body.nav-collapsed .viewas-banner, body.nav-collapsed .voltar-strip, body.nav-collapsed #main-shell, body.nav-collapsed #app-footer{margin-left:var(--sb-w-col);}
+  body.nav-collapsed #mt-banner, body.nav-collapsed .viewas-banner, body.nav-collapsed .voltar-strip, body.nav-collapsed #main-shell, body.nav-collapsed #app-footer{margin-left:var(--sb-w-col);}
   body.nav-collapsed .nav-cat-lbl, body.nav-collapsed .nav-cat-caret{display:none;}
   body.nav-collapsed .nav-cat-panel{display:none;}
   body.nav-collapsed .nav-cat-trigger, body.nav-collapsed .nav-util .nav-tab, body.nav-collapsed .nav-collapse-btn{justify-content:center; padding:10px 0;}
@@ -1460,6 +1460,19 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .fe-modal-b table{width:100%;} .fe-imp-sum{font-size:13px;font-weight:700;margin:10px 0;color:var(--text-muted);}
 .fe-st{border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:800;white-space:nowrap;} .fe-st.ok{background:rgba(22,163,74,.14);color:#15803d;} .fe-st.dup{background:#f1f5f9;color:#64748b;} .fe-st.er{background:rgba(220,38,38,.12);color:#dc2626;}
 .fe-modal input[type=file],.fe-modal select{padding:9px 12px;border:1px solid var(--border);border-radius:10px;font:inherit;background:var(--surface);color:var(--text);}
+/* ============ Gerenciador de Notificações (v17.7) ============ */
+.nt-banner{border:1px solid var(--border);border-left:4px solid #0284c7;background:var(--surface-alt);border-radius:12px;padding:10px 14px;margin:12px 0;font-size:13px;}
+.nt-banner.warn{border-left-color:#d97706;background:rgba(245,158,11,.1);} .nt-banner.er{border-left-color:#dc2626;background:rgba(220,38,38,.08);} .nt-banner.ok{border-left-color:#16a34a;background:rgba(22,163,74,.08);}
+.nt-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0;} .nt-k{background:var(--surface-alt);border:1px solid var(--border);border-radius:14px;padding:14px;} .nt-k b{font-size:22px;display:block;line-height:1.2;} .nt-k small{color:var(--text-muted);font-weight:700;}
+.nt-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0;}
+.nt-st{border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800;white-space:nowrap;display:inline-block;}
+.nt-st.Enviada{background:rgba(22,163,74,.14);color:#15803d;} .nt-st.Pendente,.nt-st.Em{background:rgba(245,158,11,.16);color:#b45309;} .nt-st.Falha{background:rgba(220,38,38,.12);color:#dc2626;} .nt-st.Cancelada,.nt-st.Inativa{background:#f1f5f9;color:#64748b;} .nt-st.Simulada,.nt-st.Sim{background:#ede9fe;color:#5b21b6;} .nt-st.Real{background:rgba(22,163,74,.14);color:#15803d;} .nt-st.Teste{background:#e0f2fe;color:#075985;}
+.nt-cond{display:grid;grid-template-columns:1.1fr 1fr 2fr auto;gap:8px;align-items:start;margin:8px 0;} .nt-cond select{width:100%;}
+@media (max-width:820px){.nt-kpis{grid-template-columns:1fr 1fr;} .nt-cond{grid-template-columns:1fr;}}
+.nt-prev{width:100%;height:520px;border:1px solid var(--border);border-radius:10px;background:#fff;}
+.nt-det{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;font-size:13px;} .nt-det dt{font-weight:800;color:var(--text-muted);} .nt-det dd{margin:0;word-break:break-word;}
+.nt-sub{color:var(--text-muted);font-size:12.5px;}
+.nt-fe{display:none;}
 /* ============ Avisos (v16.2) ============ */
 .av-tabs{display:flex;gap:6px;margin:14px 0 4px;flex-wrap:wrap;}
 .av-tabs button{border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:9px 16px;font:700 13px var(--font-body);color:var(--text-muted);cursor:pointer;}
@@ -1555,48 +1568,101 @@ body.nav-collapsed .nav-nov-badge{display:none;}
   .login-card{padding:40px 30px;}
 }
 /* v16.5 — Gestão de Horas Apontadas */
+/* v17.7 — Análise de Horas */
+#page-analisehoras .ah-dd{position:relative;}#page-analisehoras .ah-dd>summary{list-style:none;cursor:pointer;border:1px solid var(--border);background:var(--surface);border-radius:9px;padding:8px 12px;font-size:13px;white-space:nowrap;}
+#page-analisehoras .ah-dd>summary::-webkit-details-marker{display:none;}
+#page-analisehoras .ah-dd-b{position:absolute;z-index:30;top:100%;left:0;margin-top:4px;min-width:240px;max-height:300px;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);}
+#page-analisehoras .ah-ck{display:flex;gap:7px;align-items:center;font-size:12.5px;padding:3px 2px;text-transform:none;letter-spacing:0;margin:0;font-weight:500;}
+#page-analisehoras .ah-ck input{width:auto;min-width:0;}
+#page-analisehoras .ah-sort{cursor:pointer;user-select:none;}#page-analisehoras .ah-sort:hover{color:var(--primary);}
+#page-analisehoras .ah-pl{color:var(--primary);font-weight:600;text-decoration:none;}#page-analisehoras .ah-pl:hover{text-decoration:underline;}
+#page-analisehoras .ah-sw{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:0 0 10px;}
+#page-analisehoras .ah-sit{display:inline-block;border-radius:99px;padding:2px 9px;font-size:11.5px;font-weight:700;white-space:nowrap;}
+#page-analisehoras .ah-sit.er{background:#fef3c7;color:#92400e;}#page-analisehoras .ah-sit.ok{background:#dcfce7;color:#166534;}#page-analisehoras .ah-sit.wa{background:#ede9fe;color:#5b21b6;}#page-analisehoras .ah-sit.in{background:#f1f5f9;color:#475569;}
+#page-analisehoras .ah-mini{border:1px solid var(--border);border-radius:10px;padding:10px 14px;min-width:200px;flex:1;background:var(--surface);}#page-analisehoras .ah-mini b{font-size:20px;display:block;}#page-analisehoras .ah-mini small{color:var(--text-muted);font-size:11.5px;}
+#page-analisehoras .ah-chart{position:relative;margin:12px 0;}
+#page-analisehoras .ah-datas,#page-analisehoras .ah-faixa-c{display:flex;gap:6px;align-items:flex-end;}
+#page-analisehoras .table-wrap{overflow:auto;}
+@media (max-width:760px){#page-analisehoras .ah-dd-b{position:static;box-shadow:none;}#page-analisehoras .ah-mini{min-width:100%;}}
 #page-horasapontadas .ha-note{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:8px 13px;font-size:12.5px;color:var(--text-muted);margin:8px 0;}
+#page-analisehoras .ha-note{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:8px 13px;font-size:12.5px;color:var(--text-muted);margin:8px 0;}
 #page-horasapontadas .ha-note.warn{background:#fffbeb;border-color:#fde68a;color:#92400e;}
+#page-analisehoras .ha-note.warn{background:#fffbeb;border-color:#fde68a;color:#92400e;}
 #page-horasapontadas .ha-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:9px;padding:7px 13px;font:600 12.5px var(--font-body);cursor:pointer;}
+#page-analisehoras .ha-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:9px;padding:7px 13px;font:600 12.5px var(--font-body);cursor:pointer;}
 #page-horasapontadas .ha-btn:hover{border-color:var(--primary);}
+#page-analisehoras .ha-btn:hover{border-color:var(--primary);}
 #page-horasapontadas .ha-btn.sm{padding:3px 9px;font-size:12px;}
+#page-analisehoras .ha-btn.sm{padding:3px 9px;font-size:12px;}
 #page-horasapontadas .ha-btn.pri,.ha-modal .ha-btn.pri{background:var(--primary);color:#fff;border-color:var(--primary);}
+#page-analisehoras .ha-btn.pri,.ha-modal .ha-btn.pri{background:var(--primary);color:#fff;border-color:var(--primary);}
 #page-horasapontadas .ha-btn:disabled{opacity:.6;cursor:wait;}
+#page-analisehoras .ha-btn:disabled{opacity:.6;cursor:wait;}
 #page-horasapontadas button:focus-visible,#page-horasapontadas input:focus-visible,#page-horasapontadas select:focus-visible,#page-horasapontadas [tabindex]:focus-visible,.ha-modal button:focus-visible{outline:3px solid #818cf8;outline-offset:2px;}
+#page-analisehoras button:focus-visible,#page-analisehoras input:focus-visible,#page-analisehoras select:focus-visible,#page-analisehoras [tabindex]:focus-visible,.ha-modal button:focus-visible{outline:3px solid #818cf8;outline-offset:2px;}
 #page-horasapontadas .ha-kclick{cursor:pointer;}
+#page-analisehoras .ha-kclick{cursor:pointer;}
 #page-horasapontadas .ha-kclick:hover{box-shadow:0 0 0 2px var(--primary-100);}
+#page-analisehoras .ha-kclick:hover{box-shadow:0 0 0 2px var(--primary-100);}
 #page-horasapontadas .ha-chk{flex-direction:row;align-items:center;gap:8px;min-width:0;padding-bottom:9px;}
+#page-analisehoras .ha-chk{flex-direction:row;align-items:center;gap:8px;min-width:0;padding-bottom:9px;}
 #page-horasapontadas .ha-chk label{margin:0;text-transform:none;letter-spacing:0;font-size:12.5px;}
+#page-analisehoras .ha-chk label{margin:0;text-transform:none;letter-spacing:0;font-size:12.5px;}
 #page-horasapontadas .ha-chk input{width:auto;min-width:0;}
+#page-analisehoras .ha-chk input{width:auto;min-width:0;}
 #page-horasapontadas .ha-tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+#page-analisehoras .ha-tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:12px;flex-wrap:wrap;align-items:center;}
 #page-horasapontadas .ha-tab{border:0;background:none;padding:9px 14px;font:700 13px var(--font-body);color:var(--text-muted);border-bottom:3px solid transparent;cursor:pointer;}
+#page-analisehoras .ha-tab{border:0;background:none;padding:9px 14px;font:700 13px var(--font-body);color:var(--text-muted);border-bottom:3px solid transparent;cursor:pointer;}
 #page-horasapontadas .ha-tab[aria-selected=true]{color:var(--primary);border-color:var(--primary);}
+#page-analisehoras .ha-tab[aria-selected=true]{color:var(--primary);border-color:var(--primary);}
 #page-horasapontadas .ha-exports{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-bottom:4px;}
+#page-analisehoras .ha-exports{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-bottom:4px;}
 #page-horasapontadas .ha-exports small{color:var(--text-muted);font-weight:700;font-size:11.5px;}
+#page-analisehoras .ha-exports small{color:var(--text-muted);font-weight:700;font-size:11.5px;}
 #page-horasapontadas .ha-n,.ha-modal .ha-n{text-align:right;font-variant-numeric:tabular-nums;}
+#page-analisehoras .ha-n,.ha-modal .ha-n{text-align:right;font-variant-numeric:tabular-nums;}
 #page-horasapontadas .ha-mut,.ha-modal .ha-mut{color:var(--text-faint);}
+#page-analisehoras .ha-mut,.ha-modal .ha-mut{color:var(--text-faint);}
 #page-horasapontadas .ha-sm{font-size:12.5px;}
+#page-analisehoras .ha-sm{font-size:12.5px;}
 #page-horasapontadas .ha-hint{font-size:11.5px;color:#5b21b6;margin-top:2px;}
+#page-analisehoras .ha-hint{font-size:11.5px;color:#5b21b6;margin-top:2px;}
 #page-horasapontadas .ha-vazio,.ha-modal .ha-vazio{text-align:center;padding:26px;color:var(--text-faint);}
+#page-analisehoras .ha-vazio,.ha-modal .ha-vazio{text-align:center;padding:26px;color:var(--text-faint);}
 #page-horasapontadas .ha-foot{font-size:12px;color:var(--text-muted);margin-top:8px;}
+#page-analisehoras .ha-foot{font-size:12px;color:var(--text-muted);margin-top:8px;}
 #page-horasapontadas .ha-exp{width:24px;height:24px;padding:0;line-height:20px;text-align:center;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;font-weight:700;}
+#page-analisehoras .ha-exp{width:24px;height:24px;padding:0;line-height:20px;text-align:center;border:1px solid var(--border);background:var(--surface);border-radius:7px;cursor:pointer;font-weight:700;}
 #page-horasapontadas tr.ha-r-exc td{background:#fffbeb;}
+#page-analisehoras tr.ha-r-exc td{background:#fffbeb;}
 #page-horasapontadas tr.ha-r-nw td{background:#f5f3ff;}
+#page-analisehoras tr.ha-r-nw td{background:#f5f3ff;}
 #page-horasapontadas tr.ha-r-exc.ha-r-nw td{background:#fdf4ff;}
+#page-analisehoras tr.ha-r-exc.ha-r-nw td{background:#fdf4ff;}
 #page-horasapontadas tr.ha-sub td,.ha-modal tr.ha-sub td{background:var(--surface-alt);font-size:12.5px;color:var(--text-muted);}
+#page-analisehoras tr.ha-sub td,.ha-modal tr.ha-sub td{background:var(--surface-alt);font-size:12.5px;color:var(--text-muted);}
 #page-horasapontadas tr.ha-sub td:first-child{padding-left:12px;}
+#page-analisehoras tr.ha-sub td:first-child{padding-left:12px;}
 .ha-tg{display:inline-flex;gap:4px;align-items:center;border-radius:99px;padding:2px 9px;font-size:11.5px;font-weight:700;white-space:nowrap;}
 .ha-tg.exc{background:#fef3c7;color:#92400e;}.ha-tg.wk{background:#ede9fe;color:#5b21b6;}.ha-tg.hol{background:#ccfbf1;color:#115e59;}.ha-tg.info{background:#e0e7ff;color:#3730a3;}.ha-tg.g{background:#f1f5f9;color:#475569;}
 #page-horasapontadas .ha-sum,.ha-modal .ha-sum{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;}
+#page-analisehoras .ha-sum,.ha-modal .ha-sum{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;}
 .ha-sum>div{background:var(--surface-alt);border-radius:12px;padding:8px 14px;}
 .ha-sum small{display:block;font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:700;}
 .ha-sum b{font-size:18px;}
 #page-horasapontadas .ha-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:14px;}
+#page-analisehoras .ha-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:14px;}
 #page-horasapontadas .ha-charts .card{margin:0;}
+#page-analisehoras .ha-charts .card{margin:0;}
 #page-horasapontadas .ha-wide{grid-column:1/-1;}
+#page-analisehoras .ha-wide{grid-column:1/-1;}
 #page-horasapontadas .ha-quem{margin:0 0 10px;font-weight:700;}
+#page-analisehoras .ha-quem{margin:0 0 10px;font-weight:700;}
 #page-horasapontadas .ha-leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--text-muted);margin-top:8px;}
+#page-analisehoras .ha-leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--text-muted);margin-top:8px;}
 #page-horasapontadas .ha-leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px;}
+#page-analisehoras .ha-leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px;}
 .ha-bg{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;z-index:100000;padding:16px;}
 .ha-modal{background:var(--surface);color:var(--text);border-radius:18px;max-width:1000px;width:100%;max-height:90vh;overflow:auto;padding:20px 22px;box-shadow:0 20px 50px rgba(15,23,42,.3);}
 .ha-modal h2{margin:0 0 4px;font-size:19px;}
@@ -1680,6 +1746,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
 #page-pessoa tr.pes-sub td{background:var(--surface-alt);font-size:12.5px;}
 #page-pessoa .pes-loc{font-weight:700;font-size:13px;min-height:36px;display:flex;align-items:center;}
 @media (max-width:760px){#page-horasapontadas .ha-charts{grid-template-columns:1fr;}#page-horasapontadas .ha-exports{margin-left:0;}}
+@media (max-width:760px){#page-analisehoras .ha-charts{grid-template-columns:1fr;}#page-analisehoras .ha-exports{margin-left:0;}}
 </style>
 </head>
 <body>
@@ -1824,6 +1891,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
         <button class="nav-cat-trigger" type="button" title="Gestão"><span class="nav-cat-ic" aria-hidden="true">◔</span><span class="nav-cat-lbl">Gestão</span><svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-cat-panel">
           <button class="nav-tab" data-page="horasapontadas">Gestão de Horas Apontadas</button>
+          <button class="nav-tab" data-page="analisehoras">Análise de Horas</button>
         </div>
       </div>
       <div class="nav-cat" data-cat="admin">
@@ -1833,6 +1901,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
           <button class="nav-tab" data-page="permissoes">Permissões</button>
           <button class="nav-tab" data-page="feriados">Feriados</button>
           <button class="nav-tab" data-page="avisos">Gestão de Avisos</button>
+          <button class="nav-tab" data-page="notificacoes">Gerenciador de Notificações</button>
           <button class="nav-tab" data-page="manutencao">Modo Manutenção</button>
           <button class="nav-tab" data-page="logalteracoes">Log de Alterações</button>
           <button class="nav-tab" data-page="wiki">Wiki / Documentação</button>
@@ -2028,6 +2097,20 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
       </div>
     </section>
 
+    <!-- v17.7 — GERENCIADOR DE NOTIFICAÇÕES (Administração, só Administrador) -->
+    <section class="page" id="page-notificacoes">
+      <div class="fe-panel">
+        <div class="fe-head"><h2>✉️ Gerenciador de Notificações</h2><p>Regras de e-mail disparadas pelo Status Report. Destinatários vêm somente de Pessoas e Perfis. “Enviada” significa que o serviço de e-mail do Google aceitou o envio — o portal não confirma entrega nem leitura.</p></div>
+        <div id="nt-feedback" style="display:none"></div>
+        <div class="av-tabs" id="nt-tabs"><button type="button" class="on" data-nt-tab="geral">Visão geral</button><button type="button" data-nt-tab="regras">Regras</button><button type="button" data-nt-tab="dest">Destinatários</button><button type="button" data-nt-tab="hist">Histórico</button><button type="button" data-nt-tab="sim">Simulação e teste</button></div>
+        <div id="nt-t-geral"></div>
+        <div id="nt-t-regras" style="display:none"></div>
+        <div id="nt-t-dest" style="display:none"></div>
+        <div id="nt-t-hist" style="display:none"></div>
+        <div id="nt-t-sim" style="display:none"></div>
+      </div>
+    </section>
+
     <!-- PAGE INTELIGÊNCIA DE ALOCAÇÃO -->
     <section class="page" id="page-inteligencia">
       <div class="page-header"><div><h1>Carga e Risco de Alocação</h1><p>Indicador de carga/risco por pessoa, combinando quantidade de projetos, complexidade, prioridade e proximidade de prazos — a partir dos mesmos dados de Alocações. É um apoio à decisão, não uma afirmação automática.</p></div></div>
@@ -2195,6 +2278,40 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
       </div>
     </section>
 
+    <!-- PAGE ANÁLISE DE HORAS (v17.7) — só Administrador -->
+    <section class="page" id="page-analisehoras">
+      <div class="page-header"><div><h1>Análise de Horas</h1><p>Pessoas com menos horas apontadas, média mensal por pessoa e ranking de horas fora da jornada de referência. Fonte: apontamentos oficiais de horas (somente leitura). Nomes vêm de Pessoas_Area › Assinatura.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label for="ah-per">Período</label><select id="ah-per"><option value="mes">Mês atual</option><option value="ant">Mês anterior</option><option value="3m">Últimos 3 meses</option><option value="6m">Últimos 6 meses</option><option value="custom">Personalizado</option></select></div>
+        <div class="filter-field ah-datas" id="ah-datas" style="display:none"><div><label for="ah-ini">Início</label><input type="date" id="ah-ini"></div><div><label for="ah-fim">Fim</label><input type="date" id="ah-fim"></div></div>
+        <div class="filter-field"><label for="ah-proj">Projetos</label><select id="ah-proj"><option value="todos">Todos</option><option value="andamento">Somente em andamento</option><option value="sel">Selecionar projetos…</option></select></div>
+        <div class="filter-field" id="ah-proj-dd" style="display:none"><label>&nbsp;</label><details class="ah-dd"><summary id="ah-proj-s">Projetos específicos: 0</summary><div class="ah-dd-b" id="ah-proj-l"></div></details></div>
+        <div class="filter-field"><label for="ah-faixa">Projetos com apontamento no período</label><select id="ah-faixa"><option value="">Qualquer quantidade</option><option value="1">1 projeto</option><option value="2">2 projetos</option><option value="3-5">3 a 5 projetos</option><option value="6+">Mais de 5</option><option value="custom">Faixa personalizada…</option></select></div>
+        <div class="filter-field ah-faixa-c" id="ah-faixa-c" style="display:none"><div><label for="ah-pmin">De</label><input type="number" min="0" id="ah-pmin" style="width:70px"></div><div><label for="ah-pmax">Até</label><input type="number" min="0" id="ah-pmax" style="width:70px"></div></div>
+        <div class="filter-field"><label>Head</label><details class="ah-dd"><summary id="ah-head-s">Head: Todos</summary><div class="ah-dd-b" id="ah-head-l"></div></details></div>
+        <div class="filter-field"><label for="ah-area">Área</label><select id="ah-area"><option value="">Todas</option></select></div>
+        <div class="filter-field"><label for="ah-cargo">Cargo</label><select id="ah-cargo"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label for="ah-nv">Senioridade</label><select id="ah-nv"><option value="">Todas</option></select></div>
+        <div class="filter-field"><label for="ah-cli">Cliente</label><select id="ah-cli"><option value="">Todos</option></select></div>
+        <div class="filter-field"><label for="ah-tipo">Tipo de apontamento</label><select id="ah-tipo"><option value="">Todos</option><option value="0">Work Item</option><option value="1">Meeting</option><option value="2">General</option><option value="3">Outros</option></select></div>
+        <div class="filter-field"><label for="ah-pes">Pessoa</label><input type="text" id="ah-pes" placeholder="Digite parte da assinatura" autocomplete="off"></div>
+        <button class="filter-clear" id="ah-limpar" type="button">Limpar filtros</button>
+      </div>
+      <div id="ah-status"></div>
+      <div id="ah-escopo"></div>
+      <div id="ah-avisos"></div>
+      <div class="grid grid-kpi" id="ah-kpis"></div>
+      <div class="card">
+        <div class="ha-tabs" role="tablist">
+          <button type="button" class="ha-tab" role="tab" data-ah-t="menos" aria-selected="true">Pessoas com menos horas apontadas</button>
+          <button type="button" class="ha-tab" role="tab" data-ah-t="media" aria-selected="false">Média mensal por pessoa</button>
+          <button type="button" class="ha-tab" role="tab" data-ah-t="rank" aria-selected="false">Ranking de horas excedentes</button>
+          <span class="ha-exports"><button type="button" class="ha-btn sm pri" id="ah-export">Exportar Excel (respeita os filtros)</button></span>
+        </div>
+        <div id="ah-pane"></div>
+      </div>
+    </section>
+
     <!-- PAGE WIKI / DOCUMENTAÇÃO (v17.6) — só Administrador; conteúdo estático em WIKI_PAGINAS -->
     <section class="page" id="page-wiki">
       <div class="page-header"><div><h1>Wiki / Documentação</h1><p>Regras de negócio, cálculos, permissões e fontes de dados da Central de Projetos — exclusivo do perfil Administrador.</p></div></div>
@@ -2208,7 +2325,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
     <section class="page" id="page-logalteracoes">
       <div class="page-header"><div><h1>Log de Alterações</h1><p>Auditoria de criações, alterações e exclusões no Portfólio e nos Status Reports — exclusivo do perfil Administrador.</p></div></div>
       <div class="filter-bar">
-        <div class="filter-field"><label>Tabela</label><select id="f-log-tabela"><option value="">Todas</option><option value="Portifolio">Portifolio</option><option value="Status_Report">Status_Report</option><option value="Feriados">Feriados</option><option value="Avisos">Avisos</option></select></div>
+        <div class="filter-field"><label>Tabela</label><select id="f-log-tabela"><option value="">Todas</option><option value="Portifolio">Portifolio</option><option value="Status_Report">Status_Report</option><option value="Feriados">Feriados</option><option value="Avisos">Avisos</option><option value="Notif_Regras">Notif_Regras</option><option value="Notif_Destinatarios">Notif_Destinatarios</option><option value="Notif_Fila">Notif_Fila</option></select></div>
         <div class="filter-field"><label>Tipo de Operação</label><select id="f-log-tipo"><option value="">Todos</option><option value="Criação">Criação</option><option value="Alteração">Alteração</option><option value="Exclusão">Exclusão</option></select></div>
         <div class="filter-field"><label>Usuário</label><select id="f-log-usuario"><option value="">Todos</option></select></div>
         <div class="filter-field"><label>De</label><input type="date" id="f-log-de"></div>
@@ -2601,7 +2718,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v17.6';
+const APP_VERSION='v17.7';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2831,8 +2948,10 @@ async function attemptLoadWithToken(token, viewAsEmail){
 //
 // Atualize esta data junto com qualquer alteração no array abaixo — ela
 // aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='27/10/2026';
+const NOVIDADES_ATUALIZADO_EM='29/10/2026';
 const NOVIDADES=[
+  {icone:'📈', bg:'#ecfdf5', cor:'#059669', titulo:'Nova página Análise de Horas', descricao:'Nova página no menu Gestão (somente Administrador) com três indicadores sobre os apontamentos de horas: pessoas com menos horas apontadas contra a referência (8h × dias úteis, respeitando feriados da localidade e datas de entrada/distrato), média mensal de horas por pessoa com gráfico e ranking de horas fora da jornada (excedente em dias úteis, fins de semana e feriados). Filtros por período, projetos (todos/em andamento/selecionados), quantidade de projetos com apontamento, Head, área, cargo, senioridade, cliente, tipo e pessoa; detalhamento que fecha com os totais e exportação para Excel. Férias e afastamentos não constam nos dados e o texto das telas não trata ninguém como ocioso. Todas as páginas agora mostram o nome pela Assinatura (Pessoas_Area); sem Assinatura aparece “Nome não cadastrado”.', paginas:['analisehoras','horasapontadas'], data:'2026-10-29', tag:'Nova página', tagCor:'nova'},
+  {icone:'✉️', bg:'#e0f2fe', cor:'#0284c7', titulo:'Gerenciador de Notificações por e-mail', descricao:'Nova página em Administração (somente Administrador) para configurar avisos por e-mail disparados pelo Status Report: regras com condições sobre criticidade, nível de risco e status; destinatários vindos de Pessoas e Perfis (pessoa, Área ou Perfil); histórico com reprocessamento seguro, simulação e e-mail de teste. As regras nascem inativas e em simulação; o envio real exige confirmação. O portal só informa que o envio foi aceito pelo serviço de e-mail — não confirma entrega nem leitura.', paginas:['notificacoes'], data:'2026-10-29', tag:'Nova página', tagCor:'nova'},
   {icone:'⏱️', bg:'#e0f2fe', cor:'#0284c7', titulo:'Horas em horas e minutos', descricao:'Em todo o portal as horas deixam de aparecer como decimal com vírgula (ex.: 1.592,8h) e passam a mostrar horas e minutos (1.592h 48min), para não confundir o que vem depois da vírgula com minutos. Horas exatas aparecem como 8h e valores menores que uma hora como 18min. Gráficos mantêm o eixo em horas e mostram horas e minutos ao passar o mouse; as exportações Excel de horas continuam numéricas, no formato [h]:mm.', paginas:['futuristic','inteligencia','pessoa','equipe','horasapontadas'], data:'2026-10-27', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'📖', bg:'#eff6ff', cor:'#2563eb', titulo:'Wiki / Documentação', descricao:'Nova página em Administração com a documentação das regras de negócio, fórmulas dos indicadores, permissões por perfil, fontes de dados e divergências encontradas, com busca, categorias, links entre regras e status de cada regra (implementada, parcial, planejada ou pendente de validação). Exclusiva do Administrador; não lê nenhuma planilha.', paginas:['wiki'], data:'2026-10-27', tag:'Nova página', tagCor:'nova'},
   {icone:'👥', bg:'#eff6ff', cor:'#2563eb', titulo:'Requisitos de equipe por projeto (vários perfis)', descricao:'Na Edição do Portfólio, cada projeto agora aceita vários requisitos de equipe: Área exigida + Senioridade mínima (inclui Júnior II, Pleno II, Pleno III…) + Quantidade de profissionais. Em Carga e Risco de Alocação, cada requisito mostra quantos profissionais são necessários, já alocados, elegíveis (perfil) e disponíveis (perfil + capacidade livre no período), o déficit potencial, o risco e o porquê — sem contar a mesma pessoa em dois requisitos. Projetos antigos aparecem com o requisito migrado (quantidade 1, a confirmar). Edição só para Administrador.', paginas:['portfolioedit','inteligencia'], data:'2026-10-27', tag:'Nova', tagCor:'nova'},
@@ -4097,7 +4216,7 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','calendario','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','statusreport','statusreportpainel','logalteracoes','andamento','relatorioprojetos','permissoes','pessoasadmin','feriados','manutencao','avisos','novidades','wiki'],
+  'Administrador':  ['cliente','calendario','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','statusreport','statusreportpainel','logalteracoes','andamento','relatorioprojetos','permissoes','pessoasadmin','feriados','manutencao','avisos','notificacoes','novidades','wiki'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
@@ -4136,13 +4255,13 @@ const PERM_MENU = {
   'Sem Perfil Definido': ['cliente','pessoa','projdetail'],
 };
 // v16.7: Gestão de Horas Apontadas — menu/página só para o perfil Administrador (exceções individuais de permissão continuam valendo).
-Object.keys(PERM_MENU).forEach(p=>{ PERM_MENU[p]=PERM_MENU[p].filter(x=>x!=='horasapontadas'); });
-if(PERM_MENU['Administrador']) PERM_MENU['Administrador'].push('horasapontadas');
+Object.keys(PERM_MENU).forEach(p=>{ PERM_MENU[p]=PERM_MENU[p].filter(x=>x!=='horasapontadas'&&x!=='analisehoras'); });
+if(PERM_MENU['Administrador']) PERM_MENU['Administrador'].push('horasapontadas','analisehoras');
 // "projdetail" (Detalhamento do Projeto) não é uma aba de menu — é uma página de
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',horasapontadas:'Gestão de Horas Apontadas',manutencao:'Modo Manutenção',relatorioprojetos:'Relatório de Projetos e Equipes',novidades:'Novidades',wiki:'Wiki / Documentação'};
+const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',notificacoes:'Gerenciador de Notificações',horasapontadas:'Gestão de Horas Apontadas',analisehoras:'Análise de Horas',manutencao:'Modo Manutenção',relatorioprojetos:'Relatório de Projetos e Equipes',novidades:'Novidades',wiki:'Wiki / Documentação'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 // EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
 // PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
@@ -4160,7 +4279,7 @@ let EFFECTIVE_EXCECOES={add:[],remove:[]};
 // "novidades" também fica fora: é a tela de entrada exclusiva do
 // Administrador (ver #shell-novidades-placeholder), não uma página de
 // dados com escopo por perfil — não faz sentido liberá-la por exceção.
-const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='feriados' && p!=='manutencao' && p!=='relatorioprojetos' && p!=='avisos' && p!=='novidades' && p!=='calendario' && p!=='wiki');
+const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='feriados' && p!=='manutencao' && p!=='relatorioprojetos' && p!=='avisos' && p!=='notificacoes' && p!=='analisehoras' && p!=='novidades' && p!=='calendario' && p!=='wiki');
 
 // v15.7: "novidades" é página inicial de TODOS os perfis — sempre liberada
 // (não é gerenciável em Permissões e nenhuma exceção a remove).
@@ -11655,7 +11774,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v17.6', WIKI_DATA='27/10/2026';
+const WIKI_VER='v17.7', WIKI_DATA='29/10/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -11851,7 +11970,7 @@ WP('pess-cadastro','3.5','Cadastro de pessoas','Campos, status e participação 
  WR('PESS-004','Nome oficial: Pessoas_Area.Assinatura (coluna C)','pa','Pessoas',
   'A única fonte de nome de exibição de pessoa cadastrada é a Assinatura. Sem correspondência válida mostra “Nome não cadastrado”, sem substituir por tarefa ou e-mail.',
   '<code>NOME_NAO_CADASTRADO</code>, <code>displayNameForKey_</code> (v17.5).','Pessoas_Area (Assinatura).','—','—','Telas de análise e Alocação.','Cadastrar uma tarefa com um nome diferente da Assinatura.',
-  'Divergência encontrada: <code>horasApontadas_</code> usa Nome Completo antes de Assinatura para nomear usuários nas horas apontadas, e o cabeçalho do código cita uma aba “Acessos” que não é mais lida. Aplicação em Status Report, Avisos e Log ainda a conferir.'),
+  'Desde a v17.7, Gestão de Horas Apontadas, Análise de Horas e Gestão de Avisos usam só a Assinatura (sem Assinatura: “Nome não cadastrado”). Nome Completo segue apenas como dado cadastral em Pessoas e Perfis. Registros históricos de leitura de avisos mantêm o nome gravado na época. O cabeçalho do código ainda cita uma aba “Acessos” que não é mais lida. Status Report e Log ainda a conferir.'),
  WR('PESS-005','Novo contratado e e-mail','ok','Pessoas',
   'Ao cadastrar uma pessoa pelo formulário completo, o servidor envia o e-mail “[News] - Novo Contratado” com todos os campos aos destinatários escolhidos (no máximo 20, validados). É possível reenviar.',
   '<code>criarPessoaCompleta_</code>, <code>enviarEmailNovoContratado_</code>.','Pessoas_Area.','—','Administrador somente.','Pessoas e Perfis.','—','Exige autorização do Google para envio de e-mail na publicação.')],
@@ -11970,6 +12089,32 @@ WP('dese-periodo','3.8','Períodos, filtros e carga','Janelas de tempo e filtros
   '<code>daBase_</code>.','PROJ_TASKS.','—','—','Carga e Risco.','—','—')],
 ''),
 
+WP('ana-horas','3.8','Análise de Horas','Indicadores de menos horas, média mensal e horas fora da jornada (Gestão › Análise de Horas, só Administrador).',[
+ WR('AH-001','Escopo, fonte e permissão','ok','Horas',
+  'Lê os mesmos apontamentos oficiais da Gestão de Horas Apontadas (aba Tarefas_Horas_Apontadas, ação <code>horasApontadas</code>, até 400 dias) em uma única leitura por período e calcula tudo no navegador. Nada é gravado e nenhum apontamento é alterado. Projetos de backup ficam de fora (regra herdada).',
+  '<code>initAnaliseHoras</code>, <code>ahCalcular_</code>.','Tarefas_Horas_Apontadas, Pessoas_Area, Portifolio, Feriados.','Só Administrador (não é liberável por exceção).','Gestão › Análise de Horas.','Abrir com Head/Colaborador e confirmar que a página não existe no menu.','—'),
+ WR('AH-002','Quem entra e como o nome aparece','ok','Horas',
+  'Entram pessoas ativas com Participa_Analises diferente de Não (inclui Heads), com ou sem apontamento — quem não apontou aparece como “Sem apontamentos”. Pessoas inativas ou fora das análises ficam de fora (as horas de inativos são avisadas na tela). O nome é só Pessoas_Area.Assinatura; sem ela, “Nome não cadastrado” (com o e-mail ao lado).',
+  '<code>ahNomeP_</code>.','Pessoas_Area.','—','Todas as abas da página.','Pessoa sem Assinatura e e-mail com horas fora do cadastro.','—'),
+ WR('AH-003','Horas esperadas (referência)','ok','Horas',
+  'Referência = 8h × dias úteis da pessoa no período. Dia útil exclui sábado, domingo e feriado que se aplica à localidade da pessoa (Nacional para todos; Estadual pela UF; Municipal pela cidade; sem Estado/Cidade só Nacional). O período é limitado por Data Entrada e Data Distrato. Férias, afastamentos e licenças não existem nos dados e não são descontados. Com filtro de projeto, cliente ou tipo a referência continua a jornada completa.',
+  '<code>ahEsperadas_</code>, <code>ahDia_</code>.','Pessoas_Area (Data Entrada/Distrato, Estado, Cidade), Feriados.','—','Indicador 1.','Pessoa com entrada no meio do mês; feriado municipal.','Pessoas sem localidade usam só feriados nacionais.'),
+ WR('AH-004','Menos horas apontadas e situação','ok','Horas',
+  'Compara horas apontadas (todas as válidas) com a referência: abaixo da referência &lt; 90%; dentro de 90% a 110%; acima &gt; 110%; “Sem apontamentos” (nenhum registro) e “Sem referência” (referência zero). Nunca é usado o termo “ocioso”. Ordenável por horas, % da referência e diferença; o clique abre os registros.',
+  '<code>ahTabMenos_</code>.','Tarefas_Horas_Apontadas.','—','Aba Pessoas com menos horas.','Pessoas com 0h, 48%, 93% e 104%.','Limiares 90%/110% são parâmetros desta página.'),
+ WR('AH-005','Média mensal por pessoa','ok','Horas',
+  'Média do mês = horas válidas do mês ÷ pessoas incluídas naquele mês (ativas, nas análises, dentro da janela entrada/distrato e dos filtros), com ou sem apontamento. A média só de quem apontou aparece à parte, com seu N. A média individual divide o total pelos meses em que a pessoa esteve incluída. Mês parcial (período iniciado no meio do mês ou mês atual) usa a janela do período.',
+  '<code>ahTabMedia_</code>.','Tarefas_Horas_Apontadas.','—','Aba Média mensal.','Mês com pessoa sem apontamento e pessoa admitida no meio do mês.','—'),
+ WR('AH-006','Ranking de horas fora da jornada','ok','Horas',
+  'Cada hora cai em uma só categoria: excedente em dia útil (horas do dia acima de 8h), fim de semana (sábado/domingo, inclusive se for feriado) ou feriado em dia útil. Não são horas extras legais ou autorizadas, apenas horas potencialmente fora da referência. O detalhamento soma exatamente o total do indicador.',
+  '<code>ahTabRank_</code>, <code>ahDrill_</code>.','Tarefas_Horas_Apontadas, Feriados.','—','Aba Ranking de horas excedentes.','Sábado + feriado, 10h em dia útil, feriado em segunda.','—'),
+ WR('AH-007','Filtros e projetos “em andamento”','ok','Horas',
+  '“Em andamento” = status do Portifolio “Em Andamento” ou “Sustentação” (ligação por ID do projeto, com fallback Cliente+Projeto; sem correspondência fica fora do filtro e é avisado). “Projetos com apontamento” conta projetos distintos com horas no período depois dos demais filtros — não é alocação formal. Todos os tipos de apontamento entram (Work Item, Meeting, General, Outros), com filtro por tipo.',
+  '<code>ahCalcular_</code>.','Portifolio, Tarefas_Horas_Apontadas.','—','Barra de filtros.','Filtro “somente em andamento” e faixa de 2 projetos.','—'),
+ WR('AH-008','Exportação e limitações','ok','Horas',
+  'O Excel respeita os filtros e traz Indicadores e filtros, Menos horas, Média mensal, Média por mês, Ranking de excedentes e Detalhamento, com horas numéricas no formato [h]:mm. Limitações: sem férias/afastamentos, apontamento sem ID próprio (identificado pela linha da planilha), máximo de 400 dias por consulta.',
+  '<code>ahExportar_</code>.','—','—','Botão Exportar Excel.','Conferir a soma do Detalhamento com o total da tela.','—')],
+`<h3>Fluxo</h3><p>Período → leitura única dos apontamentos → filtros no navegador → referência por pessoa → indicadores → detalhamento e Excel.</p>`),
 WP('stat-report','3.9','Status Report semanal','Criação, edição, status e acesso.',[
  WR('STAT-001','Estrutura e unicidade','ok','Status Report',
   'Uma linha por projeto e semana na aba Status_Report. Colunas: projeto, cliente, gerente (nome/e-mail), semana início/fim, status de preenchimento, status do projeto, nível de risco, resumo executivo, decisões/pontos de atenção, riscos/bloqueios, previsão da próxima fase, atividades (JSON), datas e criticidade. Criar um segundo report para a mesma semana é recusado.',
@@ -12006,7 +12151,7 @@ WP('fontes-catalogo','3.10','Catálogo de abas e fontes','Todas as abas e servi�
 <tr><td><code>Permissoes_Excecoes</code></td><td>Exceções de página por usuário</td><td>e-mail + página</td><td>Lê e grava (Administrador)</td></tr>
 <tr><td>Propriedades do script</td><td>Chave do Modo Manutenção</td><td>—</td><td>Lê e grava</td></tr>
 <tr><td>BrasilAPI</td><td>Feriados nacionais por ano</td><td>Ano</td><td>Consulta</td></tr></table></div>
-<p class="wk-s">Abas criadas automaticamente no primeiro uso: Portifolio_Requisitos, Log_Alteracoes, Feriados, Avisos, Avisos_Leituras, Permissoes_Excecoes, Status_Report, Status_Report_Cronograma.</p>`),
+<p class="wk-s">Abas criadas automaticamente no primeiro uso: Portifolio_Requisitos, Log_Alteracoes, Feriados, Avisos, Avisos_Leituras, Permissoes_Excecoes, Status_Report, Status_Report_Cronograma, Notif_Regras, Notif_Destinatarios, Notif_Fila.</p>`),
 
 WP('fontes-regras','3.10','Regras e cuidados das fontes','Pontos de atenção ao mexer na planilha.',[
  WR('FONTE-001','Colunas localizadas por nome de cabeçalho','ok','Fontes','Pessoas_Area, Tarefas_Horas_Apontadas e as colunas de demanda do Portifolio são localizadas por nome (qualquer posição). Mudar o texto do cabeçalho quebra a leitura daquela coluna.','<code>lerColunasAcessoPessoasArea_</code>, <code>horasApontadasIndices_</code>.','—','—','Há posição padrão de reserva em Tarefas_Horas_Apontadas.','Todo o portal.','—','—'),
@@ -12026,9 +12171,38 @@ WP('aud-avisos','3.11','Avisos e confirmação de leitura','Cadastro, destinatá
   'A pessoa confirma com “Ciente / Lido”; a leitura é gravada uma vez por aviso e pessoa (data, hora, perfil). Enquanto houver aviso obrigatório pendente o servidor não entrega dados (exceto auth, avisosPendentes e confirmarAviso). “Visualizar como” do Administrador pula o bloqueio e nunca registra leitura.',
   '<code>confirmarAviso_</code>, <code>avisosPendentesDoUsuario_</code>.','Avisos_Leituras.','—','—','Login, Controle de Visualizações.','—','—')],
 ''),
+WP('aud-notif','3.11','Notificações por e-mail do Status Report','Regras, destinatários, fila, envio e histórico do Gerenciador de Notificações (Administração).',[
+ WR('NOT-001','Regras de notificação','ok','Notificações',
+  'Cada regra (aba Notif_Regras) tem nome, descrição, condições sobre o Status Report (criticidade, nível de risco, status do projeto; campos de texto só “preenchido/vazio”), lógica E ou OU, momento de disparo (ao entrar na condição, ao entrar ou mudar campo monitorado, a cada gravação, a cada N dias), estado do report (somente Finalizado, ou Rascunho e Finalizado), se notifica de novo ao sair e voltar, assunto e modelo. Operadores dependem do tipo do campo e os valores são validados contra os existentes.',
+  '<code>notifValidarRegra_</code>, <code>notifSalvarRegra_</code>, <code>NOTIF_CAMPOS</code>.','Notif_Regras.','Regra nasce inativa e em simulação.','Só Administrador.','Gerenciador de Notificações › Regras.','Criar regra e salvar.','—'),
+ WR('NOT-002','Regras iniciais e valor de criticidade','ok','Notificações',
+  'A aba é criada com duas regras inativas: “Status Report — Criticidade Crítica ou Alta” (criticidade = “Crítico / Alto”, finalizado, ao entrar na condição) e “Status Report — Risco Alto” (nível de risco = Alto). No portal Crítico e Alto são um único valor; por isso não existe regra “Crítico → Alto”.',
+  '<code>notifGarantirAbas_</code>, <code>SR_CRITICIDADE_OPCOES</code>.','Notif_Regras.','Valores reais do Status Report.','—','Regras.','—','Relatórios antigos podem não ter criticidade e não atendem a regras sobre ela.'),
+ WR('NOT-003','Quando uma notificação é gerada','ok','Notificações',
+  'Depois de gravar o Status Report (fora da trava e protegido por try/catch), o sistema compara o registro anterior com o novo. “Entrou na condição” = não atendia e passa a atender (inclui a primeira gravação já atendendo). Se sair e voltar, nova notificação, salvo regra que proíbe. Salvar de novo sem mudança não gera nada. A falha de e-mail nunca impede a gravação.',
+  '<code>notifAoSalvarStatusReport_</code>, <code>notifElegivel_</code>.','Status_Report, Notif_Fila.','Chave única regra|report|evento|contador.','—','—','Cenários 1 a 16 do plano de testes.','—'),
+ WR('NOT-004','Destinatários','ok','Notificações',
+  'Vêm só de Pessoas e Perfis (Pessoas_Area): pessoa individual, grupo por Área ou grupo por Perfil de acesso. Nome interno = Assinatura; cadastro sem Assinatura é “incompleto” e não pode ser escolhido. Só pessoas ativas com e-mail válido recebem; e-mails duplicados por mais de um caminho recebem uma única mensagem. Não há destinatário externo. A lista é resolvida na detecção e gravada na fila.',
+  '<code>notifResolverDest_</code>, <code>notifAddDest_</code>.','Notif_Destinatarios, Pessoas_Area.','Lista congelada em <code>destinatarios_json</code>.','Os destinatários recebem o resumo do projeto mesmo sem acesso ao projeto no portal (a ativação do envio real pede ciência).','Destinatários.','—','—'),
+ WR('NOT-005','Fila, idempotência e envio','ok','Notificações',
+  'Cada notificação é uma linha em Notif_Fila com chave única (nunca duplica, mesmo com repetição da chamada ou execuções simultâneas, por LockService). Estados: Pendente, Em processamento, Enviada, Falha, Cancelada, Simulada. O envio é tentado logo após gravar; o gatilho de 5 em 5 minutos retoma pendências e falhas (até 3 tentativas, esperas de 5, 15 e 60 min; até 20 itens por execução). Item “Em processamento” travado vira Falha sem reenvio automático (pode ter sido enviado). E-mail via MailApp, destinatários em cópia oculta; respeita a cota diária.',
+  '<code>notifEnfileirar_</code>, <code>notifProcessarFila_</code>, <code>notifProcessarFilaAgendado</code>.','Notif_Fila.','—','—','Visão geral, Histórico.','Falha temporária, retentativa, concorrência.','Não é entrega instantânea garantida. “Enviada” = aceita pelo serviço; entrega e leitura não são confirmadas.'),
+ WR('NOT-006','Simulação, teste e ativação do envio real','ok','Notificações',
+  'Regra ativa em simulação registra “Simulada” e nunca envia. A simulação por report não grava nada. O teste envia um único e-mail, só ao endereço do administrador logado, com “[TESTE]” no assunto. O envio real exige destinatários válidos e confirmação explícita.',
+  '<code>notifSimular_</code>, <code>notifTeste_</code>, <code>notifRegraEstado_</code>.','Notif_Fila.','—','Só Administrador.','Simulação e teste.','—','—'),
+ WR('NOT-007','Histórico e reprocessamento','ok','Notificações',
+  'Histórico com filtros por período, regra, estado, tipo, evento, projeto e destinatário e detalhes (tentativas, erro sanitizado, execução). Reprocessar vale só para Real pendente ou com falha (nunca Enviada); cancelar também. Alterações de regras, vínculos e ações administrativas vão para o Log de Alterações.',
+  '<code>notifHistorico_</code>, <code>notifReprocessar_</code>, <code>notifCancelar_</code>.','Notif_Fila, Log_Alteracoes.','—','Só Administrador.','Histórico.','—','Exibe os 500 registros mais recentes.'),
+ WR('NOT-008','Conteúdo do e-mail','ok','Notificações',
+  'Assunto padrão “[Central de Projetos] [criticidade] Status Report — projeto”. HTML e texto: dados do projeto, resumo executivo, riscos, decisões, previsão e atividades (campos vazios são omitidos; textos escapados e limitados). Link apenas para o portal (não existe link direto para o registro). Rodapé com regra e data de envio.',
+  '<code>notifMontarEmail_</code>.','Status_Report.','—','—','Pré-visualização na Simulação.','—','O e-mail sai da conta que publica o Apps Script.'),
+ WR('NOT-009','Validação em ambiente real','pv','Notificações',
+  'O comportamento de envio, a cota e a autorização do gatilho dependem do Google e foram verificados com simulação do ambiente, não em produção.',
+  '—','—','—','Criar o gatilho exige autorização do Google ao republicar.','—','Ativar uma regra em simulação, usar “Enviar teste para mim” e só então o envio real.','Pendente de validação em produção.')],
+`<h3>Fluxo</h3><p>Gravar Status Report → comparar anterior × novo → fila (chave única) → envio imediato → gatilho retoma pendências → histórico. Abas: Notif_Regras, Notif_Destinatarios, Notif_Fila.</p>`),
 WP('aud-log','3.11','Log de Alterações','Auditoria de criações, alterações e exclusões.',[
  WR('AUD-010','Estrutura do log','ok','Auditoria','Cada linha traz data/hora, usuário (e-mail e nome), tabela, identificador, tipo de operação, campo, valor anterior e valor novo. É gravado nas escritas do Portfólio, Pessoas, Feriados, Avisos, Status Report, Cronograma e Requisitos. Para as exceções de permissão o registro não foi confirmado.','<code>registrarLogAlteracao_</code>.','Log_Alteracoes.','—','Somente Administrador lê.','Log de Alterações.','—','Alterações feitas diretamente na planilha não passam pelo log.'),
- WR('AUD-011','Filtros do Log','pa','Auditoria','A tela filtra por Tabela (Portifolio, Status_Report, Feriados, Avisos), Tipo (Criação, Alteração, Exclusão), Usuário e Período; exibição paginada de 100 em 100.','<code>#f-log-tabela</code>, <code>LOG_ALT_PAGE_SIZE</code>.','Log_Alteracoes.','—','—','Log de Alterações.','—','Registros de Pessoas_Area, Status_Report_Cronograma, Portifolio_Requisitos (tipos Inclusão/Remoção) e exceções só aparecem com “Todas/Todos”.'),
+ WR('AUD-011','Filtros do Log','pa','Auditoria','A tela filtra por Tabela (Portifolio, Status_Report, Feriados, Avisos, Notif_Regras, Notif_Destinatarios, Notif_Fila), Tipo (Criação, Alteração, Exclusão), Usuário e Período; exibição paginada de 100 em 100.','<code>#f-log-tabela</code>, <code>LOG_ALT_PAGE_SIZE</code>.','Log_Alteracoes.','—','—','Log de Alterações.','—','Registros de Pessoas_Area, Status_Report_Cronograma, Portifolio_Requisitos (tipos Inclusão/Remoção) e exceções só aparecem com “Todas/Todos”.'),
  WR('AUD-012','Modo Manutenção','ok','Auditoria','Chave central nas propriedades do script: bloqueia todos exceto duas contas fixas, com aviso prévio, mensagem, previsão de retorno e histórico.','<code>manutSalvar_</code>, <code>MANUT_CONTAS</code>.','Propriedades do script.','—','—','Todo o portal.','—','—')],
 ''),
 
@@ -12090,7 +12264,7 @@ WP('faq','3.14','Perguntas frequentes','Respostas rápidas e solução de proble
 WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado diferente do esperado ou não pôde ser comprovado.',[],
 `<div class="wk-tbl"><table><tr><th>#</th><th>Achado</th><th>Estado</th></tr>
 <tr><td>D1</td><td>Comentário do código diz que Novidades é “exclusiva do Administrador”; a regra v15.7 a torna página inicial de todos e <code>paginasPermitidas()</code> sempre a inclui. Documentado o comportamento real.</td><td><span class="b ok">Documentado</span></td></tr>
-<tr><td>D2</td><td>Regra de nome (Assinatura): horas apontadas usam Nome Completo antes de Assinatura; Status Report, Avisos e Log não conferidos. <a data-w="PESS-004">PESS-004</a></td><td><span class="b pa">Parcial</span></td></tr>
+<tr><td>D2</td><td>Regra de nome (Assinatura): corrigida em Horas Apontadas, Análise de Horas e Avisos na v17.7; Status Report e Log não conferidos. <a data-w="PESS-004">PESS-004</a></td><td><span class="b pa">Parcial</span></td></tr>
 <tr><td>D3</td><td>Data de corte 01/06/2026 e exclusão de Backlog/Reuniões valem só em Pendências; alcance nas demais telas a confirmar. <a data-w="TAR-003">TAR-003</a></td><td><span class="b pa">Parcial</span></td></tr>
 <tr><td>D4</td><td>Requisitos múltiplos de equipe validados só com planilha simulada. <a data-w="PORT-011">PORT-011</a></td><td><span class="b pl">Validar em produção</span></td></tr>
 <tr><td>D5</td><td>Comentário do código cita aba “Acessos”; a leitura real é em Pessoas_Area. <a data-w="FONTE-004">FONTE-004</a></td><td><span class="b pv">Validar</span></td></tr>
@@ -12102,6 +12276,8 @@ WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado d
 WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'29/10/2026',p:'Horas apontadas e nomes',desc:'Inclusão da página “Análise de Horas” e correção da regra de nome (Assinatura) em Horas Apontadas e Avisos.',m:'Solicitação do gestor.',o:'Implementação v17.7',v:'Pendente de validação em produção'},
+ {d:'29/10/2026',p:'Notificações e auditoria',desc:'Inclusão da página “Notificações por e-mail do Status Report” (Gerenciador de Notificações) e das abas Notif_Regras, Notif_Destinatarios e Notif_Fila; versão do portal v17.7.',m:'Nova funcionalidade.',o:'Implementação v17.7',v:'Pendente de validação em produção'},
  {d:'27/10/2026',p:'Todas',desc:'Criação da Wiki com as 15 categorias, a partir da leitura do código atual (index.html e AppsScript_Code.gs).',m:'Solicitação do gestor de documentar regras, fórmulas, permissões e fontes de dados.',o:'Auditoria do código v17.6',v:'Pendente de validação pelo gestor'}
 ];
 
@@ -12205,7 +12381,9 @@ const PAGE_INIT_MAP={
   pessoasadmin:initPessoasAdmin,
   feriados:initFeriados,
   avisos:initAvisos,
+  notificacoes:initNotificacoes,
   horasapontadas:initHorasApontadas,
+  analisehoras:initAnaliseHoras,
   manutencao:initManutencao,
   relatorioprojetos:initRelatorioProjetos,
   wiki:initWiki
@@ -12857,6 +13035,376 @@ async function haCarregar_(forcar){
     HA.chave=chave; haPrepararDados_(r); haPreencherFiltros_(); st.innerHTML=''; haRender_();
   }catch(e){ if(seq===HA.seq) st.innerHTML='<div class="ha-note warn">Não foi possível carregar as horas apontadas agora. <button type="button" class="ha-btn sm" id="ha-retry">Tentar de novo</button></div>'; }
 }
+
+// ============================================================
+// v17.7 — ANÁLISE DE HORAS (menu Gestão, só Administrador)
+// Lê a MESMA ação "horasApontadas" da Gestão de Horas Apontadas (uma leitura em lote por período) e calcula tudo no
+// navegador: menos horas × referência, média mensal por pessoa, ranking de horas fora da jornada, detalhamento e Excel.
+// Nome de pessoa = SOMENTE Pessoas_Area.Assinatura (ausente => "Nome não cadastrado"). Nada é gravado.
+// ============================================================
+const AH_LIM=[0.9,1.1], AH_SEM_NOME='Nome não cadastrado', AH_ATIVOS=['Em Andamento','Sustentação'];
+const AH={dados:null,chave:'',seq:0,ligado:false,roster:[],porEmail:{},projs:[],recs:[],fer:{},tab:'menos',rank:'util',sort:{},mais:{},calc:null,chart:null,
+  f:{preset:'mes',ini:'',fim:'',proj:'todos',projSel:new Set(),heads:new Set(),area:'',cargo:'',nv:'',cliente:'',tipo:'',pessoa:'',faixa:'',pmin:'',pmax:''}};
+function ahP2_(n){return String(n).padStart(2,'0');}
+function ahIso_(d){return d.getFullYear()+'-'+ahP2_(d.getMonth()+1)+'-'+ahP2_(d.getDate());}
+function ahPeriodo_(){
+  const f=AH.f, h=new Date(), y=h.getFullYear(), m=h.getMonth(); let a,b,rot;
+  if(f.preset==='mes'){ a=new Date(y,m,1); b=h; rot='Mês atual (até hoje)'; }
+  else if(f.preset==='ant'){ a=new Date(y,m-1,1); b=new Date(y,m,0); rot='Mês anterior'; }
+  else if(f.preset==='3m'){ a=new Date(y,m-2,1); b=h; rot='Últimos 3 meses (mês atual + 2 anteriores, até hoje)'; }
+  else if(f.preset==='6m'){ a=new Date(y,m-5,1); b=h; rot='Últimos 6 meses (mês atual + 5 anteriores, até hoje)'; }
+  else return {ini:f.ini,fim:f.fim,rot:'Período personalizado'};
+  return {ini:ahIso_(a),fim:ahIso_(b),rot};
+}
+function ahMeses_(ini,fim){
+  const out=[]; let y=+ini.slice(0,4), m=+ini.slice(5,7);
+  while(true){
+    const k=y+'-'+ahP2_(m), pri=k+'-01', ult=haAdd_(m===12?(y+1)+'-01-01':y+'-'+ahP2_(m+1)+'-01',-1);
+    out.push({k,ini:ini>pri?ini:pri,fim:fim<ult?fim:ult,rot:ahP2_(m)+'/'+y});
+    if(k>=fim.slice(0,7)) break; if(m===12){ m=1; y++; } else m++;
+  }
+  return out;
+}
+const AH_MES=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+function ahMesRot_(k){ return AH_MES[+k.slice(5,7)-1]+'/'+k.slice(2,4); }
+function ahDia_(p,iso){
+  const w=haDow_(iso), fs=w===0||w===6; if(fs) return {fs:true,h:null,util:false};
+  const ck=(p.loc||'')+'|'+iso; let r=AH.fer[ck];
+  if(!r){
+    const hs=((AH.dados&&AH.dados.feriados)||[]).filter(f=>f.data&&(f.data===iso||(f.recorrente&&f.data.slice(5)===iso.slice(5)))&&haFeriadoAplica_(f,p.loc)).sort((a,b)=>HA_ORDEM_TIPO[a.tipo]-HA_ORDEM_TIPO[b.tipo]);
+    r=AH.fer[ck]={fs:false,h:hs[0]||null,util:!hs[0]};
+  }
+  return r;
+}
+function ahFeriadoNome_(p,iso){ const x=ahDia_(p,iso); return x.h?x.h.descricao:''; }
+function ahEsperadas_(p,a,b){ // 8h × dias úteis da pessoa entre a e b, limitado por Data Entrada/Distrato
+  if(p.entrada&&p.entrada>a) a=p.entrada; if(p.distrato&&p.distrato<b) b=p.distrato;
+  if(a>b) return {h:0,dias:0,ok:false};
+  let n=0; for(let d=a;d<=b;d=haAdd_(d,1)) if(ahDia_(p,d).util) n++;
+  return {h:n*HA_JORNADA_DIA,dias:n,ok:true};
+}
+function ahDif_(v){ if(Math.abs(v)<1/120) return '0h'; return (v>0?'+':'')+fHM_(v); }
+function ahPct_(x){ return x===null?'—':Math.round(x*100)+'%'; }
+function ahNomeP_(p){ return p.a||AH_SEM_NOME; }
+// ---------- dados ----------
+function ahPrepararDados_(r){
+  AH.dados=r; AH.fer={};
+  const dts=r.datas||{};
+  AH.roster=((D&&D.p)||[]).filter(x=>x.email).map(x=>{
+    const e=String(x.email).toLowerCase(), dd=dts[e]||['','']; const cid=(x.cidade||'').trim(), uf=(x.estado||'').trim();
+    return {e,a:x.a||'',area:x.area||'',head:x.head||'',cargo:x.cargo||'',nv:x.nv||'',ativo:pessoaEstaAtiva(x),participa:pessoaParticipaAnalises_(x),
+      loc:(cid&&uf)?cid+'/'+uf:(cid||uf||(x.localidade||'').trim()),entrada:dd[0]||'',distrato:dd[1]||'',reg:true};
+  });
+  AH.porEmail={}; AH.roster.forEach(p=>{ AH.porEmail[p.e]=p; });
+  // usuários com apontamento que não estão em Pessoas_Area (ou sem Assinatura): entram com "Nome não cadastrado"
+  (r.usuarios||[]).forEach(u=>{ if(!AH.porEmail[u.e]){ const p={e:u.e,a:'',area:'',head:'',cargo:'',nv:'',ativo:true,participa:true,loc:u.l||'',entrada:'',distrato:'',reg:false}; AH.roster.push(p); AH.porEmail[u.e]=p; } });
+  const stId={}, stNome={};
+  ((D&&D.pj)||[]).forEach(p=>{ if(p.idpj) stId[String(p.idpj)]=p.st; stNome[haN_(p.cl)+'|'+haN_(p.pj)]=p.st; });
+  AH.projs=(r.projetos||[]).map(p=>{ const st=p[2]&&stId[String(p[2])]!==undefined?stId[String(p[2])]:stNome[haN_(p[0])+'|'+haN_(p[1])];
+    return {cl:p[0],pj:p[1],id:p[2],st:st===undefined?null:st,key:p[2]?'id:'+p[2]:'n:'+haN_(p[0])+'|'+haN_(p[1])}; });
+  AH.recs=(r.registros||[]).map((x,i)=>({id:i,d:x[0],e:(r.usuarios[x[1]]||{}).e,pj:x[2],tarefa:x[3]||'',h:x[4],tp:x[5],idItem:x[6]||'',tipoO:x[5]<3?HA_TIPO_ORIG[x[5]]:(x[7]||'(vazio)'),row:x[8]}));
+}
+function ahMarcarOpc_(sel,vals,atual,vazio){ sel.innerHTML='<option value="">'+vazio+'</option>'+vals.map(v=>'<option>'+feEsc_(v)+'</option>').join(''); if(vals.includes(atual)) sel.value=atual; else sel.value=''; }
+function ahPreencherFiltros_(){
+  const uniq=f=>[...new Set(AH.roster.map(f).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'pt-BR'));
+  ahMarcarOpc_(document.getElementById('ah-area'),uniq(p=>p.area),AH.f.area,'Todas'); ahMarcarOpc_(document.getElementById('ah-cargo'),uniq(p=>p.cargo),AH.f.cargo,'Todos');
+  ahMarcarOpc_(document.getElementById('ah-nv'),uniq(p=>p.nv),AH.f.nv,'Todas');
+  ahMarcarOpc_(document.getElementById('ah-cli'),[...new Set(AH.projs.map(p=>p.cl).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),AH.f.cliente,'Todos');
+  const heads=uniq(p=>p.head); AH.f.heads=new Set([...AH.f.heads].filter(h=>heads.includes(h)));
+  document.getElementById('ah-head-l').innerHTML=heads.map(h=>'<label class="ah-ck"><input type="checkbox" data-ah-head="'+feEsc_(h)+'"'+(AH.f.heads.has(h)?' checked':'')+'> '+feEsc_(h)+'</label>').join('')||'<small>Nenhum Head cadastrado.</small>';
+  const nomes=[...new Set(AH.projs.map(p=>p.pj))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  AH.f.projSel=new Set([...AH.f.projSel].filter(n=>nomes.includes(n)));
+  document.getElementById('ah-proj-l').innerHTML=nomes.map(n=>'<label class="ah-ck"><input type="checkbox" data-ah-pj="'+feEsc_(n)+'"'+(AH.f.projSel.has(n)?' checked':'')+'> '+feEsc_(n)+'</label>').join('');
+  ahSumDd_();
+}
+function ahSumDd_(){
+  document.getElementById('ah-head-s').textContent='Head: '+(AH.f.heads.size?AH.f.heads.size+' selecionado(s)':'Todos');
+  document.getElementById('ah-proj-s').textContent='Projetos específicos: '+AH.f.projSel.size;
+  document.getElementById('ah-proj-dd').style.display=AH.f.proj==='sel'?'':'none';
+  document.getElementById('ah-datas').style.display=AH.f.preset==='custom'?'':'none';
+  document.getElementById('ah-faixa-c').style.display=AH.f.faixa==='custom'?'':'none';
+}
+// ---------- cálculo ----------
+function ahFaixaOk_(n){
+  const f=AH.f.faixa; if(!f) return true;
+  if(f==='1') return n===1; if(f==='2') return n===2; if(f==='3-5') return n>=3&&n<=5; if(f==='6+') return n>5;
+  if(f==='custom'){ const a=AH.f.pmin===''?0:+AH.f.pmin, b=AH.f.pmax===''?Infinity:+AH.f.pmax; return n>=a&&n<=b; }
+  return true;
+}
+function ahCalcular_(){
+  const f=AH.f, per=ahPeriodo_(), meses=ahMeses_(per.ini,per.fim), notas={};
+  const filtraPes=!!(f.heads.size||f.area||f.cargo||f.nv), q=haN_(f.pessoa);
+  const cand=AH.roster.filter(p=>{
+    if(p.reg){ if(!p.ativo||!p.participa) return false; }
+    else if(filtraPes) return false;
+    if(f.heads.size&&!f.heads.has(p.head)) return false; if(f.area&&p.area!==f.area) return false; if(f.cargo&&p.cargo!==f.cargo) return false; if(f.nv&&p.nv!==f.nv) return false;
+    if(q&&!haN_(ahNomeP_(p)).includes(q)&&p.e!==q) return false;
+    return true;
+  });
+  const candSet=new Set(cand.map(p=>p.e));
+  let semCorresp=0, inativosH=0;
+  const recs=AH.recs.filter(r=>{
+    if(r.d<per.ini||r.d>per.fim) return false;
+    const p=AH.porEmail[r.e]; if(p&&p.reg&&(!p.ativo||!p.participa)){ if(!p.ativo&&p.participa) inativosH+=r.h; return false; }
+    if(!candSet.has(r.e)) return false;
+    const pj=AH.projs[r.pj];
+    if(f.proj==='andamento'){ if(pj.st===null){ semCorresp++; return false; } if(!AH_ATIVOS.includes(pj.st)) return false; }
+    else if(f.proj==='sel'&&!f.projSel.has(pj.pj)) return false;
+    if(f.cliente&&pj.cl!==f.cliente) return false;
+    if(f.tipo!==''&&String(r.tp)!==f.tipo) return false;
+    return true;
+  });
+  const por={}; cand.forEach(p=>{ por[p.e]={p,h:0,projs:new Set(),dias:{},recs:[]}; });
+  recs.forEach(r=>{ const x=por[r.e]; x.h+=r.h; x.projs.add(AH.projs[r.pj].key); x.recs.push(r); (x.dias[r.d]||(x.dias[r.d]={d:r.d,h:0,recs:[]})).h+=r.h; x.dias[r.d].recs.push(r); });
+  let pessoas=Object.values(por).filter(x=>ahFaixaOk_(x.projs.size));
+  pessoas.forEach(x=>{
+    x.nproj=x.projs.size; x.hUtil=0;x.exc=0;x.fs=0;x.hol=0; const fora=new Set(), projFora=new Set();
+    x.diasL=Object.values(x.dias).sort((a,b)=>a.d.localeCompare(b.d));
+    x.diasL.forEach(dy=>{ const inf=ahDia_(x.p,dy.d); dy.inf=inf; dy.ref=inf.util?HA_JORNADA_DIA:0; dy.exc=inf.util?haExc_(dy.h,HA_JORNADA_DIA):0;
+      dy.cls=inf.fs?'fs':(inf.h?'hol':'util');
+      if(inf.fs) x.fs+=dy.h; else if(inf.h) x.hol+=dy.h; else { x.hUtil+=dy.h; x.exc+=dy.exc; }
+      if(dy.exc>0||inf.fs||inf.h){ fora.add(dy.d); dy.recs.forEach(r=>projFora.add(AH.projs[r.pj].key)); } });
+    x.diasFora=fora.size; x.projFora=projFora.size; x.fora=x.exc+x.fs+x.hol;
+    x.mes={}; let expT=0, incl=0, nm=0;
+    meses.forEach(m=>{ const e=ahEsperadas_(x.p,m.ini,m.fim), inc=e.ok&&(e.dias>0||true); x.mes[m.k]={h:0,exp:e.h,inc:e.ok}; if(e.ok){ expT+=e.h; nm++; } });
+    x.recs.forEach(r=>{ const m=x.mes[r.d.slice(0,7)]; if(m) m.h+=r.h; });
+    x.exp=expT; x.nMeses=nm; x.semRegistro=x.recs.length===0;
+    x.pct=x.exp>0?x.h/x.exp:null; x.dif=x.h-x.exp;
+    x.sit=x.semRegistro?'Sem apontamentos':(x.pct===null?'Sem referência':(x.pct<AH_LIM[0]?'Apontamento abaixo da referência':(x.pct<=AH_LIM[1]?'Apontamento dentro da referência':'Apontamento acima da referência')));
+    x.mediaMes=x.nMeses?x.h/x.nMeses:null;
+  });
+  const M=meses.map(m=>{ let tot=0,exp=0,nInc=0,nAp=0,hAp=0;
+    pessoas.forEach(x=>{ const mm=x.mes[m.k]; if(!mm||!mm.inc) return; nInc++; tot+=mm.h; exp+=mm.exp; if(mm.h>0){ nAp++; } });
+    return {k:m.k,rot:ahMesRot_(m.k),tot,exp,nInc,nAp,media:nInc?tot/nInc:null,mediaAp:nAp?tot/nAp:null,refMedia:nInc?exp/nInc:null}; });
+  const K={h:0,exp:0,exc:0,fs:0,hol:0,sem:0,abaixo:0,n:pessoas.length};
+  pessoas.forEach(x=>{ K.h+=x.h; K.exp+=x.exp; K.exc+=x.exc; K.fs+=x.fs; K.hol+=x.hol; if(x.semRegistro) K.sem++; if(x.pct!==null&&x.pct<AH_LIM[0]&&!x.semRegistro) K.abaixo++; });
+  const semLoc=pessoas.filter(x=>!x.p.loc).length, semDatas=pessoas.filter(x=>x.p.reg&&!x.p.entrada&&!x.p.distrato).length;
+  const desc=(AH.dados&&AH.dados.descartados)||{}; 
+  return {per,meses,pessoas,M,K,notas:{semCorresp,inativosH,semLoc,desc,naoCad:pessoas.filter(x=>!x.p.reg).length,semDatas}};
+}
+// ---------- ordenação ----------
+const AH_COLS={
+  menos:{pos:null,pessoa:x=>haN_(ahNomeP_(x.p)),head:x=>haN_(x.p.head),area:x=>haN_(x.p.area),cargo:x=>haN_(x.p.cargo),nv:x=>haN_(x.p.nv),h:x=>x.h,exp:x=>x.exp,pct:x=>x.pct,dif:x=>x.dif,nproj:x=>x.nproj,sit:x=>x.pct},
+  rank:{pessoa:x=>haN_(ahNomeP_(x.p)),head:x=>haN_(x.p.head),area:x=>haN_(x.p.area),hUtil:x=>x.hUtil,exc:x=>x.exc,fs:x=>x.fs,hol:x=>x.hol,fora:x=>x.fora,diasFora:x=>x.diasFora,projFora:x=>x.projFora},
+  media:{pessoa:x=>haN_(ahNomeP_(x.p)),head:x=>haN_(x.p.head),mediaMes:x=>x.mediaMes,h:x=>x.h,nproj:x=>x.nproj}
+};
+function ahOrdenar_(tab,linhas,defKey,defDir){
+  const s=AH.sort[tab]||{k:defKey,d:defDir}, get=AH_COLS[tab][s.k]||(x=>0), dir=s.d==='asc'?1:-1;
+  return linhas.slice().sort((a,b)=>{ let va=get(a), vb=get(b);
+    const na=va===null||va===undefined, nb=vb===null||vb===undefined; if(na&&nb) return 0; if(na) return 1; if(nb) return -1;
+    if(typeof va==='string') return va.localeCompare(vb,'pt-BR')*dir; return (va-vb)*dir||haN_(ahNomeP_(a.p)).localeCompare(haN_(ahNomeP_(b.p)),'pt-BR'); });
+}
+function ahTh_(tab,cols,def){
+  const s=AH.sort[tab]||{k:def.k,d:def.d};
+  return '<thead><tr>'+cols.map(c=>c.k?'<th class="'+(c.n?'ha-n ':'')+'ah-sort" data-ah-s="'+tab+'|'+c.k+'" aria-sort="'+(s.k===c.k?(s.d==='asc'?'ascending':'descending'):'none')+'">'+c.t+(s.k===c.k?(s.d==='asc'?' ▲':' ▼'):'')+'</th>':'<th'+(c.n?' class="ha-n"':'')+'>'+c.t+'</th>').join('')+'</tr></thead>';
+}
+function ahMais_(tab,n){ return (AH.mais[tab]||100); }
+// ---------- telas ----------
+function ahPesLink_(x,modo){ return '<a href="#" class="ah-pl" data-ah-d="'+feEsc_(x.p.e)+'|'+(modo||'all')+'">'+feEsc_(ahNomeP_(x.p))+'</a>'+(x.p.a?'':' <small class="ha-mut" title="Sem Assinatura em Pessoas_Area (ou e-mail fora do cadastro): '+feEsc_(x.p.e)+'">('+feEsc_(x.p.e)+')</small>'); }
+function ahKpis_(C){
+  const K=C.K, k=(o)=>kpiHtml(o);
+  const pct=K.exp>0?K.h/K.exp:null;
+  document.getElementById('ah-kpis').innerHTML=
+    k({label:'Horas apontadas (válidas)',value:fHM_(K.h),foot:K.n+' pessoa(s) no escopo',icon:'horas',color:'#0c4a6e',bg:'#e0f2fe'})+
+    k({label:'Horas esperadas (referência)',value:fHM_(K.exp),foot:'8h × dias úteis de cada pessoa',icon:'calendario',color:'#4f46e5',bg:'#eef2ff'})+
+    k({label:'Apontado ÷ esperado',value:ahPct_(pct),foot:'dentro: 90% a 110%',icon:'relogio',color:'#0d9488',bg:'#ccfbf1'})+
+    k({label:'Média por pessoa',value:K.n?fHM_(K.h/K.n):'—',foot:'÷ '+K.n+' pessoa(s) incluída(s)',icon:'pessoas',color:'#2563eb',bg:'#dbeafe'})+
+    k({label:'Excedente em dias úteis',value:fHM_(K.exc),foot:'acima de 8h por dia útil',icon:'alerta',color:'#d97706',bg:'#fef3c7'})+
+    k({label:'Fins de semana',value:fHM_(K.fs),foot:'sábados e domingos',icon:'calendario',color:'#7c3aed',bg:'#ede9fe'})+
+    k({label:'Feriados',value:fHM_(K.hol),foot:'em dias úteis que são feriado',icon:'calendario',color:'#0d9488',bg:'#ccfbf1'})+
+    k({label:'Sem apontamentos',value:String(K.sem),foot:K.abaixo+' abaixo da referência',icon:'pessoas',color:'#64748b',bg:'#f1f5f9'});
+}
+function ahAvisos_(C){
+  const n=C.notas, a=[], d=n.desc||{};
+  a.push('<b>Férias, afastamentos e licenças não constam nos dados.</b> “Abaixo da referência” não significa ociosidade; a referência considera só dias úteis, feriados da localidade e as datas de entrada/distrato.');
+  if(AH.f.proj!=='todos'||AH.f.cliente||AH.f.tipo!=='') a.push('Há filtro de projeto, cliente ou tipo ativo: a referência de horas continua sendo a jornada <b>completa</b>, então o percentual compara só as horas filtradas.');
+  if(n.inativosH>0) a.push(fHM_(n.inativosH)+' apontadas por pessoas <b>inativas</b> ficam fora da análise (só pessoas ativas entram).');
+  if(n.semCorresp>0) a.push(n.semCorresp+' apontamento(s) de projetos sem correspondência no Portifolio ficaram fora do filtro “em andamento”.');
+  if(n.semLoc>0) a.push(n.semLoc+' pessoa(s) sem Estado/Cidade: só feriados nacionais são considerados para elas.');
+  if(n.naoCad>0) a.push(n.naoCad+' e-mail(s) com apontamentos não têm Assinatura em Pessoas_Area e aparecem como “'+AH_SEM_NOME+'”.');
+  const desc=[]; if(d.semData) desc.push(d.semData+' sem data'); if(d.semEmail) desc.push(d.semEmail+' sem e-mail'); if(d.horasInvalidas) desc.push(d.horasInvalidas+' com horas inválidas'); if(d.horasAcima24) desc.push(d.horasAcima24+' com 24h ou mais (mantidos; confira)');
+  if(desc.length) a.push('Registros da planilha no período: '+desc.join(', ')+'.');
+  document.getElementById('ah-avisos').innerHTML='<div class="ha-note warn" style="margin:6px 0">'+a.join('<br>')+'</div>';
+}
+function ahEscopo_(C){
+  const f=AH.f, pj=f.proj==='andamento'?'somente em andamento (Em Andamento e Sustentação)':(f.proj==='sel'?f.projSel.size+' projeto(s) selecionado(s)':'todos');
+  document.getElementById('ah-escopo').innerHTML='<div class="ha-note">Período: <b>'+haBr_(C.per.ini)+' a '+haBr_(C.per.fim)+'</b> ('+feEsc_(C.per.rot)+') · Projetos: <b>'+pj+'</b> · Head: <b>'+(f.heads.size?feEsc_([...f.heads].join(', ')):'todos')+'</b> · Projetos com apontamento: <b>'+({'':'qualquer','1':'1','2':'2','3-5':'3 a 5','6+':'mais de 5','custom':'faixa '+(f.pmin||0)+' a '+(f.pmax||'∞')})[f.faixa]+'</b> · <b>'+C.K.n+'</b> pessoa(s). “Projetos com apontamento” conta projetos distintos com horas no período, não a alocação formal.</div>';
+}
+function ahTabMenos_(C){
+  const modo=AH.mn||'h'; const def={h:['h','asc'],pct:['pct','asc'],dif:['dif','asc']}[modo];
+  if(!AH.sort.menos) AH.sort.menos={k:def[0],d:def[1]};
+  const lin=ahOrdenar_('menos',C.pessoas,'h','asc'), lim=AH.mais.menos||100;
+  const cols=[{t:'#'},{t:'Pessoa',k:'pessoa'},{t:'Head',k:'head'},{t:'Área',k:'area'},{t:'Cargo',k:'cargo'},{t:'Senioridade',k:'nv'},{t:'Apontadas',k:'h',n:1},{t:'Esperadas',k:'exp',n:1},{t:'% da ref.',k:'pct',n:1},{t:'Diferença',k:'dif',n:1},{t:'Projetos',k:'nproj',n:1},{t:'Situação',k:'sit'}];
+  let h='<div class="ah-sw"><small>Ordenar por:</small> '+[['h','Menos horas'],['pct','% da referência'],['dif','Diferença']].map(o=>'<button type="button" class="ha-btn sm'+(AH.sort.menos.k===o[0]?' pri':'')+'" data-ah-mn="'+o[0]+'">'+o[1]+'</button>').join(' ')+'</div>'+
+    '<div class="table-wrap"><table>'+ahTh_('menos',cols,{k:'h',d:'asc'})+'<tbody>';
+  if(!lin.length) h+='<tr><td colspan="12" class="ha-vazio">Nenhuma pessoa no escopo com esses filtros.</td></tr>';
+  lin.slice(0,lim).forEach((x,i)=>{
+    const cls=x.semRegistro?'in':(x.pct===null?'in':(x.pct<AH_LIM[0]?'er':(x.pct<=AH_LIM[1]?'ok':'wa')));
+    h+='<tr><td>'+(i+1)+'</td><td>'+ahPesLink_(x,'all')+'</td><td>'+feEsc_(x.p.head||'—')+'</td><td>'+feEsc_(x.p.area||'—')+'</td><td>'+feEsc_(x.p.cargo||'—')+'</td><td>'+feEsc_(x.p.nv||'—')+'</td><td class="ha-n">'+fHM_(x.h)+'</td><td class="ha-n">'+(x.exp?fHM_(x.exp):'—')+'</td><td class="ha-n">'+ahPct_(x.pct)+'</td><td class="ha-n">'+(x.exp?ahDif_(x.dif):'—')+'</td><td class="ha-n">'+x.nproj+'</td><td><span class="ah-sit '+cls+'">'+feEsc_(x.sit)+'</span></td></tr>';
+  });
+  h+='</tbody></table></div>'+(lin.length>lim?'<button type="button" class="ha-btn" data-ah-mais="menos">Mostrar mais ('+(lin.length-lim)+')</button>':'')+
+    '<p class="ha-mut" style="font-size:12px">Situação: abaixo &lt; 90% · dentro de 90% a 110% · acima &gt; 110% da referência. “Sem apontamentos” = nenhum registro nos filtros; “0h” só aparece quando há registros. Clique no nome para ver os apontamentos.</p>';
+  return h;
+}
+function ahTabMedia_(C){
+  const M=C.M, tot=C.K.h, nmp=C.pessoas.reduce((a,x)=>a+x.nMeses,0), nAp=C.pessoas.filter(x=>!x.semRegistro).length;
+  let h='<div class="ha-sum">'+
+    '<div class="ah-mini"><b>'+(C.K.n?fHM_(tot/C.K.n):'—')+'</b><small>Média por pessoa no período<br>'+fHM_(tot)+' ÷ '+C.K.n+' pessoa(s) incluída(s)</small></div>'+
+    '<div class="ah-mini"><b>'+(nmp?fHM_(tot/nmp):'—')+'</b><small>Média <u>mensal</u> por pessoa<br>'+fHM_(tot)+' ÷ '+nmp+' mês(es)-pessoa</small></div>'+
+    '<div class="ah-mini"><b>'+fHM_(tot)+'</b><small>Total de horas apontadas</small></div>'+
+    '<div class="ah-mini"><b>'+nAp+'</b><small>Pessoas com apontamentos válidos</small></div></div>'+
+    '<div class="ha-note">Média mensal = horas válidas do mês ÷ pessoas incluídas naquele mês (ativas, participam das análises, dentro da janela entrada/distrato e dos filtros), <b>com ou sem apontamento</b>. Mês sem apontamento conta como 0h; ausência de registro não significa ausência de trabalho (férias e afastamentos não constam nos dados). A média só de quem apontou aparece à parte.</div>'+
+    '<div class="ah-chart" style="height:300px"><canvas id="ah-ch"></canvas></div>'+
+    '<div class="table-wrap"><table><thead><tr><th>Mês</th><th class="ha-n">Total de horas</th><th class="ha-n">Pessoas incluídas</th><th class="ha-n">Média por pessoa</th><th class="ha-n">Só quem apontou (N)</th><th class="ha-n">Referência média</th><th class="ha-n">Variação vs. mês anterior</th></tr></thead><tbody>'+
+    M.map((m,i)=>{ const ant=i?M[i-1].media:null, v=(m.media!==null&&ant!==null)?m.media-ant:null; return '<tr><td>'+feEsc_(m.rot)+'</td><td class="ha-n">'+fHM_(m.tot)+'</td><td class="ha-n">'+m.nInc+'</td><td class="ha-n">'+(m.media===null?'—':fHM_(m.media))+'</td><td class="ha-n">'+(m.mediaAp===null?'—':fHM_(m.mediaAp)+' ('+m.nAp+')')+'</td><td class="ha-n">'+(m.refMedia===null?'—':fHM_(m.refMedia))+'</td><td class="ha-n">'+(v===null?'—':ahDif_(v))+'</td></tr>'; }).join('')+'</tbody></table></div>';
+  const cols=[{t:'Pessoa',k:'pessoa'},{t:'Head',k:'head'}].concat(M.map(m=>({t:feEsc_(m.rot),n:1})),[{t:'Média mensal',k:'mediaMes',n:1},{t:'Total',k:'h',n:1},{t:'Projetos',k:'nproj',n:1}]);
+  const lin=ahOrdenar_('media',C.pessoas,'pessoa','asc'), lim=AH.mais.media||100;
+  h+='<h3 style="margin:16px 0 6px;font-size:13px">Horas por pessoa e mês</h3><div class="table-wrap"><table>'+ahTh_('media',cols,{k:'pessoa',d:'asc'})+'<tbody>'+
+    lin.slice(0,lim).map(x=>'<tr><td>'+ahPesLink_(x,'all')+'</td><td>'+feEsc_(x.p.head||'—')+'</td>'+M.map(m=>{ const mm=x.mes[m.k]; return '<td class="ha-n">'+(mm&&mm.inc?fHM_(mm.h):'<span class="ha-mut" title="Fora da análise neste mês (antes da entrada ou depois do distrato)">—</span>')+'</td>'; }).join('')+'<td class="ha-n">'+(x.mediaMes===null?'—':fHM_(x.mediaMes))+'</td><td class="ha-n">'+fHM_(x.h)+'</td><td class="ha-n">'+x.nproj+'</td></tr>').join('')+'</tbody></table></div>'+
+    (lin.length>lim?'<button type="button" class="ha-btn" data-ah-mais="media">Mostrar mais ('+(lin.length-lim)+')</button>':'')+
+    '<p class="ha-mut" style="font-size:12px">Média mensal individual = total ÷ meses em que a pessoa estava incluída (meses sem apontamento contam como 0h). “—” = fora da análise no mês.</p>';
+  return h;
+}
+function ahTabRank_(C){
+  const modo=AH.rank, key={util:'exc',fs:'fs',hol:'hol'}[modo];
+  if(!AH.sort.rank||AH.sort.rankModo!==modo){ AH.sort.rank={k:key,d:'desc'}; AH.sort.rankModo=modo; }
+  const base=C.pessoas.filter(x=>x[key]>0), lin=ahOrdenar_('rank',base,key,'desc'), lim=AH.mais.rank||100;
+  const tot=base.reduce((a,x)=>a+x[key],0);
+  const cols=[{t:'#'},{t:'Pessoa',k:'pessoa'},{t:'Head',k:'head'},{t:'Área',k:'area'},{t:'H. em dias úteis',k:'hUtil',n:1},{t:'Excedente (dias úteis)',k:'exc',n:1},{t:'Sáb. e dom.',k:'fs',n:1},{t:'Feriados',k:'hol',n:1},{t:'Total fora da jornada',k:'fora',n:1},{t:'Dias',k:'diasFora',n:1},{t:'Projetos',k:'projFora',n:1}];
+  let h='<div class="ah-sw">'+[['util','Excedente em dias úteis'],['fs','Finais de semana'],['hol','Feriados']].map(o=>'<button type="button" class="ha-btn sm'+(modo===o[0]?' pri':'')+'" data-ah-rk="'+o[0]+'">'+o[1]+'</button>').join(' ')+' <span class="ha-mut">Total desta visão: <b>'+fHM_(tot)+'</b> · '+lin.length+' pessoa(s)</span></div>'+
+    '<div class="ha-note">Horas <b>potencialmente fora da jornada de referência</b> (não são horas extras legais ou autorizadas). Cada hora entra em <b>uma única</b> categoria: excedente = horas do dia útil acima de 8h; sábado/domingo; feriado em dia útil. Se o fim de semana for feriado, conta como fim de semana. “Total fora da jornada” = excedente + fins de semana + feriados.</div>'+
+    '<div class="table-wrap"><table>'+ahTh_('rank',cols,{k:key,d:'desc'})+'<tbody>';
+  if(!lin.length) h+='<tr><td colspan="11" class="ha-vazio">Nenhuma pessoa com horas nesta visão, com os filtros atuais.</td></tr>';
+  lin.slice(0,lim).forEach((x,i)=>{ h+='<tr><td>'+(i+1)+'</td><td>'+ahPesLink_(x,key)+'</td><td>'+feEsc_(x.p.head||'—')+'</td><td>'+feEsc_(x.p.area||'—')+'</td><td class="ha-n">'+fHM_(x.hUtil)+'</td><td class="ha-n">'+(x.exc?'<a href="#" class="ah-pl" data-ah-d="'+feEsc_(x.p.e)+'|exc">'+fHM_(x.exc)+'</a>':'—')+'</td><td class="ha-n">'+(x.fs?'<a href="#" class="ah-pl" data-ah-d="'+feEsc_(x.p.e)+'|fs">'+fHM_(x.fs)+'</a>':'—')+'</td><td class="ha-n">'+(x.hol?'<a href="#" class="ah-pl" data-ah-d="'+feEsc_(x.p.e)+'|hol">'+fHM_(x.hol)+'</a>':'—')+'</td><td class="ha-n"><b>'+fHM_(x.fora)+'</b></td><td class="ha-n">'+x.diasFora+'</td><td class="ha-n">'+x.projFora+'</td></tr>'; });
+  return h+'</tbody></table></div>'+(lin.length>lim?'<button type="button" class="ha-btn" data-ah-mais="rank">Mostrar mais ('+(lin.length-lim)+')</button>':'');
+}
+function ahDesenharGrafico_(C){
+  if(AH.chart){ try{AH.chart.destroy();}catch(e){} AH.chart=null; }
+  const el=document.getElementById('ah-ch'); if(!el||!COK) return;
+  const M=C.M, r2=v=>v===null?null:Math.round(v*100)/100;
+  AH.chart=new Chart(el,{type:'bar',data:{labels:M.map(m=>m.rot),datasets:[
+    {type:'bar',label:'Média por pessoa',data:M.map(m=>r2(m.media)),backgroundColor:'#0C4A6E',borderRadius:5,order:2},
+    {type:'line',label:'Referência média (dias úteis × 8h)',data:M.map(m=>r2(m.refMedia)),borderColor:'#F59E0B',borderDash:[5,3],pointRadius:3,borderWidth:2,fill:false,order:1}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>{ const m=M[c.dataIndex]; return c.datasetIndex===0?['Média: '+(m.media===null?'—':fHM_(m.media)),'Total: '+fHM_(m.tot)+' ÷ '+m.nInc+' pessoa(s)']:'Referência média: '+(m.refMedia===null?'—':fHM_(m.refMedia)); }}}},
+      scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}}});
+}
+function ahRenderTab_(C){
+  document.querySelectorAll('#ah-tabs .ha-tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.ahT===AH.tab)));
+  const pane=document.getElementById('ah-pane');
+  pane.innerHTML=AH.tab==='menos'?ahTabMenos_(C):(AH.tab==='media'?ahTabMedia_(C):ahTabRank_(C));
+  if(AH.tab==='media') ahDesenharGrafico_(C); else if(AH.chart){ try{AH.chart.destroy();}catch(e){} AH.chart=null; }
+}
+function ahRender_(){
+  if(!AH.dados) return;
+  ahSumDd_(); const C=AH.calc=ahCalcular_();
+  ahEscopo_(C); ahKpis_(C); ahAvisos_(C); ahRenderTab_(C);
+}
+// ---------- detalhamento ----------
+const AH_CLS={util:'Dia útil',fs:'Fim de semana',hol:'Feriado'};
+function ahDrill_(email,modo){
+  const C=AH.calc; if(!C) return; const x=C.pessoas.find(p=>p.p.e===email); if(!x) return;
+  const dias=x.diasL.filter(d=>modo==='all'||(modo==='exc'&&d.cls==='util'&&d.exc>0)||(modo==='fs'&&d.cls==='fs')||(modo==='hol'&&d.cls==='hol'));
+  const tot=dias.reduce((a,d)=>a+d.h,0), exc=dias.reduce((a,d)=>a+d.exc,0);
+  const valor=modo==='all'?x.h:(modo==='exc'?x.exc:(modo==='fs'?x.fs:x.hol)), soma=modo==='exc'?exc:tot;
+  const tit={all:'Apontamentos',exc:'Excedente em dias úteis',fs:'Horas em fins de semana',hol:'Horas em feriados'}[modo];
+  let h='<div class="ha-sum"><span class="ha-tg info">'+feEsc_(C.per.ini?haBr_(C.per.ini)+' a '+haBr_(C.per.fim):'')+'</span><span class="ha-tg g">'+feEsc_(x.p.head||'sem Head')+'</span><span class="ha-tg g">Esperadas no período: '+fHM_(x.exp)+'</span></div>'+
+    '<div class="table-wrap" style="max-height:55vh"><table><thead><tr><th>Data</th><th>Classificação</th><th>Projeto</th><th>Tarefa / descrição</th><th>Tipo</th><th class="ha-n">Horas</th><th class="ha-n">Ref. diária</th><th class="ha-n">Excedente do dia</th><th>Origem</th></tr></thead><tbody>';
+  if(!dias.length) h+='<tr><td colspan="9" class="ha-vazio">Nenhum apontamento nesta visão.</td></tr>';
+  dias.forEach(d=>{
+    const fer=d.inf.h?' — '+feEsc_(d.inf.h.descricao):'';
+    h+='<tr class="ha-sub"><td><b>'+haBr_(d.d)+'</b> '+HA_DN[haDow_(d.d)]+'</td><td>'+AH_CLS[d.cls]+fer+'</td><td colspan="3">Total do dia</td><td class="ha-n"><b>'+fHM_(d.h)+'</b></td><td class="ha-n">'+fHM_(d.ref)+'</td><td class="ha-n">'+(d.cls==='util'?fHM_(d.exc):'—')+'</td><td></td></tr>';
+    d.recs.slice().sort((a,b)=>a.row-b.row).forEach(r=>{ const p=AH.projs[r.pj]; h+='<tr><td></td><td></td><td>'+feEsc_(p.pj)+'<br><small class="ha-mut">'+feEsc_(p.cl)+'</small></td><td>'+feEsc_(r.tarefa||'—')+'</td><td><span class="ha-tg info">'+feEsc_(r.tipoO)+'</span></td><td class="ha-n">'+fHM_(r.h)+'</td><td></td><td></td><td>Planilha, linha '+r.row+'</td></tr>'; });
+  });
+  h+='</tbody><tfoot><tr><td colspan="5"><b>Soma conferida</b> ('+dias.length+' dia(s))</td><td class="ha-n"><b>'+fHM_(modo==='exc'?tot:tot)+'</b></td><td></td><td class="ha-n"><b>'+fHM_(exc)+'</b></td><td></td></tr></tfoot></table></div>'+
+    '<p class="ha-mut" style="font-size:12px">O total do indicador na tela é <b>'+fHM_(valor)+'</b>'+(modo==='exc'?' (soma da coluna “Excedente do dia”: '+fHM_(exc)+').':' (soma das horas dos dias listados: '+fHM_(soma)+').')+(Math.abs(soma-valor)<1/120?' ✔ confere.':' ⚠ diferença — avise o time.')+'</p>';
+  haModal_(feEsc_(tit+' — '+ahNomeP_(x.p)),h);
+}
+// ---------- exportação ----------
+async function ahExportar_(btn){
+  const C=AH.calc; if(!C||!C.pessoas.length){ mostrarToastPermissao('Não há dados para exportar com os filtros atuais.',false); return; }
+  const txt=btn.textContent; btn.disabled=true; btn.textContent='Gerando…';
+  try{
+    const ExcelJS=await calCarregarExcelJS_(), wb=new ExcelJS.Workbook(), DT='dd/mm/yyyy', HMM='[h]:mm', hx=h=>Math.round(h*3600)/86400;
+    const add=(nome,cols,linhas)=>{ const ws=wb.addWorksheet(nome); ws.columns=cols.map(c=>({header:c[0],width:c[1],style:c[2]?{numFmt:c[2]}:{}})); linhas.forEach(l=>ws.addRow(l));
+      const hdr=ws.getRow(1); hdr.height=22; hdr.eachCell(c=>{c.font={bold:true,color:{argb:'FFFFFFFF'}};c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF0C4A6E'}};c.alignment={vertical:'middle',horizontal:'left',wrapText:true};});
+      ws.views=[{state:'frozen',ySplit:1}]; if(linhas.length) ws.autoFilter={from:{row:1,column:1},to:{row:1,column:cols.length}}; return ws; };
+    const f=AH.f, K=C.K, nome=x=>ahNomeP_(x.p);
+    const ws0=wb.addWorksheet('Indicadores e filtros'); ws0.columns=[{width:46},{width:70}];
+    [['Período',haBr_(C.per.ini)+' a '+haBr_(C.per.fim)+' ('+C.per.rot+')'],['Projetos',f.proj==='andamento'?'Somente em andamento (Em Andamento e Sustentação)':(f.proj==='sel'?[...f.projSel].join('; '):'Todos')],['Head',f.heads.size?[...f.heads].join('; '):'Todos'],['Projetos com apontamento',f.faixa||'Qualquer'],['Área / Cargo / Senioridade',[f.area||'todas',f.cargo||'todos',f.nv||'todas'].join(' / ')],['Cliente',f.cliente||'Todos'],['Tipo de apontamento',f.tipo===''?'Todos':HA_TIPO_ORIG[+f.tipo]||'Outros'],['Pessoa (texto)',f.pessoa||'—'],
+      ['Pessoas no escopo',K.n],['Horas apontadas',fHM_(K.h)],['Horas esperadas',fHM_(K.exp)],['Apontado ÷ esperado',ahPct_(K.exp>0?K.h/K.exp:null)],['Média por pessoa',K.n?fHM_(K.h/K.n):'—'],['Excedente em dias úteis',fHM_(K.exc)],['Fins de semana',fHM_(K.fs)],['Feriados',fHM_(K.hol)],['Pessoas sem apontamentos',K.sem],
+      ['Regra',"Referência = 8h × dias úteis da pessoa (feriados pela localidade), limitada por Data Entrada/Distrato. Excedente = horas do dia útil acima de 8h. Fim de semana e feriado não entram no excedente. Fim de semana que é feriado conta como fim de semana. Férias e afastamentos não constam nos dados."],['Gerado em',new Date().toLocaleString('pt-BR')]].forEach(r=>ws0.addRow(r));
+    ws0.getColumn(1).font={bold:true};
+    add('Menos horas',[['#',6],['Pessoa',30],['Head',24],['Área',24],['Cargo',22],['Senioridade',16],['Horas apontadas',16,HMM],['Horas esperadas',16,HMM],['% da referência',14,'0%'],['Diferença (h)',14,'0.00'],['Projetos',10],['Situação',32]],
+      ahOrdenar_('menos',C.pessoas,'h','asc').map((x,i)=>[i+1,nome(x),x.p.head,x.p.area,x.p.cargo,x.p.nv,hx(x.h),hx(x.exp),x.pct===null?'':x.pct,Math.round((x.h-x.exp)*100)/100,x.nproj,x.sit]));
+    add('Média mensal',[['Pessoa',30],['Head',24]].concat(C.M.map(m=>[m.rot,14,HMM])).concat([['Média mensal',16,HMM],['Total',16,HMM],['Projetos',10]]),
+      ahOrdenar_('media',C.pessoas,'pessoa','asc').map(x=>[nome(x),x.p.head].concat(C.M.map(m=>{const mm=x.mes[m.k];return mm&&mm.inc?hx(mm.h):'';})).concat([x.mediaMes===null?'':hx(x.mediaMes),hx(x.h),x.nproj])));
+    add('Média por mês',[['Mês',12],['Total de horas',16,HMM],['Pessoas incluídas',16],['Média por pessoa',16,HMM],['Média só de quem apontou',20,HMM],['Pessoas que apontaram',18],['Referência média',16,HMM]],C.M.map(m=>[m.rot,hx(m.tot),m.nInc,m.media===null?'':hx(m.media),m.mediaAp===null?'':hx(m.mediaAp),m.nAp,m.refMedia===null?'':hx(m.refMedia)]));
+    add('Ranking de excedentes',[['#',6],['Pessoa',30],['Head',24],['Área',24],['Horas em dias úteis',18,HMM],['Excedente em dias úteis',20,HMM],['Sáb. e dom.',14,HMM],['Feriados',14,HMM],['Total fora da jornada',20,HMM],['Dias',8],['Projetos',10]],
+      ahOrdenar_('rank',C.pessoas.filter(x=>x.fora>0),'fora','desc').map((x,i)=>[i+1,nome(x),x.p.head,x.p.area,hx(x.hUtil),hx(x.exc),hx(x.fs),hx(x.hol),hx(x.fora),x.diasFora,x.projFora]));
+    const det=[]; ahOrdenar_('menos',C.pessoas,'pessoa','asc').forEach(x=>x.diasL.forEach(d=>d.recs.slice().sort((a,b)=>a.row-b.row).forEach((r,i)=>{ const p=AH.projs[r.pj];
+      det.push([nome(x),x.p.head,x.p.area,haIsoParaDate_(d.d),HA_DN[haDow_(d.d)],AH_CLS[d.cls],d.inf.h?d.inf.h.descricao:'',p.cl,p.pj,p.id,r.tarefa,r.idItem,r.tipoO,hx(r.h),i===0?hx(d.h):'',i===0?hx(d.ref):'',i===0?hx(d.exc):'',r.row]); })));
+    add('Detalhamento',[['Pessoa',30],['Head',24],['Área',24],['Data',12,DT],['Dia',8],['Classificação do dia',20],['Feriado',26],['Cliente',26],['Projeto',34],['ID projeto',18],['Tarefa / descrição',44],['ID item',18],['Tipo',14],['Horas',10,HMM],['Horas do dia (1ª linha do dia)',18,HMM],['Referência diária',14,HMM],['Excedente do dia',16,HMM],['Linha na planilha',12]],det);
+    const buf=await wb.xlsx.writeBuffer(), iso=ahIso_(new Date());
+    const url=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+    const a=document.createElement('a'); a.href=url; a.download='Analise_de_Horas_'+iso+'.xlsx'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),4000);
+  }catch(e){ console.warn('Falha ao exportar (Análise de Horas).',e); mostrarToastPermissao('Não foi possível gerar o Excel: '+((e&&e.message)||'erro'),false); }
+  finally{ btn.disabled=false; btn.textContent=txt; }
+}
+// ---------- carga e eventos ----------
+async function ahCarregar_(forcar){
+  const per=ahPeriodo_(), st=document.getElementById('ah-status');
+  if(!per.ini||!per.fim){ st.innerHTML='<div class="ha-note warn">Informe a data inicial e a final.</div>'; return; }
+  if(per.ini>per.fim){ st.innerHTML='<div class="ha-note warn">A data inicial não pode ser maior que a final.</div>'; return; }
+  const dias=Math.round((Date.parse(per.fim+'T12:00:00Z')-Date.parse(per.ini+'T12:00:00Z'))/864e5)+1;
+  if(dias>HA_MAX_DIAS){ st.innerHTML='<div class="ha-note warn">Escolha um período de no máximo '+HA_MAX_DIAS+' dias.</div>'; return; }
+  const va=(typeof VIEW_AS_STATE!=='undefined'&&VIEW_AS_STATE&&VIEW_AS_STATE.email)?VIEW_AS_STATE.email:'', chave=per.ini+'|'+per.fim+'|'+va;
+  if(!forcar&&AH.chave===chave&&AH.dados){ st.innerHTML=''; ahRender_(); return; }
+  const seq=++AH.seq; st.innerHTML=loadingInlineHtml('Carregando apontamentos de horas…');
+  try{
+    const r=await loadDataJSONPComRetry(feUrl_('horasApontadas','&ini='+per.ini+'&fim='+per.fim+(va?'&viewAs='+encodeURIComponent(va):'')),1);
+    if(seq!==AH.seq) return;
+    if(!r||r.ok===false){ st.innerHTML='<div class="ha-note warn">'+feEsc_((r&&r.message)||'Não foi possível carregar os apontamentos.')+'</div>'; return; }
+    AH.chave=chave; AH.mais={}; ahPrepararDados_(r); ahPreencherFiltros_(); st.innerHTML=''; ahRender_();
+  }catch(e){ if(seq===AH.seq) st.innerHTML='<div class="ha-note warn">Não foi possível carregar os apontamentos agora. <button type="button" class="ha-btn sm" id="ah-retry">Tentar de novo</button></div>'; }
+}
+function ahLerFiltros_(){
+  const g=id=>document.getElementById(id), f=AH.f;
+  f.preset=g('ah-per').value; f.ini=g('ah-ini').value; f.fim=g('ah-fim').value; f.proj=g('ah-proj').value; f.faixa=g('ah-faixa').value; f.pmin=g('ah-pmin').value.trim(); f.pmax=g('ah-pmax').value.trim();
+  f.area=g('ah-area').value; f.cargo=g('ah-cargo').value; f.nv=g('ah-nv').value; f.cliente=g('ah-cli').value; f.tipo=g('ah-tipo').value; f.pessoa=g('ah-pes').value.trim();
+}
+function initAnaliseHoras(){
+  const pg=document.getElementById('page-analisehoras');
+  if(!AH.ligado){
+    AH.ligado=true;
+    const h=new Date(), iso=ahIso_(h); document.getElementById('ah-ini').value=iso.slice(0,8)+'01'; document.getElementById('ah-fim').value=iso;
+    const recarrega=()=>{ ahLerFiltros_(); AH.mais={}; ahSumDd_(); ahCarregar_(false); };
+    ['ah-per','ah-ini','ah-fim'].forEach(id=>document.getElementById(id).addEventListener('change',recarrega));
+    ['ah-proj','ah-faixa','ah-area','ah-cargo','ah-nv','ah-cli','ah-tipo'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{ ahLerFiltros_(); AH.mais={}; ahRender_(); }));
+    ['ah-pmin','ah-pmax','ah-pes'].forEach(id=>document.getElementById(id).addEventListener('input',debounce(()=>{ ahLerFiltros_(); AH.mais={}; ahRender_(); },250)));
+    document.getElementById('ah-limpar').addEventListener('click',()=>{
+      Object.assign(AH.f,{preset:'mes',proj:'todos',projSel:new Set(),heads:new Set(),area:'',cargo:'',nv:'',cliente:'',tipo:'',pessoa:'',faixa:'',pmin:'',pmax:''});
+      ['ah-area','ah-cargo','ah-nv','ah-cli','ah-tipo','ah-faixa','ah-pes','ah-pmin','ah-pmax'].forEach(id=>{ document.getElementById(id).value=''; });
+      document.getElementById('ah-per').value='mes'; document.getElementById('ah-proj').value='todos'; AH.mais={}; ahPreencherFiltros_(); ahCarregar_(false);
+    });
+    document.addEventListener('click',e=>{ document.querySelectorAll('#page-analisehoras details.ah-dd[open]').forEach(d=>{ if(!d.contains(e.target)) d.removeAttribute('open'); }); });
+    pg.addEventListener('change',e=>{
+      const hd=e.target.closest('[data-ah-head]'); if(hd){ hd.checked?AH.f.heads.add(hd.dataset.ahHead):AH.f.heads.delete(hd.dataset.ahHead); AH.mais={}; ahRender_(); return; }
+      const pj=e.target.closest('[data-ah-pj]'); if(pj){ pj.checked?AH.f.projSel.add(pj.dataset.ahPj):AH.f.projSel.delete(pj.dataset.ahPj); AH.mais={}; ahRender_(); }
+    });
+    pg.addEventListener('click',e=>{
+      const t=e.target.closest('.ha-tab[data-ah-t]'); if(t){ AH.tab=t.dataset.ahT; ahRenderTab_(AH.calc); return; }
+      const s=e.target.closest('[data-ah-s]'); if(s){ const p=s.dataset.ahS.split('|'), cur=AH.sort[p[0]]; AH.sort[p[0]]={k:p[1],d:cur&&cur.k===p[1]&&cur.d==='desc'?'asc':(cur&&cur.k===p[1]?'desc':(p[1]==='pessoa'||p[1]==='head'||p[1]==='area'||p[1]==='cargo'||p[1]==='nv'?'asc':(p[0]==='menos'?'asc':'desc')))}; if(p[0]==='rank'){ AH.sort.rankModo=AH.rank; } ahRenderTab_(AH.calc); return; }
+      const mn=e.target.closest('[data-ah-mn]'); if(mn){ const k=mn.dataset.ahMn; AH.sort.menos={k,d:'asc'}; ahRenderTab_(AH.calc); return; }
+      const rk=e.target.closest('[data-ah-rk]'); if(rk){ AH.rank=rk.dataset.ahRk; AH.mais.rank=0; ahRenderTab_(AH.calc); return; }
+      const d=e.target.closest('[data-ah-d]'); if(d){ e.preventDefault(); const p=d.dataset.ahD.split('|'); ahDrill_(p[0],p[1]); return; }
+      const m=e.target.closest('[data-ah-mais]'); if(m){ const k=m.dataset.ahMais; AH.mais[k]=(AH.mais[k]||100)+100; ahRenderTab_(AH.calc); return; }
+      if(e.target.closest('#ah-retry')){ ahCarregar_(true); return; }
+      const x=e.target.closest('#ah-export'); if(x){ ahExportar_(x); return; }
+    });
+  }
+  ahCarregar_(false);
+}
+
 function initHorasApontadas(){
   const pg=document.getElementById('page-horasapontadas');
   if(!HA.ligado){
@@ -13269,6 +13817,350 @@ function avRenderControle_(){
   if(!linhas.length) h+='<tr><td colspan="5" style="text-align:center;color:var(--text-faint);font-weight:700;padding:24px">Nenhum registro com esses filtros.</td></tr>';
   linhas.forEach(l=>{ h+='<tr><td><strong>'+feEsc_(l.nome)+'</strong></td><td>'+feEsc_(l.perfil)+'</td><td>'+feEsc_(l.destino)+'</td><td>'+(l.visualizado?'<span class="av-view">✓ Visualizado</span>':'<span class="av-pend">⏳ Pendente</span>')+'</td><td>'+(l.visualizado?feEsc_(avDataHoraBr_(l.dataHora)):'—')+'</td></tr>'; });
   box.innerHTML=h+'</tbody></table>';
+}
+
+
+// ============================================================
+// v17.7 — GERENCIADOR DE NOTIFICAÇÕES POR E-MAIL (Status Report) — Administração, só Administrador.
+// Tudo vem do backend (notif*): regras, vínculos, fila/histórico. Nada é calculado ou inventado aqui.
+// ============================================================
+let NT={painel:null,hist:null,reports:null,editId:null,conds:[],sim:null,carregando:false};
+const NT_OP_LBL={igual:'é igual a',diferente:'é diferente de',um_dos:'é um dos valores',preenchido:'está preenchido',vazio:'está vazio'};
+const NT_DISPARO_LBL={entrada:'Ao entrar na condição',alteracao:'Ao entrar ou quando um campo monitorado mudar',gravacao:'A cada gravação enquanto atender',intervalo:'Repetir a cada N dias enquanto permanecer'};
+const NT_ESTADO_LBL={Enviada:'Enviada (aceita pelo serviço)',Pendente:'Pendente','Em processamento':'Em processamento',Falha:'Falha',Cancelada:'Cancelada',Simulada:'Simulada (não enviada)'};
+function ntUrl_(a,extra){ return feUrl_(a,extra); }
+function ntQ_(o){ return Object.keys(o).filter(k=>o[k]!==undefined&&o[k]!==null&&o[k]!=='').map(k=>'&'+k+'='+encodeURIComponent(typeof o[k]==='object'?JSON.stringify(o[k]):o[k])).join(''); }
+async function ntCall_(acao,params,retries){
+  const r=await loadDataJSONPComRetry(ntUrl_(acao,ntQ_(params||{})),retries||0);
+  return r;
+}
+function ntFb_(msg,ok){
+  const el=document.getElementById('nt-feedback'); if(!el) return;
+  el.className='fe-msg '+(ok?'ok':'er'); el.textContent=msg; el.style.display='block';
+  clearTimeout(window.__ntFb); window.__ntFb=setTimeout(()=>{ el.style.display='none'; },7000);
+}
+function ntDt_(iso){
+  const m=String(iso||'').match(/^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})/);
+  return m?m[3]+'/'+m[2]+'/'+m[1]+' '+m[4]+':'+m[5]:(iso?String(iso):'—');
+}
+function ntStCls_(e){ return e==='Em processamento'?'Em':e; }
+function ntBadgeEstado_(e){ return '<span class="nt-st '+feEsc_(ntStCls_(e))+'">'+feEsc_(NT_ESTADO_LBL[e]||e)+'</span>'; }
+function ntRegraModo_(r){ return !r.ativa?'<span class="nt-st Inativa">Inativa</span>':(r.envio_real?'<span class="nt-st Real">Ativa — envio real</span>':'<span class="nt-st Simulada">Ativa — simulação</span>'); }
+function initNotificacoes(){
+  const tabs=document.getElementById('nt-tabs');
+  if(!tabs.dataset.bound){
+    tabs.dataset.bound='1';
+    tabs.addEventListener('click',e=>{ const b=e.target.closest('[data-nt-tab]'); if(b) ntAba_(b.dataset.ntTab); });
+    ['nt-t-geral','nt-t-regras','nt-t-dest','nt-t-hist','nt-t-sim'].forEach(id=>document.getElementById(id).addEventListener('click',ntClick_));
+    ['nt-t-regras','nt-t-dest','nt-t-hist','nt-t-sim'].forEach(id=>{ const el=document.getElementById(id); el.addEventListener('change',ntChange_); el.addEventListener('input',debounce(ntInput_,200)); });
+  }
+  ntCarregar_();
+}
+function ntAba_(t){
+  document.querySelectorAll('[data-nt-tab]').forEach(b=>b.classList.toggle('on',b.dataset.ntTab===t));
+  ['geral','regras','dest','hist','sim'].forEach(x=>{ document.getElementById('nt-t-'+x).style.display=x===t?'':'none'; });
+  if(t==='hist'&&!NT.hist) ntCarregarHist_();
+  if(t==='sim'&&!NT.reports) ntCarregarReports_();
+  ntRenderAba_(t);
+}
+function ntAbaAtual_(){ const b=document.querySelector('[data-nt-tab].on'); return b?b.dataset.ntTab:'geral'; }
+function ntRenderAba_(t){
+  if(!NT.painel) return;
+  if(t==='geral') ntRenderGeral_(); else if(t==='regras') ntRenderRegras_(); else if(t==='dest') ntRenderDest_(); else if(t==='hist') ntRenderHist_(); else if(t==='sim') ntRenderSim_();
+}
+async function ntCarregar_(){
+  if(NT.carregando) return; NT.carregando=true;
+  if(!NT.painel) document.getElementById('nt-t-geral').innerHTML=loadingInlineHtml('Carregando…');
+  try{
+    const r=await ntCall_('notifPainel',{},1);
+    if(!r||!r.ok){ document.getElementById('nt-t-geral').innerHTML='<div class="empty-state" style="padding:30px"><p>'+feEsc_((r&&r.message)||'Não foi possível carregar o Gerenciador.')+'</p><button type="button" class="filter-clear" data-nt-a="recarregar">Tentar novamente</button></div>'; NT.carregando=false; return; }
+    NT.painel=r; ntRenderAba_(ntAbaAtual_());
+  }catch(e){ document.getElementById('nt-t-geral').innerHTML='<div class="empty-state" style="padding:30px"><p>Falha ao contatar o servidor.</p><button type="button" class="filter-clear" data-nt-a="recarregar">Tentar novamente</button></div>'; }
+  NT.carregando=false;
+}
+async function ntCarregarHist_(){
+  document.getElementById('nt-t-hist').innerHTML=loadingInlineHtml('Carregando histórico…');
+  try{ const r=await ntCall_('notifHistorico',{},1); NT.hist=(r&&r.ok)?r:null; if(!NT.hist){ document.getElementById('nt-t-hist').innerHTML='<div class="empty-state" style="padding:24px"><p>'+feEsc_((r&&r.message)||'Não foi possível carregar o histórico.')+'</p></div>'; return; } }
+  catch(e){ document.getElementById('nt-t-hist').innerHTML='<div class="empty-state" style="padding:24px"><p>Falha ao contatar o servidor.</p></div>'; return; }
+  ntRenderHist_();
+}
+async function ntCarregarReports_(){
+  try{ const r=await ntCall_('notifListarReports',{},1); NT.reports=(r&&r.ok)?r.reports:[]; }catch(e){ NT.reports=[]; }
+  ntRenderSim_();
+}
+// ---------- Visão geral ----------
+function ntRenderGeral_(){
+  const p=NT.painel, k=p.kpis, box=document.getElementById('nt-t-geral');
+  const real=p.regras.filter(r=>r.ativa&&r.envio_real).length, sim=p.regras.filter(r=>r.ativa&&!r.envio_real).length;
+  let h='';
+  if(!p.gatilho.ativo) h+='<div class="nt-banner warn"><b>Processamento automático não configurado.</b> Sem o gatilho, só o envio imediato na gravação funciona: falhas e pendências não são retomadas sozinhas. '+(p.gatilho.indisponivel?'Não foi possível consultar os gatilhos (republique o Apps Script e autorize).':'')+'</div>';
+  else h+='<div class="nt-banner ok"><b>Gatilho ativo:</b> pendências e falhas são retomadas a cada 5 minutos.</div>';
+  h+='<div class="nt-banner '+(real?'':'warn')+'">'+(real?'<b>'+real+' regra(s) com envio real.</b> ':'<b>Nenhuma regra com envio real.</b> ')+(sim?sim+' em simulação (nada é enviado). ':'')+'Regras novas nascem inativas e em simulação.</div>';
+  h+='<div class="nt-kpis">'+
+    ntK_(k.enviadas,'Enviadas (aceitas pelo serviço)')+ntK_(k.pendentes,'Pendentes')+ntK_(k.falhas,'Com falha')+ntK_(k.enviadas30,'Enviadas nos últimos 30 dias')+
+    ntK_(k.regrasAtivas,'Regras ativas')+ntK_(ntDt_(k.ultimoProcessamento),'Último processamento')+ntK_(ntDt_(k.ultimoEnvio),'Último envio aceito')+ntK_(k.cotaRestante===null?'—':k.cotaRestante,'Cota diária restante de e-mails')+'</div>';
+  if(k.simuladas) h+='<p class="nt-sub">'+k.simuladas+' notificação(ões) simulada(s) registradas no histórico (nunca enviadas).</p>';
+  if(k.falhas) h+='<div class="nt-banner er"><b>'+k.falhas+' notificação(ões) com falha.</b> Veja o motivo no Histórico e reprocesse ou cancele.</div>';
+  if(!k.enviadas&&!k.pendentes&&!k.falhas) h+='<p class="nt-sub">Nenhuma notificação real registrada ainda.</p>';
+  h+='<div class="nt-bar"><button type="button" class="fe-btn-sec" data-nt-a="recarregar">↻ Atualizar</button><button type="button" class="fe-btn-sec" data-nt-a="processar">▶ Processar fila agora</button>'+
+    (p.gatilho.ativo?'<button type="button" class="fe-btn-sec" data-nt-a="gatilho-remover">Remover gatilho</button>':'<button type="button" class="fe-btn" data-nt-a="gatilho-criar">Configurar gatilho (5 em 5 min)</button>')+'</div>'+
+    '<p class="nt-sub">O envio acontece logo após gravar o Status Report; o gatilho só retoma o que ficou pendente ou falhou (até 3 tentativas, esperas de 5, 15 e 60 minutos). Não é um serviço instantâneo garantido. Criar o gatilho exige autorização do Google para quem publicou o Apps Script.</p>';
+  box.innerHTML=h;
+}
+function ntK_(v,l){ return '<div class="nt-k"><b>'+feEsc_(v)+'</b><small>'+feEsc_(l)+'</small></div>'; }
+// ---------- Regras ----------
+function ntCondResumo_(r){
+  return r.condicoes.map(c=>{ const cp=NT.painel.campos[c.campo]; return feEsc_((cp?cp.label:c.campo)+' '+(NT_OP_LBL[c.op]||c.op)+(c.valores&&c.valores.length?' '+c.valores.join(' ou '):'')); }).join(r.logica==='E'?' <b>E</b> ':' <b>OU</b> ');
+}
+function ntRenderRegras_(){
+  const p=NT.painel, box=document.getElementById('nt-t-regras');
+  let h='<div class="nt-bar"><button type="button" class="fe-btn" data-nt-a="nova-regra">＋ Nova regra</button></div>';
+  h+='<div class="table-wrap"><table><thead><tr><th>Regra</th><th>Condição</th><th>Quando notifica</th><th>Destinatários</th><th>Situação</th><th></th></tr></thead><tbody>';
+  if(!p.regras.length) h+='<tr><td colspan="6" style="text-align:center;color:var(--text-faint);font-weight:700;padding:24px">Nenhuma regra cadastrada.</td></tr>';
+  p.regras.forEach(r=>{
+    h+='<tr'+(r.id_regra===NT.editId?' class="fe-edit-row"':'')+'><td><strong>'+feEsc_(r.nome)+'</strong><br><small style="color:var(--text-faint)">'+feEsc_(r.descricao||'')+'</small></td><td>'+ntCondResumo_(r)+'<br><small style="color:var(--text-faint)">Report '+(r.estado_alvo==='finalizado'?'Finalizado':'Rascunho ou Finalizado')+'</small></td>'+
+      '<td>'+feEsc_(NT_DISPARO_LBL[r.disparo]||r.disparo)+(r.disparo==='intervalo'?' ('+r.intervalo_dias+' d)':'')+'<br><small style="color:var(--text-faint)">Sair e voltar: '+(r.repetir_ao_voltar==='Sim'?'notifica de novo':'não notifica de novo')+'</small></td>'+
+      '<td>'+r.n_emails+' e-mail(s)<br><small style="color:var(--text-faint)">'+r.n_vinculos+' vínculo(s)</small></td><td>'+ntRegraModo_(r)+'</td>'+
+      '<td><div class="fe-acoes" style="flex-wrap:wrap"><button type="button" class="fe-mini" data-nt-a="editar" data-id="'+feEsc_(r.id_regra)+'">Editar</button>'+
+      (r.ativa?'<button type="button" class="fe-mini" data-nt-a="desativar" data-id="'+feEsc_(r.id_regra)+'">Desativar</button>':'<button type="button" class="fe-mini" data-nt-a="ativar-sim" data-id="'+feEsc_(r.id_regra)+'">Ativar em simulação</button>')+
+      (r.ativa&&!r.envio_real?'<button type="button" class="fe-mini" data-nt-a="ativar-real" data-id="'+feEsc_(r.id_regra)+'">Ativar envio real…</button>':'')+
+      (r.ativa&&r.envio_real?'<button type="button" class="fe-mini" data-nt-a="voltar-sim" data-id="'+feEsc_(r.id_regra)+'">Voltar p/ simulação</button>':'')+
+      '<button type="button" class="fe-mini del" data-nt-a="excluir" data-id="'+feEsc_(r.id_regra)+'">Excluir</button></div></td></tr>';
+  });
+  h+='</tbody></table></div><div id="nt-form"></div>';
+  box.innerHTML=h; if(NT.editId!==null) ntRenderForm_();
+}
+function ntNovaCond_(){ return {campo:'criticidade',op:'um_dos',valores:[]}; }
+function ntAbrirForm_(id){
+  NT.editId=id||'';
+  const r=id?NT.painel.regras.find(x=>x.id_regra===id):null;
+  NT.formBase=r?JSON.parse(JSON.stringify(r)):{nome:'',descricao:'',logica:'OU',condicoes:[ntNovaCond_()],disparo:'entrada',estado_alvo:'finalizado',repetir_ao_voltar:'Sim',intervalo_dias:7,assunto:NT.painel.assuntoPadrao};
+  NT.conds=JSON.parse(JSON.stringify(NT.formBase.condicoes));
+  ntRenderRegras_();
+  const f=document.getElementById('nt-form'); if(f) f.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function ntRenderForm_(){
+  const b=NT.formBase, box=document.getElementById('nt-form'); if(!box) return;
+  const selCamp=(v)=>Object.keys(NT.painel.campos).map(k=>'<option value="'+k+'"'+(k===v?' selected':'')+'>'+feEsc_(NT.painel.campos[k].label)+'</option>').join('');
+  let h='<div class="fe-form"><h4>'+(NT.editId?'✎ EDITANDO REGRA':'＋ NOVA REGRA')+'</h4>'+
+    '<div class="av-g2"><div><label>Nome *</label><input type="text" id="nt-f-nome" maxlength="120" value="'+feEsc_(b.nome)+'"></div><div><label>Descrição</label><input type="text" id="nt-f-desc" maxlength="500" value="'+feEsc_(b.descricao||'')+'"></div></div>'+
+    '<div style="margin-top:12px"><label>Condições (sobre o Status Report)</label><div class="nt-bar" style="margin:4px 0"><select id="nt-f-logica" style="width:auto"><option value="OU"'+(b.logica==='OU'?' selected':'')+'>Atender a qualquer uma (OU)</option><option value="E"'+(b.logica==='E'?' selected':'')+'>Atender a todas (E)</option></select></div><div id="nt-conds">';
+  NT.conds.forEach((c,i)=>{
+    const cp=NT.painel.campos[c.campo], ops=NT.painel.ops[cp.tipo];
+    h+='<div class="nt-cond" data-i="'+i+'"><select data-nt-f="campo">'+selCamp(c.campo)+'</select><select data-nt-f="op">'+ops.map(o=>'<option value="'+o+'"'+(o===c.op?' selected':'')+'>'+NT_OP_LBL[o]+'</option>').join('')+'</select>';
+    if(c.op==='preenchido'||c.op==='vazio') h+='<span class="nt-sub">—</span>';
+    else h+='<div class="av-chips" style="margin:0">'+cp.valores.map(v=>'<span class="av-chip'+(c.valores.indexOf(v)!==-1?' on':'')+'" data-nt-a="val" data-v="'+feEsc_(v)+'">'+feEsc_(v)+'</span>').join('')+'</div>';
+    h+='<button type="button" class="fe-mini del" data-nt-a="rm-cond">✕</button></div>';
+  });
+  h+='</div><button type="button" class="fe-mini" data-nt-a="add-cond">＋ Adicionar condição</button><p class="nt-sub">Os operadores dependem do tipo do campo (lista de valores fixos ou texto livre). Os valores são os que existem no Status Report.</p></div>'+
+    '<div class="av-g3"><div><label>Quando notificar</label><select id="nt-f-disparo">'+Object.keys(NT_DISPARO_LBL).map(k=>'<option value="'+k+'"'+(k===b.disparo?' selected':'')+'>'+feEsc_(NT_DISPARO_LBL[k])+'</option>').join('')+'</select></div>'+
+    '<div><label>Estado do report</label><select id="nt-f-estado"><option value="finalizado"'+(b.estado_alvo==='finalizado'?' selected':'')+'>Somente quando Finalizado</option><option value="qualquer"'+(b.estado_alvo==='qualquer'?' selected':'')+'>Rascunho ou Finalizado</option></select></div>'+
+    '<div><label>Se sair da condição e voltar</label><select id="nt-f-voltar"><option value="Sim"'+(b.repetir_ao_voltar==='Sim'?' selected':'')+'>Notificar de novo</option><option value="Não"'+(b.repetir_ao_voltar==='Não'?' selected':'')+'>Não notificar de novo</option></select></div></div>'+
+    '<div class="av-g2"><div id="nt-f-intw" style="'+(b.disparo==='intervalo'?'':'display:none')+'"><label>Intervalo (dias)</label><input type="text" id="nt-f-int" value="'+feEsc_(b.intervalo_dias||'')+'"></div>'+
+    '<div style="grid-column:1/-1"><label>Assunto (marcadores: {criticidade} {projeto} {cliente} {semana} {risco})</label><input type="text" id="nt-f-assunto" maxlength="200" value="'+feEsc_(b.assunto)+'"></div></div>'+
+    '<div class="nt-bar" style="margin-top:14px;justify-content:flex-end"><button type="button" class="fe-btn-sec" data-nt-a="cancelar-form">Cancelar</button><button type="button" class="fe-btn" data-nt-a="salvar-regra">Salvar regra</button></div>'+
+    '<p class="nt-sub">Regra nova nasce inativa e em simulação. Disparo por “entrada”: só quando o report passa a atender (inclui a primeira gravação já atendendo). Não existe Crítico → Alto separado: “Crítico / Alto” é um único valor do portal.</p></div>';
+  box.innerHTML=h;
+}
+function ntLerForm_(){
+  const g=id=>document.getElementById(id);
+  return {nome:g('nt-f-nome').value.trim(),descricao:g('nt-f-desc').value.trim(),logica:g('nt-f-logica').value,condicoes:NT.conds,disparo:g('nt-f-disparo').value,estado_alvo:g('nt-f-estado').value,repetir_ao_voltar:g('nt-f-voltar').value,intervalo_dias:g('nt-f-int').value.trim(),assunto:g('nt-f-assunto').value.trim()};
+}
+async function ntSalvarRegra_(){
+  const pl=ntLerForm_(); NT.conds=pl.condicoes;
+  const msg=NT.editId?'Salvar as alterações da regra "'+pl.nome+'"?':'Criar a regra "'+pl.nome+'"? Ela nasce inativa e em simulação.';
+  if(!confirm(msg)) return;
+  try{
+    const r=await ntCall_('notifSalvarRegra',{id:NT.editId,payload:pl},0);
+    if(r&&r.ok){ ntFb_('Regra salva.',true); NT.editId=null; await ntRecarregarPainel_(); } else ntFb_((r&&r.message)||'Não foi possível salvar a regra.',false);
+  }catch(e){ ntFb_('Falha ao contatar o servidor. Confira a lista antes de tentar de novo.',false); }
+}
+async function ntRecarregarPainel_(){ NT.carregando=false; await ntCarregar_(); }
+async function ntEstadoRegra_(id,ativa,real,conf){
+  try{
+    const r=await ntCall_('notifRegraEstado',{id,payload:{ativa,envio_real:real,confirmarEnvioReal:!!conf}},0);
+    if(r&&r.ok){ ntFb_('Regra atualizada.',true); await ntRecarregarPainel_(); return true; }
+    ntFb_((r&&r.message)||'Não foi possível alterar a regra.',false);
+  }catch(e){ ntFb_('Falha ao contatar o servidor.',false); }
+  return false;
+}
+function ntConfirmarReal_(id){
+  const r=NT.painel.regras.find(x=>x.id_regra===id); if(!r) return;
+  const vs=NT.painel.vinculos.filter(v=>v.id_regra===id&&v.ativo);
+  const bg=feModal_('Ativar envio real — '+r.nome);
+  document.getElementById('fe-m-b').innerHTML='<p><b>Esta regra passará a ENVIAR e-mails de verdade</b> a cada Status Report que atender à condição.</p>'+
+    '<p>Condição: '+ntCondResumo_(r)+'<br>Report: '+(r.estado_alvo==='finalizado'?'Finalizado':'Rascunho ou Finalizado')+' · '+feEsc_(NT_DISPARO_LBL[r.disparo])+'</p>'+
+    '<p><b>Destinatários ('+r.n_emails+' e-mail(s) únicos hoje):</b></p><ul>'+(vs.map(v=>'<li>'+feEsc_(v.tipo==='pessoa'?v.referencia:(v.tipo==='area'?'Área: ':'Perfil: ')+v.referencia)+' <small>('+feEsc_(v.situacao)+')</small></li>').join('')||'<li>Nenhum</li>')+'</ul>'+
+    '<div class="nt-banner warn">O e-mail contém resumo executivo, riscos, decisões e atividades do projeto. Os destinatários o recebem <b>mesmo sem acesso ao projeto no portal</b>.</div>'+
+    '<label class="fe-chk" style="text-transform:none"><input type="checkbox" id="nt-ok1"> <span>Conferi a condição, os destinatários e entendo o conteúdo enviado.</span></label>';
+  document.getElementById('fe-m-f').innerHTML='<button type="button" class="fe-btn-sec" id="nt-m-no">Cancelar</button><button type="button" class="fe-btn" id="nt-m-yes" disabled>Ativar envio real</button>';
+  document.getElementById('nt-ok1').onchange=e=>{ document.getElementById('nt-m-yes').disabled=!e.target.checked; };
+  document.getElementById('nt-m-no').onclick=feFecharModal_;
+  document.getElementById('nt-m-yes').onclick=async()=>{ document.getElementById('nt-m-yes').disabled=true; const ok=await ntEstadoRegra_(id,true,true,true); if(ok) feFecharModal_(); };
+}
+// ---------- Destinatários ----------
+function ntRenderDest_(){
+  const p=NT.painel, box=document.getElementById('nt-t-dest');
+  if(!NT.destRegra||!p.regras.some(r=>r.id_regra===NT.destRegra)) NT.destRegra=p.regras.length?p.regras[0].id_regra:'';
+  if(!p.regras.length){ box.innerHTML='<div class="empty-state" style="padding:24px"><p>Crie uma regra antes de cadastrar destinatários.</p></div>'; return; }
+  const q=peNormalizarHeader((document.getElementById('nt-d-busca')||{}).value||'');
+  const vs=p.vinculos.filter(v=>v.id_regra===NT.destRegra), regra=p.regras.find(r=>r.id_regra===NT.destRegra);
+  const jaP=new Set(vs.filter(v=>v.tipo==='pessoa').map(v=>v.referencia));
+  let h='<div class="fe-tools" style="margin-top:14px"><select id="nt-d-regra" style="flex:1 1 360px">'+p.regras.map(r=>'<option value="'+feEsc_(r.id_regra)+'"'+(r.id_regra===NT.destRegra?' selected':'')+'>'+feEsc_(r.nome)+'</option>').join('')+'</select></div>'+
+    '<p class="nt-sub">Destinatários vêm só de Pessoas e Perfis (nome = Assinatura, e-mail = coluna E-mail). A lista é resolvida no momento do envio, sem duplicar e-mails, e fica congelada no histórico. Hoje: <b>'+regra.n_emails+' e-mail(s) únicos</b>.</p>'+
+    '<div class="av-g3"><div><label>Pessoa</label><input type="text" id="nt-d-busca" placeholder="Buscar pessoa…" value="'+feEsc_((document.getElementById('nt-d-busca')||{}).value||'')+'"><div class="av-chips" id="nt-d-pes">';
+  const achados=q?p.pessoas.filter(x=>peNormalizarHeader((x.assinatura||'')+' '+x.nomeCompleto).includes(q)).slice(0,20):[];
+  h+=achados.map(x=>{
+    const dis=!x.selecionavel||jaP.has(x.assinatura), mot=x.incompleto?'cadastro incompleto — sem Assinatura':(!x.emailValido?'sem e-mail válido':(jaP.has(x.assinatura)?'já vinculada':''));
+    return '<span class="av-chip" '+(dis?'style="opacity:.55;cursor:not-allowed" title="'+feEsc_(mot)+'"':'data-nt-a="add-pessoa" data-ref="'+feEsc_(x.assinatura)+'"')+'>'+feEsc_(x.assinatura||x.nomeCompleto)+(mot?' <small>· '+feEsc_(mot)+'</small>':'')+'</span>';
+  }).join('')||'<small style="color:var(--text-faint)">'+(q?'Ninguém encontrado.':'Digite um nome para buscar.')+'</small>';
+  h+='</div></div><div><label>Grupo por Área</label><div class="nt-bar" style="margin:0"><select id="nt-d-area">'+p.areas.map(a=>'<option value="'+feEsc_(a.nome)+'">'+feEsc_(a.nome)+' ('+a.elegiveis+' com e-mail)</option>').join('')+'</select><button type="button" class="fe-mini" data-nt-a="add-area">Adicionar</button></div></div>'+
+    '<div><label>Grupo por Perfil de acesso</label><div class="nt-bar" style="margin:0"><select id="nt-d-perfil">'+p.perfis.map(a=>'<option value="'+feEsc_(a.nome)+'">'+feEsc_(a.nome)+' ('+a.elegiveis+' com e-mail)</option>').join('')+'</select><button type="button" class="fe-mini" data-nt-a="add-perfil">Adicionar</button></div></div></div>'+
+    '<div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>Tipo</th><th>Referência</th><th>E-mail / alcance</th><th>Situação</th><th>Vínculo</th><th></th></tr></thead><tbody>';
+  if(!vs.length) h+='<tr><td colspan="6" style="text-align:center;color:var(--text-faint);font-weight:700;padding:24px">Nenhum destinatário vinculado a esta regra.</td></tr>';
+  vs.forEach(v=>{
+    h+='<tr><td>'+feEsc_({pessoa:'Pessoa',area:'Grupo — Área',perfil:'Grupo — Perfil'}[v.tipo]||v.tipo)+'</td><td><strong>'+feEsc_(v.referencia)+'</strong></td><td>'+(v.tipo==='pessoa'?feEsc_(v.email||'—'):v.resolvidos+' pessoa(s) elegível(is)')+'</td>'+
+      '<td>'+(v.situacao==='OK'?'<span class="nt-st Real">OK</span>':'<span class="nt-st Falha">'+feEsc_(v.situacao)+'</span>')+(v.tipo!=='pessoa'&&v.ignorados&&v.ignorados.length?'':'')+'</td><td>'+(v.ativo?'<span class="nt-st Real">Ativo</span>':'<span class="nt-st Inativa">Inativo</span>')+'</td>'+
+      '<td><div class="fe-acoes"><button type="button" class="fe-mini" data-nt-a="dest-toggle" data-id="'+feEsc_(v.id_vinculo)+'" data-ativo="'+(v.ativo?'nao':'sim')+'">'+(v.ativo?'Desativar':'Ativar')+'</button><button type="button" class="fe-mini del" data-nt-a="dest-rm" data-id="'+feEsc_(v.id_vinculo)+'">Remover</button></div></td></tr>';
+  });
+  h+='</tbody></table></div>';
+  const foco=document.activeElement&&document.activeElement.id==='nt-d-busca';
+  box.innerHTML=h;
+  if(foco){ const i=document.getElementById('nt-d-busca'); i.focus(); i.setSelectionRange(i.value.length,i.value.length); }
+}
+async function ntAddDest_(tipo,ref){
+  const r=NT.painel.regras.find(x=>x.id_regra===NT.destRegra); if(!r||!ref) return;
+  if(!confirm('Adicionar '+(tipo==='pessoa'?'a pessoa ':(tipo==='area'?'o grupo da Área ':'o grupo do Perfil '))+'"'+ref+'" à regra "'+r.nome+'"?')) return;
+  try{ const x=await ntCall_('notifAddDest',{payload:{id_regra:NT.destRegra,tipo,referencia:ref}},0);
+    if(x&&x.ok){ ntFb_('Destinatário adicionado.',true); const b=document.getElementById('nt-d-busca'); if(b) b.value=''; await ntRecarregarPainel_(); } else ntFb_((x&&x.message)||'Não foi possível adicionar.',false);
+  }catch(e){ ntFb_('Falha ao contatar o servidor.',false); }
+}
+// ---------- Histórico ----------
+function ntRenderHist_(){
+  const box=document.getElementById('nt-t-hist'), H=NT.hist; if(!H) return;
+  const g=id=>(document.getElementById(id)||{}).value||'';
+  const regras=[...new Set(H.itens.map(i=>i.regra))].sort(), estados=['Pendente','Em processamento','Enviada','Falha','Cancelada','Simulada'], eventos=[...new Set(H.itens.map(i=>i.evento))].sort();
+  const sel=(id,arr,lbl,map)=>'<select id="'+id+'"><option value="">'+lbl+'</option>'+arr.map(x=>'<option value="'+feEsc_(x)+'"'+(g(id)===x?' selected':'')+'>'+feEsc_(map?map(x):x)+'</option>').join('')+'</select>';
+  const q=peNormalizarHeader(g('nt-h-proj')), qd=peNormalizarHeader(g('nt-h-dest')), de=g('nt-h-de'), ate=g('nt-h-ate');
+  const itens=H.itens.filter(i=>(!g('nt-h-regra')||i.regra===g('nt-h-regra'))&&(!g('nt-h-estado')||i.estado===g('nt-h-estado'))&&(!g('nt-h-tipo')||i.tipo===g('nt-h-tipo'))&&(!g('nt-h-evento')||i.evento===g('nt-h-evento'))&&
+    (!q||peNormalizarHeader(i.projeto).includes(q))&&(!qd||i.destinatarios.some(d=>peNormalizarHeader(d).includes(qd)))&&(!de||i.detectado_em.slice(0,10)>=de)&&(!ate||i.detectado_em.slice(0,10)<=ate));
+  let h='<div class="fe-tools" style="margin-top:14px"><input type="date" id="nt-h-de" title="De" value="'+feEsc_(de)+'"><input type="date" id="nt-h-ate" title="Até" value="'+feEsc_(ate)+'">'+sel('nt-h-regra',regras,'Todas as regras')+sel('nt-h-estado',estados,'Todos os estados',x=>NT_ESTADO_LBL[x]||x)+sel('nt-h-tipo',['Real','Simulação','Teste'],'Real, simulação e teste')+sel('nt-h-evento',eventos,'Todos os eventos')+
+    '<input type="text" id="nt-h-proj" placeholder="Projeto…" value="'+feEsc_(g('nt-h-proj'))+'"><input type="text" id="nt-h-dest" placeholder="Destinatário…" value="'+feEsc_(g('nt-h-dest'))+'"><button type="button" class="fe-btn-sec" data-nt-a="hist-reload">↻ Atualizar</button></div>'+
+    '<p class="nt-sub">'+itens.length+' de '+H.itens.length+' registro(s) exibidos'+(H.total>H.itens.length?' (histórico tem '+H.total+'; a tela traz os 500 mais recentes)':'')+'. O histórico não pode ser editado; os destinatários mostrados são os gravados no momento da detecção.</p>'+
+    '<div class="table-wrap"><table><thead><tr><th>Detectada em</th><th>Projeto</th><th>Regra</th><th>Evento</th><th>Tipo</th><th>Destinatários</th><th>Estado</th><th>Tent.</th><th></th></tr></thead><tbody>';
+  if(!itens.length) h+='<tr><td colspan="9" style="text-align:center;color:var(--text-faint);font-weight:700;padding:24px">Nenhuma notificação com esses filtros.</td></tr>';
+  itens.slice(0,200).forEach(i=>{
+    h+='<tr><td>'+feEsc_(ntDt_(i.detectado_em))+'</td><td><strong>'+feEsc_(i.projeto)+'</strong></td><td>'+feEsc_(i.regra)+'</td><td>'+feEsc_(i.evento)+'</td><td><span class="nt-st '+feEsc_(i.tipo==='Simulação'?'Sim':i.tipo)+'">'+feEsc_(i.tipo)+'</span></td><td>'+i.destinatarios.length+'</td><td>'+ntBadgeEstado_(i.estado)+(i.erro?'<br><small style="color:var(--text-faint)">'+feEsc_(i.erro)+'</small>':'')+'</td><td>'+i.tentativas+'</td>'+
+      '<td><div class="fe-acoes" style="flex-wrap:wrap"><button type="button" class="fe-mini" data-nt-a="hist-det" data-id="'+feEsc_(i.id)+'">Detalhes</button>'+
+      (i.tipo==='Real'&&(i.estado==='Falha'||i.estado==='Pendente')?'<button type="button" class="fe-mini" data-nt-a="hist-reproc" data-id="'+feEsc_(i.id)+'">Reprocessar</button>':'')+
+      (i.tipo==='Real'&&(i.estado==='Falha'||i.estado==='Pendente')?'<button type="button" class="fe-mini del" data-nt-a="hist-cancel" data-id="'+feEsc_(i.id)+'">Cancelar</button>':'')+'</div></td></tr>';
+  });
+  h+='</tbody></table></div>'+(itens.length>200?'<p class="nt-sub">Mostrando 200 de '+itens.length+'. Refine os filtros.</p>':'');
+  const foco=document.activeElement&&document.activeElement.id; box.innerHTML=h;
+  if(foco&&/^nt-h-(proj|dest)$/.test(foco)){ const i=document.getElementById(foco); i.focus(); i.setSelectionRange(i.value.length,i.value.length); }
+}
+function ntDetalhe_(id){
+  const i=NT.hist.itens.find(x=>x.id===id); if(!i) return;
+  feModal_('Notificação '+i.id);
+  const row=(k,v)=>'<dt>'+k+'</dt><dd>'+v+'</dd>';
+  document.getElementById('fe-m-b').innerHTML='<dl class="nt-det">'+row('Regra',feEsc_(i.regra))+row('Status Report',feEsc_(i.projeto)+' <small>('+feEsc_(i.id_sr)+')</small>')+row('Evento',feEsc_(i.evento))+row('Tipo',feEsc_(i.tipo))+row('Estado',ntBadgeEstado_(i.estado))+row('Valor detectado',feEsc_(i.valor||'—'))+
+    row('Assunto',feEsc_(i.assunto))+row('Destinatários',i.destinatarios.map(feEsc_).join(', ')||'—')+row('Detectada em',feEsc_(ntDt_(i.detectado_em)))+row('Última tentativa',feEsc_(ntDt_(i.ultima)))+row('Próxima tentativa',feEsc_(i.proxima?ntDt_(i.proxima):'—'))+row('Enviada (aceita) em',feEsc_(i.enviado_em?ntDt_(i.enviado_em):'—'))+row('Tentativas',i.tentativas+' de '+NT.painel.maxTentativas+' automáticas')+row('Erro',feEsc_(i.erro||'—'))+row('Execução',feEsc_(i.execucao||'—'))+'</dl>'+
+    '<p class="nt-sub">“Enviada” = aceita pelo serviço de e-mail. O portal não confirma entrega nem leitura.</p>';
+  document.getElementById('fe-m-f').innerHTML='<button type="button" class="fe-btn-sec" id="nt-m-no">Fechar</button>'; document.getElementById('nt-m-no').onclick=feFecharModal_;
+}
+// ---------- Simulação e teste ----------
+function ntRenderSim_(){
+  const p=NT.painel, box=document.getElementById('nt-t-sim'), rep=NT.reports;
+  if(!rep){ box.innerHTML=loadingInlineHtml('Carregando Status Reports…'); return; }
+  const g=id=>(document.getElementById(id)||{}).value||'';
+  const vr=g('nt-s-regra')||(p.regras[0]?p.regras[0].id_regra:''), vs=g('nt-s-sr');
+  let h='<p class="nt-sub" style="margin-top:14px">A simulação não grava nem envia nada. O teste envia um único e-mail, <b>somente para o seu endereço</b> ('+feEsc_(AUTH_EMAIL_()||'conta logada')+'), com o assunto marcado “[TESTE]”, e fica no histórico como Teste.</p>'+
+    '<div class="fe-tools"><select id="nt-s-regra" style="flex:1 1 280px">'+p.regras.map(r=>'<option value="'+feEsc_(r.id_regra)+'"'+(r.id_regra===vr?' selected':'')+'>'+feEsc_(r.nome)+'</option>').join('')+'</select>'+
+    '<select id="nt-s-sr" style="flex:1 1 360px"><option value="">Escolha um Status Report…</option>'+rep.map(x=>'<option value="'+feEsc_(x.id)+'"'+(x.id===vs?' selected':'')+'>'+feEsc_(x.projeto+' — semana '+x.semana+' — '+(x.estado||'')+' — '+(x.criticidade||'sem criticidade'))+'</option>').join('')+'</select>'+
+    '<button type="button" class="fe-btn" data-nt-a="simular">Simular</button><button type="button" class="fe-btn-sec" data-nt-a="teste">Enviar teste para mim</button></div>';
+  const s=NT.sim;
+  if(s){
+    h+='<div class="nt-banner '+(s.elegivel?'ok':'warn')+'"><b>'+(s.elegivel?'Atende à regra':'Não atende à regra')+'</b> · modo atual da regra: '+feEsc_(s.modo)+'</div>'+
+      '<div class="table-wrap"><table><thead><tr><th>Verificação</th><th>Resultado</th></tr></thead><tbody>'+
+      s.condicoes.map(c=>'<tr><td>'+feEsc_(c.campo+' '+(NT_OP_LBL[c.op]||c.op)+(c.valores.length?' '+c.valores.join(' ou '):''))+'</td><td>valor no report: <b>'+feEsc_(c.valorAtual||'(vazio)')+'</b> → '+(c.atendida?'<span class="nt-st Real">atendida</span>':'<span class="nt-st Inativa">não atendida</span>')+'</td></tr>').join('')+
+      '<tr><td>Combinação das condições</td><td>'+(s.logica==='E'?'todas (E)':'qualquer uma (OU)')+'</td></tr>'+
+      '<tr><td>Estado do report (exigido: '+(s.estadoExigido==='finalizado'?'Finalizado':'qualquer')+')</td><td>'+feEsc_(s.estadoRelatorio)+' → '+(s.estadoOk?'<span class="nt-st Real">ok</span>':'<span class="nt-st Inativa">não elegível</span>')+'</td></tr>'+
+      '<tr><td>Quem receberia</td><td>'+(s.destinatarios.length?feEsc_(s.destinatarios.join(', ')):'<span class="nt-st Falha">ninguém (sem destinatários válidos)</span>')+(s.ignorados.length?'<br><small>Ignorados: '+s.ignorados.map(x=>feEsc_(x.ref+' ('+x.motivo+')')).join('; ')+'</small>':'')+'</td></tr>'+
+      '<tr><td>Já foi notificado por esta regra?</td><td>'+(s.jaNotificado?s.jaNotificado+' notificação(ões); a última em '+feEsc_(ntDt_(s.ultimaNotificacao)):'Não')+'</td></tr>'+
+      '<tr><td>Assunto</td><td>'+feEsc_(s.assunto)+'</td></tr></tbody></table></div>'+
+      '<h4 style="margin:16px 0 6px;font-size:12px;letter-spacing:.06em">PRÉ-VISUALIZAÇÃO DO E-MAIL (dados reais do report escolhido)</h4><iframe class="nt-prev" sandbox="" id="nt-s-prev" title="Pré-visualização do e-mail"></iframe>';
+  }
+  box.innerHTML=h;
+  if(s){ const f=document.getElementById('nt-s-prev'); if(f) f.srcdoc='<body style="margin:12px;background:#fff">'+s.html+'</body>'; }
+}
+function AUTH_EMAIL_(){ try{ return CURRENT_USER_EMAIL||''; }catch(e){ return ''; } }
+async function ntSimular_(teste){
+  const regra=document.getElementById('nt-s-regra').value, sr=document.getElementById('nt-s-sr').value;
+  if(!regra||!sr){ ntFb_('Escolha a regra e o Status Report.',false); return; }
+  if(teste&&!confirm('Enviar um e-mail de TESTE somente para o seu endereço?')) return;
+  try{
+    const r=await ntCall_(teste?'notifTeste':'notifSimular',{id:regra,extra:sr},0);
+    if(teste){ ntFb_((r&&r.message)||'Sem resposta.',!!(r&&r.ok)); NT.hist=null; return; }
+    if(r&&r.ok){ NT.sim=r; ntRenderSim_(); } else ntFb_((r&&r.message)||'Não foi possível simular.',false);
+  }catch(e){ ntFb_('Falha ao contatar o servidor.',false); }
+}
+// ---------- eventos ----------
+async function ntClick_(e){
+  const b=e.target.closest('[data-nt-a]'); if(!b) return;
+  const a=b.dataset.ntA, id=b.dataset.id;
+  switch(a){
+    case 'recarregar': NT.hist=null; NT.reports=null; await ntRecarregarPainel_(); break;
+    case 'processar': b.disabled=true; try{ const r=await ntCall_('notifProcessar',{},0); ntFb_(r&&r.ok?'Fila processada: '+r.processadas+' item(ns), '+r.enviadas+' enviado(s), '+r.falhas+' falha(s).'+(r.aviso?' '+r.aviso:''):((r&&r.message)||'Falha ao processar.'),!!(r&&r.ok)); NT.hist=null; await ntRecarregarPainel_(); }catch(er){ ntFb_('Falha ao contatar o servidor.',false); } b.disabled=false; break;
+    case 'gatilho-criar': case 'gatilho-remover': {
+      if(a==='gatilho-remover'&&!confirm('Remover o gatilho? Pendências e falhas deixam de ser retomadas automaticamente.')) break;
+      try{ const r=await ntCall_('notifGatilho',{extra:a==='gatilho-criar'?'criar':'remover'},0); ntFb_(r&&r.ok?(r.ativo?'Gatilho configurado (a cada 5 minutos).':'Gatilho removido.'):((r&&r.message)||'Não foi possível alterar o gatilho.'),!!(r&&r.ok)); await ntRecarregarPainel_(); }catch(er){ ntFb_('Falha ao contatar o servidor.',false); } break; }
+    case 'nova-regra': ntAbrirForm_(''); break;
+    case 'editar': ntAbrirForm_(id); break;
+    case 'cancelar-form': NT.editId=null; ntRenderRegras_(); break;
+    case 'salvar-regra': await ntSalvarRegra_(); break;
+    case 'add-cond': NT.conds.push(ntNovaCond_()); ntRenderForm_(); break;
+    case 'rm-cond': { const i=+b.closest('.nt-cond').dataset.i; if(NT.conds.length>1){ NT.conds.splice(i,1); ntRenderForm_(); } else ntFb_('A regra precisa de ao menos uma condição.',false); break; }
+    case 'val': { const row=b.closest('.nt-cond'), c=NT.conds[+row.dataset.i], v=b.dataset.v; const un=c.op==='igual'||c.op==='diferente';
+      if(un) c.valores=[v]; else { const k=c.valores.indexOf(v); k===-1?c.valores.push(v):c.valores.splice(k,1); } ntSyncForm_(); ntRenderForm_(); break; }
+    case 'ativar-sim': if(confirm('Ativar esta regra em modo simulação (nada será enviado)?')) await ntEstadoRegra_(id,true,false); break;
+    case 'desativar': if(confirm('Desativar a regra? Nenhuma nova notificação será gerada.')) await ntEstadoRegra_(id,false,false); break;
+    case 'voltar-sim': if(confirm('Voltar esta regra para simulação? Deixa de enviar e-mails reais.')) await ntEstadoRegra_(id,true,false); break;
+    case 'ativar-real': ntConfirmarReal_(id); break;
+    case 'excluir': { const r=NT.painel.regras.find(x=>x.id_regra===id); if(r&&confirm('Excluir a regra "'+r.nome+'" e seus vínculos de destinatários?\n\nO histórico de notificações é mantido.')){ try{ const x=await ntCall_('notifExcluirRegra',{id},0); if(x&&x.ok){ ntFb_('Regra excluída.',true); await ntRecarregarPainel_(); } else ntFb_((x&&x.message)||'Não foi possível excluir.',false); }catch(er){ ntFb_('Falha ao contatar o servidor.',false); } } break; }
+    case 'add-pessoa': await ntAddDest_('pessoa',b.dataset.ref); break;
+    case 'add-area': await ntAddDest_('area',(document.getElementById('nt-d-area')||{}).value); break;
+    case 'add-perfil': await ntAddDest_('perfil',(document.getElementById('nt-d-perfil')||{}).value); break;
+    case 'dest-toggle': try{ const x=await ntCall_('notifDestEstado',{id,extra:b.dataset.ativo},0); if(x&&x.ok){ await ntRecarregarPainel_(); } else ntFb_((x&&x.message)||'Não foi possível alterar.',false); }catch(er){ ntFb_('Falha ao contatar o servidor.',false); } break;
+    case 'dest-rm': if(confirm('Remover este destinatário da regra? Notificações já registradas no histórico não mudam.')){ try{ const x=await ntCall_('notifRemoverDest',{id},0); if(x&&x.ok){ ntFb_('Destinatário removido.',true); await ntRecarregarPainel_(); } else ntFb_((x&&x.message)||'Não foi possível remover.',false); }catch(er){ ntFb_('Falha ao contatar o servidor.',false); } } break;
+    case 'hist-reload': NT.hist=null; await ntCarregarHist_(); break;
+    case 'hist-det': ntDetalhe_(id); break;
+    case 'hist-reproc': if(confirm('Tentar enviar esta notificação novamente? Uma notificação já enviada nunca é reenviada.')){ b.disabled=true; try{ const x=await ntCall_('notifReprocessar',{id},0); ntFb_((x&&x.message)||'Sem resposta.',!!(x&&x.ok)); }catch(er){ ntFb_('Falha ao contatar o servidor.',false); } NT.hist=null; await ntCarregarHist_(); await ntRecarregarPainel_(); } break;
+    case 'hist-cancel': if(confirm('Cancelar esta notificação? Ela não será mais enviada.')){ try{ const x=await ntCall_('notifCancelar',{id},0); ntFb_(x&&x.ok?'Notificação cancelada.':((x&&x.message)||'Não foi possível cancelar.'),!!(x&&x.ok)); }catch(er){ ntFb_('Falha ao contatar o servidor.',false); } NT.hist=null; await ntCarregarHist_(); await ntRecarregarPainel_(); } break;
+    case 'simular': await ntSimular_(false); break;
+    case 'teste': await ntSimular_(true); break;
+  }
+}
+function ntSyncForm_(){ // guarda o que está digitado antes de redesenhar o formulário
+  const g=id=>document.getElementById(id); if(!g('nt-f-nome')) return;
+  NT.formBase=Object.assign(NT.formBase,{nome:g('nt-f-nome').value,descricao:g('nt-f-desc').value,logica:g('nt-f-logica').value,disparo:g('nt-f-disparo').value,estado_alvo:g('nt-f-estado').value,repetir_ao_voltar:g('nt-f-voltar').value,intervalo_dias:g('nt-f-int').value,assunto:g('nt-f-assunto').value});
+}
+function ntChange_(e){
+  const t=e.target;
+  if(t.dataset&&t.dataset.ntF){
+    const row=t.closest('.nt-cond'), c=NT.conds[+row.dataset.i]; ntSyncForm_();
+    if(t.dataset.ntF==='campo'){ c.campo=t.value; const tp=NT.painel.campos[c.campo].tipo; c.op=tp==='lista'?'um_dos':'preenchido'; c.valores=[]; }
+    else { c.op=t.value; if(c.op==='preenchido'||c.op==='vazio') c.valores=[]; else if((c.op==='igual'||c.op==='diferente')&&c.valores.length>1) c.valores=[c.valores[0]]; }
+    ntRenderForm_(); return;
+  }
+  if(t.id==='nt-f-disparo'){ document.getElementById('nt-f-intw').style.display=t.value==='intervalo'?'':'none'; return; }
+  if(t.id==='nt-d-regra'){ NT.destRegra=t.value; ntRenderDest_(); return; }
+  if(t.id==='nt-s-regra'||t.id==='nt-s-sr'){ NT.sim=null; return; }
+  if(/^nt-h-/.test(t.id)) ntRenderHist_();
+}
+function ntInput_(e){
+  const t=e.target; if(!t) return;
+  if(t.id==='nt-d-busca') ntRenderDest_();
+  else if(t.id==='nt-h-proj'||t.id==='nt-h-dest') ntRenderHist_();
 }
 
 // ---------- v16.1 — Importação de feriados ----------
