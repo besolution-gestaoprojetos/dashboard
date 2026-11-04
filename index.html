@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbz2V0wofIUh8lugnbbic6Oh8LMhi3WsI0HCwhl-rJUGXoc79j__ZdYb9IOsIVcxI18OHg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzvwjUahBAhEYMzNECsoJKx8Xq6ZfC3y1aEKPnw26hp0JnFrAooBVKrEXFFs1fLEO5HXg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -817,6 +817,17 @@ html[data-theme="dark"] .sess-banner{background:#451a1a;border-color:#7f1d1d;col
 .sess-toast{display:none;position:fixed;right:18px;top:70px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;border-radius:12px;padding:10px 14px;box-shadow:0 10px 28px rgba(15,23,42,.15);font-size:13px;max-width:300px;z-index:10003}
 .sess-toast.on{display:block}
 @media(max-width:700px){.sess-lbl{display:none}.sess-clk{padding:4px 9px 4px 8px}}
+/* v17.8 — Sincronização Zoho */
+.zs-tabs{display:flex;gap:6px;margin-bottom:16px;border-bottom:1px solid var(--border)}
+.zs-tab{border:0;background:none;color:var(--text-muted);font:600 13.5px var(--font-body);padding:9px 16px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.zs-tab.on{color:var(--primary);border-bottom-color:var(--primary)}
+.zs-tag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:12px;white-space:nowrap}
+.zs-ok{background:rgba(22,163,74,.13);color:#15803d}.zs-warn{background:rgba(217,119,6,.14);color:#b45309}.zs-amb{background:rgba(124,58,237,.13);color:#6d28d9}.zs-err{background:rgba(220,38,38,.13);color:#b91c1c}.zs-wait{background:var(--surface-alt);color:var(--text-muted);border:1px solid var(--border)}
+.zs-logo{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.3px;padding:1px 7px;border-radius:6px;background:rgba(124,58,237,.13);color:#6d28d9;margin-right:4px}
+.zs-lock{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:6px;background:rgba(124,58,237,.12);color:#6d28d9;margin-left:6px;vertical-align:middle}
+.zs-info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.zs-info span{display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:2px}.zs-info b{font-size:13.5px;word-break:break-all}
+@media(prefers-color-scheme:dark){.zs-ok{color:#4ade80}.zs-warn{color:#fbbf24}.zs-amb,.zs-logo,.zs-lock{color:#c4b5fd}.zs-err{color:#f87171}}
 </style>
 <style>
 .brand-logo img{height:34px;width:auto;display:block}
@@ -1568,6 +1579,16 @@ body.nav-collapsed .nav-nov-badge{display:none;}
   .login-card{padding:40px 30px;}
 }
 /* v16.5 — Gestão de Horas Apontadas */
+/* v17.8 — combo de nomes (lista completa clicável) */
+.cb-wrap{position:relative;display:block;}
+.cb-wrap>input{width:100%;padding-right:28px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2364748b' stroke-width='2'/></svg>");background-repeat:no-repeat;background-position:right 10px center;}
+.cb-list{position:absolute;z-index:10050;left:0;right:0;min-width:240px;top:100%;margin-top:3px;max-height:280px;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 10px 28px rgba(15,23,42,.18);padding:4px;display:none;}
+.cb-list.open{display:block;}
+.cb-it{padding:7px 10px;border-radius:7px;font-size:13px;cursor:pointer;color:var(--text);}
+.cb-it:hover,.cb-it.act{background:var(--primary-100,#e0f2fe);}
+.cb-it.sel{font-weight:700;color:var(--primary);}
+.cb-it.cb-all{color:var(--text-muted);border-bottom:1px solid var(--border);border-radius:7px 7px 0 0;margin-bottom:3px;}
+.cb-vazio{padding:8px 10px;font-size:12.5px;color:var(--text-faint);}
 /* v17.7 — Análise de Horas */
 #page-analisehoras .ah-dd{position:relative;}#page-analisehoras .ah-dd>summary{list-style:none;cursor:pointer;border:1px solid var(--border);background:var(--surface);border-radius:9px;padding:8px 12px;font-size:13px;white-space:nowrap;}
 #page-analisehoras .ah-dd>summary::-webkit-details-marker{display:none;}
@@ -2001,8 +2022,10 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
     <section class="page" id="page-portfolioedit">
       <div class="page-header"><div><h1>Edição do Portfólio</h1><p>Criar, editar, excluir e consultar projetos — mesmos dados já existentes na aba Portifolio.</p></div></div>
       <div id="pe-feedback" style="display:none;margin-bottom:14px;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600"></div>
+      <div id="pe-tabs" class="zs-tabs" style="display:none"></div>
       <div id="pe-lista-view"></div>
       <div id="pe-form-view" style="display:none"></div>
+      <div id="pe-zs-view" style="display:none"></div>
     </section>
 
     <!-- PAGE ADMINISTRAÇÃO DE PESSOAS -->
@@ -2254,7 +2277,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
       <div class="filter-bar">
         <div class="filter-field"><label for="ha-ini">Período — início</label><input type="date" id="ha-ini"></div>
         <div class="filter-field"><label for="ha-fim">Período — fim</label><input type="date" id="ha-fim"></div>
-        <div class="filter-field"><label for="ha-user">Usuário</label><input type="text" id="ha-user" list="ha-ul" placeholder="Todos os usuários — digite para buscar" autocomplete="off"><datalist id="ha-ul"></datalist></div>
+        <div class="filter-field"><label for="ha-user">Usuário</label><input type="text" id="ha-user" placeholder="Todos os usuários — clique ou digite" autocomplete="off"></div>
         <div class="filter-field"><label for="ha-proj">Projeto</label><select id="ha-proj"><option value="">Todos</option></select></div>
         <div class="filter-field"><label for="ha-tipo">Tipo de apontamento</label><select id="ha-tipo"><option value="">Todos</option><option value="T">Tarefas</option><option value="R">Reunião</option></select></div>
         <div class="filter-field"><label for="ha-dia">Tipo de dia</label><select id="ha-dia"><option value="">Todos</option><option value="u">Dia útil</option><option value="w">Fim de semana</option><option value="h">Feriado</option></select></div>
@@ -2294,7 +2317,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
         <div class="filter-field"><label for="ah-nv">Senioridade</label><select id="ah-nv"><option value="">Todas</option></select></div>
         <div class="filter-field"><label for="ah-cli">Cliente</label><select id="ah-cli"><option value="">Todos</option></select></div>
         <div class="filter-field"><label for="ah-tipo">Tipo de apontamento</label><select id="ah-tipo"><option value="">Todos</option><option value="0">Work Item</option><option value="1">Meeting</option><option value="2">General</option><option value="3">Outros</option></select></div>
-        <div class="filter-field"><label for="ah-pes">Pessoa</label><input type="text" id="ah-pes" placeholder="Digite parte da assinatura" autocomplete="off"></div>
+        <div class="filter-field"><label for="ah-pes">Pessoa</label><input type="text" id="ah-pes" placeholder="Todas — clique ou digite" autocomplete="off"></div>
         <button class="filter-clear" id="ah-limpar" type="button">Limpar filtros</button>
       </div>
       <div id="ah-status"></div>
@@ -2718,7 +2741,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v17.7';
+const APP_VERSION='v17.8';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2948,8 +2971,10 @@ async function attemptLoadWithToken(token, viewAsEmail){
 //
 // Atualize esta data junto com qualquer alteração no array abaixo — ela
 // aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='29/10/2026';
+const NOVIDADES_ATUALIZADO_EM='04/11/2026';
 const NOVIDADES=[
+  {icone:'⧉', bg:'#f5f3ff', cor:'#7c3aed', titulo:'Duplicar report anterior no Status Report', descricao:'Novo botão na tela do Status Report que preenche a semana atual com o report anterior do projeto (status, risco, criticidade, textos, plano de ação e cronograma de entregas) para você ajustar só o que mudou. Nada é salvo até clicar em Salvar Rascunho ou Finalizar, e dá para desfazer.', paginas:['statusreport'], data:'2026-11-04', tag:'Novidade'},
+  {icone:'🔄', bg:'#f5f3ff', cor:'#7c3aed', titulo:'Datas do Portfólio atualizadas pelo Zoho', descricao:'A tabela Projetos (carga do Zoho) agora atualiza automaticamente Data de Início, Prev. Entrega Inicial (uma única vez), Prev. Entrega Atual e Data Entrega (quando o estágio é Concluído) dos projetos vinculados. Na Edição do Portfólio há uma seção somente leitura com os dados do Zoho, o vínculo de cada projeto e, para o Administrador, a aba Sincronização Zoho com simulação, pendências e associação manual. Nenhum outro campo do portfólio é alterado.', paginas:['portfolioedit'], data:'2026-11-04', tag:'Novidade'},
   {icone:'📈', bg:'#ecfdf5', cor:'#059669', titulo:'Nova página Análise de Horas', descricao:'Nova página no menu Gestão (somente Administrador) com três indicadores sobre os apontamentos de horas: pessoas com menos horas apontadas contra a referência (8h × dias úteis, respeitando feriados da localidade e datas de entrada/distrato), média mensal de horas por pessoa com gráfico e ranking de horas fora da jornada (excedente em dias úteis, fins de semana e feriados). Filtros por período, projetos (todos/em andamento/selecionados), quantidade de projetos com apontamento, Head, área, cargo, senioridade, cliente, tipo e pessoa; detalhamento que fecha com os totais e exportação para Excel. Férias e afastamentos não constam nos dados e o texto das telas não trata ninguém como ocioso. Todas as páginas agora mostram o nome pela Assinatura (Pessoas_Area); sem Assinatura aparece “Nome não cadastrado”.', paginas:['analisehoras','horasapontadas'], data:'2026-10-29', tag:'Nova página', tagCor:'nova'},
   {icone:'✉️', bg:'#e0f2fe', cor:'#0284c7', titulo:'Gerenciador de Notificações por e-mail', descricao:'Nova página em Administração (somente Administrador) para configurar avisos por e-mail disparados pelo Status Report: regras com condições sobre criticidade, nível de risco e status; destinatários vindos de Pessoas e Perfis (pessoa, Área ou Perfil); histórico com reprocessamento seguro, simulação e e-mail de teste. As regras nascem inativas e em simulação; o envio real exige confirmação. O portal só informa que o envio foi aceito pelo serviço de e-mail — não confirma entrega nem leitura.', paginas:['notificacoes'], data:'2026-10-29', tag:'Nova página', tagCor:'nova'},
   {icone:'⏱️', bg:'#e0f2fe', cor:'#0284c7', titulo:'Horas em horas e minutos', descricao:'Em todo o portal as horas deixam de aparecer como decimal com vírgula (ex.: 1.592,8h) e passam a mostrar horas e minutos (1.592h 48min), para não confundir o que vem depois da vírgula com minutos. Horas exatas aparecem como 8h e valores menores que uma hora como 18min. Gráficos mantêm o eixo em horas e mostram horas e minutos ao passar o mouse; as exportações Excel de horas continuam numéricas, no formato [h]:mm.', paginas:['futuristic','inteligencia','pessoa','equipe','horasapontadas'], data:'2026-10-27', tag:'Melhoria', tagCor:'melhoria'},
@@ -6074,6 +6099,8 @@ function peMostrarView(modo){
   PE_MODO=modo;
   document.getElementById('pe-lista-view').style.display=modo==='lista'?'':'none';
   document.getElementById('pe-form-view').style.display=modo==='form'?'':'none';
+  const zv=document.getElementById('pe-zs-view'); if(zv) zv.style.display=modo==='zs'?'':'none';
+  if(modo==='lista') zsDesenharAbas_('lista'); else if(modo==='form'){ const t=document.getElementById('pe-tabs'); if(t) t.style.display='none'; }
 }
 
 // ---------- LISTA / BUSCA ----------
@@ -6096,10 +6123,12 @@ async function carregarListaPortfolio(){
     document.getElementById('pe-lista-retry').onclick=carregarListaPortfolio;
   }
 }
+let PE_FILTRO_SIT='';
 function renderListaPortfolio(termoBusca){
   SORT_RERENDER['portfolio']=()=>renderListaPortfolio(termoBusca);
   const termo=peNormalizarHeader(termoBusca);
-  const filtrados=!termo?PE_LISTA_CACHE:PE_LISTA_CACHE.filter(p=>
+  const filtrados0=!PE_FILTRO_SIT?PE_LISTA_CACHE:PE_LISTA_CACHE.filter(p=>(PE_FILTRO_SIT==='__aguard'?!p.situacao_zoho:p.situacao_zoho===PE_FILTRO_SIT));
+  const filtrados=!termo?filtrados0:filtrados0.filter(p=>
     peNormalizarHeader(p.projeto).includes(termo) || peNormalizarHeader(p.cliente).includes(termo) ||
     peNormalizarHeader(p.status).includes(termo) || peNormalizarHeader(p.gp).includes(termo)
   );
@@ -6108,27 +6137,30 @@ function renderListaPortfolio(termoBusca){
     {key:'cliente',label:'Cliente',tipo:'texto',get:p=>p.cliente},
     {key:'status',label:'Status',tipo:'texto',get:p=>p.status},
     {key:'gp',label:'Gerente do Projeto',tipo:'texto',get:p=>p.gp},
+    {key:'estz',label:'Estágio Zoho',tipo:'texto',get:p=>p.estagio_zoho},
+    {key:'vinc',label:'Vínculo Zoho',tipo:'texto',get:p=>p.situacao_zoho},
     {label:''}
   ];
   const stPort=SORT_STATE['portfolio']||{col:null,dir:0};
   const filtradosOrd=stPort.col?ordenarLinhas_(filtrados,colunasPort.find(c=>c.key===stPort.col),stPort.dir):filtrados;
   let h='<div class="card"><div class="card-title"><h3>Projetos ('+PE_LISTA_CACHE.length+')</h3>'+
-    '<button type="button" class="sr-btn sr-btn-primary" id="pe-novo-btn" style="padding:7px 16px">+ Novo Projeto</button></div>'+
+    '<span style="display:flex;gap:8px;align-items:center"><select id="pe-f-sit" title="Filtrar por vínculo com o Zoho" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:12.5px"><option value="">Vínculo Zoho: todos</option>'+['Sincronizado','Sem correspondência','Ambíguo','Erro'].map(x=>'<option'+(PE_FILTRO_SIT===x?' selected':'')+'>'+x+'</option>').join('')+'<option value="__aguard"'+(PE_FILTRO_SIT==='__aguard'?' selected':'')+'>Aguardando</option></select><button type="button" class="sr-btn sr-btn-primary" id="pe-novo-btn" style="padding:7px 16px">+ Novo Projeto</button></span></div>'+
     '<input type="text" id="pe-busca" placeholder="Buscar por nome, cliente, status ou GP…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13.5px;margin-bottom:14px;box-sizing:border-box">'+
     '<div class="table-wrap" style="max-height:560px"><table>'+theadOrdenavel_('portfolio',colunasPort)+'<tbody>';
   if(filtradosOrd.length===0){
-    h+='<tr><td colspan="5" style="text-align:center;color:var(--text-faint);padding:30px">Nenhum projeto encontrado'+(termo?' com esse termo de busca':'')+'.</td></tr>';
+    h+='<tr><td colspan="7" style="text-align:center;color:var(--text-faint);padding:30px">Nenhum projeto encontrado'+(termo?' com esse termo de busca':'')+'.</td></tr>';
   }else{
     filtradosOrd.forEach(p=>{
       h+='<tr style="cursor:pointer" class="pe-lista-row" data-pe-projeto="'+p.projeto.replace(/"/g,'&quot;')+'" data-pe-cliente="'+String(p.cliente||'').replace(/"/g,'&quot;')+'">'+
         '<td><strong>'+p.projeto+'</strong></td><td>'+(p.cliente||'—')+'</td>'+
-        '<td>'+(p.status?'<span class="status-pill">'+p.status+'</span>':'—')+'</td><td>'+(p.gp||'—')+'</td>'+
+        '<td>'+(p.status?'<span class="status-pill">'+p.status+'</span>':'—')+'</td><td>'+(p.gp||'—')+'</td><td>'+feEsc_(p.estagio_zoho||'—')+'</td><td>'+zsTag_(p.situacao_zoho)+'</td>'+
         '<td><button type="button" class="filter-clear" style="padding:5px 12px">Abrir</button></td></tr>';
     });
   }
   h+='</tbody></table></div></div>';
   document.getElementById('pe-lista-view').innerHTML=h;
   document.getElementById('pe-novo-btn').onclick=()=>abrirFormularioNovoProjeto();
+  document.getElementById('pe-f-sit').onchange=e=>{ PE_FILTRO_SIT=e.target.value; renderListaPortfolio(document.getElementById('pe-busca').value); };
   const buscaEl=document.getElementById('pe-busca');
   // F6 — Debounce: renderListaPortfolio reconstrói o innerHTML inteiro do
   // bloco (inclusive o próprio <input> de busca, por isso o re-foco/restauração
@@ -6358,7 +6390,8 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos, cliente){
   };
   // Agrupa os campos por seção, preservando a ordem original dentro de cada uma
   const secoes={ 'Identificação':[], 'Status e Classificação':[], 'Cronograma':[], 'Equipe':[], 'Outras Informações':[] };
-  campos.forEach((c,i)=>{ if(PE_CAMPOS_DEMANDA.includes(peNormalizarHeader(c.header))) return; /* v17.6: substituídos pelo bloco Requisitos de equipe; os valores antigos ficam intactos na planilha */ secoes[peClassificarSecao(peNormalizarHeader(c.header),i)].push({c,i}); });
+  const zsInfo=zsInfoDoProjeto_(campos);
+  campos.forEach((c,i)=>{ if(zsEhCampo_(c.header)) return; /* v17.8: colunas do Zoho ficam só na seção própria, somente leitura */ if(PE_CAMPOS_DEMANDA.includes(peNormalizarHeader(c.header))) return; /* v17.6: substituídos pelo bloco Requisitos de equipe; os valores antigos ficam intactos na planilha */ secoes[peClassificarSecao(peNormalizarHeader(c.header),i)].push({c,i}); });
 
   // "Gestão do Projeto" (Gerente do Projeto, SM, Líder Responsável — e
   // qualquer papel não mapeado nos blocos nomeados) sai da seção Equipe pra
@@ -6424,6 +6457,7 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos, cliente){
     }
   });
 
+  if(campos.some(c=>zsEhCampo_(c.header))) h+=zsCardFormHtml_(zsInfo);
   h+=peReqCardHtml_();
   h+='<div class="sr-actions">'+
     '<button type="button" class="sr-btn sr-btn-primary" id="pe-btn-salvar">💾 Salvar Alterações</button>'+
@@ -6443,8 +6477,153 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos, cliente){
   });
   peInicializarCombosPessoa();
   peReqDesenhar_();
+  zsAplicarTravas_(zsInfo); zsLigarCardForm_(zsInfo);
 }
 
+
+// ============================================================
+// v17.8 · SINCRONIZAÇÃO ZOHO (Projetos → Portifolio) — Edição do Portfólio
+// Dados do Zoho aparecem SOMENTE aqui. Painel/ações: somente Administrador (o backend também valida).
+// ============================================================
+const ZS_NOMES_NORM=['id projeto zoho','codigo zoho','status zoho','estagio zoho','data inicio zoho','data fim zoho','situacao zoho','ultima sincronizacao zoho'];
+const ZS_TRAVA_DATAS=['data de inicio','prev entrega atual','data entrega']; // travadas quando vinculado; 'prev entrega inicial' só se já preenchida
+function zsEhCampo_(h){ return ZS_NOMES_NORM.includes(peNormalizarHeader(h)); }
+function zsEhAdmin_(){ return typeof EFFECTIVE_PERFIL!=='undefined' && EFFECTIVE_PERFIL==='Administrador'; }
+function zsTag_(sit){
+  const s=String(sit||'').trim();
+  const m={'Sincronizado':'ok','Sem correspondência':'warn','Ambíguo':'amb','Erro':'err'};
+  return '<span class="zs-tag zs-'+(m[s]||'wait')+'">'+feEsc_(s||'Aguardando')+'</span>';
+}
+function zsDataBr_(v){ const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(v||'')); return m?m[3]+'/'+m[2]+'/'+m[1]:(v?String(v):''); }
+function zsCall_(action,extra,payload){
+  return loadDataJSONPComRetry(feUrl_(action,(extra!=null?'&extra='+encodeURIComponent(extra):'')+(payload?'&payload='+encodeURIComponent(JSON.stringify(payload)):'')),1);
+}
+// ---- abas da página (Projetos | Sincronização Zoho) ----
+function zsDesenharAbas_(ativa){
+  const el=document.getElementById('pe-tabs'); if(!el) return;
+  if(!zsEhAdmin_()){ el.style.display='none'; el.innerHTML=''; return; }
+  el.style.display='flex';
+  el.innerHTML='<button type="button" class="zs-tab'+(ativa==='lista'?' on':'')+'" data-zs-tab="lista">Projetos</button><button type="button" class="zs-tab'+(ativa==='zs'?' on':'')+'" data-zs-tab="zs">Sincronização Zoho</button>';
+  el.querySelectorAll('[data-zs-tab]').forEach(b=>b.onclick=()=>{ if(b.dataset.zsTab==='zs') zsAbrirPainel_(); else carregarListaPortfolio(); });
+}
+// ---- seção "Informações do Zoho" no formulário ----
+function zsInfoDoProjeto_(campos){
+  const g=n=>{ const c=campos.find(x=>peNormalizarHeader(x.header)===n); return c&&c.valor!=null?String(c.valor):''; };
+  return {id:g('id projeto zoho'),cod:g('codigo zoho'),st:g('status zoho'),est:g('estagio zoho'),di:g('data inicio zoho'),df:g('data fim zoho'),sit:g('situacao zoho'),ult:g('ultima sincronizacao zoho')};
+}
+function zsCardFormHtml_(z){
+  const vinc=z.sit==='Sincronizado'&&z.id;
+  const cel=(l,v)=>'<div class="zs-info"><span>'+l+'</span><b>'+(v?feEsc_(v):'—')+'</b></div>';
+  let h='<div class="card" id="zs-card-form" style="margin-bottom:16px"><div class="card-title"><h3><span class="zs-logo">Zoho</span> Informações do Zoho</h3><span class="sub">somente leitura · atualizadas pela sincronização</span></div>';
+  h+='<div class="zs-info-grid">'+cel('Situação do vínculo',null).replace('<b>—</b>','<b>'+zsTag_(z.sit)+'</b>')+cel('Estágio Zoho',z.est)+cel('Status Zoho',z.st)+cel('Código Zoho',z.cod)+cel('ID Projeto Zoho',z.id)+cel('Data início (Zoho)',zsDataBr_(z.di))+cel('Data fim (Zoho)',zsDataBr_(z.df))+cel('Última sincronização',z.ult)+'</div>';
+  h+='<div style="font-size:12px;color:var(--text-muted);margin-top:10px">'+(vinc?'Projeto vinculado: as datas marcadas “⟳” são atualizadas pelo Zoho e não podem ser editadas aqui.':'Projeto sem vínculo confirmado: as datas continuam totalmente editáveis.')+'</div>';
+  if(zsEhAdmin_()) h+='<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="filter-clear" id="zs-btn-assoc">'+(z.id?'Reassociar ao Zoho…':'Associar ao Zoho…')+'</button><button type="button" class="filter-clear" id="zs-btn-hist">Ver histórico de sincronização</button></div><div id="zs-hist-box"></div>';
+  return h+'</div>';
+}
+function zsAplicarTravas_(z){
+  if(!(z.sit==='Sincronizado'&&z.id)) return;
+  const campos=PE_ULTIMA_LEITURA.campos;
+  campos.forEach((c,i)=>{
+    const hn=peNormalizarHeader(c.header);
+    let trava=ZS_TRAVA_DATAS.includes(hn), unica=false;
+    if(hn==='prev entrega inicial'){ if(c.valor) { trava=true; unica=true; } else { /* editável enquanto vazio */ const el0=document.querySelector('#pe-form-view [data-pe-idx="'+i+'"]'); if(el0&&el0.parentNode){ const lb=el0.parentNode.querySelector('label'); if(lb) lb.insertAdjacentHTML('beforeend',' <span class="zs-lock">grava só 1 vez pelo Zoho</span>'); } } }
+    if(!trava) return;
+    const el=document.querySelector('#pe-form-view [data-pe-idx="'+i+'"]'); if(!el) return;
+    el.disabled=true; el.title='Atualizado pelo Zoho';
+    const lb=el.parentNode&&el.parentNode.querySelector('label');
+    if(lb) lb.insertAdjacentHTML('beforeend',' <span class="zs-lock">⟳ '+(unica?'gravado 1 vez pelo Zoho':'atualizado pelo Zoho')+'</span>');
+  });
+}
+function zsLigarCardForm_(z){
+  const a=document.getElementById('zs-btn-assoc'); if(a) a.onclick=()=>zsModalAssociar_({linha:PE_ULTIMA_LEITURA.rowIndex,projeto:PE_ULTIMA_LEITURA.projeto,cliente:PE_ULTIMA_LEITURA.cliente,idAtual:z.id},()=>carregarProjetoParaEdicao(PE_ULTIMA_LEITURA.projeto,PE_ULTIMA_LEITURA.cliente));
+  const h=document.getElementById('zs-btn-hist'); if(h) h.onclick=async()=>{
+    const box=document.getElementById('zs-hist-box'); box.innerHTML='<div style="padding:10px;font-size:12.5px;color:var(--text-muted)">Carregando…</div>';
+    try{ const r=await zsCall_('zsHistoricoProjeto',PE_ULTIMA_LEITURA.projeto);
+      if(!r||!r.ok){ box.innerHTML='<div style="padding:10px;color:var(--st-bloqueado);font-size:12.5px">'+feEsc_((r&&r.message)||'Não foi possível carregar.')+'</div>'; return; }
+      box.innerHTML=r.itens.length?'<div class="table-wrap" style="margin-top:10px"><table><thead><tr><th>Quando</th><th>Campo</th><th>De</th><th>Para</th></tr></thead><tbody>'+r.itens.map(i=>'<tr><td>'+feEsc_(i.quando)+'</td><td>'+feEsc_(i.campo)+'</td><td>'+feEsc_(i.de||'—')+'</td><td>'+feEsc_(i.para||'—')+'</td></tr>').join('')+'</tbody></table></div>':'<div style="padding:10px;font-size:12.5px;color:var(--text-muted)">Nenhuma alteração feita pela sincronização neste projeto.</div>';
+    }catch(e){ box.innerHTML='<div style="padding:10px;color:var(--st-bloqueado);font-size:12.5px">Falha ao contatar o servidor.</div>'; } };
+}
+// ---- modal de associação (Portifolio → registro Zoho; ou Zoho → Portifolio) ----
+async function zsModalAssociar_(alvo,aposOk){
+  haModal_('Associar ao Zoho','<div id="zs-m-box" style="min-width:min(640px,86vw)"><div style="padding:14px;color:var(--text-muted)">Carregando opções…</div></div>');
+  try{
+    const porLinha=alvo.linha!=null;
+    const r=await zsCall_('zsOpcoes',porLinha?'linha:'+alvo.linha:'id:'+alvo.id);
+    const box=document.getElementById('zs-m-box'); if(!box) return;
+    if(!r||!r.ok){ box.innerHTML='<div style="color:var(--st-bloqueado)">'+feEsc_((r&&r.message)||'Não foi possível carregar.')+'</div>'; return; }
+    const t=r.alvo;
+    let h='<div style="font-size:13px;margin-bottom:10px">'+(porLinha?'Projeto do Portfólio: <b>'+feEsc_(t.cliente)+' · '+feEsc_(t.projeto)+'</b>':'Registro Zoho: <b>'+feEsc_(t.cliente)+' · '+feEsc_(t.projeto)+'</b> <span style="color:var(--text-muted)">(ID '+feEsc_(t.id)+')</span>')+'</div>';
+    h+='<div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Escolha o '+(porLinha?'registro do Zoho':'projeto do Portfólio')+' correto. Nada é gravado até você confirmar.</div><div class="table-wrap" style="max-height:300px"><table><thead><tr><th></th><th>Cliente</th><th>Projeto</th><th>'+(porLinha?'Estágio':'Status')+'</th><th>Semelhança</th></tr></thead><tbody>';
+    h+=r.opcoes.map((o,i)=>'<tr><td><input type="radio" name="zs-op" value="'+i+'"></td><td>'+feEsc_(o.cliente)+'</td><td>'+feEsc_(o.projeto)+'</td><td>'+feEsc_(porLinha?o.estagio:o.status)+'</td><td>'+o.sim+'%</td></tr>').join('')+'</tbody></table></div>';
+    h+='<div style="margin-top:12px;display:flex;gap:8px;align-items:center"><button type="button" class="sr-btn sr-btn-primary" id="zs-m-ok" disabled>Confirmar associação</button><span id="zs-m-msg" style="font-size:12.5px"></span></div>';
+    box.innerHTML=h;
+    box.querySelectorAll('[name="zs-op"]').forEach(x=>x.onchange=()=>{ document.getElementById('zs-m-ok').disabled=false; });
+    document.getElementById('zs-m-ok').onclick=async()=>{
+      const sel=box.querySelector('[name="zs-op"]:checked'); if(!sel) return; const o=r.opcoes[+sel.value];
+      const pl=porLinha?{linha:alvo.linha,id:o.id}:{linha:o.linha,id:alvo.id};
+      const bt=document.getElementById('zs-m-ok'),msg=document.getElementById('zs-m-msg'); bt.disabled=true; msg.textContent='Gravando…';
+      try{ const rr=await zsCall_('zsAssociar','',pl);
+        if(rr&&rr.ok){ haFecharModal_(); peFeedback('Associação gravada.'+(rr.mensagem?' '+rr.mensagem:''),true); if(aposOk) aposOk(); }
+        else{ msg.style.color='var(--st-bloqueado)'; msg.textContent=(rr&&rr.message)||'Não foi possível associar.'; bt.disabled=false; }
+      }catch(e){ msg.style.color='var(--st-bloqueado)'; msg.textContent='Falha ao contatar o servidor.'; bt.disabled=false; }
+    };
+  }catch(e){ const box=document.getElementById('zs-m-box'); if(box) box.innerHTML='<div style="color:var(--st-bloqueado)">Falha ao contatar o servidor.</div>'; }
+}
+// ---- aba "Sincronização Zoho" ----
+let ZS_PAINEL=null, ZS_SIM=null, ZS_FILTRO_PEND='';
+async function zsAbrirPainel_(){
+  if(!zsEhAdmin_()) return;
+  peMostrarView('zs'); zsDesenharAbas_('zs');
+  const v=document.getElementById('pe-zs-view'); v.innerHTML=loadingInlineHtml('Carregando sincronização…');
+  try{ const r=await zsCall_('zsPainel','');
+    if(!r||!r.ok){ v.innerHTML='<div class="empty-state" style="padding:40px"><p>'+feEsc_((r&&r.message)||'Não foi possível carregar o painel.')+'</p></div>'; return; }
+    ZS_PAINEL=r; zsDesenharPainel_();
+  }catch(e){ v.innerHTML='<div class="empty-state" style="padding:40px"><p>Falha ao contatar o servidor.</p></div>'; }
+}
+function zsDesenharPainel_(){
+  const p=ZS_PAINEL, v=document.getElementById('pe-zs-view'), u=p.ultimo, N=x=>(x==null||x===''?'—':x);
+  const pend=p.pendencias||[], tipos=[...new Set(pend.map(x=>x.tipo))].sort();
+  const filt=ZS_FILTRO_PEND?pend.filter(x=>x.tipo===ZS_FILTRO_PEND):pend;
+  const estado=!p.origemExiste?'Aba Projetos não encontrada':(p.liberada?'Gravação liberada':(p.simulou?'Simulação feita · aguardando liberação':'Aguardando 1ª simulação'));
+  let h='<div class="fut-kpi-row" style="margin-bottom:16px">'+
+    kpiHtml({label:'Vinculados',value:N(u&&u.vinculados),foot:'última execução'})+
+    kpiHtml({label:'Sem correspondência',value:N(u&&u.sem_correspondencia),foot:'só no Portfólio'})+
+    kpiHtml({label:'Ambíguos',value:N(u&&u.ambiguos),foot:'resolver manualmente',valueColor:(u&&+u.ambiguos>0)?'var(--st-atencao,#d97706)':''})+
+    kpiHtml({label:'Só no Zoho',value:N(u&&u.so_zoho),foot:'não criados automaticamente'})+
+    kpiHtml({label:'Registros em Projetos',value:p.origemRegistros,foot:estado})+'</div>';
+  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Controle</h3><span class="sub">gatilho horário · '+(p.gatilhoAtivo===null?'não foi possível ler os gatilhos':(p.gatilhoAtivo?'ativo':'desativado'))+'</span></div>';
+  h+='<div style="font-size:13px;margin-bottom:12px">Última execução: <b>'+(u?feEsc_(u.data_hora)+' · '+feEsc_(u.modo)+' · '+feEsc_(u.resultado):'nenhuma')+'</b>'+(u&&u.mensagem?'<div style="color:var(--text-muted);font-size:12.5px;margin-top:3px">'+feEsc_(u.mensagem)+'</div>':'')+'</div>';
+  h+='<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="sr-btn" id="zs-b-sim">Simular</button><button type="button" class="sr-btn sr-btn-primary" id="zs-b-lib"'+((p.liberada||!p.simulou)?' disabled':'')+'>'+(p.liberada?'Gravação liberada ✓':'Liberar gravação')+'</button><button type="button" class="sr-btn" id="zs-b-now"'+(p.liberada?'':' disabled title="Disponível após liberar a gravação"')+'>Sincronizar agora</button><button type="button" class="sr-btn" id="zs-b-gat">'+(p.gatilhoAtivo?'Desativar gatilho':'Ativar gatilho horário')+'</button></div><div id="zs-b-msg" style="margin-top:10px;font-size:12.5px"></div></div>';
+  h+='<div id="zs-sim-box"></div>';
+  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Pendências ('+filt.length+')</h3><select id="zs-f-pend" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)"><option value="">Todos os tipos</option>'+tipos.map(t=>'<option'+(t===ZS_FILTRO_PEND?' selected':'')+'>'+feEsc_(t)+'</option>').join('')+'</select></div>';
+  h+='<div class="table-wrap" style="max-height:420px"><table><thead><tr><th>Tipo</th><th>Cliente</th><th>Projeto</th><th>Detalhe / sugestão</th><th></th></tr></thead><tbody>'+
+    (filt.length?filt.slice(0,400).map((x,i)=>{ const acao=(x.tipo==='Só no Portfólio'||x.tipo==='Duplicidade'&&x.linha_portifolio)?'<button type="button" class="filter-clear" data-zs-ass="linha:'+feEsc_(x.linha_portifolio)+'" data-zs-p="'+feEsc_(x.projeto)+'" data-zs-c="'+feEsc_(x.cliente)+'">Associar…</button>':(x.tipo==='Só no Zoho'&&x.id_zoho?'<button type="button" class="filter-clear" data-zs-ass="id:'+feEsc_(x.id_zoho)+'">Associar…</button>':''); return '<tr><td><span class="zs-tag zs-wait">'+feEsc_(x.tipo)+'</span></td><td>'+feEsc_(x.cliente)+'</td><td>'+feEsc_(x.projeto)+'</td><td style="font-size:12.5px">'+feEsc_(x.detalhe)+(x.sugestao?'<div style="color:var(--text-muted)">Sugestão: '+feEsc_(x.sugestao)+'</div>':'')+'</td><td>'+acao+'</td></tr>'; }).join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text-faint)">Nenhuma pendência.</td></tr>')+'</tbody></table></div>'+(filt.length>400?'<div style="font-size:12px;color:var(--text-muted);margin-top:6px">Exibindo as 400 primeiras.</div>':'')+'</div>';
+  h+='<div class="card"><div class="card-title"><h3>Histórico de execuções</h3><span class="sub">últimas '+(p.historico||[]).length+'</span></div><div class="table-wrap" style="max-height:300px"><table><thead><tr><th>Data</th><th>Origem</th><th>Modo</th><th>Resultado</th><th>Vinc.</th><th>Campos</th><th>Amb.</th><th>Mensagem</th></tr></thead><tbody>'+
+    ((p.historico||[]).map(x=>'<tr><td>'+feEsc_(x.data_hora)+'</td><td>'+feEsc_(x.origem)+'</td><td>'+feEsc_(x.modo)+'</td><td>'+feEsc_(x.resultado)+'</td><td>'+feEsc_(x.vinculados)+'</td><td>'+feEsc_(x.campos_gravados)+'</td><td>'+feEsc_(x.ambiguos)+'</td><td style="font-size:12px">'+feEsc_(x.mensagem)+'</td></tr>').join('')||'<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-faint)">Sem execuções.</td></tr>')+'</tbody></table></div></div>';
+  v.innerHTML=h;
+  if(ZS_SIM) zsDesenharSim_();
+  const msg=(t,ok)=>{ const m=document.getElementById('zs-b-msg'); m.style.color=ok?'var(--st-feito)':'var(--st-bloqueado)'; m.textContent=t; };
+  const rodar=async(btnId,acao,extra,txt,depois)=>{ const b=document.getElementById(btnId); b.disabled=true; msg(txt,true);
+    try{ const r=await zsCall_(acao,extra||''); if(!r||!r.ok){ msg((r&&(r.message||r.mensagem))||'A operação não foi concluída.',false); b.disabled=false; return; } await depois(r); }
+    catch(e){ msg('Falha ao contatar o servidor.',false); b.disabled=false; } };
+  document.getElementById('zs-b-sim').onclick=()=>rodar('zs-b-sim','zsSimular','','Simulando… nada será gravado.',async r=>{ ZS_SIM=r; await zsAbrirPainelSilencioso_(); });
+  document.getElementById('zs-b-lib').onclick=()=>{ if(!confirm('Liberar a gravação? A partir daqui a sincronização passará a alterar o Portifolio (Datas e colunas do Zoho), conforme a simulação revisada.')) return; rodar('zs-b-lib','zsLiberar','','Liberando…',async()=>{ await zsAbrirPainelSilencioso_(); peFeedback('Gravação liberada. O gatilho horário já pode ser ativado.',true); }); };
+  document.getElementById('zs-b-now').onclick=()=>rodar('zs-b-now','zsSincronizar','','Sincronizando…',async r=>{ ZS_SIM=null; await zsAbrirPainelSilencioso_(); peFeedback('Sincronização: '+(r.resultado||'concluída')+' · '+((r.cont&&r.cont.camposGravados)||0)+' campo(s) gravado(s).',true); });
+  document.getElementById('zs-b-gat').onclick=()=>rodar('zs-b-gat','zsGatilho',p.gatilhoAtivo?'remover':'criar','Atualizando gatilho…',async()=>{ await zsAbrirPainelSilencioso_(); });
+  document.getElementById('zs-f-pend').onchange=e=>{ ZS_FILTRO_PEND=e.target.value; zsDesenharPainel_(); };
+  v.querySelectorAll('[data-zs-ass]').forEach(b=>b.onclick=()=>{ const s=b.dataset.zsAss, m=/^(linha|id):(.+)$/.exec(s); zsModalAssociar_(m[1]==='linha'?{linha:+m[2]}:{id:m[2]},zsAbrirPainelSilencioso_); });
+}
+async function zsAbrirPainelSilencioso_(){ try{ const r=await zsCall_('zsPainel',''); if(r&&r.ok){ ZS_PAINEL=r; zsDesenharPainel_(); } }catch(e){} }
+function zsDesenharSim_(){
+  const box=document.getElementById('zs-sim-box'); if(!box||!ZS_SIM) return;
+  const s=ZS_SIM, c=s.cont||{}, det=s.detalhes||[], locais=det.filter(d=>d.destino==='local');
+  const cnt=n=>locais.filter(d=>d.campo===n).length;
+  box.innerHTML='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Resultado da simulação</h3><span class="sub">nada foi gravado · '+det.length+' alteração(ões) previstas</span></div>'+
+    '<div style="font-size:13px;margin-bottom:10px">Vinculados <b>'+(c.vinculados||0)+'</b> · Sem correspondência <b>'+(c.semCorresp||0)+'</b> · Ambíguos <b>'+(c.ambiguos||0)+'</b> · Só no Zoho <b>'+(c.soZoho||0)+'</b> · Backups ignorados <b>'+(c.backupsIgnorados||0)+'</b></div>'+
+    '<div style="font-size:13px;margin-bottom:10px">Datas locais previstas: Data de Início <b>'+cnt('Data de Inicio')+'</b> · Prev. Entrega Inicial <b>'+cnt('Prev Entrega Inicial')+'</b> · Prev. Entrega Atual <b>'+cnt('Prev Entrega Atual')+'</b> · Data Entrega <b>'+cnt('Data Entrega')+'</b></div>'+
+    '<div class="table-wrap" style="max-height:380px"><table><thead><tr><th>Cliente</th><th>Projeto</th><th>Campo</th><th>De</th><th>Para</th></tr></thead><tbody>'+
+    det.slice(0,600).map(d=>'<tr><td>'+feEsc_(d.cliente)+'</td><td>'+feEsc_(d.projeto)+'</td><td>'+feEsc_(d.campo)+'</td><td>'+feEsc_(d.de||'—')+'</td><td>'+feEsc_(d.para||'—')+'</td></tr>').join('')+'</tbody></table></div>'+(det.length>600?'<div style="font-size:12px;color:var(--text-muted);margin-top:6px">Exibindo as 600 primeiras linhas.</div>':'')+'</div>';
+}
 
 // ---------- v17.6 · REQUISITOS DE EQUIPE (bloco da Edição do Portfólio; salva por conta própria) ----------
 let PE_REQ=null;
@@ -10924,10 +11103,69 @@ function srAtividadeRowHtml(a){
     '<button type="button" class="sr-ativ-remove" title="Remover">✕</button>'+
   '</div>';
 }
+// ---------- v17.8 · DUPLICAR REPORT ANTERIOR (só preenche a tela; o salvamento segue o fluxo normal) ----------
+function srRefAnterior_(){
+  const projeto=(document.getElementById('f-sr-projeto')||{}).value, [monISO]=srSemanaAtual();
+  const l=STATUS_REPORTS.filter(r=>r.projeto===projeto&&r.semana_inicio<monISO).sort((a,b)=>b.semana_inicio.localeCompare(a.semana_inicio));
+  return l[0]||null;
+}
+let SR_DUP_DESFAZER=null;
+function srDupTemConteudo_(){
+  const v=id=>((document.getElementById(id)||{}).value||'').trim();
+  return !!(v('sr-resumo')||v('sr-decisoes')||v('sr-riscos')||v('sr-previsao')||srColetarAtividades().length||SR_STATE.entregas.length);
+}
+function srDuplicarAnterior_(){
+  const ref=srRefAnterior_(); if(!ref){ srFeedback('Este projeto não tem report anterior a esta semana.',false); return; }
+  const tem=srDupTemConteudo_();
+  const nCron=(ref.cronograma||[]).length;
+  haModal_('Duplicar report anterior?',
+    '<div style="font-size:13px;min-width:min(460px,80vw)">Fonte: <b>'+feEsc_(ref.projeto)+' · semana '+srFmtBr(ref.semana_inicio)+' – '+srFmtBr(ref.semana_fim)+'</b> <span class="status-pill">'+feEsc_(ref.status_preenchimento||'')+'</span>'+
+    '<div style="margin-top:10px;color:var(--text-muted)"><b>Será copiado:</b><ul style="margin:4px 0 0 18px;padding:0"><li>Status/Fase, Nível de Risco, Criticidade e Sprint/Semana</li><li>Resumo Executivo, Decisões e Riscos/Bloqueios</li><li>Plano de Ação ('+((()=>{try{return JSON.parse(ref.atividades_json||'[]').length}catch(e){return 0}})())+' atividade(s))</li><li>Cronograma de Entregas ('+nCron+' entrega(s))</li></ul></div>'+
+    '<div style="margin-top:8px;color:var(--text-muted)"><b>Não é copiado:</b> semana, data e autor do report e status de preenchimento.</div>'+
+    (tem?'<div style="margin-top:10px;padding:9px 12px;border-radius:8px;background:rgba(245,158,11,.12);color:#b45309">O que já está preenchido nesta semana será substituído. Nada é salvo até você clicar em Salvar Rascunho ou Finalizar.</div>':'<div style="margin-top:10px;color:var(--text-muted)">Nada é salvo até você clicar em Salvar Rascunho ou Finalizar.</div>')+
+    '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px"><button type="button" class="sr-btn" id="sr-dup-cancel">Cancelar</button><button type="button" class="sr-btn sr-btn-primary" id="sr-dup-ok">Duplicar</button></div></div>');
+  document.getElementById('sr-dup-cancel').onclick=haFecharModal_;
+  document.getElementById('sr-dup-ok').onclick=()=>{ haFecharModal_(); srDuplicarAplicar_(ref); };
+}
+function srDuplicarAplicar_(ref){
+  // instantâneo para "Desfazer"
+  const g=id=>document.getElementById(id);
+  const snap={ st:g('sr-status-projeto').innerHTML, stv:g('sr-status-projeto').value, nr:g('sr-nivel-risco').value, cr:g('sr-criticidade').value, pv:g('sr-previsao').value,
+    rs:g('sr-resumo').value, dc:g('sr-decisoes').value, rk:g('sr-riscos').value, at:g('sr-ativ-body').innerHTML,
+    atv:[...g('sr-ativ-body').querySelectorAll('.sr-ativ-row')].map(r=>[...r.querySelectorAll('input,select')].map(e=>e.value)),
+    ent:SR_STATE.entregas.map(e=>Object.assign({},e)), exc:SR_STATE.excluidas.slice() };
+  const setSel=(id,v)=>{ const el=g(id); if(v && ![...el.options].some(o=>o.value===v)) el.insertAdjacentHTML('afterbegin','<option value="'+feEsc_(v)+'">'+feEsc_(v)+'</option>'); el.value=v||el.value; };
+  setSel('sr-status-projeto',ref.status_projeto); setSel('sr-nivel-risco',ref.nivel_risco);
+  g('sr-criticidade').value=ref.criticidade||''; const info=srCriticidadeInfo(g('sr-criticidade').value); g('sr-criticidade').style.borderLeft='4px solid '+(info?info.cor:'var(--border)');
+  g('sr-previsao').value=ref.previsao_proxima_fase||''; g('sr-resumo').value=ref.resumo_executivo||''; g('sr-decisoes').value=ref.decisoes_pontos_atencao||''; g('sr-riscos').value=ref.riscos_bloqueios||'';
+  let at=[]; try{ at=ref.atividades_json?JSON.parse(ref.atividades_json):[]; }catch(e){ at=[]; }
+  if(!at.length) at=[null];
+  g('sr-ativ-body').innerHTML=at.map(a=>srAtividadeRowHtml(a)).join('');
+  // cronograma: entregas já gravadas neste report saem (exclusão pendente); as do report anterior entram como novas
+  SR_STATE.entregas.filter(e=>e._estado==='salvo'&&e.id_entrega).forEach(e=>SR_STATE.excluidas.push(e.id_entrega));
+  SR_STATE.entregas=(ref.cronograma||[]).map(c=>({_k:++SRC_SEQ,_estado:'novo',titulo:c.titulo,data_inicio:c.data_inicio,data_previsao_entrega:c.data_previsao_entrega,status:c.status,responsavel_nome:c.responsavel_nome,responsavel_email:c.responsavel_email||'',responsavel_tipo:c.responsavel_tipo||'interno',descricao:c.descricao||'',percentual:c.percentual}));
+  SR_STATE.cronEditK=null; srCronoRender_(true);
+  SR_DUP_DESFAZER=snap;
+  const ant=document.getElementById('sr-dup-banner'); if(ant) ant.remove();
+  g('sr-content').insertAdjacentHTML('afterbegin','<div id="sr-dup-banner" style="margin-bottom:14px;padding:10px 14px;border-left:4px solid #7c3aed;background:rgba(124,58,237,.08);border-radius:8px;font-size:13px">⧉ Campos preenchidos a partir do report de <b>'+srFmtBr(ref.semana_inicio)+' – '+srFmtBr(ref.semana_fim)+'</b>. Revise e ajuste o que mudou nesta semana; nada foi salvo ainda. <a href="#" id="sr-dup-undo" style="font-weight:700">Desfazer</a></div>');
+  g('sr-dup-undo').onclick=ev=>{ ev.preventDefault(); srDuplicarDesfazer_(); };
+}
+function srDuplicarDesfazer_(){
+  const s=SR_DUP_DESFAZER; if(!s) return; const g=id=>document.getElementById(id);
+  g('sr-status-projeto').innerHTML=s.st; g('sr-status-projeto').value=s.stv; g('sr-nivel-risco').value=s.nr; g('sr-criticidade').value=s.cr;
+  const info=srCriticidadeInfo(s.cr); g('sr-criticidade').style.borderLeft='4px solid '+(info?info.cor:'var(--border)');
+  g('sr-previsao').value=s.pv; g('sr-resumo').value=s.rs; g('sr-decisoes').value=s.dc; g('sr-riscos').value=s.rk;
+  g('sr-ativ-body').innerHTML=s.at;
+  [...g('sr-ativ-body').querySelectorAll('.sr-ativ-row')].forEach((r,i)=>[...r.querySelectorAll('input,select')].forEach((e,j)=>{ if(s.atv[i]) e.value=s.atv[i][j]; }));
+  SR_STATE.entregas=s.ent; SR_STATE.excluidas=s.exc; SR_STATE.cronEditK=null; srCronoRender_(true);
+  SR_DUP_DESFAZER=null; const b=g('sr-dup-banner'); if(b) b.remove();
+  srFeedback('Duplicação desfeita.',true);
+}
 function srSetBotoesDisabled(v){
   ['sr-btn-rascunho','sr-btn-finalizar'].forEach(id=>{ const b=document.getElementById(id); if(b) b.disabled=v; });
 }
 function renderStatusReport(){
+  SR_DUP_DESFAZER=null;
   const projeto=document.getElementById('f-sr-projeto').value;
   const proj=D.pj.find(p=>p.pj===projeto);
   const [monISO,sunISO]=srSemanaAtual();
@@ -10938,7 +11176,7 @@ function renderStatusReport(){
   const podeEditar=!existente || existente.status_preenchimento!=='Finalizado';
 
   let h='';
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Identificação</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;font-size:13px">'+
+  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Identificação</h3>'+(podeEditar?'<button type="button" class="filter-clear" id="sr-dup-btn" style="border-color:#7c3aed;color:#7c3aed"'+(srRefAnterior_()?' title="Preenche a tela com o report mais recente anterior a esta semana"':' disabled title="Este projeto não tem report anterior a esta semana"')+'>⧉ Duplicar report anterior</button>':'')+'</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;font-size:13px">'+
     '<div><span style="font-size:11px;color:var(--text-faint);display:block">Projeto</span><strong>'+(projeto||'—')+'</strong></div>'+
     '<div><span style="font-size:11px;color:var(--text-faint);display:block">Cliente</span>'+(proj?proj.cl:'—')+'</div>'+
     '<div><span style="font-size:11px;color:var(--text-faint);display:block">Gerente de Projeto</span>'+(CURRENT_USER_NOME||'—')+'</div>'+
@@ -10999,6 +11237,7 @@ function renderStatusReport(){
 
   // Wiring pós-render
   if(podeEditar){
+    const dupBtn=document.getElementById('sr-dup-btn'); if(dupBtn) dupBtn.onclick=srDuplicarAnterior_;
     document.getElementById('sr-btn-rascunho').onclick=()=>srSalvar(false);
     document.getElementById('sr-btn-finalizar').onclick=()=>srSalvar(true);
     const addBtn=document.getElementById('sr-ativ-add-btn');
@@ -11774,7 +12013,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v17.7', WIKI_DATA='29/10/2026';
+const WIKI_VER='v17.8', WIKI_DATA='29/10/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -11876,7 +12115,7 @@ WP('perm-acesso','3.2','Acesso direto, gravações e ações restritas','O que a
 /* ---------------- 3.3 ---------------- */
 WP('port-cadastro','3.3','Cadastro, edição e identificação de projetos','Como um projeto é identificado, editado e excluído.',[
  WR('PORT-001','Identificação do projeto','pa','Portfólio',
-  'A aba Portifolio não tem coluna de ID. O projeto é identificado por Cliente + Projeto (v15.5). O ID oficial (<code>idpj</code>) vem da aba Tarefas e é anexado ao projeto no servidor quando existe.',
+  'A aba Portifolio não tem coluna de ID próprio. O projeto é identificado por Cliente + Projeto (v15.5). O ID oficial (<code>idpj</code>) vem da aba Tarefas e é anexado ao projeto no servidor quando existe. Desde a v17.8 existe a coluna <b>ID Projeto Zoho</b>, que serve apenas ao vínculo com a aba Projetos (Zoho) e não substitui o <code>idpj</code>.',
   '<code>acharLinhaPortifolioPorProjeto_</code>, laço de Tarefas em <code>buildDashboardData_</code>.','Portifolio (A=Cliente, B=Projeto), Tarefas (ID do projeto).',
   'Dois projetos de clientes diferentes podem ter o mesmo nome; por isso agrupamentos de tarefas usam <code>cliente|projeto</code>.',
   'Projeto sem tarefas não tem <code>idpj</code>.','Edição, Status Report, requisitos, Alocação.','Cadastrar o mesmo nome em dois clientes.','Várias rotinas do servidor ainda identificam o projeto só pelo nome (ex.: Status Report, dicionários de horas); nesses pontos nomes iguais podem colidir. Alcance exato a validar.'),
@@ -11924,6 +12163,22 @@ WP('port-equipe','3.3','Equipe do projeto e requisitos de equipe','Papéis, requ
   'Inclusão, alteração e remoção de requisitos geram linhas no Log de Alterações com tabela <code>Portifolio_Requisitos</code> e operações “Inclusão”/“Remoção”.',
   '<code>montarLinhaLogAlteracao_</code> em <code>salvarRequisitosProjeto_</code>.','Log_Alteracoes.','—','—','Log de Alterações.','Salvar um requisito e abrir o Log.','Os filtros da tela do Log só listam as tabelas Portifolio, Status_Report, Feriados e Avisos e os tipos Criação/Alteração/Exclusão; esses registros só aparecem com os filtros em “Todas/Todos”. Ver <a data-w="AUD-011">AUD-011</a>.')],
 ''),
+
+WP('zoho-sync','3.3','Sincronização Projetos (Zoho) → Portifolio','Como a aba Projetos, alimentada pelo Zoho, atualiza datas e colunas do Portifolio.',[
+ WR('ZOHO-001','Vínculo Projetos × Portifolio','ok','Portfólio',
+  'Se o Portifolio já tem <b>ID Projeto Zoho</b>, o vínculo é por esse ID. Senão, por Cliente + Projeto normalizados (sem acento, caixa e pontuação). 1 candidato = vincula; nenhum = <i>Sem correspondência</i>; 2 ou mais = <i>Ambíguo</i> (nada é gravado; o Administrador resolve em “Associar…”). Projetos só no Zoho viram pendência e nunca são criados automaticamente; nomes com BKP/backup são ignorados.',
+  '<code>zsPlanejar_</code>, <code>zsAssociar_</code>.','Projetos (id_projeto, cliente, projeto…), Portifolio, Zoho_Sync_Pendencias.',
+  'Nunca escolhe um duplicado arbitrariamente.','Projeto ambíguo/sem correspondência segue editável normalmente.','Edição do Portfólio › Sincronização Zoho.','Associar manualmente um projeto ambíguo.','Nomes muito diferentes entre Zoho e Portifolio exigem associação manual (a tela sugere os mais parecidos).'),
+ WR('ZOHO-002','Regras de data','ok','Portfólio',
+  'Só em projeto vinculado: <b>dt_inicio</b> → Data de Inicio (sempre que vier preenchida e diferente); <b>dt_fim</b> → Prev Entrega Inicial (só se estiver vazia, uma única vez); <b>dt_fim</b> → Prev Entrega Atual (quando dt_fim mudar em relação ao último valor recebido); <b>dt_fim</b> → Data Entrega (só quando Estágio Zoho = Concluído; nunca é apagada). Data vazia no Zoho nunca apaga data do Portifolio. Datas em dd/mm/aaaa, sem conversão de fuso.',
+  '<code>zsPlanejar_</code>, <code>zsAplicar_</code>.','Colunas Data Início Zoho e Data Fim Zoho guardam o último valor recebido.',
+  'Status local, Faturamento, equipe, Observações e “Esta no Zoho” nunca são alterados.','Primeira vinculação conta como mudança de dt_fim.','Edição do Portfólio, Portfólio Geral, Cronograma.','Alterar dt_fim na origem e rodar a sincronização.','—'),
+ WR('ZOHO-003','Execução, segurança e frequência','ok','Portfólio',
+  'Gatilho horário: executa só se a aba Projetos mudou desde a última sincronização e está estável (duas leituras com 90 s de intervalo), pois a carga do Zoho roda por volta das 12h e 19h. Bloqueia carga parcial (menos de 50% do último total), usa trava contra execuções simultâneas e é idempotente. A primeira execução é sempre simulação; a gravação só é liberada pelo Administrador depois dela.',
+  '<code>zsExecutar_</code>, <code>zsSincronizarAgendado</code>, <code>zsLiberar_</code>.','Zoho_Sync_Log (histórico), Log_Alteracoes (cada campo alterado, usuário “Sincronização Zoho”).',
+  'Tudo restrito ao perfil Administrador.','Origem em atualização: registra e tenta na próxima hora.','Edição do Portfólio › Sincronização Zoho.','Simular, liberar, sincronizar agora e conferir o histórico.','Estágios novos do Zoho são gravados como vieram e listados como “Estágio não mapeado”.')
+],
+`<p>Colunas acrescentadas ao Portifolio (v17.8): ID Projeto Zoho, Código Zoho, Status Zoho, Estágio Zoho, Data Início Zoho, Data Fim Zoho, Situação Zoho e Última Sincronização Zoho. Os dados do Zoho aparecem somente na Edição do Portfólio (somente leitura); as datas atualizadas pelo Zoho ficam bloqueadas em projeto vinculado.</p>`),
 
 /* ---------------- 3.4 ---------------- */
 WP('cmd-kpis','3.4','Central de Comando: cartões e medidores','Fórmulas dos indicadores da página inicial executiva.',[
@@ -12132,7 +12387,10 @@ WP('stat-report','3.9','Status Report semanal','Criação, edição, status e ac
 WP('stat-gantt','3.9','Cronograma de entregas (Gantt)','Persistência e campos do cronograma.',[
  WR('STAT-010','Cronograma de entregas','ok','Status Report',
   'Uma linha por entrega na aba Status_Report_Cronograma, ligada ao report por id e ao projeto. Campos: título, início, previsão de entrega, status (Em andamento, Bloqueado/Atrasado, Entregue), responsável (nome, e-mail, tipo), percentual, descrição (até 200 caracteres). Salvar e excluir seguem o escopo de projetos do perfil.',
-  '<code>CRONOGRAMA_COLS</code>, <code>salvarEntregaCronograma_</code>.','Status_Report_Cronograma.','—','—','Status Report (Gantt).','—','Escala temporal, cores e linha de “hoje” são do front e não foram transcritas aqui.')],
+  '<code>CRONOGRAMA_COLS</code>, <code>salvarEntregaCronograma_</code>.','Status_Report_Cronograma.','—','—','Status Report (Gantt).','—','Escala temporal, cores e linha de “hoje” são do front e não foram transcritas aqui.'),
+ WR('STAT-011','Duplicar report anterior','ok','Status Report',
+  'O botão “Duplicar report anterior” (Identificação) preenche a tela com o report mais recente do mesmo projeto anterior à semana exibida (finalizado ou rascunho): Status/Fase, Nível de Risco, Criticidade, Sprint/Semana, Resumo, Decisões, Riscos, Plano de Ação e Cronograma de Entregas. Não copia semana, data/autor nem status de preenchimento. Nada é salvo sozinho: segue o fluxo de Salvar Rascunho/Finalizar. Se já houver texto na semana, a confirmação avisa que será substituído; “Desfazer” restaura a tela.',
+  '<code>srDuplicarAnterior_</code>, <code>srDuplicarAplicar_</code> (somente front).','STATUS_REPORTS em memória.','Só aparece em report editável; desabilitado sem report anterior.','As entregas já gravadas na semana atual entram como exclusão pendente e as do report anterior como novas, gravadas ao salvar.','Status Report.','Duplicar, editar, salvar rascunho.','—')],
 ''),
 
 WP('fontes-catalogo','3.10','Catálogo de abas e fontes','Todas as abas e serviços que o portal lê ou grava.',[],
@@ -12140,6 +12398,8 @@ WP('fontes-catalogo','3.10','Catálogo de abas e fontes','Todas as abas e servi�
 <tr><td><code>Pessoas_Area</code></td><td>Cadastro mestre de pessoas, perfil de acesso e participação nas análises</td><td>E-mail (login); Assinatura (nome oficial)</td><td>Lê e grava (Administrador)</td></tr>
 <tr><td><code>Perfil</code></td><td>Lista de perfis válidos (com fallback no código)</td><td>Nome do perfil</td><td>Lê</td></tr>
 <tr><td><code>Portifolio</code></td><td>Cadastro dos projetos e da equipe por papel</td><td>Cliente + Projeto (sem ID)</td><td>Lê e grava (Administrador)</td></tr>
+<tr><td><code>Projetos</code></td><td>Projetos do Zoho (carga externa ~12h e 19h)</td><td>id_projeto; Cliente + Projeto</td><td>Lê</td></tr>
+<tr><td><code>Zoho_Sync_Log</code> · <code>Zoho_Sync_Pendencias</code></td><td>Histórico da sincronização e pendências de vínculo</td><td>id_exec; tipo + projeto</td><td>Lê e grava (Administrador)</td></tr>
 <tr><td><code>Portifolio_Requisitos</code></td><td>Requisitos de equipe</td><td>id_requisito; id_projeto ou Cliente|Projeto</td><td>Lê e grava (Administrador)</td></tr>
 <tr><td><code>Tarefas</code></td><td>Tarefas por responsável (origem do ID do projeto)</td><td>ID único da tarefa</td><td>Lê</td></tr>
 <tr><td><code>Tarefas_Horas_Estimadas</code></td><td>Horas estimadas por tarefa/pessoa</td><td>Projeto + tarefa + e-mail</td><td>Lê</td></tr>
@@ -12276,6 +12536,8 @@ WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado d
 WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'04/11/2026',p:'Status Report',desc:'Inclusão do botão “Duplicar report anterior” na tela do Status Report.',m:'Solicitação do gestor.',o:'Implementação v17.8',v:'Pendente de validação em produção'},
+ {d:'04/11/2026',p:'Portfólio e Zoho',desc:'Sincronização da aba Projetos (Zoho) com o Portifolio: 8 colunas novas, abas Zoho_Sync_Log e Zoho_Sync_Pendencias, regras de data, gatilho horário e aba “Sincronização Zoho” na Edição do Portfólio.',m:'Solicitação do gestor.',o:'Implementação v17.8',v:'Pendente de validação em produção'},
  {d:'29/10/2026',p:'Horas apontadas e nomes',desc:'Inclusão da página “Análise de Horas” e correção da regra de nome (Assinatura) em Horas Apontadas e Avisos.',m:'Solicitação do gestor.',o:'Implementação v17.7',v:'Pendente de validação em produção'},
  {d:'29/10/2026',p:'Notificações e auditoria',desc:'Inclusão da página “Notificações por e-mail do Status Report” (Gerenciador de Notificações) e das abas Notif_Regras, Notif_Destinatarios e Notif_Fila; versão do portal v17.7.',m:'Nova funcionalidade.',o:'Implementação v17.7',v:'Pendente de validação em produção'},
  {d:'27/10/2026',p:'Todas',desc:'Criação da Wiki com as 15 categorias, a partir da leitura do código atual (index.html e AppsScript_Code.gs).',m:'Solicitação do gestor de documentar regras, fórmulas, permissões e fontes de dados.',o:'Auditoria do código v17.6',v:'Pendente de validação pelo gestor'}
@@ -12651,14 +12913,13 @@ function haPrepararDados_(r){
   HA.escopo=r.escopo||'todos';
 }
 function haPreencherFiltros_(){
-  const dl=document.getElementById('ha-ul'); dl.innerHTML=HA.usuarios.filter(u=>!u.fora).sort((a,b)=>a.rot.localeCompare(b.rot,'pt-BR')).map(u=>'<option value="'+feEsc_(u.rot)+'">').join('');
   const sp=document.getElementById('ha-proj'), atual=sp.value;
   const nomes=[...new Set(HA.projetos.map(p=>p.pj))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
   sp.innerHTML='<option value="">Todos</option>'+nomes.map(n=>'<option>'+feEsc_(n)+'</option>').join('');
   if(nomes.includes(atual)) sp.value=atual;
   const un=document.getElementById('ha-user');
   if(HA.escopo==='proprio'){ un.value=HA.usuarios[0]?HA.usuarios[0].rot:''; un.disabled=true; un.title='Seu perfil visualiza apenas as próprias horas.'; }
-  else { un.disabled=false; un.title=''; if(un.value&&!haUsuarioSel_()) un.value=''; }
+  else { un.disabled=false; un.title=''; if(un.value&&!haUsuarioSel_()&&!cbPessoasAtivas_().some(n=>haN_(n)===haN_(un.value))) un.value=''; }
 }
 // ---------- cálculo ----------
 function haCalcular_(){
@@ -13133,12 +13394,12 @@ function ahFaixaOk_(n){
 }
 function ahCalcular_(){
   const f=AH.f, per=ahPeriodo_(), meses=ahMeses_(per.ini,per.fim), notas={};
-  const filtraPes=!!(f.heads.size||f.area||f.cargo||f.nv), q=haN_(f.pessoa);
+  const filtraPes=!!(f.heads.size||f.area||f.cargo||f.nv), q=haN_(f.pessoa), exato=!!q&&AH.roster.some(p=>haN_(ahNomeP_(p))===q);
   const cand=AH.roster.filter(p=>{
     if(p.reg){ if(!p.ativo||!p.participa) return false; }
     else if(filtraPes) return false;
     if(f.heads.size&&!f.heads.has(p.head)) return false; if(f.area&&p.area!==f.area) return false; if(f.cargo&&p.cargo!==f.cargo) return false; if(f.nv&&p.nv!==f.nv) return false;
-    if(q&&!haN_(ahNomeP_(p)).includes(q)&&p.e!==q) return false;
+    if(q){ const nn=haN_(ahNomeP_(p)); if(exato?nn!==q:(!nn.includes(q)&&p.e!==q)) return false; }
     return true;
   });
   const candSet=new Set(cand.map(p=>p.e));
@@ -13350,6 +13611,42 @@ async function ahExportar_(btn){
   }catch(e){ console.warn('Falha ao exportar (Análise de Horas).',e); mostrarToastPermissao('Não foi possível gerar o Excel: '+((e&&e.message)||'erro'),false); }
   finally{ btn.disabled=false; btn.textContent=txt; }
 }
+
+// v17.8 — Combo de nomes: ao focar/clicar mostra a lista COMPLETA (clicável); ao digitar, filtra. Substitui o <datalist>,
+// que só listava o que combinava com o texto já preenchido.
+function cbAttach_(inp,getItems,onPick,todosRot){
+  if(!inp||inp.dataset.cb) return; inp.dataset.cb='1'; inp.removeAttribute('list'); inp.setAttribute('autocomplete','off'); inp.setAttribute('role','combobox'); inp.setAttribute('aria-expanded','false');
+  const wrap=document.createElement('span'); wrap.className='cb-wrap'; inp.parentNode.insertBefore(wrap,inp); wrap.appendChild(inp);
+  const box=document.createElement('div'); box.className='cb-list'; box.setAttribute('role','listbox'); wrap.appendChild(box);
+  let act=-1, itens=[];
+  const fechar=()=>{ box.classList.remove('open'); inp.setAttribute('aria-expanded','false'); act=-1; };
+  const desenhar=(filtrar)=>{
+    const all=getItems()||[], q=haN_(inp.value), atual=haN_(inp.value);
+    itens=filtrar&&q?all.filter(x=>haN_(x).includes(q)):all; act=-1;
+    box.innerHTML='<div class="cb-it cb-all" data-cb="" role="option">'+feEsc_(todosRot||'Todos')+'</div>'+(itens.length?itens.map((x,i)=>'<div class="cb-it'+(haN_(x)===atual?' sel':'')+'" role="option" data-cb-i="'+i+'">'+feEsc_(x)+'</div>').join(''):'<div class="cb-vazio">Nenhum nome encontrado.</div>');
+    box.classList.add('open'); inp.setAttribute('aria-expanded','true');
+    const s=box.querySelector('.sel'); if(s) s.scrollIntoView({block:'nearest'});
+  };
+  const escolher=(v)=>{ inp.value=v; fechar(); if(onPick) onPick(v); };
+  inp.addEventListener('focus',()=>{ if(!inp.disabled) desenhar(false); });
+  inp.addEventListener('click',()=>{ if(!inp.disabled&&!box.classList.contains('open')) desenhar(false); });
+  inp.addEventListener('input',()=>{ if(!inp.disabled) desenhar(true); });
+  inp.addEventListener('keydown',e=>{
+    const els=[...box.querySelectorAll('.cb-it')];
+    if(e.key==='Escape'){ fechar(); return; }
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){ e.preventDefault(); if(!box.classList.contains('open')) desenhar(false); const n=[...box.querySelectorAll('.cb-it')]; act=Math.max(0,Math.min(n.length-1,act+(e.key==='ArrowDown'?1:-1))); n.forEach((x,i)=>x.classList.toggle('act',i===act)); if(n[act]) n[act].scrollIntoView({block:'nearest'}); }
+    else if(e.key==='Enter'&&act>=0&&els[act]){ e.preventDefault(); const it=els[act]; escolher(it.hasAttribute('data-cb-i')?itens[+it.dataset.cbI]:''); }
+  });
+  box.addEventListener('mousedown',e=>{ e.preventDefault(); const it=e.target.closest('.cb-it'); if(!it) return; escolher(it.hasAttribute('data-cb-i')?itens[+it.dataset.cbI]:''); });
+  document.addEventListener('mousedown',e=>{ if(!wrap.contains(e.target)) fechar(); });
+  inp.addEventListener('blur',()=>setTimeout(fechar,120));
+}
+function cbPessoasAtivas_(extra){
+  const m=new Map();
+  ((D&&D.p)||[]).forEach(p=>{ if(p&&p.a&&pessoaEstaAtiva(p)&&pessoaParticipaAnalises_(p)) m.set(haN_(p.a),p.a); });
+  (extra||[]).forEach(n=>{ if(n&&!m.has(haN_(n))) m.set(haN_(n),n); });
+  return [...m.values()].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+}
 // ---------- carga e eventos ----------
 async function ahCarregar_(forcar){
   const per=ahPeriodo_(), st=document.getElementById('ah-status');
@@ -13380,6 +13677,7 @@ function initAnaliseHoras(){
     const recarrega=()=>{ ahLerFiltros_(); AH.mais={}; ahSumDd_(); ahCarregar_(false); };
     ['ah-per','ah-ini','ah-fim'].forEach(id=>document.getElementById(id).addEventListener('change',recarrega));
     ['ah-proj','ah-faixa','ah-area','ah-cargo','ah-nv','ah-cli','ah-tipo'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{ ahLerFiltros_(); AH.mais={}; ahRender_(); }));
+    cbAttach_(document.getElementById('ah-pes'),()=>cbPessoasAtivas_(),()=>{ ahLerFiltros_(); AH.mais={}; ahRender_(); },'Todas as pessoas');
     ['ah-pmin','ah-pmax','ah-pes'].forEach(id=>document.getElementById(id).addEventListener('input',debounce(()=>{ ahLerFiltros_(); AH.mais={}; ahRender_(); },250)));
     document.getElementById('ah-limpar').addEventListener('click',()=>{
       Object.assign(AH.f,{preset:'mes',proj:'todos',projSel:new Set(),heads:new Set(),area:'',cargo:'',nv:'',cliente:'',tipo:'',pessoa:'',faixa:'',pmin:'',pmax:''});
@@ -13415,6 +13713,7 @@ function initHorasApontadas(){
     ['ha-ini','ha-fim'].forEach(id=>document.getElementById(id).addEventListener('change',()=>haCarregar_(false)));
     ['ha-proj','ha-tipo','ha-dia','ha-soexc'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{HA.limite=150;haRender_();}));
     document.getElementById('ha-view').addEventListener('change',e=>{HA.tab=e.target.value;haRender_();});
+    cbAttach_(document.getElementById('ha-user'),()=>cbPessoasAtivas_(),()=>{HA.limite=150;haRender_();},'Todos os usuários');
     document.getElementById('ha-user').addEventListener('input',debounce(()=>{ if(!document.getElementById('ha-user').value.trim()||haUsuarioSel_()){HA.limite=150;haRender_();} },250));
     document.getElementById('ha-limpar').addEventListener('click',()=>{
       ['ha-proj','ha-tipo','ha-dia'].forEach(id=>document.getElementById(id).value=''); document.getElementById('ha-soexc').checked=false;
