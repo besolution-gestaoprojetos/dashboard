@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzvwjUahBAhEYMzNECsoJKx8Xq6ZfC3y1aEKPnw26hp0JnFrAooBVKrEXFFs1fLEO5HXg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyyVU178fF4JT9VM7HBgV3oZAZ5VwfyOms9-i9jVS3AdOKmOUBgNK7kvx2i3Ty86AR9Hg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -828,6 +828,11 @@ html[data-theme="dark"] .sess-banner{background:#451a1a;border-color:#7f1d1d;col
 .zs-info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
 .zs-info span{display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:2px}.zs-info b{font-size:13.5px;word-break:break-all}
 @media(prefers-color-scheme:dark){.zs-ok{color:#4ade80}.zs-warn{color:#fbbf24}.zs-amb,.zs-logo,.zs-lock{color:#c4b5fd}.zs-err{color:#f87171}}
+/* v17.8 — capacidade individual */
+.cap-prov{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:8px;background:rgba(245,158,11,.15);color:#b45309;vertical-align:middle;white-space:nowrap}
+.cap-ok{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:10px;background:var(--surface-alt);border:1px solid var(--border);white-space:nowrap}
+.cap-nd{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:10px;background:rgba(245,158,11,.15);color:#b45309;white-space:nowrap}
+.pa-aviso{padding:9px 12px;border-radius:8px;font-size:13px;margin-top:6px}.pa-aviso.cap-erro{background:rgba(220,38,38,.1);color:#b91c1c}.pa-aviso.cap-warn{background:rgba(245,158,11,.13);color:#b45309}.pa-aviso.cap-info{background:rgba(15,76,117,.09)}
 </style>
 <style>
 .brand-logo img{height:34px;width:auto;display:block}
@@ -2273,7 +2278,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
 
     <!-- PAGE GESTÃO DE HORAS APONTADAS (v16.5) -->
     <section class="page" id="page-horasapontadas">
-      <div class="page-header"><div><h1>Gestão de Horas Apontadas</h1><p>Horas por usuário, dia e semana contra a jornada de referência (8h/dia · 40h/semana), com excedentes e horas fora da jornada. Fonte: apontamentos oficiais de horas.</p></div></div>
+      <div class="page-header"><div><h1>Gestão de Horas Apontadas</h1><p>Horas por usuário, dia e semana contra a jornada individual de cada pessoa (Pessoas e Perfis; sem cadastro, 8h/dia provisórias), com excedentes e horas fora da jornada. Fonte: apontamentos oficiais de horas.</p></div></div>
       <div class="filter-bar">
         <div class="filter-field"><label for="ha-ini">Período — início</label><input type="date" id="ha-ini"></div>
         <div class="filter-field"><label for="ha-fim">Período — fim</label><input type="date" id="ha-fim"></div>
@@ -2741,7 +2746,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v17.8';
+const APP_VERSION='v17.9';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -2971,8 +2976,10 @@ async function attemptLoadWithToken(token, viewAsEmail){
 //
 // Atualize esta data junto com qualquer alteração no array abaixo — ela
 // aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='04/11/2026';
+const NOVIDADES_ATUALIZADO_EM='05/11/2026';
 const NOVIDADES=[
+  {icone:'＋', bg:'#f0fdf4', cor:'#16a34a', titulo:'Criar projeto do Zoho direto no Portfólio', descricao:'Na aba Sincronização Zoho da Edição do Portfólio, cada pendência “Só no Zoho” ganhou o botão “Salvar como novo no Portfólio”, e há também “Criar todos os Só no Zoho”. O projeto nasce no Portifolio já vinculado ao Zoho, com cliente, projeto, ID, código, status, estágio e datas. Os demais campos ficam para você completar. Disponível só ao Administrador e com a gravação liberada.', paginas:['portfolioedit'], data:'2026-11-05', tag:'Novidade'},
+  {icone:'🕒', bg:'#ecfeff', cor:'#0e7490', titulo:'Modelo de contratação e jornada por pessoa', descricao:'Em Pessoas e Perfis há uma nova seção “Modelo de Contratação e Jornada” (CLT, PJ Full Time, Part-time Fixo, Part-time Hora) com as cargas mensal, semanal e diária, preenchidas automaticamente e ajustáveis. Minha Equipe, Desempenho, Alocação, Gestão de Horas Apontadas e Análise de Horas passam a usar a jornada de cada pessoa, e não mais 40h/8h para todos. Quem ainda não tem modelo aparece com “capacidade provisória” e na lista “Capacidade não definida”.', paginas:['pessoasadmin','equipe','pessoa','inteligencia','horasapontadas','analisehoras'], data:'2026-11-04', tag:'Novidade'},
   {icone:'⧉', bg:'#f5f3ff', cor:'#7c3aed', titulo:'Duplicar report anterior no Status Report', descricao:'Novo botão na tela do Status Report que preenche a semana atual com o report anterior do projeto (status, risco, criticidade, textos, plano de ação e cronograma de entregas) para você ajustar só o que mudou. Nada é salvo até clicar em Salvar Rascunho ou Finalizar, e dá para desfazer.', paginas:['statusreport'], data:'2026-11-04', tag:'Novidade'},
   {icone:'🔄', bg:'#f5f3ff', cor:'#7c3aed', titulo:'Datas do Portfólio atualizadas pelo Zoho', descricao:'A tabela Projetos (carga do Zoho) agora atualiza automaticamente Data de Início, Prev. Entrega Inicial (uma única vez), Prev. Entrega Atual e Data Entrega (quando o estágio é Concluído) dos projetos vinculados. Na Edição do Portfólio há uma seção somente leitura com os dados do Zoho, o vínculo de cada projeto e, para o Administrador, a aba Sincronização Zoho com simulação, pendências e associação manual. Nenhum outro campo do portfólio é alterado.', paginas:['portfolioedit'], data:'2026-11-04', tag:'Novidade'},
   {icone:'📈', bg:'#ecfdf5', cor:'#059669', titulo:'Nova página Análise de Horas', descricao:'Nova página no menu Gestão (somente Administrador) com três indicadores sobre os apontamentos de horas: pessoas com menos horas apontadas contra a referência (8h × dias úteis, respeitando feriados da localidade e datas de entrada/distrato), média mensal de horas por pessoa com gráfico e ranking de horas fora da jornada (excedente em dias úteis, fins de semana e feriados). Filtros por período, projetos (todos/em andamento/selecionados), quantidade de projetos com apontamento, Head, área, cargo, senioridade, cliente, tipo e pessoa; detalhamento que fecha com os totais e exportação para Excel. Férias e afastamentos não constam nos dados e o texto das telas não trata ninguém como ocioso. Todas as páginas agora mostram o nome pela Assinatura (Pessoas_Area); sem Assinatura aparece “Nome não cadastrado”.', paginas:['analisehoras','horasapontadas'], data:'2026-10-29', tag:'Nova página', tagCor:'nova'},
@@ -4214,8 +4221,25 @@ function abrirInfoPopover(btn){
 // base ABSOLUTA (não relativa/percentil) para classificar se alguém está acima
 // da capacidade — ex: "Carga Elevada" em Minha Equipe. Constantes centralizadas
 // aqui para manter o valor consistente em todos os cálculos que usam essa regra.
-const CAPACIDADE_SEMANAL_HORAS = 40;
-const CAPACIDADE_MENSAL_HORAS = 200;
+const CAPACIDADE_SEMANAL_HORAS = 40;   // v17.8: só como referência PROVISÓRIA de quem ainda está sem modelo de contratação
+const CAPACIDADE_MENSAL_HORAS = 160;
+const CAPACIDADE_DIARIA_HORAS = 8;
+// v17.8 — Pessoas_Area é a fonte oficial da jornada individual (Modelo_Contratacao + Carga_Horaria_*).
+// Pessoa com capacidade definida usa a própria jornada; sem cadastro, as telas seguem com a referência provisória
+// (40h/sem · 8h/dia · 160h/mês) e marcam "capacidade provisória" até o cadastro ser concluído.
+let CAP_CACHE=new WeakMap();
+function capPessoa_(p){
+  if(!p) return {def:false,prov:true,sem:CAPACIDADE_SEMANAL_HORAS,dia:CAPACIDADE_DIARIA_HORAS,mes:CAPACIDADE_MENSAL_HORAS,modelo:''};
+  let r=CAP_CACHE.get(p); if(r) return r;
+  const cs=+p.cs>0?+p.cs:0, cm=+p.cm>0?+p.cm:0, cd=+p.cd>0?+p.cd:0;
+  if(p.cap===true && (cs||cm)){
+    const sem=cs||(cm/4), dia=cd||(sem/5), mes=cm||(sem*4);
+    r={def:true,prov:false,sem,dia,mes,modelo:p.mod||''};
+  } else r={def:false,prov:true,sem:CAPACIDADE_SEMANAL_HORAS,dia:CAPACIDADE_DIARIA_HORAS,mes:CAPACIDADE_MENSAL_HORAS,modelo:p.mod||''};
+  CAP_CACHE.set(p,r); return r;
+}
+function capPorEmail_(e){ e=String(e||'').toLowerCase(); const L=(typeof D!=='undefined'&&D&&D.p)||[]; return capPessoa_(L.find(x=>String(x.email||'').toLowerCase()===e)); }
+function capSelo_(c){ return c&&c.prov?' <span class="cap-prov" title="Pessoa sem modelo de contratação cadastrado: usando a referência provisória de 40h/semana · 8h/dia. Complete em Pessoas e Perfis.">capacidade provisória</span>':''; }
 const TIP_PERCENTIL_HORAS='Percentil de horas trabalhadas em relação a todo o portfólio. Ex: P90% significa que essa pessoa trabalhou mais horas que 90% de todo mundo no período. Calculado comparando o total de horas apontadas de cada pessoa.';
 const TIP_PERCENTIL_TAREFAS='Percentil de quantidade de tarefas em relação a todo o portfólio. Ex: P90% significa mais tarefas que 90% de todo mundo no período.';
 const TIP_PERCENTIL_TOKENS='Percentil de uso de tokens do Claude Code em relação a todo o portfólio, no mesmo período selecionado.';
@@ -5174,7 +5198,7 @@ function daApontTxt_(b,H){ const v=daApont_(b,H); return v===null?'—':fHM_(v)+
 function daVencN_(arr,H){ const lim=daIsoLocal_(H); return arr.filter(d=>d<=lim).length; }
 // ---------- cálculo por período (H dias) com carga extra opcional ----------
 function daCalc_(b,H,extra){
-  const cap=DA_PARAM.horasSemana;
+  const cap=capPessoa_(b.p).sem; // v17.8: capacidade semanal individual (Pessoas_Area); provisória 40h sem cadastro
   let ent7=0,ent15=0;
   b.rows.forEach(r=>{ if(r.dias!==null&&r.dias<=7) ent7++; if(r.dias!==null&&r.dias<=15) ent15++; });
   // Carga média por semana numa janela de Hx dias. A pressão usa a PIOR janela entre os
@@ -5674,7 +5698,7 @@ function daDetKpi_(id,c){
   if(id==='k3') return T('Projetos com tarefas atrasadas','tarefas abertas, não bloqueadas, com vencimento anterior a hoje (bloqueadas e concluídas não entram).',proj(c.comLate));
   if(id==='k4') return T('Áreas com possível déficit','áreas em que a carga acima do limite de '+DA_PARAM.utilMaxRealoc+'% por pessoa é maior que a folga das demais pessoas da própria área.','<div class="table-wrap"><table class="da-t"><thead><tr><th>Área</th><th>Acima do limite</th><th>Folga</th><th>Falta</th></tr></thead><tbody>'+(c.areasDef.map(a=>'<tr><td><b>'+daE_(a.area)+'</b></td><td>'+fHM_(a.exc)+'/sem</td><td>'+fHM_(a.livre)+'/sem</td><td><b class="da-neg">'+fHM_(a.falta)+'/sem</b></td></tr>').join('')||'<tr><td colspan="4" class="da-note">Nenhuma área com déficit.</td></tr>')+'</tbody></table></div>');
   if(id==='k5') return T('Pessoas em alta pressão','utilização planejada acima de '+DA_PARAM.pressao.aten+'% (pior janela entre 7 dias e o período), com escalonamento por atrasos/entregas próximas. Pessoas sem horas estimadas suficientes ficam de fora.',pess(c.alta,'Utilização'));
-  if(id==='k6') return T('Capacidade livre estimada','soma, por pessoa, do menor valor entre a folga sobre '+DA_PARAM.horasSemana+'h/sem e o que cabe até '+DA_PARAM.utilMaxRealoc+'% de utilização, vezes '+c.H+'/7 semanas. É capacidade <b>teórica</b>: feriados e ausências ainda não entram.',pess(c.comFolga,'Folga aproveitável'));
+  if(id==='k6') return T('Capacidade livre estimada','soma, por pessoa, do menor valor entre a folga sobre a capacidade semanal individual (jornada cadastrada; 40h/sem provisória sem cadastro) e o que cabe até '+DA_PARAM.utilMaxRealoc+'% de utilização, vezes '+c.H+'/7 semanas. É capacidade <b>teórica</b>: feriados e ausências ainda não entram.',pess(c.comFolga,'Folga aproveitável'));
   if(id==='k7') return T('Projetos com déficit de equipe','projetos com requisito de equipe em que faltam profissionais disponíveis (livre útil ≥ '+DA_PARAM.horasVaga+' h/sem) para a quantidade necessária — detalhe por requisito em “Requisitos de equipe por projeto”.',c.V.temReq?proj(c.semC):'<div class="da-why">Nenhum projeto tem requisitos cadastrados — preencha em Edição do Portfólio.</div>');
   return T('Projetos que precisam de atenção','projetos ativos com ao menos um alerta confirmado ou estimado (atraso, entrega vencida, carga acima da capacidade, dependência de uma pessoa, pessoa-chave sob pressão ou falta de profissional compatível). Projetos só com informação ausente aparecem à parte, como “dados insuficientes”.',proj(c.att.concat(c.insufOnly)));
 }
@@ -5710,10 +5734,10 @@ function daVInd_(f,d){
   if(!x) x=todos[0]||lista[0]; if(!x) return '';
   DA.sel=daId_(x.p);
   const r=daAvaliar_(x,d,H), c=x.c, b=x.b;
-  const apH=daApont_(b,H), capP=DA_PARAM.horasSemana*H/7;
+  const apH=daApont_(b,H), capP=c.cap*H/7;
   const wk=[1,2,3,4].map(w=>b.rows.reduce((s,rr)=>s+(rr.diasEf>(w-1)*7?rr.taxa*Math.min(1,(rr.diasEf-(w-1)*7)/7):0),0));
   const rf=daReforco_(x,H), sd=c.util>DA_PARAM.pressao.aten?daSaida_(x):null;
-  return '<div class="card"><div class="da-top"><div>'+daAv_(x.p.a)+'<b style="font-size:16px">'+daE_(x.p.a)+'</b> '+daChip_(c.lvl)+'<div class="da-note">'+daE_(x.p.cargo||'sem cargo')+' · '+daE_(x.p.area||'sem área')+' · Senioridade: '+daNvRotulo_(x.p)+'</div></div><div><select data-dasel="ind">'+lista.map(o=>daOpt_(daId_(o.p),o.p.a,daId_(x.p))).join('')+'</select> <button class="da-btn p" data-da="cmp|'+daId_(x.p)+'">Comparar</button> <button class="da-btn p" data-da="sim|'+daId_(x.p)+'">Simular alocação</button> <button class="da-btn p" data-da="rel|'+daId_(x.p)+'">Sugerir realocação</button></div></div></div>'
+  return '<div class="card"><div class="da-top"><div>'+daAv_(x.p.a)+'<b style="font-size:16px">'+daE_(x.p.a)+'</b> '+daChip_(c.lvl)+capSelo_(capPessoa_(x.p))+'<div class="da-note">'+daE_(x.p.cargo||'sem cargo')+' · '+daE_(x.p.area||'sem área')+' · Senioridade: '+daNvRotulo_(x.p)+'</div></div><div><select data-dasel="ind">'+lista.map(o=>daOpt_(daId_(o.p),o.p.a,daId_(x.p))).join('')+'</select> <button class="da-btn p" data-da="cmp|'+daId_(x.p)+'">Comparar</button> <button class="da-btn p" data-da="sim|'+daId_(x.p)+'">Simular alocação</button> <button class="da-btn p" data-da="rel|'+daId_(x.p)+'">Sugerir realocação</button></div></div></div>'
   +'<div class="da-kpis">'+daKpi_(b.rows.length,'Projetos ativos (carga ponderada '+b.pond+')')+daKpi_(c.insuf?'—':fHM_(c.pl)+'','Planejadas/sem ('+H+'d) · capacidade '+c.cap+'h')+daKpi_(apH===null?'—':fHM_(apH)+'','Horas apontadas — últimos '+H+' dias',apH===null?'apontamento diário indisponível':Math.round(apH/capP*100)+'% da jornada de referência ('+fHM_(capP)+')')+daKpi_(c.insuf?'—':fHM_(Math.max(0,c.free))+'','Capacidade teórica livre/sem')+daKpi_(b.nTot,'Tarefas abertas',daVencN_(b.vencTodas,H)+' com vencimento em '+H+' dias')+daKpi_(b.late,'Atrasadas')+daKpi_(b.blocked,'Bloqueadas (≠ atrasadas)')+daKpi_(daVencN_(b.vencNB,H),'Vencendo em '+H+' dias')+'</div>'
   +'<div class="da-grid2"><div>'
   +'<div class="card"><div class="card-title"><h3>Projetos ativos e próximas entregas</h3></div><div class="table-wrap"><table class="da-t"><thead><tr><th>Projeto</th><th>Complex.</th><th>Prior.</th><th>Restante</th><th>Tarefas</th><th>Entrega</th><th>Risco do projeto</th></tr></thead><tbody>'
@@ -5802,7 +5826,7 @@ function daVRel_(f,d){
      +'<div class="da-why"><b>Por que este projeto</b><ul><li>Os membros atuais têm ~'+fHM_(s.m.gap)+'/sem acima do que conseguem absorver (necessário ~'+fHM_(s.m.need)+'/sem); '+(s.m.dias===null?'sem previsão de entrega':s.m.dias<0?'entrega vencida':'entrega em '+s.m.dias+' dias')+', prioridade '+daE_(s.m.proj.pr||'—')+', complexidade '+daE_(s.m.proj.cx||'—')+'</li>'
      +'<li class="'+(s.f.a===100?'da-pos':'da-mut')+'">Área da pessoa ('+daE_(x.p.area)+') já atua no projeto</li>'
      +(s.f.n===null?'<li class="da-mut">'+(()=>{const i=daNvInfo_(x.p); return i.est==='ausente'?'Senioridade de '+daE_(x.p.a)+': não cadastrada':i.est==='invalido'?'Senioridade: valor “'+daE_(i.rot)+'” não interpretável — corrigir o campo Nível':'Complexidade do projeto: não informada';})()+'</li>':'<li class="'+(s.f.n===100?'da-pos':'da-neg')+'">Nível '+daE_(x.p.nv)+' '+(s.f.n===100?'atende':'está abaixo do ideal para')+' complexidade '+daE_(s.m.proj.cx)+'</li>')
-     +'<li>Dados usados: horas estimadas restantes e apontadas, jornada de '+DA_PARAM.horasSemana+'h/sem, previsão de entrega atual</li></ul></div>'
+     +'<li>Dados usados: horas estimadas restantes e apontadas, capacidade semanal individual (cadastro em Pessoas e Perfis), previsão de entrega atual</li></ul></div>'
      +'<div style="margin-top:6px"><button class="da-btn" data-da="sim|'+daId_(x.p)+'">Simular esta alocação</button> <span class="da-note">A aplicação é feita pelo gestor nos fluxos atuais do portal.</span></div></div>').join('')
    :'<div class="da-note">Nenhum projeto com necessidade real, área compatível e capacidade livre para esta pessoa.</div>')+'</div>';
   if(sob) html+='<div class="card"><div class="card-title"><h3>Liberar capacidade — de onde tirar e quem assume</h3><span class="sub">excesso ≈ '+fHM_(sd.excesso)+'/sem acima de '+DA_PARAM.utilSaida+'%</span></div>'
@@ -5819,7 +5843,7 @@ function daAbrirExplicacao_(){
   const P=DA_PARAM, pc=P.pressao;
   const bloco=(emoji,titulo,oQueE,como,exemplo)=>'<div style="margin-bottom:22px"><div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px">'+emoji+' '+titulo+'</div><p style="font-size:13px;color:var(--text-muted);line-height:1.6;margin:0 0 8px">'+oQueE+'</p><p style="font-size:12.5px;color:var(--text-faint);line-height:1.6;margin:0 0 8px"><strong>Como é calculado:</strong> '+como+'</p>'+(exemplo?'<div style="background:var(--surface-alt);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--text-muted);line-height:1.55"><strong>Exemplo:</strong> '+exemplo+'</div>':'')+'</div>';
   let h='<p style="font-size:13px;color:var(--text-muted);margin-bottom:6px">A Decisão de Alocação é um <strong>apoio à decisão</strong>: mostra números e justificativas, mas quem decide é o gestor. Nada aqui altera alocações reais. Os exemplos abaixo usam números ilustrativos; no fim há um caso com dados reais da sua base.</p><p style="font-size:12px;color:var(--text-faint);margin-bottom:18px">Os limites e pesos citados são os parâmetros atuais, ainda sujeitos à validação dos gestores.</p>';
-  h+=bloco('🕒','Capacidade da pessoa','Quantas horas por semana uma pessoa pode dedicar aos projetos.','Jornada padrão de '+P.horasSemana+'h por semana (8h × 5 dias). Feriados e ausências ainda não são descontados.','Capacidade = <strong>'+P.horasSemana+'h/sem</strong> para todos.');
+  h+=bloco('🕒','Capacidade da pessoa','Quantas horas por semana uma pessoa pode dedicar aos projetos.','Carga semanal cadastrada para cada pessoa em Pessoas e Perfis (Modelo de Contratação e Jornada): CLT e PJ Full Time 40h, Part-time Fixo 20h, Part-time Hora conforme combinado. Feriados e ausências ainda não são descontados.','Capacidade = <strong>carga semanal da pessoa</strong>. Sem cadastro, usa a referência provisória de <strong>'+P.horasSemana+'h/sem</strong> e a pessoa aparece com o selo “capacidade provisória”.');
   h+=bloco('⏳','Esforço restante por projeto','O trabalho que ainda falta para uma pessoa em cada projeto.','Soma, só das tarefas ABERTAS dela, as horas estimadas menos as horas que ela já apontou na mesma tarefa. Tarefa concluída ou cancelada não conta. Tarefa com vários responsáveis tem as horas divididas entre eles. Tarefa sem horas estimadas não entra nas horas — ela é contada à parte (cobertura) e nunca é "chutada".','Ana tem 3 tarefas abertas no projeto Alfa: 20h estimadas (já apontou 5h), 30h estimadas (apontou 0h) e uma sem estimativa. Esforço restante = (20−5) + 30 = <strong>45h</strong>; cobertura = 2 de 3 tarefas = <strong>67%</strong>.');
   h+=bloco('📈','Carga semanal planejada','Quantas horas por semana a pessoa precisa dedicar para entregar no prazo.','Para cada projeto: esforço restante ÷ semanas até a entrega (mínimo de 1 semana; projeto vencido concentra o esforço na próxima semana; projeto sem previsão é diluído em '+P.semanasSemData+' semanas, e isso é avisado). A carga é a soma dos projetos, olhando duas janelas — os próximos 7 dias e o período escolhido (7/15/30) — e vale a <strong>pior</strong> das duas, para um aperto de curto prazo não sumir na média.','60h restantes num projeto que entrega em 9 dias: 60 ÷ (9/7) = <strong>46,7h/sem</strong>. Sobre '+P.horasSemana+'h de capacidade, a utilização é <strong>117%</strong>. Na média de 30 dias seria só 14h/sem (35%), mas o pico dos primeiros 7 dias é o que importa.');
   h+=bloco('🚦','Pressão de trabalho','A classificação principal: Disponível, Atenção, Alta pressão, Crítico ou Dados insuficientes.','Utilização = carga semanal ÷ capacidade. Até '+pc.disp+'% Disponível · até '+pc.aten+'% Atenção · até '+pc.alta+'% Alta pressão · acima Crítico. Sobe 1 nível se a pessoa tem '+P.escalonar.atrasadas+' ou mais tarefas atrasadas, ou '+P.escalonar.entregas7+' ou mais entregas em até 7 dias. Tarefa bloqueada é só informada e nunca conta como atrasada. Se menos de '+P.coberturaMin+'% das tarefas abertas têm horas estimadas (ou há projetos sem nenhuma tarefa), aparece <strong>Dados insuficientes para avaliar</strong>.','Utilização de 74% = Atenção. Se a mesma pessoa tiver 3 tarefas atrasadas, sobe para <strong>Alta pressão</strong>. Se só 30% das tarefas tiverem estimativa, o resultado é <strong>Dados insuficientes</strong> — melhor não opinar do que errar.');
@@ -6569,6 +6593,46 @@ async function zsModalAssociar_(alvo,aposOk){
     };
   }catch(e){ const box=document.getElementById('zs-m-box'); if(box) box.innerHTML='<div style="color:var(--st-bloqueado)">Falha ao contatar o servidor.</div>'; }
 }
+// v17.9 — criar no Portfólio projetos que existem só no Zoho (individual ou em lote)
+async function zsModalCriar_(ids,aposOk){
+  const pend=(ZS_PAINEL&&ZS_PAINEL.pendencias)||[], por={}; pend.forEach(x=>{ if(x.id_zoho) por[String(x.id_zoho)]=x; });
+  const lote=ids.length>1;
+  haModal_(lote?'Criar projetos no Portfólio?':'Criar projeto no Portfólio?','<div id="zs-n-box" style="min-width:min(640px,86vw)"><div style="padding:14px;color:var(--text-muted)">Carregando…</div></div>');
+  const box=()=>document.getElementById('zs-n-box');
+  let h='';
+  if(!lote){
+    let t=null;
+    try{ const r=await zsCall_('zsOpcoes','id:'+ids[0]); if(r&&r.ok) t=r.alvo; else { if(box()) box().innerHTML='<div style="color:var(--st-bloqueado)">'+feEsc_((r&&r.message)||'Não foi possível carregar.')+'</div>'; return; } }
+    catch(e){ if(box()) box().innerHTML='<div style="color:var(--st-bloqueado)">Falha ao contatar o servidor.</div>'; return; }
+    if(!box()) return;
+    const conc=String(t.estagio||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')==='concluido';
+    const L=(a,b)=>'<tr><td style="color:var(--text-muted);width:42%;padding:5px 8px">'+a+'</td><td style="padding:5px 8px">'+b+'</td></tr>';
+    h+='<table style="font-size:13px;width:100%"><tbody>'+L('Cliente',feEsc_(t.cliente))+L('Projeto',feEsc_(t.projeto))+L('ID / Código do Zoho',feEsc_(t.id)+' · '+feEsc_(t.codigo||'—'))+L('Status / Estágio do Zoho',feEsc_(t.status||'—')+' · '+feEsc_(t.estagio||'—'))+
+      L('Início / Fim do Zoho',feEsc_(t.ini||'—')+' · '+feEsc_(t.fim||'—'))+L('Data de Início',feEsc_(t.ini||'—'))+L('Prev. Entrega Inicial e Atual',feEsc_(t.fim||'—'))+L('Data Entrega',conc?feEsc_(t.fim||'—'):'só se o estágio for Concluído')+L('Esta no Zoho · Situação Zoho','Sim · Sincronizado')+
+      L('Demais campos (Gerente, SM, Líder, PO, Complexidade etc.)','ficam vazios — o Zoho não os fornece')+'</tbody></table>';
+  } else {
+    h+='<div style="font-size:13px;margin-bottom:8px"><b>'+ids.length+'</b> projeto(s) serão criados no Portifolio com os dados do Zoho (cliente, projeto, ID, código, status, estágio e datas). Desmarque os que não quiser.</div><div class="table-wrap" style="max-height:300px"><table><thead><tr><th></th><th>Cliente</th><th>Projeto</th><th>Detalhe</th></tr></thead><tbody>'+
+      ids.map(id=>{ const x=por[id]||{}; return '<tr><td><input type="checkbox" class="zs-n-ck" value="'+feEsc_(id)+'" checked></td><td>'+feEsc_(x.cliente)+'</td><td>'+feEsc_(x.projeto)+'</td><td style="font-size:12px">'+feEsc_(x.detalhe)+'</td></tr>'; }).join('')+'</tbody></table></div>';
+  }
+  h+='<div style="border-left:4px solid var(--st-atencao,#d97706);background:rgba(245,158,11,.1);padding:9px 12px;border-radius:8px;font-size:12.5px;margin-top:10px">Cria '+(lote?'novas linhas':'uma nova linha')+' no Portifolio já vinculada'+(lote?'s':'')+' ao Zoho; a sincronização horária passa a mantê-la'+(lote?'s':'')+' atualizada. Fica registrado no Log de Alterações. Não cria se já existir o mesmo Cliente + Projeto (use Associar).</div>';
+  h+='<div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button type="button" class="sr-btn sr-btn-primary" id="zs-n-ok">'+(lote?'Criar projetos':'Criar projeto')+'</button><span id="zs-n-msg" style="font-size:12.5px"></span></div><div id="zs-n-res"></div>';
+  box().innerHTML=h;
+  const ok=document.getElementById('zs-n-ok'), msg=document.getElementById('zs-n-msg');
+  const sel=()=>lote?[...box().querySelectorAll('.zs-n-ck:checked')].map(x=>x.value):ids;
+  if(lote){ const at=()=>{ ok.disabled=!sel().length; }; box().querySelectorAll('.zs-n-ck').forEach(x=>x.onchange=at); }
+  ok.onclick=async()=>{
+    const escolhidos=sel(); if(!escolhidos.length) return;
+    ok.disabled=true; msg.style.color='var(--text-muted)'; msg.textContent='Criando…';
+    try{ const rr=await zsCall_('zsCriarProjetos','',{ids:escolhidos});
+      if(!rr||!rr.ok){ msg.style.color='var(--st-bloqueado)'; msg.textContent=(rr&&rr.message)||'Não foi possível criar.'; ok.disabled=false; return; }
+      const bad=(rr.resultados||[]).filter(x=>!x.ok);
+      if(!bad.length){ haFecharModal_(); peFeedback(rr.message+(rr.sincronizacao?' Sincronização: '+rr.sincronizacao+'.':''),true); if(aposOk) aposOk(); return; }
+      msg.style.color=rr.criados?'var(--st-feito)':'var(--st-bloqueado)'; msg.textContent=rr.message;
+      document.getElementById('zs-n-res').innerHTML='<div class="table-wrap" style="max-height:200px;margin-top:8px"><table><thead><tr><th>Projeto</th><th>Motivo</th></tr></thead><tbody>'+bad.map(x=>'<tr><td>'+feEsc_(x.projeto||x.id)+'</td><td style="font-size:12.5px">'+feEsc_(x.message)+'</td></tr>').join('')+'</tbody></table></div>';
+      ok.style.display='none'; if(aposOk) aposOk();
+    }catch(e){ msg.style.color='var(--st-bloqueado)'; msg.textContent='Falha ao contatar o servidor.'; ok.disabled=false; }
+  };
+}
 // ---- aba "Sincronização Zoho" ----
 let ZS_PAINEL=null, ZS_SIM=null, ZS_FILTRO_PEND='';
 async function zsAbrirPainel_(){
@@ -6584,6 +6648,7 @@ function zsDesenharPainel_(){
   const p=ZS_PAINEL, v=document.getElementById('pe-zs-view'), u=p.ultimo, N=x=>(x==null||x===''?'—':x);
   const pend=p.pendencias||[], tipos=[...new Set(pend.map(x=>x.tipo))].sort();
   const filt=ZS_FILTRO_PEND?pend.filter(x=>x.tipo===ZS_FILTRO_PEND):pend;
+  const soZ=pend.filter(x=>x.tipo==='Só no Zoho'&&x.id_zoho), nSoZ=soZ.length;
   const estado=!p.origemExiste?'Aba Projetos não encontrada':(p.liberada?'Gravação liberada':(p.simulou?'Simulação feita · aguardando liberação':'Aguardando 1ª simulação'));
   let h='<div class="fut-kpi-row" style="margin-bottom:16px">'+
     kpiHtml({label:'Vinculados',value:N(u&&u.vinculados),foot:'última execução'})+
@@ -6595,9 +6660,9 @@ function zsDesenharPainel_(){
   h+='<div style="font-size:13px;margin-bottom:12px">Última execução: <b>'+(u?feEsc_(u.data_hora)+' · '+feEsc_(u.modo)+' · '+feEsc_(u.resultado):'nenhuma')+'</b>'+(u&&u.mensagem?'<div style="color:var(--text-muted);font-size:12.5px;margin-top:3px">'+feEsc_(u.mensagem)+'</div>':'')+'</div>';
   h+='<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="sr-btn" id="zs-b-sim">Simular</button><button type="button" class="sr-btn sr-btn-primary" id="zs-b-lib"'+((p.liberada||!p.simulou)?' disabled':'')+'>'+(p.liberada?'Gravação liberada ✓':'Liberar gravação')+'</button><button type="button" class="sr-btn" id="zs-b-now"'+(p.liberada?'':' disabled title="Disponível após liberar a gravação"')+'>Sincronizar agora</button><button type="button" class="sr-btn" id="zs-b-gat">'+(p.gatilhoAtivo?'Desativar gatilho':'Ativar gatilho horário')+'</button></div><div id="zs-b-msg" style="margin-top:10px;font-size:12.5px"></div></div>';
   h+='<div id="zs-sim-box"></div>';
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Pendências ('+filt.length+')</h3><select id="zs-f-pend" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)"><option value="">Todos os tipos</option>'+tipos.map(t=>'<option'+(t===ZS_FILTRO_PEND?' selected':'')+'>'+feEsc_(t)+'</option>').join('')+'</select></div>';
+  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Pendências ('+filt.length+')</h3><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'+(nSoZ?'<button type="button" class="filter-clear zs-novo" id="zs-b-newall"'+(p.liberada?'':' disabled title="Libere a gravação primeiro"')+'>＋ Criar todos os “Só no Zoho” ('+nSoZ+')…</button>':'')+'<select id="zs-f-pend" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)"><option value="">Todos os tipos</option>'+tipos.map(t=>'<option'+(t===ZS_FILTRO_PEND?' selected':'')+'>'+feEsc_(t)+'</option>').join('')+'</select></span></div>';
   h+='<div class="table-wrap" style="max-height:420px"><table><thead><tr><th>Tipo</th><th>Cliente</th><th>Projeto</th><th>Detalhe / sugestão</th><th></th></tr></thead><tbody>'+
-    (filt.length?filt.slice(0,400).map((x,i)=>{ const acao=(x.tipo==='Só no Portfólio'||x.tipo==='Duplicidade'&&x.linha_portifolio)?'<button type="button" class="filter-clear" data-zs-ass="linha:'+feEsc_(x.linha_portifolio)+'" data-zs-p="'+feEsc_(x.projeto)+'" data-zs-c="'+feEsc_(x.cliente)+'">Associar…</button>':(x.tipo==='Só no Zoho'&&x.id_zoho?'<button type="button" class="filter-clear" data-zs-ass="id:'+feEsc_(x.id_zoho)+'">Associar…</button>':''); return '<tr><td><span class="zs-tag zs-wait">'+feEsc_(x.tipo)+'</span></td><td>'+feEsc_(x.cliente)+'</td><td>'+feEsc_(x.projeto)+'</td><td style="font-size:12.5px">'+feEsc_(x.detalhe)+(x.sugestao?'<div style="color:var(--text-muted)">Sugestão: '+feEsc_(x.sugestao)+'</div>':'')+'</td><td>'+acao+'</td></tr>'; }).join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text-faint)">Nenhuma pendência.</td></tr>')+'</tbody></table></div>'+(filt.length>400?'<div style="font-size:12px;color:var(--text-muted);margin-top:6px">Exibindo as 400 primeiras.</div>':'')+'</div>';
+    (filt.length?filt.slice(0,400).map((x,i)=>{ const acao=(x.tipo==='Só no Portfólio'||x.tipo==='Duplicidade'&&x.linha_portifolio)?'<button type="button" class="filter-clear" data-zs-ass="linha:'+feEsc_(x.linha_portifolio)+'" data-zs-p="'+feEsc_(x.projeto)+'" data-zs-c="'+feEsc_(x.cliente)+'">Associar…</button>':(x.tipo==='Só no Zoho'&&x.id_zoho?'<button type="button" class="filter-clear" data-zs-ass="id:'+feEsc_(x.id_zoho)+'">Associar…</button> <button type="button" class="filter-clear zs-novo" data-zs-new="'+feEsc_(x.id_zoho)+'"'+(p.liberada?'':' disabled title="Libere a gravação primeiro"')+'>＋ Salvar como novo no Portfólio</button>':''); return '<tr><td><span class="zs-tag zs-wait">'+feEsc_(x.tipo)+'</span></td><td>'+feEsc_(x.cliente)+'</td><td>'+feEsc_(x.projeto)+'</td><td style="font-size:12.5px">'+feEsc_(x.detalhe)+(x.sugestao?'<div style="color:var(--text-muted)">Sugestão: '+feEsc_(x.sugestao)+'</div>':'')+'</td><td>'+acao+'</td></tr>'; }).join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text-faint)">Nenhuma pendência.</td></tr>')+'</tbody></table></div>'+(filt.length>400?'<div style="font-size:12px;color:var(--text-muted);margin-top:6px">Exibindo as 400 primeiras.</div>':'')+'</div>';
   h+='<div class="card"><div class="card-title"><h3>Histórico de execuções</h3><span class="sub">últimas '+(p.historico||[]).length+'</span></div><div class="table-wrap" style="max-height:300px"><table><thead><tr><th>Data</th><th>Origem</th><th>Modo</th><th>Resultado</th><th>Vinc.</th><th>Campos</th><th>Amb.</th><th>Mensagem</th></tr></thead><tbody>'+
     ((p.historico||[]).map(x=>'<tr><td>'+feEsc_(x.data_hora)+'</td><td>'+feEsc_(x.origem)+'</td><td>'+feEsc_(x.modo)+'</td><td>'+feEsc_(x.resultado)+'</td><td>'+feEsc_(x.vinculados)+'</td><td>'+feEsc_(x.campos_gravados)+'</td><td>'+feEsc_(x.ambiguos)+'</td><td style="font-size:12px">'+feEsc_(x.mensagem)+'</td></tr>').join('')||'<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-faint)">Sem execuções.</td></tr>')+'</tbody></table></div></div>';
   v.innerHTML=h;
@@ -6611,6 +6676,8 @@ function zsDesenharPainel_(){
   document.getElementById('zs-b-now').onclick=()=>rodar('zs-b-now','zsSincronizar','','Sincronizando…',async r=>{ ZS_SIM=null; await zsAbrirPainelSilencioso_(); peFeedback('Sincronização: '+(r.resultado||'concluída')+' · '+((r.cont&&r.cont.camposGravados)||0)+' campo(s) gravado(s).',true); });
   document.getElementById('zs-b-gat').onclick=()=>rodar('zs-b-gat','zsGatilho',p.gatilhoAtivo?'remover':'criar','Atualizando gatilho…',async()=>{ await zsAbrirPainelSilencioso_(); });
   document.getElementById('zs-f-pend').onchange=e=>{ ZS_FILTRO_PEND=e.target.value; zsDesenharPainel_(); };
+  v.querySelectorAll('[data-zs-new]').forEach(b=>b.onclick=()=>zsModalCriar_([b.dataset.zsNew],zsAbrirPainelSilencioso_));
+  const ba=document.getElementById('zs-b-newall'); if(ba) ba.onclick=()=>zsModalCriar_(soZ.map(x=>String(x.id_zoho)),zsAbrirPainelSilencioso_);
   v.querySelectorAll('[data-zs-ass]').forEach(b=>b.onclick=()=>{ const s=b.dataset.zsAss, m=/^(linha|id):(.+)$/.exec(s); zsModalAssociar_(m[1]==='linha'?{linha:+m[2]}:{id:m[2]},zsAbrirPainelSilencioso_); });
 }
 async function zsAbrirPainelSilencioso_(){ try{ const r=await zsCall_('zsPainel',''); if(r&&r.ok){ ZS_PAINEL=r; zsDesenharPainel_(); } }catch(e){} }
@@ -6833,6 +6900,7 @@ function renderListaPessoasAdmin(termoBusca){
     {key:'estado',label:'Estado',tipo:'texto',get:p=>p.estado},
     {key:'cidade',label:'Cidade',tipo:'texto',get:p=>p.cidade},
     {key:'participa',label:'Análises',tipo:'texto',get:p=>p.participa===false?'Não':'Sim'},
+    {key:'jornada',label:'Jornada',tipo:'texto',get:p=>(p.modelo&&p.capacidade_definida)?p.modelo:'zz'},
     {key:'perfil',label:'Perfil de Acesso',tipo:'texto',get:p=>p.perfil},
     {key:'ultimoacesso',label:'Último Acesso',tipo:'data',get:p=>p.ultimo_acesso},
     {label:''}
@@ -6841,11 +6909,11 @@ function renderListaPessoasAdmin(termoBusca){
   const filtradosOrd=stPA.col?ordenarLinhas_(filtrados,colunasPessoasAdmin.find(c=>c.key===stPA.col),stPA.dir):filtrados;
   let h='<div class="card"><div class="card-title"><h3>Pessoas ('+PA_LISTA_CACHE.length+')</h3>'+
     '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="filter-clear" id="pa-mig-btn" style="padding:7px 14px" title="Separa o valor antigo de Localidade em Estado e Cidade (com pré-visualização)">📍 Migrar Localidade</button><button type="button" class="sr-btn sr-btn-primary" id="pa-novo-btn" style="padding:7px 16px">+ Nova Pessoa</button></span></div>'+
-    (function(){ const c=paContagensChips_(); const chip=(k,t)=>'<button type="button" data-pa-chip="'+k+'" class="'+(PA_FILTRO===k?'on':'')+'">'+t+'</button>'; return '<div class="pa-fchips">'+chip('todas','Todas ('+c.todas+')')+chip('ativas','Ativas ('+c.ativas+')')+chip('inativas','Inativas ('+c.inativas+')')+chip('nao','Fora das análises ('+c.nao+')')+chip('semloc','Sem estado/cidade ('+c.semloc+')')+'</div>'; })()+
+    (function(){ const c=paContagensChips_(); const chip=(k,t)=>'<button type="button" data-pa-chip="'+k+'" class="'+(PA_FILTRO===k?'on':'')+'">'+t+'</button>'; return '<div class="pa-fchips">'+chip('todas','Todas ('+c.todas+')')+chip('ativas','Ativas ('+c.ativas+')')+chip('inativas','Inativas ('+c.inativas+')')+chip('nao','Fora das análises ('+c.nao+')')+chip('semloc','Sem estado/cidade ('+c.semloc+')')+chip('semcap','Capacidade não definida ('+c.semcap+')')+(PA_FILTRO==='semcap'?'<button type="button" class="filter-clear" id="pa-cap-exp" style="margin-left:8px">⬇ Exportar pendências</button>':'')+'</div>'; })()+
     '<input type="text" id="pa-busca" placeholder="Buscar por nome, e-mail, cargo, área, estado, cidade, perfil ou status…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13.5px;margin-bottom:14px;box-sizing:border-box">'+
     '<div class="table-wrap" style="max-height:560px"><table>'+theadOrdenavel_('pessoasadmin',colunasPessoasAdmin)+'<tbody>';
   if(filtradosOrd.length===0){
-    h+='<tr><td colspan="12" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada'+(termo?' com esse termo de busca':'')+'.</td></tr>';
+    h+='<tr><td colspan="13" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada'+(termo?' com esse termo de busca':'')+'.</td></tr>';
   }else{
     filtradosOrd.forEach(p=>{
       const statusInativo=peNormalizarHeader(p.status)==='inativo';
@@ -6854,6 +6922,7 @@ function renderListaPessoasAdmin(termoBusca){
         '<td><strong>'+p.nome+'</strong></td><td>'+(p.nome_completo||'—')+'</td><td>'+(p.email||'—')+'</td><td>'+(p.cargo||'—')+'</td><td>'+(p.area||'—')+'</td>'+
         '<td>'+(p.estado||'—')+'</td><td>'+(p.cidade||'—')+'</td>'+
         '<td>'+(p.participa===false?'<span class="pa-pill bad">Não</span>':'<span class="pa-pill info">Sim'+(p.participa_vazio?' <small>(vazio)</small>':'')+'</span>')+'</td>'+
+        '<td>'+paJornadaTxt_(p)+'</td>'+
         '<td>'+(p.perfil?'<span class="status-pill">'+p.perfil+'</span>':'<span style="color:var(--text-faint)">Sem Perfil Definido</span>')+'</td>'+
         '<td>'+(p.ultimo_acesso||'—')+'</td>'+
         '<td><button type="button" class="filter-clear" style="padding:5px 12px">Abrir</button></td></tr>';
@@ -6863,6 +6932,7 @@ function renderListaPessoasAdmin(termoBusca){
   document.getElementById('pa-lista-view').innerHTML=h;
   document.getElementById('pa-novo-btn').onclick=()=>abrirFormularioNovaPessoa();
   document.getElementById('pa-mig-btn').onclick=abrirMigracaoLocalidade_;
+  const capExp=document.getElementById('pa-cap-exp'); if(capExp) capExp.onclick=paExportarPendenciasCap_;
   document.querySelectorAll('[data-pa-chip]').forEach(b=>b.onclick=()=>{ PA_FILTRO=b.dataset.paChip; renderListaPessoasAdmin(document.getElementById('pa-busca').value); });
   const buscaEl=document.getElementById('pa-busca');
   // F6 — Debounce (mesmo motivo de renderListaPortfolio: reconstrói o bloco
@@ -7153,6 +7223,7 @@ async function salvarEdicaoPessoaAdmin(){
       paFeedback('Pessoa salva com sucesso.',true);
       PA_DIRTY=false;
       const cps=PA_ULTIMA_LEITURA.campos, antes=cps.map(c=>c.valor);
+      paCapDerivados_(cps,valores);
       const renomeou=cps.some((c,i)=>paKey_(c.header)==='assinatura' && String(antes[i]||'').trim()!==String(valores[i]||'').trim());
       if(renomeou){
         carregarPessoaParaEdicao(String(valores[cps.findIndex(c=>paKey_(c.header)==='assinatura')]).trim()); // identidade mudou: relê do servidor
@@ -7171,7 +7242,8 @@ async function salvarEdicaoPessoaAdmin(){
         if(li) cps.forEach(c=>{ const k=paKey_(c.header),v=c.valor;
           if(k==='nomecompleto') li.nome_completo=v||''; else if(k==='email') li.email=v||''; else if(k==='cargo') li.cargo=v||''; else if(k==='area') li.area=v||'';
           else if(k==='status') li.status=v||''; else if(k==='perfildeacesso'||k==='perfilacesso') li.perfil=v||''; else if(k==='estado'||k==='uf') li.estado=v||''; else if(k==='cidade'||k==='municipio') li.cidade=v||'';
-          else if(paEhParticipa_(c.header)){ li.participa=(v!=='Não'); li.participa_vazio=false; } });
+          else if(paEhParticipa_(c.header)){ li.participa=(v!=='Não'); li.participa_vazio=false; }
+          else if(k==='modelocontratacao') li.modelo=v||''; else if(k==='cargahorariamensal') li.carga_mensal=paCapNum_(v); else if(k==='cargahorariasemanal') li.carga_semanal=paCapNum_(v); else if(k==='cargahorariadiaria') li.carga_diaria=paCapNum_(v); else if(k==='capacidadedefinida') li.capacidade_definida=(v==='Sim'); });
         renderFormularioPessoaAdmin(PA_ULTIMA_LEITURA.nome, cps);
         if(afetou) atualizarDadosAposCadastroPessoas_(); // indicadores refletem a mudança sem limpar o navegador
       }
@@ -7193,13 +7265,15 @@ const PA_UFS=[['AC','Acre'],['AL','Alagoas'],['AP','Amapá'],['AM','Amazonas'],[
 let PA_FILTRO='todas';
 let PA_DIRTY=false;
 function paKey_(h){ return peNormalizarHeader(h).replace(/[^a-z]/g,''); }
+const PA_CAP_KEYS=['modelocontratacao','cargahorariamensal','cargahorariasemanal','cargahorariadiaria','modalidadehoraria','capacidadedefinida'];
 function paBlocoDe_(h){
   const k=paKey_(h);
   if(['assinatura','nomecompleto','email','resumo'].includes(k)) return 1;
   if(['area','cargo','nivel','head','gestor','status','dataentrada','datadistrato'].includes(k)) return 2;
   if(['estado','uf','cidade','municipio','localidade'].includes(k)) return 3;
-  if(['perfildeacesso','perfilacesso','ultimoacesso','participaanalises','participadasanalises'].includes(k)) return 4;
-  return 5;
+  if(PA_CAP_KEYS.includes(k)) return 4;
+  if(['perfildeacesso','perfilacesso','ultimoacesso','participaanalises','participadasanalises'].includes(k)) return 5;
+  return 6;
 }
 function paSpan_(h){
   const k=paKey_(h);
@@ -7251,14 +7325,17 @@ const PA_BLOCOS=[
   {n:1,t:'Dados pessoais e identificação',d:'Como a pessoa aparece nos relatórios e é reconhecida no login.'},
   {n:2,t:'Estrutura organizacional',d:'Posição na empresa — alimenta escopo de Head/Gestor, organogramas e filtros por área.'},
   {n:3,t:'Localização',d:'Define quais feriados estaduais e municipais valem para a pessoa (jornada em Horas Apontadas).'},
-  {n:4,t:'Acesso e participação nas análises',d:'Perfil de acesso e se a pessoa entra nos números da Central de Projetos.'},
-  {n:5,t:'Outros campos',d:'Demais colunas de Pessoas_Area, exibidas automaticamente.'}
+  {n:4,t:'Modelo de Contratação e Jornada',d:'Define a capacidade usada em alocação, disponibilidade e horas apontadas.'},
+  {n:5,t:'Acesso e participação nas análises',d:'Perfil de acesso e se a pessoa entra nos números da Central de Projetos.'},
+  {n:6,t:'Outros campos',d:'Demais colunas de Pessoas_Area, exibidas automaticamente.'}
 ];
 function paBlocosHtml_(campos,nova){
-  const por={1:[],2:[],3:[],4:[],5:[]};
+  const por={1:[],2:[],3:[],4:[],5:[],6:[]};
+  const capIdx=paCapIdx_(campos), temCap=capIdx.mo>=0&&(capIdx.cs>=0||capIdx.cm>=0);
   const ORD=['assinatura','nomecompleto','email','resumo','area','cargo','nivel','status','gestor','head','dataentrada','datadistrato','estado','uf','cidade','municipio','localidade','perfildeacesso','perfilacesso','ultimoacesso','participaanalises','participadasanalises'];
   const ord=k=>{ const x=ORD.indexOf(k); return x<0?999:x; };
-  campos.map((c,i)=>({c,i})).sort((a,b)=>ord(paKey_(a.c.header))-ord(paKey_(b.c.header))||a.i-b.i).forEach(x=>{ por[paBlocoDe_(x.c.header)].push(paCampoHtml_(x.c,x.i,nova)); });
+  campos.map((c,i)=>({c,i})).sort((a,b)=>ord(paKey_(a.c.header))-ord(paKey_(b.c.header))||a.i-b.i).forEach(x=>{ if(temCap&&PA_CAP_KEYS.includes(paKey_(x.c.header))) return; por[paBlocoDe_(x.c.header)].push(paCampoHtml_(x.c,x.i,nova)); });
+  if(temCap) por[4]=[paCapBlocoHtml_(campos,capIdx)];
   let nav='',cards='';
   PA_BLOCOS.forEach(b=>{
     const itens=por[b.n].filter(Boolean);
@@ -7267,6 +7344,78 @@ function paBlocosHtml_(campos,nova){
     cards+='<div class="card pa-bloco" id="pa-b'+b.n+'" style="margin-bottom:16px"><div class="card-title" style="margin-bottom:2px"><h3>'+b.n+' · '+b.t+'</h3></div><p class="pa-d">'+b.d+'</p><div class="pa-g">'+itens.join('')+'</div></div>';
   });
   return '<div class="pa-layout"><nav class="pa-steps">'+nav+'</nav><div>'+cards+'</div></div>';
+}
+// ---------- v17.8 · MODELO DE CONTRATAÇÃO E JORNADA (cadastro de pessoas) ----------
+const PA_CAP_MODELOS=[['CLT',160,40,8],['PJ Full Time',160,40,8],['Part-time Fixo',80,20,4],['Part-time Hora',null,null,null]];
+function paCapIdx_(campos){
+  const f=k=>campos.findIndex(c=>paKey_(c.header)===k);
+  return {mo:f('modelocontratacao'),cm:f('cargahorariamensal'),cs:f('cargahorariasemanal'),cd:f('cargahorariadiaria'),md:f('modalidadehoraria'),cp:f('capacidadedefinida')};
+}
+function paCapNum_(v){ if(v===null||v===undefined||v==='') return null; const n=parseFloat(String(v).replace(',','.')); return isFinite(n)?n:null; }
+function paCapBlocoHtml_(campos,ix){
+  const v=i=>i>=0&&campos[i].valor!=null?campos[i].valor:'';
+  const mo=String(v(ix.mo)||'').trim();
+  const num=(i,id,rot,passo)=>i>=0?'<div class="sr-field s4"><label>'+rot+'</label><input type="number" min="0" step="'+passo+'" class="pa-campo" data-pa-idx="'+i+'" id="'+id+'" value="'+paEscHtml_(v(i))+'"></div>':'';
+  return '<div class="sr-field s12" id="pa-cap-wrap" style="grid-column:1/-1"><div class="pa-g">'+
+    '<div class="sr-field s8"><label>Modelo de contratação</label><select class="pa-campo" data-pa-idx="'+ix.mo+'" id="pa-cap-mod"><option value="">Não definido</option>'+PA_CAP_MODELOS.map(m=>'<option'+(mo===m[0]?' selected':'')+'>'+m[0]+'</option>').join('')+'</select></div>'+
+    '<div class="sr-field s4"><label>Modalidade horária</label><input type="text" id="pa-cap-modal" readonly disabled></div>'+
+    num(ix.cm,'pa-cap-cm','Carga mensal (h)','0.5')+num(ix.cs,'pa-cap-cs','Carga semanal (h)','0.5')+num(ix.cd,'pa-cap-cd','Carga diária (h)','0.25')+
+    '<div class="sr-field s12"><div id="pa-cap-aviso"></div><div class="pa-hint" id="pa-cap-ref" style="margin-top:6px"></div>'+
+    '<div style="margin-top:8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="filter-clear" id="pa-cap-rest">Restaurar padrão do modelo</button><span class="pa-hint">Capacidade definida: <b id="pa-cap-def">—</b> (calculada ao salvar)</span></div></div>'+
+    '</div></div>';
+}
+function paLigarCapacidade_(){
+  const $=id=>document.getElementById(id); const mo=$('pa-cap-mod'); if(!mo) return;
+  const cm=$('pa-cap-cm'), cs=$('pa-cap-cs'), cd=$('pa-cap-cd');
+  const val=el=>el?paCapNum_(el.value):null;
+  const pad=m=>PA_CAP_MODELOS.find(x=>x[0]===m);
+  let atual=mo.value;
+  const set=(el,v)=>{ if(el){ el.value=v==null?'':v; el.dispatchEvent(new Event('input',{bubbles:true})); } };
+  const eigual=m=>{ const p=pad(m); return !!(p&&p[1]!=null&&val(cm)===p[1]&&val(cs)===p[2]&&val(cd)===p[3]); };
+  const vazio=()=>val(cm)===null&&val(cs)===null&&val(cd)===null;
+  function atualizar(){
+    const m=mo.value, p=pad(m), ok=(val(cs)>0||val(cm)>0);
+    $('pa-cap-modal').value=m?(m==='Part-time Hora'?'Variável':'Fixa'):'—';
+    $('pa-cap-def').textContent=ok?'Sim':'Não';
+    $('pa-cap-ref').textContent=m?(p&&p[1]!=null?'Padrão do modelo: '+p[1]+' h/mês · '+p[2]+' h/sem · '+p[3]+' h/dia':'Sem jornada padrão: informe a capacidade combinada com a pessoa.'):'';
+    let a='';
+    if(!m||!ok) a='<div class="pa-aviso cap-erro"><b>Capacidade não definida.</b> Enquanto isso as telas usam a referência provisória (40h/semana · 8h/dia) e sinalizam “capacidade provisória”.'+(m==='Part-time Hora'?' Informe ao menos a carga semanal ou mensal.':(!m?' Selecione o modelo de contratação.':' Informe a carga semanal ou mensal.'))+'</div>';
+    else if(m==='Part-time Hora') a='<div class="pa-aviso cap-info">Part-time Hora: nenhuma jornada padrão é atribuída. Use a capacidade acordada com a pessoa.</div>';
+    else if(p&&!eigual(m)) a='<div class="pa-aviso cap-warn">Carga diferente do padrão de '+m+' (condição contratual personalizada).</div>';
+    $('pa-cap-aviso').innerHTML=a;
+  }
+  function aplicar(m){ const p=pad(m); set(cm,p[1]); set(cs,p[2]); set(cd,p[3]); atual=m; atualizar(); }
+  mo.addEventListener('change',()=>{
+    const m=mo.value, p=pad(m);
+    if(!m||m==='Part-time Hora'){ atual=m; atualizar(); return; }
+    if(vazio()||eigual(m)||(pad(atual)&&eigual(atual))){ aplicar(m); return; }
+    haModal_('Substituir as cargas informadas?','<div style="font-size:13px;min-width:min(440px,80vw)">Você já informou cargas ('+(val(cm)==null?'—':val(cm))+' h/mês · '+(val(cs)==null?'—':val(cs))+' h/sem · '+(val(cd)==null?'—':val(cd))+' h/dia). Aplicar o padrão de <b>'+m+'</b> ('+p[1]+' · '+p[2]+' · '+p[3]+') substitui esses valores.<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px"><button type="button" class="sr-btn" id="pa-cap-no">Manter minhas cargas</button><button type="button" class="sr-btn sr-btn-primary" id="pa-cap-yes">Aplicar padrão do modelo</button></div></div>');
+    $('pa-cap-no').onclick=()=>{ haFecharModal_(); atual=m; atualizar(); };
+    $('pa-cap-yes').onclick=()=>{ haFecharModal_(); aplicar(m); };
+  });
+  [cm,cs,cd].forEach(el=>el&&el.addEventListener('input',atualizar));
+  $('pa-cap-rest').onclick=()=>{ const m=mo.value, p=pad(m); if(p&&p[1]!=null) aplicar(m); };
+  atualizar();
+}
+// depois de salvar: recalcula na tela os campos derivados (o servidor grava os mesmos valores)
+function paCapDerivados_(cps,valores){
+  const ix=paCapIdx_(cps); if(ix.mo<0) return;
+  const m=String(valores[ix.mo]||'').trim(), cm=ix.cm>=0?paCapNum_(valores[ix.cm]):null, cs=ix.cs>=0?paCapNum_(valores[ix.cs]):null;
+  if(ix.md>=0) valores[ix.md]=m?(m==='Part-time Hora'?'Variável':'Fixa'):'';
+  if(ix.cp>=0) valores[ix.cp]=(cs>0||cm>0)?'Sim':'Não';
+}
+function paJornadaTxt_(p){
+  if(!p.modelo||!p.capacidade_definida) return '<span class="cap-nd" title="Sem capacidade cadastrada: as telas usam a referência provisória (40h/semana · 8h/dia)">⚠ Não definida</span>';
+  const mes=p.carga_mensal>0?p.carga_mensal:null, sem=p.carga_semanal>0?p.carga_semanal:null;
+  const nome={'CLT':'CLT','PJ Full Time':'PJ FT','Part-time Fixo':'Part-time','Part-time Hora':'P-time Hora'}[p.modelo]||p.modelo;
+  return '<span class="cap-ok" title="'+paEscHtml_(p.modelo+' · '+(mes?mes+' h/mês':'—')+' · '+(sem?sem+' h/sem':'—')+' · '+(p.carga_diaria>0?p.carga_diaria+' h/dia':'—'))+'">'+paEscHtml_(nome)+' · '+(mes?mes+'h':(sem?sem+'h/sem':'—'))+'</span>';
+}
+function paExportarPendenciasCap_(){
+  const L=(PA_LISTA_CACHE||[]).filter(p=>peNormalizarHeader(p.status)!=='inativo'&&!(p.modelo&&p.capacidade_definida));
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const linhas=[['Nome','E-mail','Cargo','Área','Modelo atual','Situação'].map(q).join(';')].concat(L.map(p=>[p.nome,p.email,p.cargo,p.area,p.modelo||'Não definido',p.modelo?'Falta informar a carga horária':'Modelo de contratação não definido'].map(q).join(';')));
+  const blob=new Blob(['﻿'+linhas.join('\r\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='pendencias_cadastrais_capacidade.csv'; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },500);
 }
 // Estado -> cidades (API pública do IBGE; se falhar, digitação livre). Cache em memória + sessionStorage.
 const IBGE_CID_CACHE={};
@@ -7327,6 +7476,7 @@ function paLigarFormulario_(){
     document.getElementById('pa-part-h').textContent=on?'Não altera permissões, login, projetos nem histórico. Só controla a contagem estatística.':'A pessoa continua com acesso, projetos e histórico. Só deixa de ser contada nas análises.';
   });
   paLigarLocalizacao_();
+  paLigarCapacidade_();
   box.querySelectorAll('[data-pa-nav]').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); const t=document.getElementById(a.dataset.paNav); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); }));
 }
 // Validação perto dos campos (nome obrigatório; e-mail com formato válido quando preenchido).
@@ -7368,7 +7518,7 @@ async function atualizarDadosAposCadastroPessoas_(){
   }catch(e){ console.warn('Não foi possível atualizar os dados após o cadastro.',e); }
   PA_ATUALIZANDO_DADOS=false;
 }
-const PA_CAMPOS_QUE_AFETAM_ANALISES=['assinatura','email','area','cargo','nivel','head','gestor','status','estado','uf','cidade','municipio','participaanalises','participadasanalises','nomecompleto'];
+const PA_CAMPOS_QUE_AFETAM_ANALISES=['modelocontratacao','cargahorariamensal','cargahorariasemanal','cargahorariadiaria','assinatura','email','area','cargo','nivel','head','gestor','status','estado','uf','cidade','municipio','participaanalises','participadasanalises','nomecompleto'];
 // ---------- lista: filtros rápidos ----------
 function paContagensChips_(){
   const L=PA_LISTA_CACHE||[];
@@ -7377,7 +7527,8 @@ function paContagensChips_(){
     ativas:L.filter(p=>peNormalizarHeader(p.status)!=='inativo').length,
     inativas:L.filter(p=>peNormalizarHeader(p.status)==='inativo').length,
     nao:L.filter(p=>p.participa===false).length,
-    semloc:L.filter(p=>!p.estado||!p.cidade).length
+    semloc:L.filter(p=>!p.estado||!p.cidade).length,
+    semcap:L.filter(p=>peNormalizarHeader(p.status)!=='inativo'&&!(p.modelo&&p.capacidade_definida)).length
   };
 }
 function paAplicaChip_(p){
@@ -7386,6 +7537,7 @@ function paAplicaChip_(p){
     case 'inativas': return peNormalizarHeader(p.status)==='inativo';
     case 'nao': return p.participa===false;
     case 'semloc': return !p.estado||!p.cidade;
+    case 'semcap': return peNormalizarHeader(p.status)!=='inativo'&&!(p.modelo&&p.capacidade_definida);
     default: return true;
   }
 }
@@ -7700,7 +7852,7 @@ function renderPessoa(){
   // Quebra por SEMANA (segunda a domingo) do período — se nenhum período foi
   // selecionado, usa as últimas 12 semanas por padrão, pra sempre mostrar algo
   // útil sem obrigar a pessoa a escolher datas primeiro.
-  const CAPACIDADE_SEMANAL=40;
+  const capPes=capPessoa_(info), CAPACIDADE_SEMANAL=capPes.sem; // v17.8: jornada individual (Pessoas_Area)
   let semDe=de, semAte=ate;
   if(!periodoAtivoPes){
     const hoje=new Date();
@@ -7733,7 +7885,7 @@ function renderPessoa(){
   const soExcPes=!!(document.getElementById('f-pes-soexc')||{}).checked;
   const phJ=pesHaJanela_(semDe,semAte);
   const phS=pesHaGarantir_(emailKey,phJ.ini,phJ.fim);
-  const ph=(phS.est==='ok')?pesHaCalc_(phS.dados,tipoPes,phJ.ini,phJ.fim):null;
+  const ph=(phS.est==='ok')?pesHaCalc_(phS.dados,tipoPes,phJ.ini,phJ.fim,capPes.dia):null;
   semanasDetalhe.forEach(s=>{ s.ha=(ph&&s.sunday>=ph.ini&&s.monday<=ph.fim)?ph.semana(s.monday):null; });
   PES_HA.vista={ph,P:phS.dados||null,nome:info.a};
   { const locEl=document.getElementById('pes-loc'); if(locEl) locEl.textContent=ph?(phS.dados.loc||'não cadastrada'):(phS.est==='erro'?'—':'carregando…'); }
@@ -7749,7 +7901,7 @@ function renderPessoa(){
   if(de && ate){
     const diasPeriodo=Math.round((new Date(ate+'T00:00:00')-new Date(de+'T00:00:00'))/86400000)+1;
     if(diasPeriodo>0){
-      capacidadeHoras=Math.round((diasPeriodo/7)*40*10)/10;
+      capacidadeHoras=Math.round((diasPeriodo/7)*capPes.sem*10)/10;
       ociosidadeCapacidadePct=capacidadeHoras>0?Math.max(0,Math.round((1-hApo/capacidadeHoras)*100)):null;
     }
   }
@@ -7816,7 +7968,7 @@ function renderPessoa(){
     {key:'estimado',label:'Estimado',tipo:'horas',get:s=>s.prev},
     {key:'executado',label:'Executado',tipo:'horas',get:s=>s.exec},
     {key:'vsestimado',label:'vs. Estimado',tipo:'numero',get:s=>s.exec-s.prev},
-    {key:'vs40',label:'vs. 40h/semana',tipo:'numero',get:s=>s.exec-40}
+    {key:'vs40',label:'vs. capacidade/semana',tipo:'numero',get:s=>s.exec-capPes.sem}
   ];
   const colunasPesSemanasPh=[
     {key:null,label:'',thStyle:'width:34px'},
@@ -7834,8 +7986,8 @@ function renderPessoa(){
   const colSelSem=(ph?colunasPesSemanasPh:colunasPesSemanas).find(c=>c.key===stPesSemanas.col);
   const semanasParaTabelaOrd=colSelSem?ordenarLinhas_(semanasParaTabela,colSelSem,stPesSemanas.dir):semanasParaTabela;
   const tipSemana=ph
-    ?'Cada semana vai de segunda a domingo. “Estimado” é a soma das horas estimadas das tarefas com vencimento naquela semana; “Executado” é a soma das horas apontadas (Zoho). “Tarefas” e “Reunião” vêm dos apontamentos oficiais (Work Item × Meeting+General). A linha tracejada marca a jornada prevista da semana (8h × dias úteis, sem fins de semana e feriados). Excedente = max(0, horas − jornada); Ociosidade = max(0, jornada − horas), só em semanas encerradas.'
-    :'Cada semana vai de segunda a domingo. “Estimado” é a soma das horas estimadas das tarefas com vencimento naquela semana; “Executado” é a soma das horas realmente apontadas (Zoho) naquela semana. A linha tracejada marca 40h — o padrão de uma semana cheia de trabalho.';
+    ?'Cada semana vai de segunda a domingo. “Estimado” é a soma das horas estimadas das tarefas com vencimento naquela semana; “Executado” é a soma das horas apontadas (Zoho). “Tarefas” e “Reunião” vêm dos apontamentos oficiais (Work Item × Meeting+General). A linha tracejada marca a jornada prevista da semana (carga diária da pessoa × dias úteis, sem fins de semana e feriados). Excedente = max(0, horas − jornada); Ociosidade = max(0, jornada − horas), só em semanas encerradas.'
+    :'Cada semana vai de segunda a domingo. “Estimado” é a soma das horas estimadas das tarefas com vencimento naquela semana; “Executado” é a soma das horas realmente apontadas (Zoho) naquela semana. A linha tracejada marca a capacidade semanal cadastrada da pessoa (40h para CLT/PJ Full Time; provisória de 40h quando ainda não há cadastro).';
 
   const sufixoModoPes=modoStatusPes!=='todos'?' · '+projStatusRotulo_(modoStatusPes):'';
   const colunasPesProjetos=[
@@ -7884,7 +8036,7 @@ function renderPessoa(){
 
   <div class="card" style="margin-bottom:16px">
     <div class="card-title"><h3>📅 Carga de Trabalho por Semana${infoTip(tipSemana)}</h3>
-      <span class="sub">${semanasVis.length} semana(s)${(ph&&soExcPes)?' com excedente':''}${periodoAtivoPes?' no período selecionado':' · últimas 12 semanas (selecione um período para outra janela)'}</span>
+      <span class="sub">${semanasVis.length} semana(s) · capacidade ${fH(capPes.sem)}/sem${capPes.prov?' (provisória)':''}${(ph&&soExcPes)?' com excedente':''}${periodoAtivoPes?' no período selecionado':' · últimas 12 semanas (selecione um período para outra janela)'}</span>
     </div>
     <div style="padding:12px 4px 4px">
       ${semanasVis.length===0?'<div class="empty-state" style="padding:30px"><p>'+((ph&&soExcPes)?'Nenhuma semana com excedente nesse intervalo.':'Sem dados nesse intervalo.')+'</p></div>':`
@@ -7899,8 +8051,8 @@ function renderPessoa(){
           else vsEstimadoHtml='<span class="status-pill" style="border-left:3px solid var(--st-feito)">'+Math.round(s.exec/s.prev*100)+'% do estimado</span>';
           let vs40Html;
           if(s.exec===0) vs40Html='<span style="color:var(--text-faint)">Sem apontamento</span>';
-          else if(s.excedente40>0) vs40Html='<span class="status-pill" style="border-left:3px solid var(--st-bloqueado);color:var(--st-bloqueado);font-weight:700">🔴 +'+fH(s.excedente40)+' acima de 40h</span>';
-          else if(s.exec>=32) vs40Html='<span class="status-pill" style="border-left:3px solid var(--st-feito)">✅ Dentro da carga</span>';
+          else if(s.excedente40>0) vs40Html='<span class="status-pill" style="border-left:3px solid var(--st-bloqueado);color:var(--st-bloqueado);font-weight:700">🔴 +'+fH(s.excedente40)+' acima de '+fH(capPes.sem)+'</span>';
+          else if(s.exec>=capPes.sem*0.8) vs40Html='<span class="status-pill" style="border-left:3px solid var(--st-feito)">✅ Dentro da carga</span>';
           else vs40Html='<span class="status-pill" style="border-left:3px solid #f59e0b">🟡 '+fH(s.ociosidade40)+' de folga</span>';
           return '<tr><td>'+semanaLabel+'</td><td>'+fH(s.prev)+'</td><td><strong>'+fH(s.exec)+'</strong></td><td>'+vsEstimadoHtml+'</td><td>'+vs40Html+'</td></tr>';
         }).join('')}
@@ -7936,7 +8088,7 @@ function renderPessoa(){
       dsSem=[
         {type:'bar',label:'Estimado',data:semanasVis.map(s=>s.prev),backgroundColor:'#94a3b8',borderRadius:5,order:2},
         {type:'bar',label:'Executado',data:semanasVis.map(s=>s.exec),backgroundColor:semanasVis.map(s=>s.excedente40>0?'#dc2626':'#0C4A6E'),borderRadius:5,order:2},
-        {type:'line',label:'Referência 40h/semana',data:semanasVis.map(()=>40),borderColor:'#f59e0b',borderDash:[6,4],borderWidth:2,pointRadius:0,fill:false,order:1}
+        {type:'line',label:'Capacidade '+capPes.sem+'h/semana'+(capPes.prov?' (provisória)':''),data:semanasVis.map(()=>capPes.sem),borderColor:'#f59e0b',borderDash:[6,4],borderWidth:2,pointRadius:0,fill:false,order:1}
       ];
     }
     ch.semanal=new Chart(document.getElementById('chSemanal'),{
@@ -7988,7 +8140,8 @@ function pesHaGarantir_(email,ini,fim){
     .then(()=>{ if(PES_HA.atual===key){ try{renderPessoa();}catch(e){} } });
   return reg;
 }
-function pesHaCalc_(P,tipo,ini,fim){
+function pesHaCalc_(P,tipo,ini,fim,jdia){
+  jdia=+jdia>0?+jdia:HA_JORNADA_DIA; // v17.8: jornada diária da pessoa
   const hoje=pesHaHoje_(), memo={};
   const dia=iso=>{
     if(memo[iso]) return memo[iso];
@@ -8002,7 +8155,7 @@ function pesHaCalc_(P,tipo,ini,fim){
   for(let wk=haSeg_(ini); wk<=fim; wk=haAdd_(wk,7)){
     let du=0; for(let n=0;n<7;n++){ const d=haAdd_(wk,n); if(d<ini||d>fim) continue; if(dia(d).util) du++; }
     const fimEf=haAdd_(wk,6)<fim?haAdd_(wk,6):fim;
-    wks[wk]={wk,h:0,T:0,R:0,O:0,du,jor:du*HA_JORNADA_DIA,days:[],aberta:wk<=hoje&&fimEf>=hoje,futura:wk>hoje};
+    wks[wk]={wk,h:0,T:0,R:0,O:0,du,jd:jdia,jor:du*jdia,days:[],aberta:wk<=hoje&&fimEf>=hoje,futura:wk>hoje};
   }
   recs.forEach(r=>{
     const x=days[r.d]||(days[r.d]={d:r.d,inf:dia(r.d),h:0,T:0,R:0,O:0,recs:[]});
@@ -8010,7 +8163,7 @@ function pesHaCalc_(P,tipo,ini,fim){
   });
   const dl=Object.values(days).sort((a,b)=>a.d.localeCompare(b.d));
   dl.forEach(x=>{
-    x.jor=x.inf.util?HA_JORNADA_DIA:0; x.exc=x.inf.util?haExc_(x.h,x.jor):0; // fim de semana/feriado: jornada 0 e horas vão para “fora da jornada padrão”
+    x.jor=x.inf.util?jdia:0; x.exc=x.inf.util?haExc_(x.h,x.jor):0; // fim de semana/feriado: jornada 0 e horas vão para “fora da jornada padrão”
     const w=wks[haSeg_(x.d)]; w.h+=x.h; w.T+=x.T; w.R+=x.R; w.O+=x.O; w.days.push(x);
   });
   Object.values(wks).forEach(w=>{
@@ -8050,7 +8203,7 @@ function pesHaAviso_(S,ph,J,tipo,filtroStatus){
     if(tipo) h+='<div class="ha-note">ℹ Com o filtro de tipo ativo, jornada e excedentes são calculados sobre as horas filtradas.</div>';
     if(filtroStatus) h+='<div class="ha-note">ℹ Com o filtro de Status do projeto ativo, os blocos de jornada, Tarefas × Reunião e horas fora da jornada usam o <b>total da pessoa</b> (não são separáveis por projeto).</div>';
     if(J.cortado) h+='<div class="ha-note warn">O período passa de '+HA_MAX_DIAS+' dias: os blocos de jornada consideram apenas '+haBr_(J.ini)+' a '+haBr_(J.fim)+'.</div>';
-    h+='<div class="ha-note">A jornada (8h/dia · 40h/semana, só dias úteis do período) é uma <b>referência de controle</b> — não caracteriza hora extra legal. “Horas Registradas” e “Executado” seguem a fonte de sempre; os novos blocos usam os apontamentos oficiais, então pode haver pequenas diferenças.</div>';
+    h+='<div class="ha-note">A jornada (carga diária cadastrada de cada pessoa em Pessoas e Perfis, com 8h/dia provisórias para quem ainda não tem modelo de contratação; só dias úteis do período) é uma <b>referência de controle</b> — não caracteriza hora extra legal. “Horas Registradas” e “Executado” seguem a fonte de sempre; os novos blocos usam os apontamentos oficiais, então pode haver pequenas diferenças.</div>';
   }
   return h?'<div style="margin-bottom:12px">'+h+'</div>':'';
 }
@@ -8067,7 +8220,7 @@ function pesHaTabela_(rows,cols){
     const btn=w&&w.days.length?'<button type="button" class="ha-btn sm" data-pes-o="'+s.monday+'" aria-expanded="'+op+'" aria-label="Expandir dias da semana">'+(op?'−':'+')+'</button>':'';
     let r='<tr><td>'+btn+'</td><td>'+semanaLabel+'</td><td>'+fH(s.prev)+'</td><td><strong>'+fH(s.exec)+'</strong></td><td>'+vsEst+'</td>';
     if(w){
-      r+='<td>'+fH(w.T)+'</td><td>'+fH(w.R)+'</td><td>'+fH(w.jor)+'<div class="ha-mut" style="font-size:11px">'+w.du+' dia(s) útil(eis) × 8h'+(w.du<5?' · semana com feriado/parcial':'')+'</div></td>'+
+      r+='<td>'+fH(w.T)+'</td><td>'+fH(w.R)+'</td><td>'+fH(w.jor)+'<div class="ha-mut" style="font-size:11px">'+w.du+' dia(s) útil(eis) × '+fH(w.jd||HA_JORNADA_DIA)+(w.du<5?' · semana com feriado/parcial':'')+'</div></td>'+
         '<td>'+(w.exc>0?'<button type="button" class="ha-btn sm" data-pes-x="'+s.monday+'" title="Ver os lançamentos da semana"><span class="ha-tg exc">▲ +'+fH(w.exc)+'</span></button>':dash)+'</td>'+
         '<td>'+(aberta?'<span class="ha-mut">em andamento</span>':(w.oci===null?dash:(w.oci>0?fH(w.oci):dash)))+'</td></tr>';
       if(w.days.length) r+=w.days.map(x=>'<tr class="pes-sub" data-pes-sub="'+s.monday+'"'+(op?'':' style="display:none"')+'><td></td><td>↳ '+HA_DN[haDow_(x.d)]+' '+haBr_(x.d)+' '+pesHaTagDia_(x.inf)+'</td><td></td><td>'+fH(x.h)+'</td><td></td><td>'+fH(x.T)+'</td><td>'+fH(x.R)+'</td><td>'+fH(x.jor)+'</td><td>'+(x.exc>0?'+'+fH(x.exc)+' no dia':dash)+'</td><td></td></tr>').join('');
@@ -10473,7 +10626,7 @@ function renderGerente(){
 //   Disponível      = nenhuma das duas condições acima
 // Ordem de prioridade de exibição: Carga Elevada → Disponível → Baixa Utilização
 function statusEquipe(r){
-  if(r.hExecutadoSemana!==null && r.hExecutadoSemana>CAPACIDADE_SEMANAL_HORAS) return{key:'elevada',order:0,label:'Carga Elevada',icon:'🔴',color:'var(--st-bloqueado)',bg:'rgba(220,38,38,.12)'};
+  if(r.hExecutadoSemana!==null && r.hExecutadoSemana>r.capSem) return{key:'elevada',order:0,label:'Carga Elevada',icon:'🔴',color:'var(--st-bloqueado)',bg:'rgba(220,38,38,.12)'};
   if(r.isOcioso) return{key:'baixa',order:2,label:'Baixa Utilização',icon:'⚪',color:'#b45309',bg:'rgba(245,158,11,.14)'};
   return{key:'disponivel',order:1,label:'Disponível',icon:'🟢',color:'var(--st-feito)',bg:'rgba(22,163,74,.12)'};
 }
@@ -10591,11 +10744,12 @@ function renderEquipe(){
     const hPrevistoSemana=Object.entries(PPREVISTO[ek]||{}).filter(([d])=>d>=monISO&&d<=sunISO).reduce((s,[,v])=>s+v,0);
     const hExecutadoSemana=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&d>=monISO&&d<=sunISO).reduce((s,[,v])=>s+v[0],0);
     const ociosidadeSemanaPct=hPrevistoSemana>0?Math.max(0,Math.round((1-hExecutadoSemana/hPrevistoSemana)*100)):null;
-    if(hExecutadoSemana>CAPACIDADE_SEMANAL_HORAS) sobrecarregados++;
+    const capEq=capPessoa_(p), capSem=capEq.sem;
+    if(hExecutadoSemana>capSem) sobrecarregados++;
     if(isOcioso) ociosos++;
     if(usaClaude) usamClaude++;
     if(ociosidadeSemanaPct!==null && ociosidadeSemanaPct>=50) ociososSemana++;
-    return{p,horas,hEst,tarefas,projetos,pctHoras,isOcioso,usaClaude,venceSemana,hPrevistoSemana,hExecutadoSemana,ociosidadeSemanaPct};
+    return{p,horas,hEst,tarefas,projetos,pctHoras,isOcioso,usaClaude,venceSemana,hPrevistoSemana,hExecutadoSemana,ociosidadeSemanaPct,capSem,capEq};
   });
 
   // Ordena por PRIORIDADE DE STATUS (Carga Elevada → Disponível → Baixa Utilização),
@@ -10607,11 +10761,11 @@ function renderEquipe(){
   });
 
   const soComProblema=document.getElementById('f-equipe-problema').checked;
-  const rowsFiltradas=soComProblema?rows.filter(r=>r.isOcioso||(r.hExecutadoSemana>CAPACIDADE_SEMANAL_HORAS)||(r.ociosidadeSemanaPct!==null&&r.ociosidadeSemanaPct>=50)):rows;
+  const rowsFiltradas=soComProblema?rows.filter(r=>r.isOcioso||(r.hExecutadoSemana>r.capSem)||(r.ociosidadeSemanaPct!==null&&r.ociosidadeSemanaPct>=50)):rows;
 
   document.getElementById('kpi-equipe').innerHTML=`
     <div class="team-summary-item"><span class="team-summary-icon">👥</span><div><span class="team-summary-label">Liderados</span><span class="team-summary-val">${time.length}</span></div></div>
-    <div class="team-summary-item" title="Mais de ${CAPACIDADE_SEMANAL_HORAS}h executadas nesta semana (referência de capacidade: ${CAPACIDADE_SEMANAL_HORAS}h/semana, equivalente a ${CAPACIDADE_MENSAL_HORAS}h/mês)."><span class="team-summary-icon">🔴</span><div><span class="team-summary-label">Carga Elevada</span><span class="team-summary-val" style="color:${sobrecarregados>0?'var(--st-bloqueado)':'var(--text)'}">${sobrecarregados}</span><span class="team-summary-foot">acima de ${CAPACIDADE_SEMANAL_HORAS}h/semana</span></div></div>
+    <div class="team-summary-item" title="Mais horas executadas nesta semana do que a capacidade semanal cadastrada de cada pessoa (CLT/PJ Full Time 40h, Part-time Fixo 20h, Part-time Hora conforme cadastro). Sem cadastro: referência provisória de ${CAPACIDADE_SEMANAL_HORAS}h/semana."><span class="team-summary-icon">🔴</span><div><span class="team-summary-label">Carga Elevada</span><span class="team-summary-val" style="color:${sobrecarregados>0?'var(--st-bloqueado)':'var(--text)'}">${sobrecarregados}</span><span class="team-summary-foot">acima de ${CAPACIDADE_SEMANAL_HORAS}h/semana</span></div></div>
     <div class="team-summary-item" title="Zero alocação registrada — nem no Portifolio (equipe de projeto) nem no Zoho (tarefas/horas)."><span class="team-summary-icon">⚪</span><div><span class="team-summary-label">Baixa Utilização</span><span class="team-summary-val" style="color:${ociosos>0?'#b45309':'var(--text)'}">${ociosos}</span><span class="team-summary-foot">sem alocação registrada</span></div></div>
     <div class="team-summary-item" title="${TIP_OCIOSIDADE_SEMANAL}"><span class="team-summary-icon">📉</span><div><span class="team-summary-label">Baixa Execução (semana)</span><span class="team-summary-val" style="color:${ociososSemana>0?'#b45309':'var(--text)'}">${ociososSemana}</span><span class="team-summary-foot">≥50% abaixo do previsto</span></div></div>
     <div class="team-summary-item"><span class="team-summary-icon">🤖</span><div><span class="team-summary-label">Usam Claude Code</span><span class="team-summary-val">${usamClaude}</span><span class="team-summary-foot">de ${time.length} liderados</span></div></div>`;
@@ -12013,7 +12167,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v17.8', WIKI_DATA='29/10/2026';
+const WIKI_VER='v17.9', WIKI_DATA='05/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -12176,7 +12330,11 @@ WP('zoho-sync','3.3','Sincronização Projetos (Zoho) → Portifolio','Como a ab
  WR('ZOHO-003','Execução, segurança e frequência','ok','Portfólio',
   'Gatilho horário: executa só se a aba Projetos mudou desde a última sincronização e está estável (duas leituras com 90 s de intervalo), pois a carga do Zoho roda por volta das 12h e 19h. Bloqueia carga parcial (menos de 50% do último total), usa trava contra execuções simultâneas e é idempotente. A primeira execução é sempre simulação; a gravação só é liberada pelo Administrador depois dela.',
   '<code>zsExecutar_</code>, <code>zsSincronizarAgendado</code>, <code>zsLiberar_</code>.','Zoho_Sync_Log (histórico), Log_Alteracoes (cada campo alterado, usuário “Sincronização Zoho”).',
-  'Tudo restrito ao perfil Administrador.','Origem em atualização: registra e tenta na próxima hora.','Edição do Portfólio › Sincronização Zoho.','Simular, liberar, sincronizar agora e conferir o histórico.','Estágios novos do Zoho são gravados como vieram e listados como “Estágio não mapeado”.')
+  'Tudo restrito ao perfil Administrador.','Origem em atualização: registra e tenta na próxima hora.','Edição do Portfólio › Sincronização Zoho.','Simular, liberar, sincronizar agora e conferir o histórico.','Estágios novos do Zoho são gravados como vieram e listados como “Estágio não mapeado”.'),
+ WR('ZOHO-004','Criar projeto do Zoho no Portfólio','ok','Portfólio',
+  'Em “Só no Zoho”, o botão “Salvar como novo no Portfólio” (e “Criar todos”) cria uma linha nova no Portifolio com Cliente, Projeto, ID, Código, Status, Estágio e datas do Zoho; Data de Início ← início; Prev. Entrega Inicial e Atual ← fim; Data Entrega só se o estágio for Concluído; Situação Zoho = Sincronizado. Demais campos ficam vazios. O servidor recusa backup (BKP), duplicado na origem, ID já vinculado, datas ilegíveis e Cliente + Projeto já existente (usar Associar).',
+  '<code>zsCriarProjetos_</code>, <code>zsModalCriar_</code>.','Projetos (Zoho) → Portifolio; Log_Alteracoes (Criação).',
+  'Somente Administrador; exige gravação liberada; até 100 projetos por vez.','Cada projeto volta com seu resultado; os recusados mostram o motivo.','Edição do Portfólio › Sincronização Zoho › Pendências.','Criar um projeto, conferir a linha nova no Portifolio e rodar a sincronização.','Os campos de gestão (Gerente, SM, Líder, PO, Complexidade) precisam ser preenchidos depois.')
 ],
 `<p>Colunas acrescentadas ao Portifolio (v17.8): ID Projeto Zoho, Código Zoho, Status Zoho, Estágio Zoho, Data Início Zoho, Data Fim Zoho, Situação Zoho e Última Sincronização Zoho. Os dados do Zoho aparecem somente na Edição do Portfólio (somente leitura); as datas atualizadas pelo Zoho ficam bloqueadas em projeto vinculado.</p>`),
 
@@ -12226,6 +12384,11 @@ WP('pess-cadastro','3.5','Cadastro de pessoas','Campos, status e participação 
   'A única fonte de nome de exibição de pessoa cadastrada é a Assinatura. Sem correspondência válida mostra “Nome não cadastrado”, sem substituir por tarefa ou e-mail.',
   '<code>NOME_NAO_CADASTRADO</code>, <code>displayNameForKey_</code> (v17.5).','Pessoas_Area (Assinatura).','—','—','Telas de análise e Alocação.','Cadastrar uma tarefa com um nome diferente da Assinatura.',
   'Desde a v17.7, Gestão de Horas Apontadas, Análise de Horas e Gestão de Avisos usam só a Assinatura (sem Assinatura: “Nome não cadastrado”). Nome Completo segue apenas como dado cadastral em Pessoas e Perfis. Registros históricos de leitura de avisos mantêm o nome gravado na época. O cabeçalho do código ainda cita uma aba “Acessos” que não é mais lida. Status Report e Log ainda a conferir.'),
+ WR('PESS-006','Modelo de Contratação e Jornada (capacidade individual)','ok','Pessoas',
+  'Pessoas_Area é a fonte oficial da capacidade: Modelo_Contratacao (CLT, PJ Full Time, Part-time Fixo, Part-time Hora ou Não definido), Carga_Horaria_Mensal/Semanal/Diaria, Modalidade_Horaria (Fixa; Variável para Part-time Hora) e Capacidade_Definida. Padrões: CLT e PJ Full Time 160/40/8; Part-time Fixo 80/20/4 (editáveis); Part-time Hora sem padrão (informar). Trocar o modelo preenche as cargas, mas pede confirmação antes de substituir valores personalizados. Capacidade_Definida é calculada pelo servidor (Sim quando há carga semanal ou mensal maior que 0). Nada é inferido por nome, cargo, área ou horas apontadas; cadastros existentes ficam como Não definido.',
+  '<code>capacidadePessoa_</code>, <code>salvarPessoaArea_</code>, <code>capNormalizaValores_</code>, <code>paLigarCapacidade_</code>, <code>capPessoa_</code>.','Pessoas_Area (6 colunas criadas ao final).',
+  'Utilização = horas apontadas ÷ capacidade do período × 100. Capacidade do período: carga diária × dias úteis (respeita feriados e fins de semana) nas análises de horas; carga semanal na Alocação e em Minha Equipe. Acima de 100% significa apontamento acima da capacidade contratual, não hora extra legal.',
+  'Pessoa sem capacidade definida: telas usam a referência provisória (40 h/sem · 8 h/dia) e mostram “capacidade provisória”; ela aparece na lista Capacidade não definida (exportável).','Pessoas e Perfis, Minha Equipe, Desempenho, Alocação, Gestão de Horas Apontadas, Análise de Horas.','Trocar o modelo com cargas personalizadas e conferir a confirmação; salvar com carga negativa.','Horas e tarefas históricas não são alteradas. Tarefas com vários responsáveis seguem sem duplicar horas.'),
  WR('PESS-005','Novo contratado e e-mail','ok','Pessoas',
   'Ao cadastrar uma pessoa pelo formulário completo, o servidor envia o e-mail “[News] - Novo Contratado” com todos os campos aos destinatários escolhidos (no máximo 20, validados). É possível reenviar.',
   '<code>criarPessoaCompleta_</code>, <code>enviarEmailNovoContratado_</code>.','Pessoas_Area.','—','Administrador somente.','Pessoas e Perfis.','—','Exige autorização do Google para envio de e-mail na publicação.')],
@@ -12250,7 +12413,7 @@ WIKI_PAGINAS.push(
 /* ---------------- 3.6 ---------------- */
 WP('aloc-param','3.6','Parâmetros, capacidade e pressão','Constantes e limites usados na Carga e Risco de Alocação e na Decisão de Alocação.',[
  WR('ALOC-001','Parâmetros (DA_PARAM)','ok','Carga e Risco',
-  'Todos os limites ficam em um único objeto no código. Valores efetivos: jornada 40 h/semana; pressão 70/90/105 %; escalonamento com 3 tarefas atrasadas ou 2 entregas em até 7 dias; cobertura mínima de estimativas 50 %; folga mínima 4 h/sem; teto de utilização ao realocar 90 %; alvo ao liberar 85 %; projeto sem previsão dilui esforço em 4 semanas; vaga disponível exige 16 h/sem livres.',
+  'Todos os limites ficam em um único objeto no código. Valores efetivos: capacidade semanal individual da pessoa (40 h/semana provisórias sem cadastro); pressão 70/90/105 %; escalonamento com 3 tarefas atrasadas ou 2 entregas em até 7 dias; cobertura mínima de estimativas 50 %; folga mínima 4 h/sem; teto de utilização ao realocar 90 %; alvo ao liberar 85 %; projeto sem previsão dilui esforço em 4 semanas; vaga disponível exige 16 h/sem livres.',
   '<code>DA_PARAM</code> (<code>index.html</code>).','—','—','<code>areasAfins</code> está vazio: nenhuma área é considerada afim a outra até os gestores definirem.','Carga e Risco, Decisão de Alocação.','Alterar o valor no código e comparar a classificação.','Alterar um parâmetro exige nova versão do portal; não há tela de configuração.'),
  WR('ALOC-002','Utilização e nível de pressão','ok','Carga e Risco',
   'Utilização = carga planejada por semana ÷ 40 × 100. A carga usa a PIOR janela entre os próximos 7 dias e o período escolhido. Níveis: até 70 % Disponível; até 90 % Atenção; até 105 % Alta pressão; acima Crítico. Sobe 1 nível com 3+ tarefas atrasadas ou 2+ entregas em 7 dias.',
@@ -12329,8 +12492,8 @@ WP('tar-horas','3.7','Horas estimadas, apontadas e restantes','Origem, agregaç�
 WIKI_PAGINAS.push(
 WP('dese-ref','3.8','Referências de capacidade e jornada','Onde 8/40/200 horas são efetivamente usadas.',[
  WR('DESE-001','Constantes de capacidade','ok','Desempenho',
-  '40 h/semana e 200 h/mês (<code>CAPACIDADE_SEMANAL_HORAS</code>, <code>CAPACIDADE_MENSAL_HORAS</code>) para classificar carga; 8 h/dia (<code>HA_JORNADA_DIA</code>) na Gestão de Horas Apontadas; 40 h/semana também em <code>DA_PARAM.horasSemana</code> (Alocação).',
-  '<code>index.html</code>.','—','Cada módulo tem sua constante; os valores coincidem mas não são a mesma variável.','—','Minha Equipe, Gestão de Horas, Alocação.','—','Mudar a jornada exige alterar mais de uma constante.'),
+  'Desde a v17.8 a capacidade vem de cada pessoa (Pessoas_Area › Modelo de Contratação e Jornada): <code>capPessoa_</code> devolve carga semanal, diária e mensal. Sem cadastro, as telas usam a referência provisória 40 h/semana · 8 h/dia · 160 h/mês (<code>CAPACIDADE_SEMANAL_HORAS</code>, <code>CAPACIDADE_DIARIA_HORAS</code>, <code>CAPACIDADE_MENSAL_HORAS</code>) e marcam “capacidade provisória”.',
+  '<code>index.html</code>.','—','Minha Equipe, Desempenho, Alocação, Horas Apontadas e Análise de Horas leem a mesma função de capacidade individual.','—','Minha Equipe, Gestão de Horas, Alocação.','—','Pessoas sem modelo cadastrado usam a referência provisória até o cadastro ser concluído (lista em Pessoas e Perfis › Capacidade não definida).'),
  WR('DESE-002','Jornada, fins de semana e feriados na Gestão de Horas','ok','Desempenho',
   'Jornada do dia = 8 h em dia útil e 0 em fim de semana ou feriado. Horas lançadas em dia sem jornada vão para “fora da jornada padrão”. Excedente = horas acima da jornada. Feriados vêm da aba Feriados; Estaduais e Municipais aplicam-se por Estado/Cidade da pessoa.',
   '<code>haExc_</code>, <code>haDia_</code>, <code>listarFeriados_</code>.','Tarefas_Horas_Apontadas, Feriados, Pessoas_Area (Estado/Cidade).','—','Só Administrador na página (v16.7).','Gestão de Horas Apontadas, Desempenho por Pessoa.','—','Feriados não foram confirmados em outras telas de capacidade.')],
@@ -12395,7 +12558,7 @@ WP('stat-gantt','3.9','Cronograma de entregas (Gantt)','Persistência e campos d
 
 WP('fontes-catalogo','3.10','Catálogo de abas e fontes','Todas as abas e serviços que o portal lê ou grava.',[],
 `<div class="wk-tbl"><table><tr><th>Fonte</th><th>Finalidade</th><th>Identificador / relacionamentos</th><th>Lê / grava</th></tr>
-<tr><td><code>Pessoas_Area</code></td><td>Cadastro mestre de pessoas, perfil de acesso e participação nas análises</td><td>E-mail (login); Assinatura (nome oficial)</td><td>Lê e grava (Administrador)</td></tr>
+<tr><td><code>Pessoas_Area</code></td><td>Cadastro mestre de pessoas, perfil de acesso, participação nas análises, modelo de contratação e jornada</td><td>E-mail (login); Assinatura (nome oficial)</td><td>Lê e grava (Administrador)</td></tr>
 <tr><td><code>Perfil</code></td><td>Lista de perfis válidos (com fallback no código)</td><td>Nome do perfil</td><td>Lê</td></tr>
 <tr><td><code>Portifolio</code></td><td>Cadastro dos projetos e da equipe por papel</td><td>Cliente + Projeto (sem ID)</td><td>Lê e grava (Administrador)</td></tr>
 <tr><td><code>Projetos</code></td><td>Projetos do Zoho (carga externa ~12h e 19h)</td><td>id_projeto; Cliente + Projeto</td><td>Lê</td></tr>
@@ -12499,7 +12662,7 @@ WP('gloss','3.14','Glossário','Termos usados nas telas e na documentação.',[]
 `<dl class="wk-dl">
 <dt>Ativo (projeto)</dt><dd>Nos indicadores executivos: status Em Andamento ou Sustentação. Na Alocação: sem entrega, pausa, conclusão ou cancelamento.</dd>
 <dt>Assinatura</dt><dd>Nome oficial da pessoa em Pessoas_Area (coluna C).</dd>
-<dt>Capacidade teórica</dt><dd>40 h por semana por pessoa (200 h por mês).</dd>
+<dt>Capacidade teórica</dt><dd>Carga semanal cadastrada da pessoa (CLT/PJ Full Time 40 h, Part-time Fixo 20 h, Part-time Hora conforme combinado). Sem cadastro: 40 h por semana provisórias.</dd>
 <dt>Carga planejada</dt><dd>Horas restantes distribuídas pelas semanas até a entrega; não são horas já trabalhadas.</dd>
 <dt>Elegível</dt><dd>Atende à área e à senioridade mínima do requisito.</dd>
 <dt>Disponível (Alocação)</dt><dd>Elegível, fora do projeto, com pelo menos 16 h livres por semana.</dd>
@@ -12536,6 +12699,8 @@ WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado d
 WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'05/11/2026',p:'Portfólio e Zoho',desc:'Inclusão do botão “Salvar como novo no Portfólio” (individual e em lote) para projetos que existem só no Zoho, com prévia, validações no servidor e registro no Log de Alterações.',m:'Solicitação do gestor.',o:'Implementação v17.9',v:'Pendente de validação em produção'},
+ {d:'04/11/2026',p:'Pessoas e capacidade',desc:'Inclusão do Modelo de Contratação e Jornada em Pessoas_Area (6 colunas) e troca das referências fixas de 40h/8h por capacidade individual em Minha Equipe, Desempenho, Alocação, Horas Apontadas e Análise de Horas.',m:'Solicitação do gestor.',o:'Implementação v17.8',v:'Pendente de validação em produção'},
  {d:'04/11/2026',p:'Status Report',desc:'Inclusão do botão “Duplicar report anterior” na tela do Status Report.',m:'Solicitação do gestor.',o:'Implementação v17.8',v:'Pendente de validação em produção'},
  {d:'04/11/2026',p:'Portfólio e Zoho',desc:'Sincronização da aba Projetos (Zoho) com o Portifolio: 8 colunas novas, abas Zoho_Sync_Log e Zoho_Sync_Pendencias, regras de data, gatilho horário e aba “Sincronização Zoho” na Edição do Portfólio.',m:'Solicitação do gestor.',o:'Implementação v17.8',v:'Pendente de validação em produção'},
  {d:'29/10/2026',p:'Horas apontadas e nomes',desc:'Inclusão da página “Análise de Horas” e correção da regra de nome (Assinatura) em Horas Apontadas e Avisos.',m:'Solicitação do gestor.',o:'Implementação v17.7',v:'Pendente de validação em produção'},
@@ -12901,7 +13066,7 @@ function haUsuarioSel_(){
 function haPrepararDados_(r){
   HA.dados=r; HA.feriadosCache={};
   const cont={};
-  HA.usuarios=(r.usuarios||[]).map((u,i)=>{cont[haN_(u.n)]=(cont[haN_(u.n)]||0)+1;return {i,e:u.e,n:u.n,l:u.l||''};});
+  HA.usuarios=(r.usuarios||[]).map((u,i)=>{cont[haN_(u.n)]=(cont[haN_(u.n)]||0)+1;return {i,e:u.e,n:u.n,l:u.l||'',jd:capPorEmail_(u.e).dia};});
   HA.usuarios.forEach(u=>{u.rot=cont[haN_(u.n)]>1?u.n+' ('+u.e+')':u.n;});
   // v17.1 — Participa_Analises = Não: sai das listas, totais e gráficos (exceto quando a própria pessoa vê as suas horas).
   // Os lançamentos continuam na planilha; só deixam de entrar nesta análise.
@@ -12945,12 +13110,12 @@ function haCalcular_(){
   });
   const weeks={};
   Object.values(days).forEach(x=>{
-    x.jor=x.inf.util?HA_JORNADA_DIA:0; x.exc=x.inf.util?haExc_(x.h,x.jor):0; // fim de semana/feriado: jornada 0 e horas ficam em “fora da jornada padrão” (cards/aba própria), não no excedente diário
+    x.jor=x.inf.util?(HA.usuarios[x.u].jd||HA_JORNADA_DIA):0; x.exc=x.inf.util?haExc_(x.h,x.jor):0; // fim de semana/feriado: jornada 0 e horas ficam em “fora da jornada padrão” (cards/aba própria), não no excedente diário
     const wk=haSeg_(x.d), k=x.u+'|'+wk;
     if(!weeks[k]){
       const u=HA.usuarios[x.u]; let du=0;
       for(let n=0;n<7;n++){ const d=haAdd_(wk,n); if(d<ini||d>fim) continue; if(haDia_(u,d).util) du++; }
-      weeks[k]={u:x.u,wk,h:0,du,jor:du*HA_JORNADA_DIA,days:[]};
+      weeks[k]={u:x.u,wk,h:0,du,jd:(u.jd||HA_JORNADA_DIA),jor:du*(u.jd||HA_JORNADA_DIA),days:[]};
     }
     weeks[k].h+=x.h; weeks[k].days.push(x);
   });
@@ -13004,7 +13169,7 @@ function haAvisos_(C){
     (msgs.length?'<div class="ha-note warn">⚠ '+msgs.map(feEsc_).join(' · ')+'</div>':'')+
     (loc?'<div class="ha-note warn">📍 '+loc+'</div>':'')+
     (filtrado?'<div class="ha-note">ℹ Com filtro de projeto ou tipo ativo, jornada e excedentes são calculados sobre as horas filtradas.</div>':'')+
-    '<div class="ha-note">A jornada (8h/dia · 40h/semana, só dias úteis do período) é uma <b>referência de controle</b> — não caracteriza hora extra legal.</div>';
+    '<div class="ha-note">A jornada (carga diária cadastrada de cada pessoa em Pessoas e Perfis, com 8h/dia provisórias para quem ainda não tem modelo de contratação; só dias úteis do período) é uma <b>referência de controle</b> — não caracteriza hora extra legal.</div>';
 }
 function haThCols_(id,cols){
   const st=SORT_STATE[id]; if(!st) SORT_STATE[id]={col:null,dir:0};
@@ -13076,7 +13241,7 @@ function haTabelaSem_(C){
     const k='s|'+x.u+'|'+x.wk, op=HA.open.has(k), todos=x.days.flatMap(d=>d.recs);
     h+='<tr class="'+(x.exc>0?'ha-r-exc':'')+'"><td><button type="button" class="ha-exp" data-ha-o="'+feEsc_(k)+'" aria-expanded="'+op+'" aria-label="Expandir dias da semana">'+(op?'−':'+')+'</button></td>'+
       '<td><b>'+feEsc_(haRotuloUsuario_(x.u))+'</b></td><td>'+haBr_(x.wk)+' – '+haBr_(haAdd_(x.wk,6))+'</td><td class="ha-n"><b>'+haHmz_(x.h)+'</b></td>'+
-      '<td class="ha-n">'+haHmz_(x.jor)+'<div class="ha-hint">'+x.du+' dia(s) útil(eis) × 8h'+(x.du<5?' · semana parcial':'')+'</div></td>'+
+      '<td class="ha-n">'+haHmz_(x.jor)+'<div class="ha-hint">'+x.du+' dia(s) útil(eis) × '+haHmz_(x.jd||HA_JORNADA_DIA)+(x.du<5?' · semana parcial':'')+'</div></td>'+
       '<td class="ha-n">'+(x.exc>0?'<button type="button" class="ha-btn sm" data-ha-ex="s|'+x.u+'|'+x.wk+'" aria-label="Detalhar excedente"><span class="ha-tg exc">▲ +'+haHm_(x.exc)+'</span></button>':'—')+'</td>'+
       '<td class="ha-sm">'+feEsc_(haProjDe_(todos))+'</td></tr>';
     if(op) h+=x.days.slice().sort((a,b)=>a.d.localeCompare(b.d)).map(d=>'<tr class="ha-sub"><td></td><td colspan="2">↳ '+HA_DN[haDow_(d.d)]+' '+haBr_(d.d)+' '+haTag_(d.inf)+'</td><td class="ha-n">'+haHmz_(d.h)+'</td><td class="ha-n">'+haHmz_(d.jor)+'</td><td class="ha-n">'+(d.exc>0?'+'+haHm_(d.exc)+' no dia':'—')+'</td><td>'+feEsc_(haProjDe_(d.recs))+'</td></tr>').join('');
@@ -13129,7 +13294,7 @@ function haDesenharGraficos_(C){
   let ds=Object.keys(porDia).sort();
   const nDias=Math.round((Date.parse(C.fim+'T12:00:00Z')-Date.parse(C.ini+'T12:00:00Z'))/864e5)+1;
   if(nDias<=62){ ds=[]; for(let d=C.ini;d<=C.fim;d=haAdd_(d,1)) ds.push(d); }
-  const g1=ds.map(d=>porDia[d]||{h:0,j:sel?haDia_(sel,d).util?HA_JORNADA_DIA:0:(haDow_(d)%6?HA_JORNADA_DIA:0),e:0,kind:sel?haDia_(sel,d).kind:(haDow_(d)%6?'u':'w')});
+  const g1=ds.map(d=>porDia[d]||{h:0,j:sel?haDia_(sel,d).util?(sel.jd||HA_JORNADA_DIA):0:(haDow_(d)%6?HA_JORNADA_DIA:0),e:0,kind:sel?haDia_(sel,d).kind:(haDow_(d)%6?'u':'w')});
   const cor1=g1.map(b=>b.e>0?HA_COR.exc:b.kind==='w'?HA_COR.fs:b.kind==='h'?HA_COR.hol:HA_COR.normal);
   const t1=g1.map(b=>b.h?haHm_(b.h)+(b.e>0?' ▲':b.kind==='w'?' ◆':b.kind==='h'?' ★':''):'');
   haGrafico_('ha-ch1',{type:'bar',data:{labels:ds.map(d=>HA_DN[haDow_(d)]+' '+d.slice(8)+'/'+d.slice(5,7)),datasets:[
@@ -13338,11 +13503,11 @@ function ahDia_(p,iso){
   return r;
 }
 function ahFeriadoNome_(p,iso){ const x=ahDia_(p,iso); return x.h?x.h.descricao:''; }
-function ahEsperadas_(p,a,b){ // 8h × dias úteis da pessoa entre a e b, limitado por Data Entrada/Distrato
+function ahEsperadas_(p,a,b){ // jornada diária da pessoa (padrão provisório 8h) × dias úteis da pessoa entre a e b, limitado por Data Entrada/Distrato
   if(p.entrada&&p.entrada>a) a=p.entrada; if(p.distrato&&p.distrato<b) b=p.distrato;
   if(a>b) return {h:0,dias:0,ok:false};
   let n=0; for(let d=a;d<=b;d=haAdd_(d,1)) if(ahDia_(p,d).util) n++;
-  return {h:n*HA_JORNADA_DIA,dias:n,ok:true};
+  return {h:n*(p.jd||HA_JORNADA_DIA),dias:n,ok:true};
 }
 function ahDif_(v){ if(Math.abs(v)<1/120) return '0h'; return (v>0?'+':'')+fHM_(v); }
 function ahPct_(x){ return x===null?'—':Math.round(x*100)+'%'; }
@@ -13354,7 +13519,7 @@ function ahPrepararDados_(r){
   AH.roster=((D&&D.p)||[]).filter(x=>x.email).map(x=>{
     const e=String(x.email).toLowerCase(), dd=dts[e]||['','']; const cid=(x.cidade||'').trim(), uf=(x.estado||'').trim();
     return {e,a:x.a||'',area:x.area||'',head:x.head||'',cargo:x.cargo||'',nv:x.nv||'',ativo:pessoaEstaAtiva(x),participa:pessoaParticipaAnalises_(x),
-      loc:(cid&&uf)?cid+'/'+uf:(cid||uf||(x.localidade||'').trim()),entrada:dd[0]||'',distrato:dd[1]||'',reg:true};
+      loc:(cid&&uf)?cid+'/'+uf:(cid||uf||(x.localidade||'').trim()),entrada:dd[0]||'',distrato:dd[1]||'',reg:true,jd:capPessoa_(x).dia,capDef:capPessoa_(x).def};
   });
   AH.porEmail={}; AH.roster.forEach(p=>{ AH.porEmail[p.e]=p; });
   // usuários com apontamento que não estão em Pessoas_Area (ou sem Assinatura): entram com "Nome não cadastrado"
@@ -13421,7 +13586,7 @@ function ahCalcular_(){
   pessoas.forEach(x=>{
     x.nproj=x.projs.size; x.hUtil=0;x.exc=0;x.fs=0;x.hol=0; const fora=new Set(), projFora=new Set();
     x.diasL=Object.values(x.dias).sort((a,b)=>a.d.localeCompare(b.d));
-    x.diasL.forEach(dy=>{ const inf=ahDia_(x.p,dy.d); dy.inf=inf; dy.ref=inf.util?HA_JORNADA_DIA:0; dy.exc=inf.util?haExc_(dy.h,HA_JORNADA_DIA):0;
+    x.diasL.forEach(dy=>{ const inf=ahDia_(x.p,dy.d); dy.inf=inf; dy.ref=inf.util?(x.p.jd||HA_JORNADA_DIA):0; dy.exc=inf.util?haExc_(dy.h,(x.p.jd||HA_JORNADA_DIA)):0;
       dy.cls=inf.fs?'fs':(inf.h?'hol':'util');
       if(inf.fs) x.fs+=dy.h; else if(inf.h) x.hol+=dy.h; else { x.hUtil+=dy.h; x.exc+=dy.exc; }
       if(dy.exc>0||inf.fs||inf.h){ fora.add(dy.d); dy.recs.forEach(r=>projFora.add(AH.projs[r.pj].key)); } });
@@ -13545,7 +13710,7 @@ function ahDesenharGrafico_(C){
   const M=C.M, r2=v=>v===null?null:Math.round(v*100)/100;
   AH.chart=new Chart(el,{type:'bar',data:{labels:M.map(m=>m.rot),datasets:[
     {type:'bar',label:'Média por pessoa',data:M.map(m=>r2(m.media)),backgroundColor:'#0C4A6E',borderRadius:5,order:2},
-    {type:'line',label:'Referência média (dias úteis × 8h)',data:M.map(m=>r2(m.refMedia)),borderColor:'#F59E0B',borderDash:[5,3],pointRadius:3,borderWidth:2,fill:false,order:1}]},
+    {type:'line',label:'Referência média (dias úteis × jornada diária)',data:M.map(m=>r2(m.refMedia)),borderColor:'#F59E0B',borderDash:[5,3],pointRadius:3,borderWidth:2,fill:false,order:1}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>{ const m=M[c.dataIndex]; return c.datasetIndex===0?['Média: '+(m.media===null?'—':fHM_(m.media)),'Total: '+fHM_(m.tot)+' ÷ '+m.nInc+' pessoa(s)']:'Referência média: '+(m.refMedia===null?'—':fHM_(m.refMedia)); }}}},
       scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}}});
 }
