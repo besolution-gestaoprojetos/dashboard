@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycby-fHBxJsxF7Zlm5kRzdnmrd5aZ5AjPlhdAwxuIiZx9f6qbVArYNYJTbLeyHLmds5ITGw/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzpANXbtMqYBfoh3f0VLFiPJqPtP8w8bPfpytZsz2YVmmXspxwl1VIZueNR7Xl6BsuwAQ/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -432,12 +432,11 @@ main{flex:1; padding:22px 24px 60px; max-width:1520px; width:100%; margin:0 auto
 }
 .filter-field{display:flex; flex-direction:column; gap:3px; min-width:170px;}
 .filter-field label{font-family:var(--font-mono); font-size:10.5px; font-weight:500; color:var(--text-faint); text-transform:uppercase; letter-spacing:.08em;}
-.filter-field select, .filter-field input{
-  border:1px solid var(--border); background:var(--surface-alt); color:var(--text);
-  border-radius:8px; padding:7px 10px; font-size:13px; font-family:var(--font-body);
-  outline:none; cursor:pointer; transition:border-color .15s ease;
+.filter-field select, .filter-field input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]) {
+  border:1px solid var(--border); background-color:var(--ctl-bg); color:var(--text);
+  border-radius:var(--ctl-r); padding:var(--ctl-pad); font-size:var(--ctl-fs); font-family:var(--font-body);
+  min-height:var(--ctl-h); outline:none; cursor:pointer; transition:border-color .15s ease, box-shadow .15s ease;
 }
-.filter-field select:focus, .filter-field input:focus{border-color:var(--primary);}
 .filter-clear{
   margin-left:auto; border:1px solid var(--border); background:transparent; color:var(--text-muted);
   font-size:12px; font-weight:600; padding:7px 12px; border-radius:8px; cursor:pointer;
@@ -449,7 +448,8 @@ main{flex:1; padding:22px 24px 60px; max-width:1520px; width:100%; margin:0 auto
 .sr-required{color:var(--st-bloqueado); margin-left:2px;}
 .sr-field{margin-bottom:14px;}
 .sr-field label{display:block; font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:5px;}
-.sr-field input[type=text], .sr-field input[type=date], .sr-field select, .sr-field textarea{
+.sr-field input[type=text], .sr-field input[type=date], .sr-field select, .sr-field textarea,
+ .sr-field input.dt-txt {
   width:100%; border:1px solid var(--border); border-radius:8px; padding:9px 12px;
   font-size:13.5px; font-family:inherit; background:var(--surface); color:var(--text);
 }
@@ -502,7 +502,8 @@ main{flex:1; padding:22px 24px 60px; max-width:1520px; width:100%; margin:0 auto
 }
 .seg-btn:hover{color:var(--text);}
 .seg-btn.active{background:var(--surface); color:var(--primary); box-shadow:var(--shadow-sm);}
-.filter-field input[type="date"]{min-width:140px;}
+.filter-field input[type="date"],
+.filter-field input.dt-txt {min-width:140px;}
 .claude-toggle{
   display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
   padding:9px 14px; border-radius:10px; border:1px solid var(--border); background:var(--surface);
@@ -833,6 +834,230 @@ html[data-theme="dark"] .sess-banner{background:#451a1a;border-color:#7f1d1d;col
 .cap-ok{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:10px;background:var(--surface-alt);border:1px solid var(--border);white-space:nowrap}
 .cap-nd{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:10px;background:rgba(245,158,11,.15);color:#b45309;white-space:nowrap}
 .pa-aviso{padding:9px 12px;border-radius:8px;font-size:13px;margin-top:6px}.pa-aviso.cap-erro{background:rgba(220,38,38,.1);color:#b91c1c}.pa-aviso.cap-warn{background:rgba(245,158,11,.13);color:#b45309}.pa-aviso.cap-info{background:rgba(15,76,117,.09)}
+
+/* ===== v18.2 — PADRÃO ÚNICO DE CAMPOS (Wiki › Padrão de campos) =====
+   ① Filtro 34px · ② Formulário 38px · ③ Em tabela 30px — mesmo raio, borda, foco, seta e estados.
+   Campo novo: use .filter-field (filtro), .ctl-form (formulário) ou .ctl-tab (tabela). Não crie estilo próprio. */
+:root{--ctl-r:8px;--ctl-h:34px;--ctl-pad:7px 10px;--ctl-fs:13px;--ctl-bg:var(--surface-alt);
+  --ctlf-h:38px;--ctlf-pad:9px 12px;--ctlf-fs:13.5px;--ctlf-bg:var(--surface);
+  --ctlt-h:30px;--ctlt-pad:5px 8px;--ctlt-fs:12.5px;--ctlt-bg:var(--surface);
+  --ctl-arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%237C8BA0' stroke-width='1.6'/%3E%3C/svg%3E");}
+body .filter-field select,
+body .filter-field input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]),
+body .ctl-filter,
+body .da-form select,
+body .da-form input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]),
+body .da-top select,
+body .ch-ctl select,
+body .ch-ctl input[type=date],
+body .ch-ctl input[type=month],
+body .ch-ddb input,
+body .ch-ctl input.dt-txt {border:1px solid var(--border);background-color:var(--ctl-bg);color:var(--text);border-radius:var(--ctl-r);padding:var(--ctl-pad);font-size:var(--ctl-fs);font-family:var(--font-body);min-height:var(--ctl-h);box-sizing:border-box;outline:none;}
+body .sr-field input[type=text],
+body .sr-field input[type=date],
+body .sr-field input[type=number],
+body .sr-field select,
+body .sr-field textarea,
+body .fe-panel input[type=text],
+body .fe-panel input[type=date],
+body .fe-panel select,
+body .fe-panel textarea,
+body .fe-panel .fe-tools input,
+body .fe-panel .fe-tools select,
+body .fe-modal select,
+body .fe-modal input[type=file],
+body .wk-side input,
+body .ctl-form,
+body .sr-field input.dt-txt,
+body .fe-panel input.dt-txt {width:100%;border:1px solid var(--border);background-color:var(--ctlf-bg);color:var(--text);border-radius:var(--ctl-r);padding:var(--ctlf-pad);font-size:var(--ctlf-fs);font-family:var(--font-body);box-sizing:border-box;outline:none;}
+body .sr-field input[type=text],
+body .sr-field input[type=date],
+body .sr-field input[type=number],
+body .sr-field select,
+body .fe-panel input[type=text],
+body .fe-panel input[type=date],
+body .fe-panel select,
+body .fe-panel .fe-tools input,
+body .fe-panel .fe-tools select,
+body .fe-modal select,
+body .fe-modal input[type=file],
+body .wk-side input,
+body .ctl-form,
+body .sr-field input.dt-txt,
+body .fe-panel input.dt-txt {min-height:var(--ctlf-h);height:var(--ctlf-h);line-height:1.3;}
+body .fe-panel .fe-tools input,body .fe-panel .fe-tools select{width:auto;flex:0 1 240px;min-width:150px;}
+body .sr-ativ-row input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]),
+body .sr-ativ-row select,
+body .src-t input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]),
+body .src-t select,
+body .ctl-tab{width:100%;border:1px solid var(--border);background-color:var(--ctlt-bg);color:var(--text);border-radius:var(--ctl-r);padding:var(--ctlt-pad);font-size:var(--ctlt-fs);font-family:var(--font-body);min-height:var(--ctlt-h);box-sizing:border-box;outline:none;}
+body .filter-field select,
+body .da-form select,
+body .da-top select,
+body .ch-ctl select,
+body .sr-field select,
+body .fe-panel select,
+body .fe-panel .fe-tools select,
+body .fe-modal select,
+body .sr-ativ-row select,
+body .src-t select,
+body select.ctl-filter,
+body select.ctl-form,
+body select.ctl-tab{appearance:none;-webkit-appearance:none;background-image:var(--ctl-arrow);background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;}
+body .filter-field select:focus,
+body .filter-field input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]):focus,
+body .ctl-filter:focus,
+body .da-form select:focus,
+body .da-form input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]):focus,
+body .da-top select:focus,
+body .ch-ctl select:focus,
+body .ch-ctl input[type=date]:focus,
+body .ch-ctl input[type=month]:focus,
+body .ch-ddb input:focus,
+body .sr-field input[type=text]:focus,
+body .sr-field input[type=date]:focus,
+body .sr-field input[type=number]:focus,
+body .sr-field select:focus,
+body .sr-field textarea:focus,
+body .fe-panel input[type=text]:focus,
+body .fe-panel input[type=date]:focus,
+body .fe-panel select:focus,
+body .fe-panel textarea:focus,
+body .fe-panel .fe-tools input:focus,
+body .fe-panel .fe-tools select:focus,
+body .fe-modal select:focus,
+body .fe-modal input[type=file]:focus,
+body .wk-side input:focus,
+body .ctl-form:focus,
+body .sr-ativ-row input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]):focus,
+body .sr-ativ-row select:focus,
+body .src-t input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]):focus,
+body .src-t select:focus,
+body .ctl-tab:focus,
+body .ch-ctl input.dt-txt:focus,
+body .sr-field input.dt-txt:focus,
+body .fe-panel input.dt-txt:focus {border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-100);}
+body .filter-field select.err,
+body .filter-field input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]).err,
+body .ctl-filter.err,
+body .da-form select.err,
+body .da-form input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]).err,
+body .da-top select.err,
+body .ch-ctl select.err,
+body .ch-ctl input[type=date].err,
+body .ch-ctl input[type=month].err,
+body .ch-ddb input.err,
+body .sr-field input[type=text].err,
+body .sr-field input[type=date].err,
+body .sr-field input[type=number].err,
+body .sr-field select.err,
+body .sr-field textarea.err,
+body .fe-panel input[type=text].err,
+body .fe-panel input[type=date].err,
+body .fe-panel select.err,
+body .fe-panel textarea.err,
+body .fe-panel .fe-tools input.err,
+body .fe-panel .fe-tools select.err,
+body .fe-modal select.err,
+body .fe-modal input[type=file].err,
+body .wk-side input.err,
+body .ctl-form.err,
+body .sr-ativ-row input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]).err,
+body .sr-ativ-row select.err,
+body .src-t input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]).err,
+body .src-t select.err,
+body .ctl-tab.err,
+body .ch-ctl input.dt-txt.err,
+body .sr-field input.dt-txt.err,
+body .fe-panel input.dt-txt.err {border-color:var(--er,#dc2626);}
+body .filter-field select:disabled,
+body .filter-field input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]):disabled,
+body .ctl-filter:disabled,
+body .da-form select:disabled,
+body .da-form input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]):disabled,
+body .da-top select:disabled,
+body .ch-ctl select:disabled,
+body .ch-ctl input[type=date]:disabled,
+body .ch-ctl input[type=month]:disabled,
+body .ch-ddb input:disabled,
+body .sr-field input[type=text]:disabled,
+body .sr-field input[type=date]:disabled,
+body .sr-field input[type=number]:disabled,
+body .sr-field select:disabled,
+body .sr-field textarea:disabled,
+body .fe-panel input[type=text]:disabled,
+body .fe-panel input[type=date]:disabled,
+body .fe-panel select:disabled,
+body .fe-panel textarea:disabled,
+body .fe-panel .fe-tools input:disabled,
+body .fe-panel .fe-tools select:disabled,
+body .fe-modal select:disabled,
+body .fe-modal input[type=file]:disabled,
+body .wk-side input:disabled,
+body .ctl-form:disabled,
+body .sr-ativ-row input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]):disabled,
+body .sr-ativ-row select:disabled,
+body .src-t input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]):disabled,
+body .src-t select:disabled,
+body .ctl-tab:disabled,
+body .ch-ctl input.dt-txt:disabled,
+body .sr-field input.dt-txt:disabled,
+body .fe-panel input.dt-txt:disabled {opacity:.6;background-color:var(--surface-hover);cursor:not-allowed;}
+body .filter-field input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color])::placeholder,
+body .ctl-filter::placeholder,
+body .da-form input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color])::placeholder,
+body .ch-ctl input[type=date]::placeholder,
+body .ch-ctl input[type=month]::placeholder,
+body .ch-ddb input::placeholder,
+body .sr-field input[type=text]::placeholder,
+body .sr-field input[type=date]::placeholder,
+body .sr-field input[type=number]::placeholder,
+body .sr-field textarea::placeholder,
+body .fe-panel input[type=text]::placeholder,
+body .fe-panel input[type=date]::placeholder,
+body .fe-panel textarea::placeholder,
+body .fe-panel .fe-tools input::placeholder,
+body .fe-modal input[type=file]::placeholder,
+body .wk-side input::placeholder,
+body .ctl-form::placeholder,
+body .sr-ativ-row input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color])::placeholder,
+body .src-t input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color])::placeholder,
+body .ctl-tab::placeholder,
+body .ch-ctl input.dt-txt::placeholder,
+body .sr-field input.dt-txt::placeholder,
+body .fe-panel input.dt-txt::placeholder {color:var(--text-faint);}
+body .ch-dd>summary{border:1px solid var(--border);background-color:var(--ctl-bg);color:var(--text);border-radius:var(--ctl-r);padding:var(--ctl-pad);font-size:var(--ctl-fs);font-family:var(--font-body);min-height:var(--ctl-h);box-sizing:border-box;cursor:pointer;}
+body .ch-dd[open]>summary{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-100);}
+.ch-fbox .filter-field label.ch-ck{font-family:var(--font-body);text-transform:none;letter-spacing:0;font-size:12.5px;font-weight:500;color:var(--text);}
+.ch-fbox .filter-field label.ch-ck small{font-family:var(--font-body);}
+#page-comparativohoras.ch-semdados #ch-kpis,#page-comparativohoras.ch-semdados #ch-avisos,#page-comparativohoras.ch-semdados .ch-main{display:none;}
+.ch-empty{border:2px dashed var(--border-strong,var(--border));border-radius:12px;padding:34px 18px;text-align:center;background:var(--surface);}.ch-empty-i{font-size:34px;}.ch-empty h3{font:700 17px var(--font-display);margin:6px 0 4px;}.ch-empty p{margin:0;color:var(--text-muted);font-size:13px;}
+.pe-cb{position:relative;}.pe-cb-b{width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:6px;border:1px solid var(--border);background-color:var(--ctlf-bg);color:var(--text);border-radius:var(--ctl-r);padding:var(--ctlf-pad);font:400 var(--ctlf-fs) var(--font-body);height:var(--ctlf-h);cursor:pointer;box-sizing:border-box;}
+.pe-cb-b span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.pe-cb-b:after{content:"▾";color:var(--text-faint);font-size:11px;}.pe-cb-b:disabled{opacity:.6;background-color:var(--surface-hover);cursor:not-allowed;}
+.pe-cb.warn .pe-cb-b{border-color:#d97706;background-color:rgba(217,119,6,.08);}.pe-cb.bad .pe-cb-b{border-color:var(--er,#dc2626);}.pe-cb.open .pe-cb-b{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-100);}
+.pe-cb-p{display:none;position:absolute;z-index:40;left:0;right:0;top:100%;margin-top:4px;min-width:250px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);}.pe-cb.open .pe-cb-p{display:block;}
+.pe-cb-p input{width:100%;margin-bottom:6px;border:1px solid var(--border);background:var(--ctl-bg);color:var(--text);border-radius:var(--ctl-r);padding:var(--ctl-pad);font-size:var(--ctl-fs);min-height:var(--ctl-h);box-sizing:border-box;}
+.pe-cb-l{max-height:220px;overflow:auto;}.pe-cb-l div{padding:6px 8px;border-radius:6px;cursor:pointer;font-size:13px;}.pe-cb-l div:hover{background:var(--surface-hover);}.pe-cb-l .sel{font-weight:700;color:var(--primary);}.pe-cb-l .n{color:var(--text-faint);font-size:12px;cursor:default;}
+.pe-cb-h{font-size:11.5px;margin-top:3px;color:var(--text-faint);}.pe-cb-h.w{color:#b45309;}.pe-cb-h.e{color:#b91c1c;}
+body #pe-req-body select,body #pe-req-body input[type=number]{width:100%;border:1px solid var(--border);background-color:var(--ctlf-bg);color:var(--text);border-radius:var(--ctl-r);padding:var(--ctlf-pad);font-size:var(--ctlf-fs);font-family:var(--font-body);height:var(--ctlf-h);box-sizing:border-box;outline:none;}
+body #pe-req-body select{appearance:none;-webkit-appearance:none;background-image:var(--ctl-arrow);background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;}
+body #pe-req-body select:focus,body #pe-req-body input[type=number]:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-100);}
+#pe-req-body .table-wrap{overflow:visible;max-height:none;}
+@media(max-width:760px){#pe-req-body .table-wrap{overflow-x:auto;max-height:none;}.pe-cb-p{position:fixed;left:12px;right:12px;bottom:12px;top:auto;margin:0;z-index:1000;max-height:70vh;}}
+#pe-req-card{overflow:visible;}
+
+/* ===== Campo de data padrão (v18.4): texto dd/mm/aaaa com máscara + calendário nativo ===== */
+.dt-wrap{position:relative;display:inline-block;vertical-align:middle;min-width:130px;max-width:100%}
+.filter-field>.dt-wrap,.sr-field>.dt-wrap,.fe-panel .dt-wrap,.ch-ctl>.dt-wrap{display:block;width:100%}
+.dt-wrap input.dt-txt{width:100%;min-width:0;padding-right:34px;box-sizing:border-box}
+body .dt-wrap input.dt-native{position:absolute!important;left:0;bottom:0;width:1px!important;height:1px!important;min-width:0!important;min-height:0!important;padding:0!important;margin:0!important;border:0!important;opacity:0!important;pointer-events:none;overflow:hidden;box-shadow:none!important}
+.dt-wrap .dt-cal{position:absolute;right:1px;top:1px;bottom:1px;width:32px;border:0;background:transparent;color:var(--text-muted,#5d6b80);cursor:pointer;border-radius:0 6px 6px 0;font-size:14px;line-height:1;padding:0}
+.dt-wrap .dt-cal:hover{color:var(--accent,#1f5fbf)}
+.dt-wrap input.dt-txt.err{border-color:#c62828!important}
+.dt-wrap input.dt-txt:disabled+.dt-cal{opacity:.5;cursor:not-allowed}
+.dt-wrap .dt-msg{display:block;font-size:11.5px;color:#c62828;line-height:1.25}
+.dt-wrap .dt-msg:empty{display:none}
+.dt-wrap .dt-msg{position:absolute;left:0;top:100%;z-index:5;background:var(--surface,#fff);padding:1px 4px;white-space:nowrap}
 </style>
 <style>
 .brand-logo img{height:34px;width:auto;display:block}
@@ -1448,7 +1673,8 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .fe-row{display:grid;grid-template-columns:200px 1fr 220px;gap:14px;align-items:end;}
 .fe-row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;align-items:end;}
 .fe-panel label{display:block;font-size:11px;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:5px;}
-.fe-panel input[type=text],.fe-panel input[type=date],.fe-panel select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font:inherit;background:var(--surface);color:var(--text);}
+.fe-panel input[type=text],.fe-panel input[type=date],.fe-panel select,
+.fe-panel input.dt-txt {width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font:inherit;background:var(--surface);color:var(--text);}
 .fe-chk{display:flex !important;align-items:center;gap:8px;font-weight:700 !important;font-size:13px !important;text-transform:none !important;color:var(--text) !important;cursor:pointer;margin:0 !important;}
 .fe-chk input{width:18px;height:18px;}
 .fe-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:12px;}
@@ -1529,30 +1755,29 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 /* v18.1 — Comparativo e Evolução de Horas */
 #page-comparativohoras .ha-note{background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:7px 12px;font-size:12.5px;color:var(--text-muted);margin:6px 0;}
 #page-comparativohoras .ha-note.warn{background:#fffbeb;border-color:#fde68a;color:#92400e;}
-#page-comparativohoras .ha-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:9px;padding:6px 12px;font:600 12.5px var(--font-body);cursor:pointer;}
-#page-comparativohoras .ha-btn.pri{background:var(--primary);color:#fff;border-color:var(--primary);}
-#page-comparativohoras .ha-btn:disabled{opacity:.6;cursor:wait;}
 #page-comparativohoras button:focus-visible,#page-comparativohoras input:focus-visible,#page-comparativohoras select:focus-visible,.ch-over button:focus-visible{outline:3px solid #818cf8;outline-offset:2px;}
-.ch-fbox{padding:10px 14px;margin-bottom:12px;overflow:visible;}.ch-fbox>summary{display:none;cursor:pointer;font-weight:700;font-size:13px;}
-.ch-frow{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-bottom:8px;}
-.ch-f{display:flex;flex-direction:column;gap:3px;min-width:118px;flex:1 1 128px;}.ch-f label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:none;letter-spacing:0;margin:0;}
-.ch-f input,.ch-f select{width:100%;min-width:0;}.ch-grow{flex:2 1 280px;}.ch-f.ch-fit{flex:0 0 auto;}.ch-grow2{flex:2 1 260px;}.ch-acts{flex:0 0 auto;min-width:0;flex-direction:row;gap:6px;}
-.ch-seg{display:inline-flex;flex-wrap:nowrap;max-width:100%;overflow-x:auto;border:1px solid var(--border);border-radius:9px;overflow:hidden;background:var(--surface);}
-.ch-seg button{white-space:nowrap;border:0;border-right:1px solid var(--border);background:none;color:var(--text-muted);padding:6px 11px;font:600 12.5px var(--font-body);cursor:pointer;}.ch-seg button:last-child{border-right:0;}
-.ch-seg button.on{background:var(--primary);color:#fff;}.ch-seg button:hover:not(.on){color:var(--primary);}
-.ch-dd{position:relative;}.ch-dd>summary{list-style:none;cursor:pointer;border:1px solid var(--border);background:var(--surface);border-radius:9px;padding:7px 12px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.ch-dd>summary::-webkit-details-marker{display:none;}
-.ch-ddb{position:absolute;z-index:40;top:100%;left:0;margin-top:4px;min-width:280px;max-width:92vw;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);}
-.ch-ddb input{width:100%;margin-bottom:6px;}#ch-pl{max-height:260px;overflow:auto;}
-.ch-ck{display:flex;gap:7px;align-items:center;font-size:12.5px;padding:3px 2px;text-transform:none;letter-spacing:0;margin:0;font-weight:500;}.ch-ck input{width:auto;min-width:0;margin:0;}
+.ch-fbox{margin-bottom:12px;}.ch-fbox>summary{display:none;cursor:pointer;font-weight:700;font-size:13px;margin-bottom:6px;}
+.ch-fbox .filter-bar{align-items:flex-end;margin-bottom:10px;overflow:visible;}
+.ch-fbox .filter-field{flex:1 1 150px;min-width:140px;}.ch-fbox .filter-field.fit{flex:0 0 auto;min-width:0;max-width:100%;}.ch-fbox .filter-field.fit .seg-control{max-width:100%;overflow-x:auto;}
+.ch-fbox .filter-field.ch-fdate{flex:0 1 150px;}.ch-fbox .filter-field.ch-wide{flex:2 1 230px;}.ch-fbox .ch-acts>span{display:flex;gap:6px;}
+.ch-b{margin-left:0;}.ch-b:disabled{opacity:.6;cursor:wait;}
+.ch-dd{position:relative;}.ch-dd>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.ch-dd>summary::-webkit-details-marker{display:none;}.ch-dd>summary:after{content:"▾";color:var(--text-faint);font-size:11px;}
+.ch-dd[open]>summary{border-color:var(--primary);}
+.ch-ddb{position:absolute;z-index:40;top:100%;left:0;margin-top:4px;min-width:290px;max-width:92vw;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);}
+.ch-ddb input{width:100%;margin-bottom:6px;}#ch-pl{max-height:260px;overflow:auto;}.ch-cnt{font-size:11.5px;color:var(--text-faint);padding:0 2px 6px;}
+.ch-ck{display:flex;gap:7px;align-items:center;font-size:12.5px;padding:3px 2px;text-transform:none;letter-spacing:0;margin:0;font-weight:500;cursor:pointer;}.ch-ck input{width:auto;min-width:0;min-height:0;margin:0;}
+.ch-fmsg{font-size:12px;color:var(--text-muted);margin:2px 0 6px;}.ch-fmsg:empty{display:none;}
 .ch-chips{display:flex;flex-wrap:wrap;gap:4px;}.ch-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:99px;padding:2px 6px 2px 8px;font-size:12px;background:var(--surface-alt);}
 .ch-chip button{border:0;background:none;cursor:pointer;color:var(--text-muted);font-size:12px;padding:0 2px;}.ch-dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+.ch-go{font-size:11px;margin-left:-4px;color:var(--text-faint);}.ch-hn .person-link,.ch-tb .person-link{font-weight:inherit;}
 .ch-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:12px;}
 @media(max-width:1100px){.ch-kpis{grid-template-columns:repeat(3,minmax(0,1fr));}}@media(max-width:560px){.ch-kpis{grid-template-columns:repeat(2,minmax(0,1fr));}}
 .ch-kpis .kpi{min-width:0;padding:10px 12px;}.ch-kpis .kpi-top-row{display:none;}.ch-kpis .kpi-label{font-size:10.5px;}.ch-obs{margin:0 0 8px;}.ch-obs>summary{cursor:pointer;font-size:12.5px;color:var(--text-muted);font-weight:600;}.ch-kpis .kpi-value{font-size:20px;overflow-wrap:anywhere;}
 .ch-main{padding:10px 14px 14px;}
 .ch-tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:10px;}
 .ch-tabs button{border:0;background:none;padding:8px 12px;font:700 13px var(--font-body);color:var(--text-muted);border-bottom:3px solid transparent;cursor:pointer;}.ch-tabs button[aria-selected=true]{color:var(--primary);border-color:var(--primary);}
-.ch-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px;}.ch-ctl,.ch-act{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}.ch-ctl select,.ch-ctl input[type=date],.ch-ctl input[type=month]{padding:5px 8px;font-size:12.5px;width:auto;min-width:0;}
+.ch-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:8px;}.ch-ctl,.ch-act{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}.ch-ctl select,.ch-ctl input[type=date],.ch-ctl input[type=month],
+.ch-ctl input.dt-txt {padding:5px 8px;font-size:12.5px;width:auto;min-width:0;}
 .ch-lb{font-size:12px;color:var(--text-muted);font-weight:600;}.ch-ckb{display:inline-flex;gap:6px;align-items:center;font-size:12.5px;text-transform:none;letter-spacing:0;margin:0;}.ch-ckb input{width:auto;min-width:0;}.ch-par{display:inline-flex;gap:4px;align-items:center;font-size:12px;color:var(--text-muted);}
 .ch-leg{display:flex;flex-wrap:wrap;gap:4px 10px;margin:4px 0 6px;}.ch-lg{display:inline-flex;gap:6px;align-items:center;border:0;background:none;color:var(--text);font:500 12px var(--font-body);cursor:pointer;padding:2px 4px;border-radius:6px;}.ch-lg:hover{background:var(--surface-alt);}.ch-lg.off{opacity:.4;text-decoration:line-through;}
 .ch-sw{display:inline-block;width:18px;height:0;border-top:3px solid;}.ch-sw.d{border-top-style:dashed;}
@@ -1575,7 +1800,7 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .ch-over-c{background:var(--surface);border-radius:14px;width:100%;max-width:1400px;max-height:96vh;overflow:auto;padding:14px 18px;box-shadow:0 20px 60px rgba(0,0,0,.35);}.ch-over-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 body.ch-trava{overflow:hidden;}
 #ch-print,#ch-off{display:none;}#ch-off{display:block;position:absolute;left:-10000px;top:0;width:980px;visibility:hidden;}
-@media(max-width:760px){.ch-fbox>summary{display:block;}.ch-fbox:not([open])>.ch-frow,.ch-fbox:not([open])>.ch-chips{display:none;}.ch-bar{flex-direction:column;align-items:stretch;}.ch-cv,.ch-cv.amplo{height:360px;}.ch-over-c{padding:10px;}.ch-tabs button{padding:7px 9px;font-size:12px;}.ch-seg button{padding:6px 8px;}}
+@media(max-width:760px){.ch-fbox>summary{display:block;}.ch-fbox:not([open])>.filter-bar,.ch-fbox:not([open])>.ch-chips,.ch-fbox:not([open])>.ch-fmsg{display:none;}.ch-bar{flex-direction:column;align-items:stretch;}.ch-cv,.ch-cv.amplo{height:360px;}.ch-over-c{padding:10px;}.ch-tabs button{padding:7px 9px;font-size:12px;}}
 @media print{
   body.imprimindo-ch #page-comparativohoras>*:not(#ch-print){display:none!important;}
   body.imprimindo-ch #ch-print{display:block!important;}
@@ -1595,14 +1820,15 @@ body.ch-trava{overflow:hidden;}
 #pa-form-view .pa-g{gap:0 14px}
 #pa-form-view .pa-g .sr-field{margin-bottom:8px}
 #pa-form-view .pa-g .sr-field label{margin-bottom:3px;font-size:11.5px}
-#pa-form-view .pa-g .sr-field input[type=text],#pa-form-view .pa-g .sr-field input[type=date],#pa-form-view .pa-g .sr-field input[type=number],#pa-form-view .pa-g .sr-field select{padding:7px 10px;min-height:36px}
 #pa-form-view .pa-hint{margin-top:3px}
 #pa-form-view .pa-switch{padding:8px 12px}
 .pa-par{display:grid;grid-template-columns:1fr;gap:0 12px;align-items:start}
 @media (min-width:1280px){.pa-par{grid-template-columns:1fr 1fr}}
 @media (max-width:860px){#pa-form-view .pa-g .sr-field.s3,#pa-form-view .pa-g .sr-field.s5,#pa-form-view .pa-g .sr-field.s7{grid-column:span 6}#pa-form-view .pa-g .sr-field.s6{grid-column:span 12}}
-@media (max-width:560px){#pa-form-view .pa-g .sr-field,#pa-form-view .pa-g .sr-field.s3,#pa-form-view .pa-g .sr-field.s4,#pa-form-view .pa-g .sr-field.s5,#pa-form-view .pa-g .sr-field.s6,#pa-form-view .pa-g .sr-field.s7,#pa-form-view .pa-g .sr-field.s8{grid-column:span 12}#pa-form-view .pa-g .sr-field input[type=text],#pa-form-view .pa-g .sr-field input[type=date],#pa-form-view .pa-g .sr-field input[type=number],#pa-form-view .pa-g .sr-field select{min-height:44px}#pa-form-view .pa-bloco{padding:10px 12px 6px}}
-.pa-g .sr-field input[type=text],.pa-g .sr-field input[type=date],.pa-g .sr-field input[type=number],.pa-g .sr-field select{width:100%;box-sizing:border-box;}
+@media (max-width:560px){#pa-form-view .pa-g .sr-field,#pa-form-view .pa-g .sr-field.s3,#pa-form-view .pa-g .sr-field.s4,#pa-form-view .pa-g .sr-field.s5,#pa-form-view .pa-g .sr-field.s6,#pa-form-view .pa-g .sr-field.s7,#pa-form-view .pa-g .sr-field.s8{grid-column:span 12}#pa-form-view .pa-g .sr-field input[type=text],#pa-form-view .pa-g .sr-field input[type=date],#pa-form-view .pa-g .sr-field input[type=number],#pa-form-view .pa-g .sr-field select,
+#pa-form-view .pa-g .sr-field input.dt-txt {min-height:44px}#pa-form-view .pa-bloco{padding:10px 12px 6px}}
+.pa-g .sr-field input[type=text],.pa-g .sr-field input[type=date],.pa-g .sr-field input[type=number],.pa-g .sr-field select,
+.pa-g .sr-field input.dt-txt {width:100%;box-sizing:border-box;}
 .pa-req{color:#dc2626;}.pa-err{color:#dc2626;font-size:11.5px;font-weight:600;margin-top:3px;}.pa-err:empty{display:none;}
 .pa-invalid{border-color:#dc2626 !important;background:rgba(220,38,38,.06) !important;}
 .pa-hint{font-size:11.5px;color:var(--text-faint);margin-top:4px;}.pa-hint.warn{color:#b45309;font-weight:600;}
@@ -2435,27 +2661,28 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
 
     <section class="page" id="page-comparativohoras">
       <div class="page-header"><div><h1>Comparativo e Evolução de Horas</h1><p>Compare horas apontadas por pessoas e perfis em qualquer período. Fonte: apontamentos oficiais (somente leitura). Nomes vêm de Pessoas_Area › Assinatura; pessoas inativas ou fora das análises não entram.</p></div></div>
-      <details class="card ch-fbox" id="ch-fbox" open>
+      <details class="ch-fbox" id="ch-fbox" open>
         <summary id="ch-fsum">Filtros</summary>
-        <div class="ch-frow">
-          <div class="ch-f"><label for="ch-ini">Período inicial</label><input type="date" id="ch-ini"></div>
-          <div class="ch-f"><label for="ch-fim">Período final</label><input type="date" id="ch-fim"></div>
-          <div class="ch-f ch-grow"><label>Atalhos</label><span class="ch-seg"><button type="button" data-ch-at="mes">Mês atual</button><button type="button" data-ch-at="tri">Trimestre</button><button type="button" data-ch-at="ano">Ano atual</button><button type="button" data-ch-at="12m">12 meses</button><button type="button" data-ch-at="anoant">Ano anterior</button></span></div>
-          <div class="ch-f ch-fit"><label>Agrupar por</label><span class="ch-seg"><button type="button" data-ch-g="d">Dia</button><button type="button" data-ch-g="s">Semana</button><button type="button" data-ch-g="m" class="on">Mês</button><button type="button" data-ch-g="t">Trimestre</button><button type="button" data-ch-g="a">Ano</button></span></div>
+        <div class="filter-bar">
+          <div class="filter-field fit"><label>Atalhos</label><span class="seg-control" role="group" aria-label="Atalhos de período"><button type="button" class="seg-btn" data-ch-at="mes">Mês atual</button><button type="button" class="seg-btn" data-ch-at="tri">Trimestre</button><button type="button" class="seg-btn" data-ch-at="ano">Ano atual</button><button type="button" class="seg-btn" data-ch-at="12m">12 meses</button><button type="button" class="seg-btn" data-ch-at="anoant">Ano anterior</button></span></div>
+          <div class="filter-field ch-fdate"><label for="ch-ini">Período inicial</label><input type="date" id="ch-ini"></div>
+          <div class="filter-field ch-fdate"><label for="ch-fim">Período final</label><input type="date" id="ch-fim"></div>
+          <div class="filter-field fit"><label>Agrupar por</label><span class="seg-control" role="group" aria-label="Agrupar por"><button type="button" class="seg-btn" data-ch-g="d">Dia</button><button type="button" class="seg-btn" data-ch-g="s">Semana</button><button type="button" class="seg-btn active" data-ch-g="m">Mês</button><button type="button" class="seg-btn" data-ch-g="t">Trimestre</button><button type="button" class="seg-btn" data-ch-g="a">Ano</button></span></div>
         </div>
-        <div class="ch-frow">
-          <div class="ch-f ch-grow2"><label>Pessoas (até 10, cada uma com sua cor)</label><details class="ch-dd" id="ch-pdd"><summary id="ch-ps">Pessoas: todas</summary><div class="ch-ddb"><input type="search" id="ch-pq" placeholder="Buscar pessoa…" autocomplete="off" aria-label="Buscar pessoa"><div id="ch-pl"></div></div></details></div>
-          <div class="ch-f"><label for="ch-cargo">Cargo</label><select id="ch-cargo"><option value="">Todos</option></select></div>
-          <div class="ch-f"><label for="ch-nv">Senioridade</label><select id="ch-nv"><option value="">Todas</option></select></div>
-          <div class="ch-f"><label for="ch-area">Área / Setor</label><select id="ch-area"><option value="">Todas</option></select></div>
-          <div class="ch-f"><label for="ch-head">Head</label><select id="ch-head"><option value="">Todos</option></select></div>
-          <div class="ch-f"><label for="ch-gestor">Gestor</label><select id="ch-gestor"><option value="">Todos</option></select></div>
-          <div class="ch-f"><label for="ch-cli">Cliente</label><select id="ch-cli"><option value="">Todos</option></select></div>
-          <div class="ch-f"><label for="ch-proj">Projeto</label><select id="ch-proj"><option value="">Todos</option></select></div>
-          <div class="ch-f"><label for="ch-tipo">Tipo de apontamento</label><select id="ch-tipo"><option value="">Todos</option><option value="0">Tarefas</option><option value="1">Reuniões</option><option value="2">Geral</option></select></div>
-          <div class="ch-f ch-acts"><button type="button" class="filter-clear" id="ch-limpar">Limpar filtros</button><button type="button" class="filter-clear" id="ch-atualizar" title="Recarregar os apontamentos da planilha">🔄</button></div>
+        <div class="filter-bar">
+          <div class="filter-field"><label for="ch-head">Head</label><select id="ch-head"><option value="">Todos</option></select></div>
+          <div class="filter-field"><label for="ch-gestor">Gestor</label><select id="ch-gestor"><option value="">Todos</option></select></div>
+          <div class="filter-field ch-wide"><label>Pessoas (até 10)</label><details class="ch-dd" id="ch-pdd"><summary id="ch-ps">Pessoas: todas</summary><div class="ch-ddb"><input type="search" id="ch-pq" placeholder="Buscar pessoa…" autocomplete="off" aria-label="Buscar pessoa"><div class="ch-cnt" id="ch-pc"></div><div id="ch-pl"></div></div></details></div>
+          <div class="filter-field"><label for="ch-area">Área / Setor</label><select id="ch-area"><option value="">Todas</option></select></div>
+          <div class="filter-field"><label for="ch-cargo">Cargo</label><select id="ch-cargo"><option value="">Todos</option></select></div>
+          <div class="filter-field"><label for="ch-nv">Senioridade</label><select id="ch-nv"><option value="">Todas</option></select></div>
+          <div class="filter-field"><label for="ch-cli">Cliente</label><select id="ch-cli"><option value="">Todos</option></select></div>
+          <div class="filter-field"><label for="ch-proj">Projeto</label><select id="ch-proj"><option value="">Todos</option></select></div>
+          <div class="filter-field"><label for="ch-tipo">Tipo de apontamento</label><select id="ch-tipo"><option value="">Todos</option><option value="0">Tarefas</option><option value="1">Reuniões</option><option value="2">Geral</option></select></div>
+          <div class="filter-field fit ch-acts"><label style="visibility:hidden">.</label><span><button type="button" class="filter-clear ch-b" id="ch-limpar">Limpar filtros</button> <button type="button" class="btn-primary-cal ch-b" id="ch-carregar">Carregar comparativo</button></span></div>
         </div>
         <div id="ch-chips" class="ch-chips"></div>
+        <div id="ch-fmsg" class="ch-fmsg" aria-live="polite"></div>
       </details>
       <div id="ch-status"></div>
       <div id="ch-avisos"></div>
@@ -2464,10 +2691,10 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
         <div class="ch-tabs" id="ch-tabs" role="tablist">
           <button type="button" role="tab" data-ch-tab="0" aria-selected="true">1 · Evolução</button><button type="button" role="tab" data-ch-tab="1" aria-selected="false">2 · Ranking</button><button type="button" role="tab" data-ch-tab="2" aria-selected="false">3 · Perfis</button><button type="button" role="tab" data-ch-tab="3" aria-selected="false">4 · Distribuição</button><button type="button" role="tab" data-ch-tab="4" aria-selected="false">5 · Participação</button><button type="button" role="tab" data-ch-tab="5" aria-selected="false">6 · Entre períodos</button><button type="button" role="tab" data-ch-tab="6" aria-selected="false">7 · Mapa de calor</button>
         </div>
-        <div class="ch-bar"><div class="ch-ctl" id="ch-ctl"></div><div class="ch-act"><button type="button" class="ha-btn sm" id="ch-tb">Ver tabela</button><button type="button" class="ha-btn sm" id="ch-exp">⤢ Expandir</button><button type="button" class="ha-btn sm pri" id="ch-xl">⬇ Excel</button><button type="button" class="ha-btn sm pri" id="ch-pdf">⬇ PDF</button></div></div>
+        <div class="ch-bar"><div class="ch-ctl" id="ch-ctl"></div><div class="ch-act"><button type="button" class="filter-clear ch-b" id="ch-tb">Ver tabela</button><button type="button" class="filter-clear ch-b" id="ch-exp">⤢ Expandir</button><button type="button" class="btn-primary-cal ch-b" id="ch-xl">⬇ Excel</button><button type="button" class="btn-primary-cal ch-b" id="ch-pdf">⬇ PDF</button></div></div>
         <div id="ch-chart"></div>
       </div>
-      <div class="ch-over" id="ch-over" hidden><div class="ch-over-c" role="dialog" aria-modal="true" aria-labelledby="ch-over-t"><div class="ch-over-h"><b id="ch-over-t"></b><button type="button" class="ha-btn sm" id="ch-over-x">✕ Fechar</button></div><div id="ch-over-b"></div></div></div>
+      <div class="ch-over" id="ch-over" hidden><div class="ch-over-c" role="dialog" aria-modal="true" aria-labelledby="ch-over-t"><div class="ch-over-h"><b id="ch-over-t"></b><button type="button" class="filter-clear ch-b" id="ch-over-x">✕ Fechar</button></div><div id="ch-over-b"></div></div></div>
       <div id="ch-print"></div><div id="ch-off"></div>
     </section>
 
@@ -2877,7 +3104,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v18.1';
+const APP_VERSION='v18.5';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -3109,6 +3336,11 @@ async function attemptLoadWithToken(token, viewAsEmail){
 // aparece no card "Última atualização" no topo da tela de Novidades.
 const NOVIDADES_ATUALIZADO_EM='06/11/2026';
 const NOVIDADES=[
+  {icone:'🧑‍💻', bg:'#f0fdf4', cor:'#16a34a', titulo:'Requisitos de equipe agora têm Cargo', descricao:'Na Edição do Portfólio, cada requisito de equipe pode indicar o Cargo, que depende da Área escolhida (lista com busca, só cargos ativos daquela área). Cargo vazio continua valendo como qualquer cargo da área. Quando preenchido, a Decisão de Alocação considera elegíveis só as pessoas desse cargo.', paginas:['portfolioedit','alocacao'], data:'2026-11-10', tag:'Novo'},
+  {icone:'⏳', bg:'#ecfeff', cor:'#0891b2', titulo:'Comparativo de Horas: carregar só quando você pedir', descricao:'A página abre sem buscar dados. Escolha período, agrupamento e filtros e clique em Carregar comparativo. Depois de carregado, mudar filtros atualiza na hora; para outro período, use Atualizar dados.', paginas:['comparativohoras'], data:'2026-11-10', tag:'Melhoria'},
+  {icone:'🎛️', bg:'#eff6ff', cor:'#2563eb', titulo:'Comparativo de Horas: filtros em cascata e nome clicável', descricao:'Os filtros foram reordenados (Atalhos, período, agrupamento; depois Head, Gestor, Pessoas, Área, Cargo, Senioridade, Cliente e Projeto) e agora funcionam em cascata: ao escolher um Head, a lista de Pessoas e os demais filtros mostram só quem faz parte dele. Clique no nome de uma pessoa (ranking, tabelas, mapa de calor, legenda ou chips) para abrir o Desempenho por Pessoa já com o mesmo período; o botão Voltar traz o Comparativo como estava.', paginas:['comparativohoras','pessoa'], data:'2026-11-10', tag:'Melhoria'},
+  {icone:'🗓️', bg:'#ecfeff', cor:'#0891b2', titulo:'Datas e horários no mesmo padrão', descricao:'Todas as datas aparecem como dd/mm/aaaa e as datas com horário como dd/mm/aaaa hh:mm (24 h, sem segundos). Os campos de data aceitam digitar com máscara ou escolher no calendário e recusam datas que não existem, como 31/02/2026. O “hoje” agora segue o horário de Brasília, e o filtro de data final passa a incluir o dia inteiro.', paginas:['portfolioedit','calendario','feriados','avisos','logalteracoes','comparativohoras'], data:'2026-11-10', tag:'Melhoria'},
+  {icone:'🧩', bg:'#f5f3ff', cor:'#7c3aed', titulo:'Padrão único de campos em todo o sistema', descricao:'Selects, datas, buscas e textos agora têm o mesmo visual em todas as telas: 3 tamanhos (Filtro 34 px, Formulário 38 px e Tabela 30 px), mesmo raio, seta, foco e estados de erro. Avisos, Feriados, Status Report, Pessoas, Portfólio, Wiki e Comparativo foram ajustados. A Central de Comando mantém o tema próprio.', paginas:['comparativohoras','avisos','feriados','statusreport','pessoasadmin','portfolioedit'], data:'2026-11-10', tag:'Melhoria'},
   {icone:'📊', bg:'#eff6ff', cor:'#2563eb', titulo:'Nova página Comparativo de Horas', descricao:'Nova página no menu Gestão (Administrador e Head) para comparar e acompanhar as horas apontadas por pessoas e perfis em qualquer período: filtros por período, agrupamento (dia a ano), pessoas (até 10 com cores), cargo, senioridade, área, Head, gestor, cliente, projeto e tipo; 6 indicadores e 7 gráficos (evolução, ranking, perfis, distribuição, participação, comparação entre períodos equivalentes e mapa de calor), com visão em tabela, ocultar séries, ampliar, Excel e PDF. O Head vê apenas as pessoas da própria equipe. Pessoas inativas ou fora das análises não entram.', paginas:['comparativohoras'], data:'2026-11-06', tag:'Nova página', tagCor:'nova'},
   {icone:'✅', bg:'#f0fdf4', cor:'#16a34a', titulo:'Confirmação “Salvo com sucesso!” em todo o sistema', descricao:'Todo cadastro, edição e configuração salvo agora mostra um modal único e centralizado com o aviso “Salvo com sucesso!” e o botão OK, só depois de o servidor confirmar. Falhas e campos incompletos continuam como aviso de erro, sem o modal de sucesso. Os avisos nativos do navegador foram substituídos pelo modal de erro padrão.', paginas:['portfolioedit','pessoasadmin'], data:'2026-11-06', tag:'Melhoria'},
   {icone:'👥', bg:'#eff6ff', cor:'#2563eb', titulo:'Pessoas e Perfis: Gestor e Head por lista, e tela mais compacta', descricao:'Gestor e Head passam a ser listas com busca, só com pessoas elegíveis pelo cargo (Head; ou Gestor, Gerente, Coordenador, Líder, Diretor, Head). Valores antigos fora da regra são mantidos e sinalizados. O formulário ficou mais compacto, com 4 colunas no desktop, 2 no tablet e 1 no celular. Na Edição do Portfólio, “Requisitos de equipe” agora vem logo após o Cronograma.', paginas:['pessoasadmin','portfolioedit'], data:'2026-11-06', tag:'Melhoria'},
@@ -3188,14 +3420,14 @@ function novVisiveis_(){
 }
 function novReferenciaNova_(){
   if(NOV_VISTO_REF===null){
-    NOV_VISTO_REF=novVistoArmazenado_()||new Date(Date.now()-14*86400000).toISOString().slice(0,10);
+    NOV_VISTO_REF=novVistoArmazenado_()||dtIsoLocal_(new Date(Date.now()-14*86400000));
   }
   return NOV_VISTO_REF;
 }
 function atualizarBadgeNovidades_(){
   const tab=document.querySelector('.nav-tab[data-page="novidades"]'); if(!tab) return;
   let b=tab.querySelector('.nav-nov-badge');
-  const ref=novVistoArmazenado_()||new Date(Date.now()-14*86400000).toISOString().slice(0,10);
+  const ref=novVistoArmazenado_()||dtIsoLocal_(new Date(Date.now()-14*86400000));
   const qtd=(CURRENT_USER_EMAIL||EFFECTIVE_PERFIL)?novVisiveis_().filter(n=>n.data&&n.data>ref).length:0;
   if(!qtd){ if(b) b.remove(); return; }
   if(!b){ b=document.createElement('span'); b.className='nav-nov-badge'; tab.appendChild(b); }
@@ -3732,6 +3964,107 @@ function statusChipHtml(st){
 // com o % das horas estimadas já consumidas. Diferença negativa = represado
 // (equipe consumindo menos horas do que o cronograma sugeriria); positiva = ritmo
 // acelerado (pode indicar risco de estouro). Retorna null se faltar data ou estimativa.
+// ============================================================
+// DATAS — padrão único (v18.4): exibição dd/mm/aaaa e dd/mm/aaaa hh:mm (24 h, sem segundos, fuso America/Sao_Paulo).
+// Armazenamento/transporte seguem ISO técnico (aaaa-mm-dd / aaaa-mm-dd hh:mm) e NUNCA aparecem para o usuário.
+// ============================================================
+const TZ_PADRAO='America/Sao_Paulo';
+const _dtP2=n=>String(n).padStart(2,'0');
+const _dtFmtSP=new Intl.DateTimeFormat('en-CA',{timeZone:TZ_PADRAO,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+function _dtPartesSP(d){ const o={}; _dtFmtSP.formatToParts(d).forEach(x=>{o[x.type]=x.value}); return o; }
+function hojeISO_(){ const o=_dtPartesSP(new Date()); return o.year+'-'+o.month+'-'+o.day; }   // "hoje" no fuso de Brasília (não em UTC)
+function dtIsoLocal_(d){ return d.getFullYear()+'-'+_dtP2(d.getMonth()+1)+'-'+_dtP2(d.getDate()); } // Date criada localmente → aaaa-mm-dd
+function dtValida_(y,mo,d,h,mi){
+  if(mo<1||mo>12||d<1||y<1900||y>2200) return false;
+  const dim=[31,((y%4===0&&y%100!==0)||y%400===0)?29:28,31,30,31,30,31,31,30,31,30,31][mo-1];
+  if(d>dim) return false;
+  return !(h!==null&&(h<0||h>23||mi<0||mi>59));
+}
+// Qualquer representação (Date, ISO, dd/mm/aaaa [hh:mm[:ss]]) → {y,m,d,h,mi,temHora} ou null. Texto americano e ano de 2 dígitos → null.
+function parseDataFlex_(v){
+  if(v===null||v===undefined||v==='') return null;
+  if(v instanceof Date){ if(isNaN(v.getTime())) return null; const o=_dtPartesSP(v); const h=+o.hour,mi=+o.minute; return {y:+o.year,m:+o.month,d:+o.day,h,mi,temHora:!(h===0&&mi===0)}; }
+  const t=String(v).trim();
+  let m=t.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::\d{2}(?:\.\d+)?)?(Z|[+-]\d{2}:?\d{2})?)?$/);
+  if(m){
+    const h=m[4]!==undefined?+m[4]:null, mi=m[5]!==undefined?+m[5]:null;
+    if(m[6]&&h!==null){ const dd=new Date(t.replace(' ','T')); return isNaN(dd.getTime())?null:parseDataFlex_(dd); }
+    if(!dtValida_(+m[1],+m[2],+m[3],h,mi)) return null;
+    return {y:+m[1],m:+m[2],d:+m[3],h:h===null?0:h,mi:mi===null?0:mi,temHora:h!==null};
+  }
+  m=t.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:[ T](\d{2}):(\d{2})(?::\d{2})?)?$/);
+  if(m){
+    const h=m[4]!==undefined?+m[4]:null, mi=m[5]!==undefined?+m[5]:null;
+    if(!dtValida_(+m[3],+m[2],+m[1],h,mi)) return null;
+    return {y:+m[3],m:+m[2],d:+m[1],h:h===null?0:h,mi:mi===null?0:mi,temHora:h!==null};
+  }
+  return null;
+}
+function fmtDataBR(v){ const p=parseDataFlex_(v); return p?_dtP2(p.d)+'/'+_dtP2(p.m)+'/'+p.y:''; }
+function fmtDataHoraBR(v){ const p=parseDataFlex_(v); if(!p) return ''; const dia=_dtP2(p.d)+'/'+_dtP2(p.m)+'/'+p.y; return p.temHora?dia+' '+_dtP2(p.h)+':'+_dtP2(p.mi):dia; }
+// Exibição tolerante: formata se for data; senão devolve o texto como veio ('' → '—').
+function dataTxt_(v,comHora){ if(v===null||v===undefined||v==='') return '—'; const r=comHora?fmtDataHoraBR(v):fmtDataBR(v); return r||String(v); }
+function dataIsoDe_(v){ const p=parseDataFlex_(v); return p?p.y+'-'+_dtP2(p.m)+'-'+_dtP2(p.d):''; }
+function dataHoraIsoDe_(v){ const p=parseDataFlex_(v); return p?p.y+'-'+_dtP2(p.m)+'-'+_dtP2(p.d)+(p.temHora?' '+_dtP2(p.h)+':'+_dtP2(p.mi):''):''; }
+// Validação do que o usuário digitou: {ok, vazio, iso, msg}
+function validarDataBR_(txt,comHora){
+  const t=String(txt||'').trim(); if(!t) return {ok:true,vazio:true,iso:''};
+  const re=comHora?/^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})$/:/^(\d{2})\/(\d{2})\/(\d{4})$/;
+  const m=t.match(re);
+  if(!m) return {ok:false,msg:comHora?'Informe data e hora: dd/mm/aaaa hh:mm (24 h).':'Data inválida. Use dd/mm/aaaa (ex.: 10/11/2026).'};
+  const d=+m[1],mo=+m[2],y=+m[3],h=comHora?+m[4]:null,mi=comHora?+m[5]:null;
+  if(mo<1||mo>12) return {ok:false,msg:'Data inválida. Use dd/mm/aaaa — o mês deve ser de 01 a 12.'};
+  if(!dtValida_(y,mo,d,null,null)) return {ok:false,msg:'Essa data não existe ('+t.slice(0,10)+').'};
+  if(comHora&&!dtValida_(y,mo,d,h,mi)) return {ok:false,msg:'Horário inválido (00:00 a 23:59).'};
+  return {ok:true,iso:y+'-'+_dtP2(mo)+'-'+_dtP2(d)+(comHora?'T'+_dtP2(h)+':'+_dtP2(mi):'')};
+}
+function dtMascara_(v,comHora){
+  v=String(v).replace(/\D/g,'').slice(0,comHora?12:8); let o=v.slice(0,2);
+  if(v.length>2) o+='/'+v.slice(2,4); if(v.length>4) o+='/'+v.slice(4,8);
+  if(comHora){ if(v.length>8) o+=' '+v.slice(8,10); if(v.length>10) o+=':'+v.slice(10,12); }
+  return o;
+}
+// ---- Campo de data padrão: troca o <input type="date"|"datetime-local"> nativo por texto com máscara + calendário nativo ----
+// O input nativo continua no DOM (oculto) como DONO do valor ISO: todo código existente que lê/grava .value segue funcionando.
+(function(){
+  const protoV=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value');
+  function paraTexto(el,iso){ if(!iso) return ''; const com=el.type==='datetime-local'; return com?fmtDataHoraBR(iso.replace('T',' ')):fmtDataBR(iso); }
+  function melhorar(el){
+    if(el.dataset.dtOk||el.closest('.dt-wrap')) return; el.dataset.dtOk='1';
+    const com=el.type==='datetime-local';
+    const w=document.createElement('span'); w.className='dt-wrap';
+    ['width','minWidth','maxWidth','flex','margin','marginTop','marginBottom','marginLeft','marginRight'].forEach(k=>{ if(el.style[k]) w.style[k]=el.style[k]; });
+    const t=document.createElement('input'); t.type='text'; t.className=(el.className?el.className+' ':'')+'dt-txt'; t.inputMode='numeric'; t.autocomplete='off';
+    t.placeholder=com?'dd/mm/aaaa hh:mm':'dd/mm/aaaa'; t.maxLength=com?16:10; t.disabled=el.disabled; if(el.title) t.title=el.title;
+    if(el.getAttribute('aria-label')) t.setAttribute('aria-label',el.getAttribute('aria-label'));
+    const b=document.createElement('button'); b.type='button'; b.className='dt-cal'; b.tabIndex=-1; b.title='Abrir calendário'; b.setAttribute('aria-label','Abrir calendário'); b.textContent='📅';
+    const msg=document.createElement('span'); msg.className='dt-msg'; msg.setAttribute('role','alert');
+    el.parentNode.insertBefore(w,el); w.appendChild(el); w.appendChild(t); w.appendChild(b); w.appendChild(msg);
+    el.classList.add('dt-native'); el.tabIndex=-1; el.setAttribute('aria-hidden','true');
+    const sync=()=>{ t.value=paraTexto(el,protoV.get.call(el)); t.classList.remove('err'); msg.textContent=''; };
+    Object.defineProperty(el,'value',{configurable:true,get(){return protoV.get.call(el)},set(v){protoV.set.call(el,v); sync();}});
+    el.focus=()=>t.focus();
+    let emitindo=false; const emite=()=>{ emitindo=true; try{ el.dispatchEvent(new Event('input',{bubbles:true})); el.dispatchEvent(new Event('change',{bubbles:true})); }finally{ emitindo=false; } };
+    t.addEventListener('input',()=>{ t.value=dtMascara_(t.value,com); t.classList.remove('err'); msg.textContent=''; });
+    const conf=()=>{
+      const r=validarDataBR_(t.value,com);
+      if(!r.ok){ t.classList.add('err'); msg.textContent=r.msg; if(protoV.get.call(el)!==''){ protoV.set.call(el,''); emite(); } return; }
+      const novo=r.iso||''; if(novo&&el.min&&novo.slice(0,10)<el.min.slice(0,10)){ t.classList.add('err'); msg.textContent='Data anterior ao mínimo permitido ('+fmtDataBR(el.min)+').'; return; }
+      if(novo&&el.max&&novo.slice(0,10)>el.max.slice(0,10)){ t.classList.add('err'); msg.textContent='Data posterior ao máximo permitido ('+fmtDataBR(el.max)+').'; return; }
+      if(protoV.get.call(el)!==novo){ protoV.set.call(el,novo); emite(); }
+    };
+    t.addEventListener('blur',conf); t.addEventListener('keydown',e=>{ if(e.key==='Enter') conf(); });
+    b.addEventListener('click',()=>{ if(t.disabled) return; try{ el.showPicker(); }catch(_e){ el.focus=HTMLElement.prototype.focus; try{el.click();}catch(__e){} } });
+    el.addEventListener('change',()=>{ if(!emitindo&&document.activeElement!==t) sync(); });
+    new MutationObserver(()=>{ t.disabled=el.disabled; t.required=el.required; w.style.display=(el.style.display==='none'||el.hidden)?'none':''; })
+      .observe(el,{attributes:true,attributeFilter:['disabled','style','hidden','required']});
+    sync();
+  }
+  function varrer(raiz){ (raiz.querySelectorAll?raiz.querySelectorAll('input[type=date],input[type=datetime-local]'):[]).forEach(melhorar); if(raiz.matches&&raiz.matches('input[type=date],input[type=datetime-local]')) melhorar(raiz); }
+  window.dtVarrerCampos_=varrer;
+  const iniciar=()=>{ varrer(document); new MutationObserver(ms=>{ ms.forEach(m=>m.addedNodes.forEach(n=>{ if(n.nodeType===1) varrer(n); })); }).observe(document.body,{childList:true,subtree:true}); };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',iniciar); else iniciar();
+})();
 function parseBrDateLocal_(br){
   if(!br) return null;
   const p=br.split('/'); if(p.length!==3) return null;
@@ -3985,7 +4318,7 @@ function calcularPrazoPctProjeto(p, dataRef, campoReferencia){
 // "total" de tarefas de uma semana atrás não é o mesmo de hoje).
 function calcularTarefasPctProjeto(pjName, dataRef){
   const ref=dataRef||new Date();
-  const refIso=ref.toISOString().slice(0,10);
+  const refIso=dtIsoLocal_(ref);
   const validas=filtrarTarefasValidas(PROJ_TASKS[pjName]||[]).filter(t=>t.dt_cadastro_iso<=refIso);
   if(validas.length===0) return {pct:null, total:0, concluidas:0, semDados:true};
   const concluidas=validas.filter(t=>{
@@ -4057,7 +4390,7 @@ function calcularAndamentoProjeto(p){
   const tarefasInfo=calcularTarefasPctProjeto(pjName);
   const gap=(!prazoInfo.semDados && !tarefasInfo.semDados) ? (tarefasInfo.pct-prazoInfo.pct) : null;
   const tasksValidas=filtrarTarefasValidas(PROJ_TASKS[pjName]||[]);
-  const hojeISO=new Date().toISOString().slice(0,10);
+  const hojeISO=hojeISO_();
   const atrasadas=tasksValidas.filter(t=>t.dt_venc_iso && t.dt_venc_iso<hojeISO && !t.dt_conc && (t.status||'').toLowerCase()!=='done' && (t.status||'').toLowerCase()!=='blocked');
   const bloqueadas=tasksValidas.filter(t=>(t.status||'').toLowerCase().includes('block'));
   const ritmo=calcularRitmoNecessario(prazoInfo, tarefasInfo);
@@ -4170,7 +4503,7 @@ function renderAndamento(){
   if(fStatus) linhas=linhas.filter(a=>a.p.st===fStatus);
   if(fRisco) linhas=linhas.filter(a=>a.risco.nivel===fRisco);
   if(fDe){
-    linhas=linhas.filter(a=>{ const di=parseBrDateLocal_(a.p.di); return di && di.toISOString().slice(0,10)>=fDe; });
+    linhas=linhas.filter(a=>{ const di=parseBrDateLocal_(a.p.di); return di && dtIsoLocal_(di)>=fDe; });
   }
 
   // KPIs — sempre sobre o conjunto FILTRADO (exceto o próprio filtro de
@@ -4542,6 +4875,7 @@ function mostrarToastCarregandoAinda(){
 }
 let PAGE_NAV_GOING_BACK = false;
 function goToPage(name){
+  let initPend; // v18.2: promessa da inicialização (páginas com carga sob demanda são assíncronas)
   // GUARDA DE ROTA: mesmo que alguém chame goToPage() diretamente pelo console do
   // navegador (contornando o menu), a página só é exibida se o perfil ativo tiver
   // permissão — o menu escondido é só uma conveniência de UX, não é a proteção real
@@ -4603,7 +4937,7 @@ function goToPage(name){
     // o conteúdo permanece o que foi renderizado da última vez que os dados
     // globais mudaram).
     if(!PAGES_INITIALIZED.has(name) && PAGE_INIT_MAP[name]){
-      PAGE_INIT_MAP[name]();
+      initPend=PAGE_INIT_MAP[name]();
       PAGES_INITIALIZED.add(name);
     }
   }
@@ -4613,6 +4947,7 @@ function goToPage(name){
   const globalBackStrip=document.getElementById('voltar-strip');
   if(globalBackStrip) globalBackStrip.classList.toggle('hidden', name==='projdetail');
   window.scrollTo({top:0,behavior:'smooth'});
+  return (initPend&&typeof initPend.then==='function')?initPend:undefined;
 }
 // Equivalente a history.back(): desempilha a última página visitada e navega até
 // ela. Se não houver histórico (pilha vazia), cai no fallback: primeira página
@@ -4768,7 +5103,7 @@ function initPeriodSeg(segId,deId,ateId,cb){
   document.querySelectorAll('#'+segId+' .seg-btn').forEach(btn=>{
     btn.onclick=()=>{
       document.querySelectorAll('#'+segId+' .seg-btn').forEach(x=>x.classList.toggle('active',x===btn));
-      const now=new Date();const de=document.getElementById(deId);const ate=document.getElementById(ateId);const f=d=>d.toISOString().slice(0,10);
+      const now=new Date();const de=document.getElementById(deId);const ate=document.getElementById(ateId);const f=d=>dtIsoLocal_(d);
       switch(btn.dataset.val){
         case'todos':de.value='';ate.value='';break;
         case'hoje':de.value=f(now);ate.value=f(now);break;
@@ -4782,10 +5117,10 @@ function initPeriodSeg(segId,deId,ateId,cb){
   document.getElementById(ateId).onchange=function(){document.querySelectorAll('#'+segId+' .seg-btn').forEach(x=>x.classList.remove('active'));cb();};
 }
 function getDateRange(deId,ateId){const d=document.getElementById(deId).value;const a=document.getElementById(ateId).value;return[d||'',a||''];}
-function inRange(dateIso,de,ate){if(!dateIso)return false;if(de&&dateIso<de)return false;if(ate&&dateIso>ate)return false;return true;}
+function inRange(dateIso,de,ate){if(!dateIso)return false;const d=String(dateIso).slice(0,10);/* v18.4: compara só o DIA — data final inclui registros com horário */ if(de&&d<de)return false;if(ate&&d>ate)return false;return true;}
 function sumByDateRange(dayDict,de,ate){let total=0;for(const[d,v] of Object.entries(dayDict)){if(d==='sem-data')continue;if(inRange(d,de,ate))total+=v;}return total;}
 function bucketByMonth(dayDict,de,ate){const buckets={};for(const[d,v] of Object.entries(dayDict)){if(d==='sem-data')continue;if(!inRange(d,de,ate))continue;const m=d.slice(0,7);buckets[m]=(buckets[m]||0)+v;}return buckets;}
-function getMondaySunday(date){const d=new Date(date);const day=d.getDay();const diffToMon=day===0?-6:1-day;const mon=new Date(d);mon.setDate(d.getDate()+diffToMon);const sun=new Date(mon);sun.setDate(mon.getDate()+6);const f=x=>x.toISOString().slice(0,10);return[f(mon),f(sun)];}
+function getMondaySunday(date){const d=new Date(date);const day=d.getDay();const diffToMon=day===0?-6:1-day;const mon=new Date(d);mon.setDate(d.getDate()+diffToMon);const sun=new Date(mon);sun.setDate(mon.getDate()+6);const f=x=>dtIsoLocal_(x);return[f(mon),f(sun)];}
 
 // Agrupa um dicionário data->valor em buckets por SEMANA (segunda a domingo),
 // somando os valores de cada dia dentro da mesma semana. `getValor` extrai o
@@ -5096,7 +5431,7 @@ function iaCalcularAnalisePessoa_(pessoa, mapaComplexidade, mapaPrioridade, maxP
   const qtdEmAndamento=Object.entries(statusPessoa).filter(([s])=>{ const sl=s.toLowerCase(); return sl!=='done' && sl!=='blocked' && sl!=='cancelado' && sl!=='backlog'; }).reduce((s,[,v])=>s+v,0);
   // Atrasadas: cruza PROJ_TASKS dos projetos da pessoa, mesma regra do
   // Detalhamento do Projeto (Blocked/Done nunca contam como atrasada).
-  const hojeISO=new Date().toISOString().slice(0,10);
+  const hojeISO=hojeISO_();
   let qtdAtrasadas=0;
   projetos.forEach(proj=>{
     (PROJ_TASKS[proj.pj]||[]).forEach(t=>{
@@ -5298,8 +5633,8 @@ function daFechada_(t){ const s=daN_(t.status); return s==='done'||s==='cancelad
 // ---------- base por pessoa (independe do período) ----------
 function daBase_(p){
   const ek=(p.email||'').toLowerCase();
-  const hojeISO=new Date().toISOString().slice(0,10);
-  const lim7=new Date(Date.now()+7*86400000).toISOString().slice(0,10);
+  const hojeISO=hojeISO_();
+  const lim7=dtIsoLocal_(new Date(Date.now()+7*86400000));
   const projs=alocProjetosDaPessoa(p).filter(daProjAtivo_);
   const rows=[]; let nTot=0,sTot=0,late=0,blocked=0,near=0,pond=0; const vencTodas=[],vencNB=[];
   const vistos=new Set();
@@ -5403,7 +5738,7 @@ function daProjetos_(H){
     if(m.dias!==null&&m.dias<0) l=Math.min(3,l+1);
     m.lvl=m.insuf?-1:l;
     m.atraso=m.ratio*m.diasEf;  // dias de atraso estimados se nada mudar
-    m.late=(PROJ_TASKS[m.proj.pj]||[]).filter(t=>!daFechada_(t)&&daN_(t.status)!=='blocked'&&t.dt_venc_iso&&t.dt_venc_iso<new Date().toISOString().slice(0,10)).length;
+    m.late=(PROJ_TASKS[m.proj.pj]||[]).filter(t=>!daFechada_(t)&&daN_(t.status)!=='blocked'&&t.dt_venc_iso&&t.dt_venc_iso<hojeISO_()).length;
   });
   DA.memoPorH[k]=mapa; return mapa;
 }
@@ -5598,11 +5933,15 @@ function daReqLista_(proj){
   if(proj&&(proj.area_ex||proj.nv_min)) return [{id:'legado',area:proj.area_ex||'',nv:proj.nv_min||'',qtd:1,conf:false,origem:'Migrado',virtual:true}]; // backend anterior à v17.6
   return [];
 }
-const daReqRotulo_=r=>(r.area||'área a definir')+(r.nv?' · '+r.nv+'+':' · qualquer senioridade');
+const daReqRotulo_=r=>(r.area||'área a definir')+(r.cargo?' · '+r.cargo:'')+(r.nv?' · '+r.nv+'+':' · qualquer senioridade');
 // Elegibilidade de uma pessoa a um requisito → {r:'sim'|'nao'|'indet', m, t:'aus'|'int'}. aus = ausência real; int = falha de interpretação.
 function daElegivel_(p,rq,mi){
   if(!rq.area) return {r:'indet',m:'área exigida não definida',t:'aus'};
   if(daN_(p.area)!==daN_(rq.area)) return {r:'nao',m:'área diferente ('+(p.area||'sem área')+')'};
+  if(rq.cargo){ // v18.3: cargo exigido (opcional) restringe a elegibilidade; vazio = qualquer cargo da área
+    if(!String(p.cargo||'').trim()) return {r:'indet',m:'cargo vazio no cadastro da pessoa',t:'aus'};
+    if(daN_(p.cargo)!==daN_(rq.cargo)) return {r:'nao',m:'cargo diferente ('+p.cargo+')'};
+  }
   if(!rq.nv) return {r:'sim'};
   mi=mi||daNvInfo_({nv:rq.nv});
   if(mi.est!=='ok') return {r:'indet',m:'senioridade mínima “'+rq.nv+'” não interpretada',t:'int'};
@@ -5669,9 +6008,9 @@ function daReqCardHtml_(PL,H){
   const L=PL.filter(p=>p.ra.length);
   let h='<div class="card"><div class="card-title"><h3>Requisitos de equipe por projeto</h3><span class="sub">elegível ≠ disponível · disponível = livre útil ≥ '+DA_PARAM.horasVaga+' h/sem em '+H+' dias</span></div>';
   if(!L.length) return h+'<div class="da-why">Nenhum projeto ativo tem requisitos de equipe cadastrados. Cadastre em <b>Edição do Portfólio</b> (bloco Requisitos de equipe) para ver cobertura e déficit por área e senioridade.</div></div>';
-  h+='<div class="table-wrap"><table class="da-t"><thead><tr><th>Projeto</th><th>Área exigida</th><th>Senioridade mín.</th><th>Necessário</th><th>Já alocados</th><th>Elegíveis</th><th>Disponíveis</th><th>Déficit</th><th>Risco</th></tr></thead><tbody>';
+  h+='<div class="table-wrap"><table class="da-t"><thead><tr><th>Projeto</th><th>Área exigida</th><th>Cargo</th><th>Senioridade mín.</th><th>Necessário</th><th>Já alocados</th><th>Elegíveis</th><th>Disponíveis</th><th>Déficit</th><th>Risco</th></tr></thead><tbody>';
   L.forEach(p=>p.ra.forEach(r=>{
-    h+='<tr><td>'+projetoLinkHtml(p.proj.pj)+'</td><td>'+daE_(r.area||'—')+'</td><td>'+(r.nv?daE_(r.nv)+'+':'qualquer')+(r.rq.origem==='Migrado'&&!r.rq.conf?' <span class="da-pill" title="Veio das colunas antigas do Portfólio; confirme a quantidade na Edição do Portfólio">qtd. a confirmar</span>':'')+'</td>'
+    h+='<tr><td>'+projetoLinkHtml(p.proj.pj)+'</td><td>'+daE_(r.area||'—')+'</td><td>'+(r.rq.cargo?daE_(r.rq.cargo):'<span class="da-note">qualquer</span>')+'</td><td>'+(r.nv?daE_(r.nv)+'+':'qualquer')+(r.rq.origem==='Migrado'&&!r.rq.conf?' <span class="da-pill" title="Veio das colunas antigas do Portfólio; confirme a quantidade na Edição do Portfólio">qtd. a confirmar</span>':'')+'</td>'
      +(r.ind?'<td>'+r.qtd+'</td><td>—</td><td>—</td><td>—</td><td>—</td><td>'+daReqRiscoChip_(-1)+'</td>'
            :'<td>'+r.qtd+'</td><td>'+r.aloc.length+'</td><td>'+r.el.length+(r.indet.length?' <span class="da-note">(+'+r.indet.length+' não avaliável)</span>':'')+'</td><td>'+r.usa.length+(r.disp.length>r.usa.length?' <span class="da-note">('+r.disp.length+' livres)</span>':'')+'</td><td><b class="'+(r.def?'da-neg':'da-pos')+'">'+r.def+'</b></td><td>'+daReqRiscoChip_(r.risco)+'</td>')
      +'</tr><tr><td colspan="9" style="padding:0 8px 6px"><details><summary class="da-note" style="cursor:pointer">Por quê?</summary>'+daReqDetHtml_(p,r,H)+'</details></td></tr>';
@@ -5681,7 +6020,7 @@ function daReqCardHtml_(PL,H){
 
 function daVisao_(H){
   const k='vis'+H; if(DA.memoPorH[k]) return DA.memoPorH[k];
-  const hoje=new Date().toISOString().slice(0,10);
+  const hoje=hojeISO_();
   const todos=daCalcTodos_(H), mp=daProjetos_(H), folga=DA_PARAM.folgaMinH;
   const refs=todos.map(x=>({x,r:daReforco_(x,H)}));
   // v17.6 — requisitos de equipe: projetos mais críticos/urgentes escolhem primeiro; cada pessoa disponível cobre 1 vaga só
@@ -6306,8 +6645,8 @@ function renderListaPortfolio(termoBusca){
   const stPort=SORT_STATE['portfolio']||{col:null,dir:0};
   const filtradosOrd=stPort.col?ordenarLinhas_(filtrados,colunasPort.find(c=>c.key===stPort.col),stPort.dir):filtrados;
   let h='<div class="card"><div class="card-title"><h3>Projetos ('+PE_LISTA_CACHE.length+')</h3>'+
-    '<span style="display:flex;gap:8px;align-items:center"><select id="pe-f-sit" title="Filtrar por vínculo com o Zoho" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:12.5px"><option value="">Vínculo Zoho: todos</option>'+['Sincronizado','Sem correspondência','Ambíguo','Erro'].map(x=>'<option'+(PE_FILTRO_SIT===x?' selected':'')+'>'+x+'</option>').join('')+'<option value="__aguard"'+(PE_FILTRO_SIT==='__aguard'?' selected':'')+'>Aguardando</option></select><button type="button" class="sr-btn sr-btn-primary" id="pe-novo-btn" style="padding:7px 16px">+ Novo Projeto</button></span></div>'+
-    '<input type="text" id="pe-busca" placeholder="Buscar por nome, cliente, status ou GP…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13.5px;margin-bottom:14px;box-sizing:border-box">'+
+    '<span style="display:flex;gap:8px;align-items:center"><select id="pe-f-sit" class="ctl-filter" title="Filtrar por vínculo com o Zoho"><option value="">Vínculo Zoho: todos</option>'+['Sincronizado','Sem correspondência','Ambíguo','Erro'].map(x=>'<option'+(PE_FILTRO_SIT===x?' selected':'')+'>'+x+'</option>').join('')+'<option value="__aguard"'+(PE_FILTRO_SIT==='__aguard'?' selected':'')+'>Aguardando</option></select><button type="button" class="sr-btn sr-btn-primary" id="pe-novo-btn" style="padding:7px 16px">+ Novo Projeto</button></span></div>'+
+    '<input type="text" id="pe-busca" placeholder="Buscar por nome, cliente, status ou GP…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" class="ctl-form" style="width:100%;margin-bottom:14px">'+
     '<div class="table-wrap" style="max-height:560px"><table>'+theadOrdenavel_('portfolio',colunasPort)+'<tbody>';
   if(filtradosOrd.length===0){
     h+='<tr><td colspan="7" style="text-align:center;color:var(--text-faint);padding:30px">Nenhum projeto encontrado'+(termo?' com esse termo de busca':'')+'.</td></tr>';
@@ -6798,14 +7137,14 @@ function zsDesenharPainel_(){
     kpiHtml({label:'Só no Zoho',value:N(u&&u.so_zoho),foot:'não criados automaticamente'})+
     kpiHtml({label:'Registros em Projetos',value:p.origemRegistros,foot:estado})+'</div>';
   h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Controle</h3><span class="sub">gatilho horário · '+(p.gatilhoAtivo===null?'não foi possível ler os gatilhos':(p.gatilhoAtivo?'ativo':'desativado'))+'</span></div>';
-  h+='<div style="font-size:13px;margin-bottom:12px">Última execução: <b>'+(u?feEsc_(u.data_hora)+' · '+feEsc_(u.modo)+' · '+feEsc_(u.resultado):'nenhuma')+'</b>'+(u&&u.mensagem?'<div style="color:var(--text-muted);font-size:12.5px;margin-top:3px">'+feEsc_(u.mensagem)+'</div>':'')+'</div>';
+  h+='<div style="font-size:13px;margin-bottom:12px">Última execução: <b>'+(u?feEsc_(dataTxt_(u.data_hora,true))+' · '+feEsc_(u.modo)+' · '+feEsc_(u.resultado):'nenhuma')+'</b>'+(u&&u.mensagem?'<div style="color:var(--text-muted);font-size:12.5px;margin-top:3px">'+feEsc_(u.mensagem)+'</div>':'')+'</div>';
   h+='<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="sr-btn" id="zs-b-sim">Simular</button><button type="button" class="sr-btn sr-btn-primary" id="zs-b-lib"'+((p.liberada||!p.simulou)?' disabled':'')+'>'+(p.liberada?'Gravação liberada ✓':'Liberar gravação')+'</button><button type="button" class="sr-btn" id="zs-b-now"'+(p.liberada?'':' disabled title="Disponível após liberar a gravação"')+'>Sincronizar agora</button><button type="button" class="sr-btn" id="zs-b-gat">'+(p.gatilhoAtivo?'Desativar gatilho':'Ativar gatilho horário')+'</button></div><div id="zs-b-msg" style="margin-top:10px;font-size:12.5px"></div></div>';
   h+='<div id="zs-sim-box"></div>';
   h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Pendências ('+filt.length+')</h3><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'+(nSoZ?'<button type="button" class="filter-clear zs-novo" id="zs-b-newall"'+(p.liberada?'':' disabled title="Libere a gravação primeiro"')+'>＋ Criar todos os “Só no Zoho” ('+nSoZ+')…</button>':'')+'<select id="zs-f-pend" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)"><option value="">Todos os tipos</option>'+tipos.map(t=>'<option'+(t===ZS_FILTRO_PEND?' selected':'')+'>'+feEsc_(t)+'</option>').join('')+'</select></span></div>';
   h+='<div class="table-wrap" style="max-height:420px"><table><thead><tr><th>Tipo</th><th>Cliente</th><th>Projeto</th><th>Detalhe / sugestão</th><th></th></tr></thead><tbody>'+
     (filt.length?filt.slice(0,400).map((x,i)=>{ const acao=(x.tipo==='Só no Portfólio'||x.tipo==='Duplicidade'&&x.linha_portifolio)?'<button type="button" class="filter-clear" data-zs-ass="linha:'+feEsc_(x.linha_portifolio)+'" data-zs-p="'+feEsc_(x.projeto)+'" data-zs-c="'+feEsc_(x.cliente)+'">Associar…</button>':(x.tipo==='Só no Zoho'&&x.id_zoho?'<button type="button" class="filter-clear" data-zs-ass="id:'+feEsc_(x.id_zoho)+'">Associar…</button> <button type="button" class="filter-clear zs-novo" data-zs-new="'+feEsc_(x.id_zoho)+'"'+(p.liberada?'':' disabled title="Libere a gravação primeiro"')+'>＋ Salvar como novo no Portfólio</button>':''); return '<tr><td><span class="zs-tag zs-wait">'+feEsc_(x.tipo)+'</span></td><td>'+feEsc_(x.cliente)+'</td><td>'+feEsc_(x.projeto)+'</td><td style="font-size:12.5px">'+feEsc_(x.detalhe)+(x.sugestao?'<div style="color:var(--text-muted)">Sugestão: '+feEsc_(x.sugestao)+'</div>':'')+'</td><td>'+acao+'</td></tr>'; }).join(''):'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text-faint)">Nenhuma pendência.</td></tr>')+'</tbody></table></div>'+(filt.length>400?'<div style="font-size:12px;color:var(--text-muted);margin-top:6px">Exibindo as 400 primeiras.</div>':'')+'</div>';
   h+='<div class="card"><div class="card-title"><h3>Histórico de execuções</h3><span class="sub">últimas '+(p.historico||[]).length+'</span></div><div class="table-wrap" style="max-height:300px"><table><thead><tr><th>Data</th><th>Origem</th><th>Modo</th><th>Resultado</th><th>Vinc.</th><th>Campos</th><th>Amb.</th><th>Mensagem</th></tr></thead><tbody>'+
-    ((p.historico||[]).map(x=>'<tr><td>'+feEsc_(x.data_hora)+'</td><td>'+feEsc_(x.origem)+'</td><td>'+feEsc_(x.modo)+'</td><td>'+feEsc_(x.resultado)+'</td><td>'+feEsc_(x.vinculados)+'</td><td>'+feEsc_(x.campos_gravados)+'</td><td>'+feEsc_(x.ambiguos)+'</td><td style="font-size:12px">'+feEsc_(x.mensagem)+'</td></tr>').join('')||'<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-faint)">Sem execuções.</td></tr>')+'</tbody></table></div></div>';
+    ((p.historico||[]).map(x=>'<tr><td>'+feEsc_(dataTxt_(x.data_hora,true))+'</td><td>'+feEsc_(x.origem)+'</td><td>'+feEsc_(x.modo)+'</td><td>'+feEsc_(x.resultado)+'</td><td>'+feEsc_(x.vinculados)+'</td><td>'+feEsc_(x.campos_gravados)+'</td><td>'+feEsc_(x.ambiguos)+'</td><td style="font-size:12px">'+feEsc_(x.mensagem)+'</td></tr>').join('')||'<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-faint)">Sem execuções.</td></tr>')+'</tbody></table></div></div>';
   v.innerHTML=h;
   if(ZS_SIM) zsDesenharSim_();
   const msg=(t,ok)=>{ const m=document.getElementById('zs-b-msg'); m.style.color=ok?'var(--st-feito)':'var(--st-bloqueado)'; m.textContent=t; };
@@ -6843,11 +7182,16 @@ function peReqNiveis_(){
   return [...m.values()].sort((a,b)=>ord(a)-ord(b)||a.localeCompare(b,'pt-BR'));
 }
 function peReqAreas_(){ return [...new Set((D.p||[]).map(p=>String(p.area||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')); }
+// v18.3 — cargos por área: fonte oficial = Pessoas_Area (pares Área+Cargo). Lista = cargos com pelo menos 1 pessoa ATIVA na área.
+function peReqCargos_(area,todos){
+  const a=daN_(area); if(!a) return [];
+  return [...new Set((D.p||[]).filter(p=>daN_(p.area)===a&&(todos||pessoaEstaAtiva(p))).map(p=>String(p.cargo||'').trim()).filter(Boolean))].sort((x,y)=>x.localeCompare(y,'pt-BR'));
+}
 function peReqCardHtml_(){
   const L=PE_ULTIMA_LEITURA; if(!L) return '';
   const pj=(D.pj||[]).find(p=>p.pj===L.projeto&&String(p.cl||'')===String(L.cliente||''))||(D.pj||[]).find(p=>p.pj===L.projeto)||null;
   PE_REQ={projeto:L.projeto,cliente:L.cliente||'',idpj:(pj&&pj.idpj)||'',pj,erros:{},
-    lista:(pj?daReqLista_(pj):[]).map(r=>({id:r.id,area:r.area||'',nv:r.nv||'',qtd:r.qtd,conf:!!r.conf,origem:r.origem||'Cadastro'}))};
+    lista:(pj?daReqLista_(pj):[]).map(r=>({id:r.id,area:r.area||'',cargo:r.cargo||'',nv:r.nv||'',qtd:r.qtd,conf:!!r.conf,origem:r.origem||'Cadastro'})),avisos:{}};
   return '<div class="card" id="pe-req-card" style="margin-bottom:16px"><div class="card-title"><h3>Requisitos de equipe</h3><span class="sub">usados na Decisão de Alocação · salvam separadamente do projeto</span></div><div id="pe-req-body"></div></div>';
 }
 function peReqDesenhar_(){
@@ -6855,29 +7199,58 @@ function peReqDesenhar_(){
   const areas=peReqAreas_(), niveis=peReqNiveis_();
   const opt=(arr,v,ph)=>'<option value="">'+ph+'</option>'+arr.concat(v&&!arr.includes(v)?[v]:[]).map(x=>'<option'+(x===v?' selected':'')+'>'+feEsc_(x)+'</option>').join('');
   const er=PE_REQ.erros||{};
-  let h='<div class="table-wrap"><table class="da-t"><thead><tr><th style="width:32%">Área exigida *</th><th style="width:26%">Senioridade mínima</th><th style="width:12%">Qtd. *</th><th>Origem</th><th></th></tr></thead><tbody>';
+  let h='<div class="table-wrap"><table class="da-t"><thead><tr><th style="width:21%">Área exigida *</th><th style="width:25%">Cargo</th><th style="width:17%">Senioridade mínima</th><th style="width:9%">Qtd. *</th><th>Origem</th><th></th></tr></thead><tbody>';
   h+=PE_REQ.lista.map((r,i)=>{ const e=er[i]||{}; const bad='border-color:#dc2626;background:#fef2f2';
     return '<tr data-rq="'+i+'"><td><select data-k="area" style="width:100%;'+(e.area?bad:'')+'">'+opt(areas,r.area,'— Selecione —')+'</select>'+(e.area?'<div style="color:#b91c1c;font-size:11.5px">'+feEsc_(e.area)+'</div>':'')+'</td>'
+     +'<td>'+peReqCargoHtml_(r,i,e)+'</td>'
      +'<td><select data-k="nv" style="width:100%;'+(e.nv?bad:'')+'">'+opt(niveis,r.nv,'Qualquer senioridade')+'</select>'+(e.nv?'<div style="color:#b91c1c;font-size:11.5px">'+feEsc_(e.nv)+'</div>':'')+'</td>'
      +'<td><input type="number" data-k="qtd" min="1" max="50" step="1" value="'+(r.qtd==null?'':r.qtd)+'" style="width:100%;'+(e.qtd?bad:'')+'">'+(e.qtd?'<div style="color:#b91c1c;font-size:11.5px">'+feEsc_(e.qtd)+'</div>':'')+'</td>'
      +'<td>'+(r.origem==='Migrado'&&!r.conf?'<span class="da-pill">Migrado</span> <span class="da-pill">qtd. a confirmar</span>':'<span class="da-pill">'+(r.origem==='Migrado'?'Migrado':'Cadastro')+'</span>')+'</td>'
      +'<td><button type="button" class="sr-btn" data-del="'+i+'" style="border-color:var(--st-bloqueado);color:var(--st-bloqueado)">Remover</button></td></tr>'; }).join('')
-    ||'<tr><td colspan="5" class="da-note">Nenhum requisito cadastrado.</td></tr>';
+    ||'<tr><td colspan="6" class="da-note">Nenhum requisito cadastrado.</td></tr>';
   h+='</tbody></table></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="sr-ativ-add" id="pe-req-add">+ Adicionar requisito</button><button type="button" class="sr-btn sr-btn-primary" id="pe-req-salvar">Salvar requisitos</button></div>'
-   +'<div class="da-note" style="margin-top:6px">* obrigatório. Área = áreas de Pessoas_Area; Senioridade vazia = qualquer; Quantidade = total de profissionais com esse perfil no projeto (inclui quem já está alocado), inteiro de 1 a 50. Não repita o mesmo par Área + Senioridade.'+(PE_REQ.idpj?'':' Este projeto ainda não tem ID oficial (sem tarefas); o vínculo usa Cliente + Projeto.')+'</div>';
+   +'<div class="da-note" style="margin-top:6px">* obrigatório. Área = áreas de Pessoas_Area; Cargo = cargos cadastrados e ativos nessa área (vazio = qualquer cargo da área); Senioridade vazia = qualquer; Quantidade = total de profissionais com esse perfil no projeto (inclui quem já está alocado), inteiro de 1 a 50. Não repita o mesmo trio Área + Cargo + Senioridade.'+(PE_REQ.idpj?'':' Este projeto ainda não tem ID oficial (sem tarefas); o vínculo usa Cliente + Projeto.')+'</div>';
   box.innerHTML=h;
   box.querySelectorAll('[data-k]').forEach(el=>el.onchange=()=>{ const i=+el.closest('tr').dataset.rq, k=el.dataset.k, r=PE_REQ.lista[i];
-    if(k==='qtd'){ r.qtd=el.value===''?null:Number(el.value); r.conf=true; } else if(k==='area') r.area=el.value; else r.nv=el.value;
+    if(k==='qtd'){ r.qtd=el.value===''?null:Number(el.value); r.conf=true; }
+    else if(k==='area'){ const ant=r.cargo; r.area=el.value; delete PE_REQ.avisos[i];
+      if(ant&&!peReqCargos_(r.area,true).some(c=>daN_(c)===daN_(ant))){ r.cargo=''; PE_REQ.avisos[i]='“'+ant+'” não pertence a '+(r.area||'esta área')+'. Escolha o cargo novamente.'; }
+      if(PE_REQ.erros[i]) delete PE_REQ.erros[i].cargo; if(PE_REQ.erros[i]) delete PE_REQ.erros[i].area; peReqDesenhar_(); return; }
+    else r.nv=el.value;
     if(PE_REQ.erros[i]) delete PE_REQ.erros[i][k]; });
-  box.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{ PE_REQ.lista.splice(+b.dataset.del,1); PE_REQ.erros={}; peReqDesenhar_(); });
+  peReqLigarCargo_(box);
+  box.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{ PE_REQ.lista.splice(+b.dataset.del,1); PE_REQ.erros={}; PE_REQ.avisos={}; peReqDesenhar_(); });
   document.getElementById('pe-req-add').onclick=()=>{ PE_REQ.lista.push({id:'',area:'',nv:'',qtd:1,conf:true,origem:'Cadastro'}); peReqDesenhar_(); };
   document.getElementById('pe-req-salvar').onclick=peReqSalvar_;
 }
+function peReqCargoHtml_(r,i,e){
+  const cs=peReqCargos_(r.area), sem=r.cargo&&!cs.some(c=>daN_(c)===daN_(r.cargo))&&peReqCargos_(r.area,true).some(c=>daN_(c)===daN_(r.cargo));
+  const av=(PE_REQ.avisos||{})[i];
+  const cl=av?' warn':(e.cargo?' bad':'');
+  let dica; if(!r.area) dica='<div class="pe-cb-h">Escolha a área primeiro</div>'; else if(av) dica='<div class="pe-cb-h w">'+feEsc_(av)+'</div>'; else if(e.cargo) dica='<div class="pe-cb-h e">'+feEsc_(e.cargo)+'</div>'; else if(sem) dica='<div class="pe-cb-h w">Cargo sem profissionais ativos no cadastro</div>'; else dica='<div class="pe-cb-h">'+cs.length+' cargo'+(cs.length!==1?'s':'')+' em '+feEsc_(r.area)+'</div>';
+  return '<div class="pe-cb'+cl+'" data-cbi="'+i+'"><button type="button" class="pe-cb-b"'+(r.area?'':' disabled')+' aria-haspopup="listbox"><span>'+feEsc_(r.cargo||(r.area?'Qualquer cargo da área':'— Escolha a área —'))+'</span></button><div class="pe-cb-p"><input type="search" placeholder="Pesquisar cargo…" aria-label="Pesquisar cargo" autocomplete="off"><div class="pe-cb-l" role="listbox"></div></div></div>'+dica;
+}
+function peReqLista_(c,q){
+  const i=+c.dataset.cbi, r=PE_REQ.lista[i], cs=peReqCargos_(r.area), nq=daN_(q||'');
+  const f=cs.filter(x=>!nq||daN_(x).includes(nq));
+  c.querySelector('.pe-cb-l').innerHTML='<div data-v="" class="'+(!r.cargo?'sel':'')+'" role="option">Qualquer cargo da área</div>'+(f.map(x=>'<div data-v="'+feEsc_(x)+'" class="'+(daN_(x)===daN_(r.cargo)?'sel':'')+'" role="option">'+feEsc_(x)+'</div>').join('')||'<div class="n">Nenhum cargo encontrado.</div>')+'<div class="n">'+cs.length+' cargo(s) ativo(s) na área</div>';
+}
+function peReqLigarCargo_(box){
+  box.querySelectorAll('.pe-cb').forEach(c=>{
+    const b=c.querySelector('.pe-cb-b'), inp=c.querySelector('input');
+    b.onclick=()=>{ document.querySelectorAll('.pe-cb.open').forEach(x=>{ if(x!==c) x.classList.remove('open'); }); c.classList.toggle('open'); if(c.classList.contains('open')){ peReqLista_(c,''); inp.value=''; inp.focus(); } };
+    inp.oninput=()=>peReqLista_(c,inp.value);
+    c.querySelector('.pe-cb-l').onclick=ev=>{ const o=ev.target.closest('[data-v]'); if(!o) return; const i=+c.dataset.cbi; PE_REQ.lista[i].cargo=o.dataset.v; delete PE_REQ.avisos[i]; if(PE_REQ.erros[i]) delete PE_REQ.erros[i].cargo; peReqDesenhar_(); };
+  });
+}
+document.addEventListener('mousedown',e=>{ document.querySelectorAll('.pe-cb.open').forEach(c=>{ if(!c.contains(e.target)) c.classList.remove('open'); }); });
 function peReqValidar_(){
   const er={}, vistos={}, areas=new Set(peReqAreas_().map(daN_));
   PE_REQ.lista.forEach((r,i)=>{ const e={};
     if(!r.area) e.area='Escolha a área exigida.'; else if(!areas.has(daN_(r.area))) e.area='Área não existe em Pessoas_Area.';
-    else { const k=daN_(r.area)+'|'+daN_(r.nv||''); if(vistos[k]!==undefined) e.area='Par Área + Senioridade repetido.'; vistos[k]=i; }
+    else { const k=daN_(r.area)+'|'+daN_(r.cargo||'')+'|'+daN_(r.nv||''); if(vistos[k]!==undefined) e.area='Trio Área + Cargo + Senioridade repetido.'; vistos[k]=i; }
+    if(r.cargo&&r.area&&!peReqCargos_(r.area,true).some(c=>daN_(c)===daN_(r.cargo))) e.cargo='Cargo não pertence à área escolhida.';
+    if(!r.cargo&&(PE_REQ.avisos||{})[i]) e.cargo='Escolha o cargo novamente.';
     if(r.nv&&daNvInfo_({nv:r.nv}).est!=='ok') e.nv='Senioridade não reconhecida.';
     if(!(Number.isInteger(r.qtd)&&r.qtd>=1&&r.qtd<=50)) e.qtd='Inteiro de 1 a 50.';
     if(Object.keys(e).length) er[i]=e; });
@@ -6890,12 +7263,12 @@ async function peReqSalvar_(){
   mostrarLoadingGlobal('Salvando requisitos…');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
-    const payload={idpj:PE_REQ.idpj,lista:PE_REQ.lista.map(r=>({id:r.id,area:r.area,nv:r.nv,qtd:r.qtd,conf:!!r.conf}))};
+    const payload={idpj:PE_REQ.idpj,lista:PE_REQ.lista.map(r=>({id:r.id,area:r.area,cargo:r.cargo||'',nv:r.nv,qtd:r.qtd,conf:!!r.conf}))};
     const url=DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=saveRequisitos&projeto='+encodeURIComponent(PE_REQ.projeto)+'&cliente='+encodeURIComponent(PE_REQ.cliente)+'&payload='+encodeURIComponent(JSON.stringify(payload));
     const r=await loadDataJSONPComRetry(url,1);
     if(r&&r.ok){
       if(PE_REQ.pj) PE_REQ.pj.reqs=r.reqs||[];
-      PE_REQ.lista=(r.reqs||[]).map(x=>({id:x.id,area:x.area||'',nv:x.nv||'',qtd:x.qtd,conf:!!x.conf,origem:x.origem||'Cadastro'})); PE_REQ.erros={};
+      PE_REQ.lista=(r.reqs||[]).map(x=>({id:x.id,area:x.area||'',cargo:x.cargo||'',nv:x.nv||'',qtd:x.qtd,conf:!!x.conf,origem:x.origem||'Cadastro'})); PE_REQ.erros={}; PE_REQ.avisos={};
       if(typeof DA!=='undefined'){ DA.memo=null; DA.memoPorH={}; }
       peReqDesenhar_(); mostrarSalvoOk_('Requisitos de equipe.');
     }else{
@@ -7051,7 +7424,7 @@ function renderListaPessoasAdmin(termoBusca){
   let h='<div class="card"><div class="card-title"><h3>Pessoas ('+PA_LISTA_CACHE.length+')</h3>'+
     '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="filter-clear" id="pa-mig-btn" style="padding:7px 14px" title="Separa o valor antigo de Localidade em Estado e Cidade (com pré-visualização)">📍 Migrar Localidade</button><button type="button" class="sr-btn sr-btn-primary" id="pa-novo-btn" style="padding:7px 16px">+ Nova Pessoa</button></span></div>'+
     (function(){ const c=paContagensChips_(); const chip=(k,t)=>'<button type="button" data-pa-chip="'+k+'" class="'+(PA_FILTRO===k?'on':'')+'">'+t+'</button>'; return '<div class="pa-fchips">'+chip('todas','Todas ('+c.todas+')')+chip('ativas','Ativas ('+c.ativas+')')+chip('inativas','Inativas ('+c.inativas+')')+chip('nao','Fora das análises ('+c.nao+')')+chip('semloc','Sem estado/cidade ('+c.semloc+')')+chip('semcap','Capacidade não definida ('+c.semcap+')')+(PA_FILTRO==='semcap'?'<button type="button" class="filter-clear" id="pa-cap-exp" style="margin-left:8px">⬇ Exportar pendências</button>':'')+'</div>'; })()+
-    '<input type="text" id="pa-busca" placeholder="Buscar por nome, e-mail, cargo, área, estado, cidade, perfil ou status…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13.5px;margin-bottom:14px;box-sizing:border-box">'+
+    '<input type="text" id="pa-busca" placeholder="Buscar por nome, e-mail, cargo, área, estado, cidade, perfil ou status…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" class="ctl-form" style="width:100%;margin-bottom:14px">'+
     '<div class="table-wrap" style="max-height:560px"><table>'+theadOrdenavel_('pessoasadmin',colunasPessoasAdmin)+'<tbody>';
   if(filtradosOrd.length===0){
     h+='<tr><td colspan="13" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada'+(termo?' com esse termo de busca':'')+'.</td></tr>';
@@ -7065,7 +7438,7 @@ function renderListaPessoasAdmin(termoBusca){
         '<td>'+(p.participa===false?'<span class="pa-pill bad">Não</span>':'<span class="pa-pill info">Sim'+(p.participa_vazio?' <small>(vazio)</small>':'')+'</span>')+'</td>'+
         '<td>'+paJornadaTxt_(p)+'</td>'+
         '<td>'+(p.perfil?'<span class="status-pill">'+p.perfil+'</span>':'<span style="color:var(--text-faint)">Sem Perfil Definido</span>')+'</td>'+
-        '<td>'+(p.ultimo_acesso||'—')+'</td>'+
+        '<td>'+feEsc_(dataTxt_(p.ultimo_acesso,true))+'</td>'+
         '<td><button type="button" class="filter-clear" style="padding:5px 12px">Abrir</button></td></tr>';
     });
   }
@@ -8129,7 +8502,7 @@ function renderPessoa(){
   {
     const semanaPassadaFim=new Date(monISO+'T00:00:00'); semanaPassadaFim.setDate(semanaPassadaFim.getDate()-1);
     const[monPassadaISO]=getMondaySunday(semanaPassadaFim);
-    const sunPassadaISO=semanaPassadaFim.toISOString().slice(0,10);
+    const sunPassadaISO=dtIsoLocal_(semanaPassadaFim);
     const hPrevistoPassada=Object.entries(PPREVISTO[emailKey]||{}).filter(([d])=>d>=monPassadaISO&&d<=sunPassadaISO).reduce((s,[,v])=>s+v,0);
     const hExecutadoPassada=Object.entries(PM[emailKey]||{}).filter(([d])=>d!=='sem-data'&&d>=monPassadaISO&&d<=sunPassadaISO).reduce((s,[,v])=>s+v[0],0);
     const ociosidadePassadaPct=hPrevistoPassada>0?Math.max(0,Math.round((1-hExecutadoPassada/hPrevistoPassada)*100)):null;
@@ -8142,7 +8515,7 @@ function renderPessoa(){
     const diasPeriodo=Math.round((new Date(ate+'T00:00:00')-new Date(de+'T00:00:00'))/86400000)+1;
     const anteriorAte=new Date(de+'T00:00:00'); anteriorAte.setDate(anteriorAte.getDate()-1);
     const anteriorDe=new Date(anteriorAte); anteriorDe.setDate(anteriorDe.getDate()-diasPeriodo+1);
-    const anteriorDeISO=anteriorDe.toISOString().slice(0,10), anteriorAteISO=anteriorAte.toISOString().slice(0,10);
+    const anteriorDeISO=dtIsoLocal_(anteriorDe), anteriorAteISO=dtIsoLocal_(anteriorAte);
     let fTAnterior=0,fH2Anterior=0;
     for(const[d,v] of Object.entries(pmD)){
       if(d==='sem-data'||!inRange(d,anteriorDeISO,anteriorAteISO))continue;
@@ -9063,17 +9436,23 @@ function getMondaySundayISO(){ return getMondaySunday(new Date()); }
 // existem nos dados atuais — nesses casos, cai para texto puro sem link.
 // ============================================================
 const PLACEHOLDER_NOMES = new Set(['Unassigned','Sem Gerente','Sem Gestor','—','','null','undefined']);
-function goToPessoaDesempenho(nome){
+function goToPessoaDesempenho(nome,per){
   if(!nome) return;
-  goToPage('pessoa');
-  const claudeChk=document.getElementById('f-pes-claude-only');
-  if(claudeChk && claudeChk.checked){ claudeChk.checked=false; populatePessoaOptions(); }
-  const sel=document.getElementById('f-pes');
-  if(sel){ sel.value=nome; if(sel.value!==nome) return; } // se a pessoa não está na lista de opções, não força nada quebrado
-  renderPessoa();
+  const r=goToPage('pessoa');
+  // v18.2: na primeira visita a página carrega os dados sob demanda (assíncrono); só depois de pronta seleciona a pessoa
+  const aplicar=()=>{
+    const claudeChk=document.getElementById('f-pes-claude-only');
+    if(claudeChk && claudeChk.checked){ claudeChk.checked=false; populatePessoaOptions(); }
+    const sel=document.getElementById('f-pes');
+    if(sel){ sel.value=nome; if(sel.value!==nome) return; } // se a pessoa não está na lista de opções, não força nada quebrado
+    if(per&&per.ini&&per.fim){ // vindo do Comparativo, leva o período junto
+      const de=document.getElementById('f-pes-de'), ate=document.getElementById('f-pes-ate');
+      if(de&&ate){ de.value=per.ini; ate.value=per.fim; document.querySelectorAll('#pes-periodo-seg .seg-btn').forEach(x=>x.classList.remove('active')); }
+    }
+    renderPessoa();
+  };
+  if(r&&typeof r.then==='function') r.then(aplicar); else aplicar();
 }
-// Retorna o nome como link clicável se a pessoa existe em D.p (identificador válido
-// no sistema); caso contrário devolve o nome como texto puro, sem link.
 function personLinkHtml(nome){
   if(!nome || PLACEHOLDER_NOMES.has(nome)) return nome||'—';
   const existe = (D.p||[]).some(p=>p.a===nome);
@@ -9548,7 +9927,7 @@ function renderProjDetail(pjName){
   const faltando = tasks.filter(t=> (!t.dt_inicio || !t.dt_venc || !t.resp) && t.dt_cadastro_iso && t.dt_cadastro_iso>=DATA_CORTE_INCOMPLETOS && (t.status||'').toLowerCase()!=='backlog');
 
   // Atrasadas (dt_venc passado e não concluída)
-  const hojeISO = new Date().toISOString().slice(0,10);
+  const hojeISO = hojeISO_();
   // Blocked NUNCA conta como atrasada, mesmo que o vencimento já tenha passado
   // — a tarefa continua bloqueada normalmente nas demais listas/indicadores,
   // só fica fora do indicador de atraso especificamente.
@@ -10143,7 +10522,7 @@ async function renderTopExec(){
 let FUT_CLOCK_TIMER=null;
 function startFutClock(){
   if(FUT_CLOCK_TIMER) clearInterval(FUT_CLOCK_TIMER);
-  const tick=()=>{ const el=document.getElementById('fut-clock'); if(el) el.textContent=new Date().toLocaleTimeString('pt-BR'); };
+  const tick=()=>{ const el=document.getElementById('fut-clock'); if(el) el.textContent=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:TZ_PADRAO}); };
   tick(); FUT_CLOCK_TIMER=setInterval(tick,1000);
 }
 let FUT_ALL_TASKS=null;
@@ -12055,12 +12434,7 @@ function renderLogAlteracoes(manterPagina){
   const btnMais=document.getElementById('log-alt-carregar-mais');
   if(btnMais) btnMais.onclick=()=>{ LOG_ALT_PAGINA++; renderLogAlteracoes(true); };
 }
-function formatarDataHoraLog_(iso){
-  if(!iso) return '—';
-  const [data,hora]=iso.split('T');
-  const [y,m,d]=data.split('-');
-  return d+'/'+m+'/'+y+(hora?' '+hora.slice(0,5):'');
-}
+function formatarDataHoraLog_(iso){ return dataTxt_(iso,true); } // v18.4: função central (dd/mm/aaaa hh:mm, sem segundos)
 // ============================================================
 // PAGE ADMINISTRAÇÃO DE PERMISSÕES (Opção B) — exclusiva do Administrador.
 // O perfil (PERM_MENU) continua sendo a base padrão de páginas visíveis;
@@ -12370,7 +12744,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v18.1', WIKI_DATA='06/11/2026';
+const WIKI_VER='v18.5', WIKI_DATA='10/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -12398,6 +12772,14 @@ WP('sis-arq','3.1','Arquitetura, componentes e integrações','Como o portal é 
   '<code>index.html</code> (<code>APP_VERSION</code>) · <code>AppsScript_Code.gs</code> (<code>DASHBOARD_VERSION</code>, <code>doGet</code>).','Planilha Google Sheets (abas em <a data-w="FONTE-001">FONTE</a>).',
   'O front envia o ID token Google; o <code>doGet</code> valida, aplica o escopo do perfil (<code>restrictDataForRole_</code>) e devolve JSON/JSONP. As gravações também passam por <code>doGet</code> (parâmetro <code>action</code>).',
   'Versões do front e do back precisam ser iguais (<code>APP_VERSION = DASHBOARD_VERSION</code>); após mudar o back, o Apps Script deve ser republicado.','Todo o portal.','Conferir <code>_backendVersion</code> na resposta da API.','Não há ambiente de homologação identificado no repositório.'),
+ WR('SIS-012','Publicação do back-end e regra de versionamento','ok','Arquitetura',
+  'O <code>AppsScript_Code.gs</code> traz no topo só um comentário com a versão/atualização vigente; o histórico de versões fica nesta Documentação (aba Histórico) e a publicação segue os passos abaixo.',
+  '<code>AppsScript_Code.gs</code> (<code>DASHBOARD_VERSION</code>) · <code>index.html</code> (<code>APP_VERSION</code>).','Planilha Google Sheets (Extensões › Apps Script).',
+  '<b>Publicar:</b> 1) Extensões › Apps Script na planilha; 2) colar o código no <code>Code.gs</code>; 3) <code>ALLOWED_CLIENT_ID</code> já vem preenchido (só mudar se usar outro Client ID OAuth); 4) Implantar › Nova implantação › App da Web (executar como: eu; acesso: qualquer pessoa); 5) copiar a URL <code>/exec</code> para <code>DASHBOARD_API_URL</code> no <code>index.html</code>; 6) a cada edição, gerar nova versão (Gerenciar implantações › editar › Nova versão).',
+  'Versão menor vai de .1 a .9; depois de .9 vem o inteiro seguinte com .0 (v6.9 → v7.0), nunca v6.10. <code>DASHBOARD_VERSION</code> deve ser igual a <code>APP_VERSION</code>. Todo item novo (página ou regra) entra na Wiki/Documentação e no Histórico. O projeto Apps Script (Configurações do projeto) e a planilha devem usar o fuso America/Sao_Paulo. Ao publicar versões com e-mail (MailApp) ou BrasilAPI, o Google pede nova autorização.','Todo o portal.','Conferir <code>_backendVersion</code> na resposta da API.','Mudança só de comentário no .gs não exige republicar.'),
+ WR('SIS-013','Rotina de conversão de datas (administrativa)','ok','Arquitetura','Funções do Apps Script executadas <b>manualmente</b> (nunca automáticas) para levar as colunas de data dos dados do sistema ao padrão <a data-w="TRANS-025">TRANS-025</a>. Converte só abas do sistema; abas de conector (Portifolio, Tarefas, Horas) e <code>Notif_*</code> entram no diagnóstico, mas não são alteradas.','<code>AppsScript_Code.gs</code>: <code>datasDiagnostico</code>, <code>datasSimular</code>, <code>datasAutorizarConversao</code>, <code>datasConverter</code>, <code>datasValidar</code>, <code>datasRestaurarBackup</code>.','Abas: Avisos, Avisos_Leituras, Zoho_Sync_Log, Zoho_Sync_Pendencias, Log_Alteracoes, Feriados, Permissoes_Excecoes, Status_Report, Status_Report_Cronograma, Portifolio_Requisitos. Relatórios em <code>Conversao_Datas_Relatorio</code> e <code>Conversao_Datas_Log</code>; backups ocultos <code>BKP_Datas_*</code>.',
+  '1) <code>datasDiagnostico()</code> lê todas as abas (só leitura): coluna, tipo (nativa/ISO/BR), formato, contagens e fusos; 2) <code>datasSimular()</code> mostra, por coluna, quantos mudam, exemplos original → esperado e o que não converte; 3) <code>datasAutorizarConversao()</code> (vale 24 h e exige simulação); 4) <code>datasConverter()</code> faz o backup das abas afetadas, converte em blocos, formata as colunas e valida; 5) <code>datasValidar()</code>; recuperação: <code>datasRestaurarBackup(\'Aba\')</code>.',
+  'Idempotente (reexecutar não altera o que já é data nativa); para antes de ~4,5 min e continua na próxima execução; erro em um registro não interrompe os demais; cada célula convertida ou ignorada é registrada no log; valores americanos (mm/dd/aaaa), anos de 2 dígitos e inválidos NÃO são alterados e aparecem na simulação; célula só com data em coluna de data e hora continua só com data; os <b>segundos originais são preservados</b> no valor gravado (a precisão não se perde) e apenas a exibição os oculta; <code>Pessoas_Area</code> (Data de entrada, Data Distrato, último acesso) recebe só o formato padrão, sem mudar valores.','Colunas de data das abas listadas.','Rodar a simulação e conferir o relatório antes de autorizar; após converter, “ainda a converter” deve ser 0.','Antes de converter: ajustar o fuso do projeto Apps Script e da planilha para America/Sao_Paulo. Após publicar nova versão do back, a sincronização de Avisos/Zoho já grava data nativa.'),
  WR('SIS-011','Dependências e integrações externas','ok','Arquitetura',
   'Google Identity (login e <code>tokeninfo</code>), BrasilAPI (feriados nacionais), MailApp (e-mail “Novo Contratado”), CacheService, LockService e Script Properties (Modo Manutenção). No navegador: Chart.js e ExcelJS (carregado sob demanda).',
   '<code>verifyGoogleToken_</code>, <code>buscarFeriadosNacionaisBrasilApi_</code>, <code>enviarEmailNovoContratado_</code>, <code>calCarregarExcelJS_</code>.','—','—','—','Login, Feriados, Pessoas e Perfis, exportações.','—','A lista completa de bibliotecas carregadas por CDN não foi inventariada nesta revisão.')],
@@ -12509,8 +12891,8 @@ WP('port-equipe','3.3','Equipe do projeto e requisitos de equipe','Papéis, requ
   'As colunas de pessoas do Portifolio mapeiam papéis por posição: Gerente do Projeto, SM, Líder Responsável, PO, Analista de Negócios, UX, QA, Dados, Eng de IA, Tech Lead, Arquiteto Cloud, Dev FullStack, Dev Back e Dev Front. A equipe do projeto (<code>eq</code>) é a união dessas colunas.',
   '<code>PORTIFOLIO_PAPEL_POR_COLUNA</code>.','Portifolio (colunas de pessoas).','—','Nomes de pessoas cadastradas são exibidos pela Assinatura (<a data-w="PESS-004">PESS-004</a>).','Equipe, escopos de perfil, Alocação.','—','O mapa é posicional: inserir uma coluna no meio da planilha desloca os papéis.'),
  WR('PORT-011','Requisitos múltiplos de equipe','ok','Portfólio',
-  'Cada projeto pode ter vários requisitos: Área exigida + Senioridade mínima (opcional) + Quantidade. A quantidade é o total de profissionais daquele perfil no projeto, incluindo quem já está alocado.',
-  '<code>Portifolio_Requisitos</code> · <code>salvarRequisitosProjeto_</code>, <code>anexarRequisitos_</code> (back); <code>peReqSalvar_</code> (front).','Portifolio_Requisitos (id_requisito, id_projeto, cliente, projeto, area_exigida, senioridade_minima, quantidade, qtd_confirmada, origem, removido_em, …).',
+  'Cada projeto pode ter vários requisitos: Área exigida + Cargo (opcional) + Senioridade mínima (opcional) + Quantidade. O Cargo depende da Área: lista os cargos cadastrados e ativos (com pelo menos uma pessoa ativa) naquela área em Pessoas_Area, com busca por nome; vazio = qualquer cargo da área. Ao trocar a Área, um cargo que não exista na nova área é limpo e precisa ser escolhido de novo; o servidor recusa combinação Área + Cargo inexistente. O trio Área + Cargo + Senioridade não pode se repetir. Requisitos antigos ficam sem cargo e podem ser complementados. A quantidade é o total de profissionais daquele perfil no projeto, incluindo quem já está alocado.',
+  '<code>Portifolio_Requisitos</code> · <code>salvarRequisitosProjeto_</code>, <code>anexarRequisitos_</code> (back); <code>peReqSalvar_</code> (front).','Portifolio_Requisitos (id_requisito, id_projeto, cliente, projeto, area_exigida, senioridade_minima, quantidade, qtd_confirmada, origem, removido_em, …, cargo_exigido — coluna nova no fim da aba).',
   'Validações no servidor: área obrigatória e existente em Pessoas_Area; senioridade vazia ou interpretável; quantidade inteira de 1 a 50; no máximo 40 itens; sem par Área+Senioridade repetido.',
   'Edição só do Administrador. Remoção é lógica (<code>removido_em</code>). Vínculo por <code>idpj</code> com fallback Cliente+Projeto.','Edição do Portfólio, Decisão de Alocação, Qualidade dos dados.','Salvar com área vazia, duplicada ou quantidade 2,5: o servidor rejeita.','Validado com planilha simulada; gravação na planilha real ainda precisa ser conferida em produção.'),
  WR('PORT-012','Migração dos campos antigos','ok','Portfólio',
@@ -12636,7 +13018,7 @@ WP('aloc-param','3.6','Parâmetros, capacidade e pressão','Constantes e limites
 
 WP('aloc-req','3.6','Requisitos de equipe e déficit','Como o sistema decide se um projeto está coberto.',[
  WR('ALOC-010','Elegibilidade (profissional elegível)','ok','Decisão de Alocação',
-  'Elegível = mesma área do requisito e senioridade ≥ mínimo. Compara a família (Estagiário, Júnior, Pleno, Sênior, Especialista) e, se o mínimo tem grau (I/II/III), compara também o grau. Mínimo vazio = qualquer senioridade.',
+  'Elegível = mesma área do requisito, mesmo cargo (quando o requisito exige um cargo; sem cargo = qualquer cargo da área) e senioridade ≥ mínimo. Compara a família (Estagiário, Júnior, Pleno, Sênior, Especialista) e, se o mínimo tem grau (I/II/III), compara também o grau. Mínimo vazio = qualquer senioridade.',
   '<code>daElegivel_</code>, <code>daNvInfo_</code>.','Pessoas_Area (Área, Nível), Portifolio_Requisitos.','—',
   'Pessoa com nível ausente, inválido ou sem grau quando o mínimo exige grau fica “não avaliável”: não conta como elegível e é listada à parte.','Decisão de Alocação.','Mínimo “Pleno III” e pessoa só “Pleno” → não avaliável.','—'),
  WR('ALOC-011','Profissional com capacidade disponível','ok','Decisão de Alocação',
@@ -12743,6 +13125,8 @@ WP('comp-horas','3.8','Comparativo e Evolução de Horas','Gráficos de horas ap
  WR('CH-001','Escopo, fonte e permissão','ok','Horas',
   'Lê os mesmos apontamentos oficiais da Gestão de Horas Apontadas (aba Tarefas_Horas_Apontadas, ação <code>horasApontadas</code> com <code>modo=comparativo</code>). Como o servidor entrega no máximo 400 dias por chamada, a página busca um bloco por ano civil (cada um com menos de 400 dias), junta tudo pela linha da planilha (nenhum lançamento é contado duas vezes) e guarda os blocos na memória; o botão 🔄 recarrega. Administrador vê todas as pessoas; o Head recebe do servidor somente as pessoas do seu escopo (mesmo escopo da Minha Equipe). Nada é gravado e nenhuma rotina existente foi alterada: as demais telas de horas continuam só do Administrador.',
   '<code>initComparativoHoras</code>, <code>chCarregar_</code>, <code>horasApontadas_</code> (parâmetro de escopo), doGet <code>horasApontadas</code>.','Tarefas_Horas_Apontadas, Pessoas_Area, Feriados.','Administrador e Head. Não é liberável por exceção individual.','Gestão › Comparativo de Horas.','Entrar como Head e conferir que só aparecem pessoas da equipe; entrar como Gestor e confirmar que o menu não existe.','—'),
+ WR('CH-010','Carga somente pelo botão','ok','Horas','Ao abrir a página nenhum apontamento é buscado: aparece “Escolha os filtros e clique em Carregar comparativo”. Os filtros de perfil (Head, Gestor, Pessoas, Área, Cargo, Senioridade) já funcionam, em cascata, a partir do cadastro; Cliente e Projeto ficam disponíveis depois da primeira carga. O período abre preenchido com o ano atual. Atalhos e datas só preenchem o período. Depois de carregado, mudar filtros recalcula na hora; mudar o período para anos ainda não carregados pede “Atualizar dados”.','<code>chCarregar_</code>, <code>chAuto_</code>, <code>chVazioPag_</code>, <code>CH.carregado</code>.','Apontamentos (planilha).','Administrador e Head.','Gestão › Comparativo de Horas.','Abrir a página e conferir que não há chamada ao servidor até clicar no botão.','—'),
+ WR('CH-009','Filtros em cascata e atalho para o desempenho','ok','Horas','Ordem dos filtros: Atalhos, Período inicial, Período final, Agrupar por; depois Head, Gestor, Pessoas, Área/Setor, Cargo, Senioridade, Cliente, Projeto e Tipo de apontamento. Cada filtro só oferece valores que existem dentro dos anteriores (Head → Gestor → Área → Cargo → Senioridade → Pessoas; Cliente → Projeto) e a lista de Pessoas mostra “N de M no escopo”. Ao mudar um filtro, quem estava selecionado e saiu do escopo é removido com aviso. Na visão por pessoa, o nome (ranking, tabelas, mapa de calor, legenda ↗, rosca e chips) abre <b>Desempenho por Pessoa</b> já com a pessoa e o período do Comparativo; o botão Voltar retorna ao Comparativo com filtros e gráfico como estavam. Perfis, pessoas sem cadastro e inativas não viram link.','<code>chCascata_</code>, <code>chLk_</code>, <code>chIr_</code>, <code>goToPessoaDesempenho(nome,per)</code>.','Pessoas_Area, apontamentos.','Administrador e Head (o Head só abre pessoas do seu escopo).','Gestão › Comparativo de Horas.','Escolher um Head e ver Gestor/Pessoas mudarem; clicar num nome e conferir De/Até no Desempenho.','—'),
  WR('CH-002','Quem entra, nomes e perfis','ok','Horas',
   'Nome = Pessoas_Area › Assinatura (sem Assinatura: “Nome não cadastrado”, com o e-mail ao lado). Pessoas inativas e com Participa_Analises = Não ficam de fora de filtros, totais e gráficos (as horas de inativos são avisadas na tela). Cargo, senioridade, área, Head e Gestor vêm do cadastro atual de Pessoas_Area (não há histórico de cargo). Lançamentos de e-mail sem cadastro entram como “Nome não cadastrado” e somem quando algum filtro de perfil está ativo. Tipos: Tarefas = Work Item, Reuniões = Meeting, Geral = General; tipo desconhecido só aparece sem filtro de tipo (“Outros”).',
   '<code>chPrepararPessoas_</code>, <code>chFiltroRec_</code>.','Pessoas_Area, Tarefas_Horas_Apontadas.','—','Gestão › Comparativo de Horas.','Marcar uma pessoa como inativa e conferir que ela sai dos filtros e totais.','—'),
@@ -12865,7 +13249,7 @@ WP('trans-ids','3.13','Nomes, identificadores e duplicidades','Padrões para ide
 ''),
 WP('trans-dados','3.13','Dados, datas, cache e erros','Comportamentos técnicos comuns.',[
  WR('TRANS-010','Valores nulos e ausentes','ok','Transversal','Dado ausente não vira zero nem média: aparece como “—”, “sem dados” ou “Dados insuficientes”. Exceção: status de pessoa vazio = Ativo e Participa_Analises vazio = Sim.','—','—','—','—','—','—','—'),
- WR('TRANS-011','Datas e fuso horário','pa','Transversal','O servidor usa o fuso da planilha/script para datas (<code>toDateIso_</code>, <code>avisosHoje_</code>). Parte do front usa <code>toISOString()</code> (UTC) para “hoje”.','<code>daBase_</code>.','—','—','Perto da meia-noite no Brasil, “hoje” em UTC pode adiantar um dia.','Alocação.','—','Impacto prático não medido.'),
+ WR('TRANS-011','Datas e fuso horário','ok','Transversal','Fuso único <code>America/Sao_Paulo</code>: no servidor a constante <code>TZ_PADRAO</code> substitui <code>Session.getScriptTimeZone()</code>; no navegador, “hoje” usa <code>hojeISO_()</code> (Brasília) em vez de <code>toISOString()</code> (UTC), que adiantava o dia depois das 21h. Ver <a data-w="TRANS-025">TRANS-025</a>.','<code>TZ_PADRAO</code> · <code>hojeISO_</code> · <code>dtIsoLocal_</code>.','—','—','Cálculos de atraso, alocação, avisos e filtros por período.','Todo o portal.','Conferir após as 21h que “atrasadas” e “hoje” seguem o dia de Brasília. O projeto Apps Script e a planilha também devem estar em America/Sao_Paulo (a rotina de diagnóstico avisa).','Fuso do projeto Apps Script e da planilha são configurações do Google, fora do código.'),
  WR('TRANS-015','Formato de horas','ok','Transversal','Toda hora exibida usa o formato horas e minutos: “1.592h 48min”; hora exata “8h”; menos de uma hora “18min”; negativo com “−”. Não há mais decimal com vírgula nas telas.','<code>fHM_</code> (usada por <code>fH</code>, <code>haHm_</code>, <code>haHmz_</code>).','—','minutos = arredondamento de (horas × 60); horas com separador de milhar.','Eixos de gráficos continuam em horas decimais; tooltips e rótulos usam o formato. Exportações Excel mantêm célula numérica com formato [h]:mm. Rótulos fixos (40h/semana, 8h/dia) não mudam.','Todas as telas com horas.','Conferir 1592,8 → 1.592h 48min e 0,3 → 18min.','Cálculos e ordenação seguem em horas decimais internamente.'),
  WR('TRANS-012','Cache e atualização','ok','Transversal','O resultado do servidor fica em CacheService por 30 min (pedaços de 35 000 caracteres). Existe rotina agendada que o reaquece; gravações invalidam o cache.','<code>CACHE_TTL_SEGUNDOS</code>, <code>atualizarCacheDashboardAgendado</code>, <code>invalidarCacheDashboard_</code>.','—','—','—','Todas as telas.','—','O acionador agendado é configuração manual do Apps Script e pode não existir.'),
  WR('TRANS-013','Carregamento sob demanda','ok','Transversal','O login traz <code>core</code>; cada página busca só os campos que precisa (<code>PAGINA_CAMPOS_NECESSARIOS</code>), uma vez por sessão, com tentativa de repetição.','<code>comCamposNecessarios_</code>.','—','—','—','Páginas pesadas.','—','—'),
@@ -12875,6 +13259,9 @@ WP('trans-seg','3.13','Autenticação, segurança e interface','Login, autoriza�
  WR('TRANS-020','Autenticação','ok','Segurança','Login com Google. O servidor valida o ID token em <code>tokeninfo</code>: emitido para o Client ID do portal, e-mail verificado e domínio besolution.com.br. O token fica em <code>sessionStorage</code> e o portal não o renova: ao expirar é preciso entrar de novo (o relógio da sessão mostra o tempo restante).','<code>verifyGoogleToken_</code>.','—','—','—','Todo o portal.','—','—'),
  WR('TRANS-021','Autorização','ok','Segurança','Ver <a data-w="PERM-010">PERM-010</a>, <a data-w="PERM-020">PERM-020</a>, <a data-w="PERM-021">PERM-021</a>.','—','—','—','—','—','—','—'),
  WR('TRANS-022','Gravações seguras','ok','Segurança','Escritas usam trava (LockService), validam no servidor, registram no Log e invalidam o cache.','—','—','—','—','—','—','—'),
+ WR('TRANS-025','Padrão único de data e hora','ok','Interface','<b>Exibição:</b> <code>dd/mm/aaaa</code> (data) e <code>dd/mm/aaaa hh:mm</code> (data e hora), 24 h, sem segundos, ano com 4 dígitos, nunca ISO nem mm/dd. <b>Armazenamento:</b> data/data-hora <u>nativa</u> do Google Sheets (formato <code>dd/MM/yyyy</code> ou <code>dd/MM/yyyy HH:mm</code>). <b>Transporte back→front:</b> ISO técnico (<code>aaaa-mm-dd</code> / <code>aaaa-mm-dd hh:mm</code>), invisível ao usuário. Campos de data das telas: texto com máscara + botão 📅 (calendário nativo); o <code>&lt;input type="date"&gt;</code> original continua oculto como dono do valor ISO, então todo código que lê/grava <code>.value</code> segue igual. Data inválida (31/02/2026, 10/13/2026) é recusada com mensagem e o campo fica vazio para o salvamento.','Front: <code>fmtDataBR</code>, <code>fmtDataHoraBR</code>, <code>dataTxt_</code>, <code>parseDataFlex_</code>, <code>validarDataBR_</code>, <code>dtMascara_</code>, <code>hojeISO_</code>, <code>dtVarrerCampos_</code>. Back: <code>fmtDataBR_</code>, <code>fmtDataHoraBR_</code>, <code>parseDataFlex_</code>, <code>normalizarParaArmazenar_</code>, <code>gravarDataNativa_</code>, <code>dataIsoTransp_</code>.','Planilhas com colunas de data (catálogo em <a data-w="SIS-013">SIS-013</a>).','Digitar/escolher → front valida → ISO → back <code>normalizarParaArmazenar_</code> → Date nativa na planilha → leitura → ISO → <code>fmtDataBR</code> na tela/Excel.',
+  'Regras: não inventar horário (valor só com data não ganha 00:00); não remover horário existente; vazio continua vazio; ano de 2 dígitos e texto americano (mm/dd/aaaa) NÃO são convertidos automaticamente; filtro “Até” compara o DIA, então inclui registros com horário (<code>inRange</code>); comparações cronológicas usam ISO, nunca o texto brasileiro. Excel: células de data reais com <code>dd/mm/yyyy</code>. Exceção: carimbos técnicos da fila de notificações (<code>Notif_*</code>) continuam ISO com fuso por serem usados em retentativas; a tela os exibe no padrão.','Todo o portal.','Abrir Edição do Portfólio: digitar 15082026 vira 15/08/2026; 31/02/2026 mostra erro; calendário preenche o campo. Conferir Log de Alterações e Avisos sem segundos.','Navegador em outro idioma: o campo continua dd/mm/aaaa (o formato não depende do navegador). Aba alimentada por conector (Portifolio, Tarefas, Horas) mantém o formato de origem; o sistema só exibe no padrão.'),
+ WR('TRANS-024','Padrão único de campos (filtro, formulário, tabela)','ok','Interface','Todo select, campo de data, texto e busca usa um dos três tamanhos, definidos por variáveis <code>--ctl-*</code>: <b>① Filtro</b> 34 px / 13 px / fundo azul claro (<code>.filter-field</code>); <b>② Formulário</b> 38 px / 13,5 px / fundo branco (<code>.ctl-form</code>, <code>.sr-field</code>, Avisos, Feriados, Pessoas, Status Report); <b>③ Em tabela</b> 30 px / 12,5 px (<code>.ctl-tab</code>). Mesmo raio (8 px), borda, seta de select, foco (borda azul + halo), erro (<code>.err</code>), desabilitado e placeholder. Campo novo deve usar uma dessas classes; não criar estilo próprio. Exceção: Central de Comando (tema próprio).','Bloco “PADRÃO ÚNICO DE CAMPOS” no final do CSS.','—','Todo o portal.','Qualquer tela com filtros ou formulários.','Abrir Avisos, Feriados, Status Report e Comparativo e conferir a mesma altura, raio e seta.','Campos criados por JavaScript com estilo inline precisam usar as classes acima.'),
  WR('TRANS-023','Responsividade e acessibilidade','pv','Interface','O menu tem versão móvel (hambúrguer) e recolhível. Não houve auditoria de acessibilidade (contraste, teclado, leitor de tela) nesta revisão.','—','—','—','—','—','—','Pendente de auditoria.')],
 '')
 );
@@ -12896,7 +13283,7 @@ WP('gloss','3.14','Glossário','Termos usados nas telas e na documentação.',[]
 <dt>Ritmo</dt><dd>Relação entre prazo decorrido e horas consumidas (<a data-w="CMD-003">CMD-003</a>).</dd>
 <dt>Participa_Analises</dt><dd>Sim/Não: se a pessoa entra nas estatísticas. Não altera acesso.</dd>
 <dt>Escopo</dt><dd>Conjunto de projetos e pessoas que o perfil pode ver.</dd>
-<dt>Requisito de equipe</dt><dd>Área + senioridade mínima + quantidade exigidas por um projeto.</dd></dl>`),
+<dt>Requisito de equipe</dt><dd>Área + cargo (opcional) + senioridade mínima + quantidade exigidas por um projeto.</dd></dl>`),
 
 WP('faq','3.14','Perguntas frequentes','Respostas rápidas e solução de problemas.',[],
 `<details><summary>Por que um perfil não vê nada?</summary><p>O e-mail pode não bater com Pessoas_Area; o servidor então tenta o nome. Sem correspondência o escopo é restrito (<a data-w="PERM-010">PERM-010</a>).</p></details>
@@ -12922,6 +13309,12 @@ WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado d
 WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'10/11/2026',p:'Sistema · Conversão de datas',desc:'A rotina de conversão passa a preservar os segundos originais (a exibição segue sem segundos) e a padronizar o formato das colunas de data de Pessoas_Area. Relatório de diagnóstico real: 185 células a converter (Avisos, Leituras, Pendências do Zoho), 0 não convertíveis, fusos consistentes.',ver:'v18.5'},
+ {d:'10/11/2026',p:'Sistema · Datas e horários',desc:'Padrão único dd/mm/aaaa e dd/mm/aaaa hh:mm em telas, filtros, Excel e logs; fuso único America/Sao_Paulo (TZ_PADRAO) e “hoje” no horário de Brasília; funções centrais de data no front e no back; campo de data com máscara + calendário e validação; Avisos, Leituras e log do Zoho passam a gravar data nativa; rotina administrativa de conversão (diagnóstico, simulação, backup, conversão, validação, restauração). Corrige o “hoje” em UTC (adiantava o dia após as 21h) e o filtro “Até” que ignorava registros com horário.',ver:'v18.4'},
+ {d:'10/11/2026',p:'Sistema · Back-end',desc:'Cabeçalho do AppsScript_Code.gs reduzido a um único comentário de versão; passos de publicação e regra de versionamento passaram para a Documentação (SIS-012).',ver:'v18.3'},
+ {d:'10/11/2026',p:'Portfólio · Requisitos de equipe',desc:'Novo campo Cargo nos requisitos de equipe, dependente da Área (cargos ativos de Pessoas_Area, com busca). Cargo vazio = qualquer cargo da área. Quando preenchido, restringe a elegibilidade na Decisão de Alocação. Exige republicar o Apps Script.',ver:'v18.3'},
+ {d:'10/11/2026',p:'Horas · Comparativo de Horas',desc:'A página não carrega mais os apontamentos ao abrir: os filtros funcionam em cascata a partir do cadastro e os dados só são buscados ao clicar em “Carregar comparativo”.',ver:'v18.2.1'},
+ {d:'10/11/2026',p:'Interface · Comparativo e padrão de campos',desc:'Comparativo: nova ordem dos filtros, filtros em cascata (Head → Gestor → Área → Cargo → Senioridade → Pessoas; Cliente → Projeto) e nome clicável que abre o Desempenho por Pessoa com o período. Em todo o sistema: padrão único de campos em 3 tamanhos (Filtro 34, Formulário 38, Tabela 30). Sem mudança no servidor.',ver:'v18.2'},
  {d:'06/11/2026',p:'Horas · Comparativo de Horas',desc:'Nova página Comparativo e Evolução de Horas (Administrador e Head): filtros combináveis, 6 indicadores, 7 gráficos, comparação entre períodos equivalentes, visão em tabela, exportação para Excel e PDF. Servidor: a ação horasApontadas aceita modo=comparativo para o Head, limitada às pessoas do escopo dele.',m:'Solicitação do gestor.',o:'Implementação v18.1',v:'Testado em ambiente simulado; pendente de validação em produção'},
  {d:'06/11/2026',p:'Geral · Pessoas · Portfólio',desc:'Modal global “Salvo com sucesso!” nas rotinas de salvamento (substitui faixas e toasts de sucesso; alert() nativos viraram modal de erro); Gestor e Head como listas pesquisáveis filtradas pelo Cargo; formulário de Pessoas e Perfis compacto e responsivo; “Requisitos de equipe” logo após o Cronograma na Edição do Portfólio.',m:'Solicitação do gestor.',o:'Implementação v18.0',v:'Pendente de validação em produção'},
  {d:'05/11/2026',p:'Portfólio e Zoho',desc:'Inclusão do botão “Salvar como novo no Portfólio” (individual e em lote) para projetos que existem só no Zoho, com prévia, validações no servidor e registro no Log de Alterações.',m:'Solicitação do gestor.',o:'Implementação v17.9',v:'Pendente de validação em produção'},
@@ -13220,7 +13613,7 @@ let FE_LISTA=[];
 let FE_EDIT_ID=null;
 const FE_DIAS=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
 function feEsc_(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function feBr_(iso){ const p=String(iso||'').split('-'); return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:''; }
+function feBr_(iso){ return fmtDataBR(iso); }
 // Dia da semana: data única -> da própria data; "todo ano" -> da ocorrência no ano corrente.
 function feDiaSemana_(f){
   const p=String(f.data||'').split('-'); if(p.length!==3) return '';
@@ -14214,7 +14607,21 @@ function chAnosNecessarios_(){
   r.forEach(x=>{ for(let y=+x.ini.slice(0,4);y<=Math.min(+x.fim.slice(0,4),+hoje.slice(0,4));y++) ys.add(String(y)); });
   return [...ys].sort();
 }
-async function chCarregar_(forcar){
+function chBotao_(carregando){
+  const b=document.getElementById('ch-carregar'); if(b){ b.disabled=!!carregando; b.textContent=carregando?'Carregando…':(CH.carregado?'Atualizar dados':'Carregar comparativo'); }
+  ['ch-cli','ch-proj'].forEach(id=>{ const e=document.getElementById(id); if(e){ e.disabled=!CH.carregado; e.title=CH.carregado?'':'Cliente e Projeto ficam disponíveis depois de carregar o comparativo'; } });
+  const pg=document.getElementById('page-comparativohoras'); if(pg) pg.classList.toggle('ch-semdados',!CH.carregado);
+}
+function chVazioPag_(){ document.getElementById('ch-status').innerHTML='<div class="ch-empty"><div class="ch-empty-i">📊</div><h3>Escolha os filtros e clique em “Carregar comparativo”</h3><p>Nenhum dado foi buscado ainda. Ajuste o período, o agrupamento e o perfil das pessoas e depois carregue.</p></div>'; }
+// mudou período/modo: se já está carregado e os anos estão em memória, só recalcula; senão pede para atualizar
+function chAuto_(){
+  if(!CH.carregado){ chRender_(); return; }
+  const st=document.getElementById('ch-status');
+  if(chAnosNecessarios_().every(y=>CH.blocos[y])){ st.innerHTML=''; chRender_(); chAmploSync_(); }
+  else st.innerHTML='<div class="ha-note warn">Período alterado: clique em <b>Atualizar dados</b> para buscar os apontamentos.</div>';
+}
+async function chCarregar_(forcar){ chBotao_(true); try{ await chCarregarI_(forcar); } finally{ chBotao_(false); } }
+async function chCarregarI_(forcar){
   const st=document.getElementById('ch-status'), f=CH.f;
   if(!f.ini||!f.fim){ st.innerHTML='<div class="ha-note warn">Informe a data inicial e a final.</div>'; return; }
   if(f.ini>f.fim){ st.innerHTML='<div class="ha-note warn">A data inicial não pode ser maior que a final.</div>'; return; }
@@ -14229,42 +14636,56 @@ async function chCarregar_(forcar){
         if(y+'-01-01'>fim) continue;
         const r=await loadDataJSONPComRetry(feUrl_('horasApontadas','&modo=comparativo&ini='+y+'-01-01&fim='+fim+(va?'&viewAs='+encodeURIComponent(va):'')),1);
         if(seq!==CH.seq) return;
-        if(!r||r.ok===false){ st.innerHTML='<div class="ha-note warn">'+feEsc_((r&&r.message)||'Não foi possível carregar os apontamentos.')+' <button type="button" class="ha-btn sm" id="ch-retry">Tentar de novo</button></div>'; return; }
+        if(!r||r.ok===false){ st.innerHTML='<div class="ha-note warn">'+feEsc_((r&&r.message)||'Não foi possível carregar os apontamentos.')+' <button type="button" class="filter-clear ch-b" id="ch-retry">Tentar de novo</button></div>'; return; }
         CH.blocos[y]=r;
       }
-    }catch(e){ if(seq===CH.seq) st.innerHTML='<div class="ha-note warn">Não foi possível carregar os apontamentos agora. <button type="button" class="ha-btn sm" id="ch-retry">Tentar de novo</button></div>'; return; }
+    }catch(e){ if(seq===CH.seq) st.innerHTML='<div class="ha-note warn">Não foi possível carregar os apontamentos agora. <button type="button" class="filter-clear ch-b" id="ch-retry">Tentar de novo</button></div>'; return; }
     chMontarRecs_(); chPrepararPessoas_(); chPreencherFiltros_();
   } else if(!CH.roster.length){ chMontarRecs_(); chPrepararPessoas_(); chPreencherFiltros_(); }
-  st.innerHTML=''; chRender_();
+  st.innerHTML=''; CH.carregado=true; chRender_();
 }
-function chPreencherFiltros_(){
-  const el=p=>p.reg&&p.ativo&&p.participa, elig=CH.roster.filter(p=>el(p)||!p.reg);
-  const uniq=f=>[...new Set(CH.roster.filter(el).map(f).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'pt-BR'));
-  const mk=(id,vals,atual,vazio)=>{ const s=document.getElementById(id); s.innerHTML='<option value="">'+vazio+'</option>'+vals.map(v=>'<option>'+feEsc_(v)+'</option>').join(''); s.value=vals.includes(atual)?atual:''; };
-  mk('ch-cargo',uniq(p=>p.cargo),CH.f.cargo,'Todos'); mk('ch-nv',uniq(p=>p.nv),CH.f.nv,'Todas'); mk('ch-area',uniq(p=>p.area),CH.f.area,'Todas'); mk('ch-head',uniq(p=>p.head),CH.f.head,'Todos'); mk('ch-gestor',uniq(p=>p.gestor),CH.f.gestor,'Todos');
-  mk('ch-cli',[...new Set(CH.projs.map(p=>p.cl).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),CH.f.cli,'Todos');
-  mk('ch-proj',[...new Set(CH.projs.map(p=>p.pj).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),CH.f.proj,'Todos');
-  ['cargo','nv','area','head','gestor'].forEach(k=>{ CH.f[k]=document.getElementById('ch-'+(k==='gestor'?'gestor':k)).value; }); CH.f.cli=document.getElementById('ch-cli').value; CH.f.proj=document.getElementById('ch-proj').value;
-  const ok=new Set(elig.map(p=>p.e)); CH.f.pess=CH.f.pess.filter(e=>ok.has(e));
+const CH_ORD=['head','gestor','area','cargo','nv'];
+function chElegivel_(p){ return p.reg?(p.ativo&&p.participa):true; }
+// pessoa atende aos n primeiros filtros da ordem Head → Gestor → Área → Cargo → Senioridade
+function chPessoaOk_(p,f,n){ if(!chElegivel_(p)) return false; for(let i=0;i<n;i++){ const k=CH_ORD[i]; if(f[k]&&(!p.reg||p[k]!==f[k])) return false; } return true; }
+function chPessoasEscopo_(){ return CH.roster.filter(p=>chPessoaOk_(p,CH.f,CH_ORD.length)); }
+function chMkSel_(id,vals,atual,vazio){ const s=document.getElementById(id); s.innerHTML='<option value="">'+vazio+'</option>'+vals.map(v=>'<option>'+feEsc_(v)+'</option>').join(''); s.value=vals.includes(atual)?atual:''; return s.value; }
+const CH_ORD_V={head:'Todos',gestor:'Todos',area:'Todas',cargo:'Todos',nv:'Todas'};
+// cascata: cada filtro só oferece valores que existem dentro dos filtros anteriores
+function chCascata_(aviso){
+  const f=CH.f, srt=a=>a.sort((x,y)=>String(x).localeCompare(String(y),'pt-BR')), limpos=[];
+  CH_ORD.forEach((k,i)=>{ const vals=srt([...new Set(CH.roster.filter(p=>p.reg&&chPessoaOk_(p,f,i)).map(p=>p[k]).filter(Boolean))]); const ant=f[k]; f[k]=chMkSel_('ch-'+k,vals,ant,CH_ORD_V[k]); if(ant&&!f[k]) limpos.push(k); });
+  const cls=[...new Set(CH.projs.map(p=>p.cl).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  f.cli=chMkSel_('ch-cli',cls,f.cli,'Todos');
+  f.proj=chMkSel_('ch-proj',[...new Set(CH.projs.filter(p=>!f.cli||p.cl===f.cli).map(p=>p.pj).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),f.proj,'Todos');
+  const ok=new Set(chPessoasEscopo_().map(p=>p.e)), fora=f.pess.filter(e=>!ok.has(e));
+  if(fora.length){ f.pess=f.pess.filter(e=>ok.has(e)); fora.forEach(e=>{ delete CH.slot[e]; }); }
+  const m=document.getElementById('ch-fmsg'); if(m) m.textContent=aviso!==false&&fora.length?('Removido da seleção por estar fora dos filtros: '+fora.map(chRotP_).join(', ')+'.'):'';
   chPessoasLista_();
 }
+function chPreencherFiltros_(){ chCascata_(false); }
 function chPessoasLista_(){
   const q=haN_((document.getElementById('ch-pq')||{}).value||''), sel=new Set(CH.f.pess), cheio=sel.size>=CH_MAX_PESSOAS;
-  const lista=CH.roster.filter(p=>(p.reg&&p.ativo&&p.participa)||!p.reg).sort((a,b)=>a.rot.localeCompare(b.rot,'pt-BR')).filter(p=>!q||haN_(p.rot).includes(q));
-  document.getElementById('ch-pl').innerHTML=lista.map(p=>'<label class="ch-ck"><input type="checkbox" data-ch-p="'+feEsc_(p.e)+'"'+(sel.has(p.e)?' checked':'')+((cheio&&!sel.has(p.e))?' disabled':'')+'> '+feEsc_(p.rot)+'</label>').join('')||'<small>Nenhuma pessoa encontrada.</small>';
+  const esc=chPessoasEscopo_(), total=CH.roster.filter(chElegivel_).length, lista=esc.slice().sort((a,b)=>a.rot.localeCompare(b.rot,'pt-BR')).filter(p=>!q||haN_(p.rot).includes(q));
+  document.getElementById('ch-pc').textContent=esc.length+' de '+total+' pessoas no escopo dos filtros';
+  document.getElementById('ch-pl').innerHTML=lista.map(p=>'<label class="ch-ck"><input type="checkbox" data-ch-p="'+feEsc_(p.e)+'"'+(sel.has(p.e)?' checked':'')+((cheio&&!sel.has(p.e))?' disabled':'')+'> '+feEsc_(p.rot)+(p.reg&&p.gestor?' <small style="margin-left:auto;color:var(--text-faint)">'+feEsc_(p.gestor)+'</small>':'')+'</label>').join('')||'<small>Ninguém atende a esses filtros.</small>';
   chPessoasEstado_();
 }
 // atualiza resumo, chips e bloqueio do 11º nome SEM refazer a lista (mantém a rolagem e o foco)
 function chPessoasEstado_(){
   const sel=new Set(CH.f.pess), cheio=sel.size>=CH_MAX_PESSOAS;
   document.querySelectorAll('#ch-pl input[data-ch-p]').forEach(i=>{ i.checked=sel.has(i.dataset.chP); i.disabled=cheio&&!i.checked; });
-  document.getElementById('ch-ps').textContent=sel.size?('Pessoas: '+sel.size+' selecionada'+(sel.size>1?'s':'')+(cheio?' (máx.)':'')):'Pessoas: todas';
+  document.getElementById('ch-ps').textContent=sel.size?('Pessoas: '+sel.size+' selecionada'+(sel.size>1?'s':'')+(cheio?' (máx.)':'')):'Pessoas: todas ('+chPessoasEscopo_().length+')';
   chChips_();
 }
 function chSlotDe_(e){ return CH.slot[e]; }
 function chAtribuiSlot_(e){ const usados=new Set(CH.f.pess.filter(x=>x!==e).map(x=>CH.slot[x])); let i=0; while(usados.has(i)) i++; CH.slot[e]=i; }
+// nome clicável → Desempenho por Pessoa (só pessoas cadastradas; perfis não viram link)
+function chPodeIr_(k){ const p=CH.pes[k]; return !!(p&&p.reg&&p.n&&!PLACEHOLDER_NOMES.has(p.n)&&(D.p||[]).some(x=>x.a===p.n)); }
+function chLk_(k,label){ return (CH.visao==='p'&&chPodeIr_(k))?'<span class="person-link" data-ch-go="'+feEsc_(k)+'" title="Abrir Desempenho por Pessoa">'+feEsc_(label)+'</span>':feEsc_(label); }
+function chIr_(e){ const p=CH.pes[e]; if(!p) return; setTimeout(()=>{ if(!document.getElementById('ch-over').hidden) chAmplo_(false); goToPessoaDesempenho(p.n,{ini:CH.f.ini,fim:CH.f.fim}); },0); }
 function chChips_(){
-  const C=chCores_(), h=CH.f.pess.map(e=>{ const s=CH.slot[e]??0, p=CH.pes[e]; return '<span class="ch-chip"><span class="ch-dot" style="background:'+C.pal[s%8]+(s>=8?';border-radius:2px':'')+'"></span>'+feEsc_(p?p.rot:e)+' <button type="button" data-ch-x="'+feEsc_(e)+'" aria-label="Remover '+feEsc_(p?p.rot:e)+'">✕</button></span>'; }).join('');
+  const C=chCores_(), h=CH.f.pess.map(e=>{ const s=CH.slot[e]??0, p=CH.pes[e]; return '<span class="ch-chip"><span class="ch-dot" style="background:'+C.pal[s%8]+(s>=8?';border-radius:2px':'')+'"></span>'+(chPodeIr_(e)?'<span class="person-link" data-ch-go="'+feEsc_(e)+'" title="Abrir Desempenho por Pessoa">'+feEsc_(p.rot)+'</span>':feEsc_(p?p.rot:e))+' <button type="button" data-ch-x="'+feEsc_(e)+'" aria-label="Remover '+feEsc_(p?p.rot:e)+'">✕</button></span>'; }).join('');
   document.getElementById('ch-chips').innerHTML=h;
 }
 // ---------- cálculo central ----------
@@ -14349,7 +14770,7 @@ function chQuartis_(){ const h=new Date(), out=[]; let y=h.getFullYear(), q=Math
 function chCtl_(){
   const g=CH.graf, c=CH.cmp, o=(v,t,a)=>'<option value="'+v+'"'+(a===v?' selected':'')+'>'+t+'</option>', sel=(id,opts,a)=>'<select data-chc="'+id+'" aria-label="'+id+'">'+opts+'</select>';
   let h='';
-  if([0,1,3,5,6].includes(g)){ h+='<span class="ch-seg" role="group" aria-label="Visão"><button type="button" data-ch-v="p" class="'+(CH.visao==='p'?'on':'')+'">Por pessoa</button><button type="button" data-ch-v="f" class="'+(CH.visao==='f'?'on':'')+'">Por perfil</button></span>';
+  if([0,1,3,5,6].includes(g)){ h+='<span class="seg-control" role="group" aria-label="Visão"><button type="button" data-ch-v="p" class="seg-btn'+(CH.visao==='p'?' active':'')+'">Por pessoa</button><button type="button" data-ch-v="f" class="seg-btn'+(CH.visao==='f'?' active':'')+'">Por perfil</button></span>';
     if(CH.visao==='f') h+='<select data-chc="dim" aria-label="Perfil">'+Object.keys(CH_DIMS).map(k=>o(k,CH_DIMS[k],CH.dim)).join('')+'</select>'; }
   if(g===0) h+='<label class="ch-ckb"><input type="checkbox" data-chc="tend"'+(CH.tend?' checked':'')+'> Linha de tendência'+(CH.calc&&CH.calc.parcial?' <small title="O último período está incompleto e não entra na tendência">(sem o último período incompleto)</small>':'')+'</label>';
   if(g===1) h+='<select data-chc="ord" aria-label="Ordenação">'+o('desc','Maior → menor',CH.ord)+o('asc','Menor → maior',CH.ord)+'</select>';
@@ -14374,7 +14795,7 @@ function chBase_(pal,extra){
 }
 function chLegenda_(S,vals,parcial){
   return '<div class="ch-leg">'+S.lista.map(s=>{ const off=CH.oculto.has(s.k), cor=chCorSerie_(s,S.pal), t=vals&&vals[s.k]?chTendencia_(vals[s.k],parcial):null;
-    return '<button type="button" class="ch-lg'+(off?' off':'')+'" data-ch-s="'+feEsc_(s.k)+'" title="Clique para '+(off?'exibir':'ocultar')+'"><i class="ch-sw'+(s.slot>=8?' d':'')+'" style="border-color:'+cor+'"></i>'+feEsc_(s.label)+(t?' <b class="ch-tr '+t.dir+'" title="'+(t.dir==='up'?'Tendência de crescimento':(t.dir==='dn'?'Tendência de redução':'Tendência estável'))+'">'+(t.dir==='up'?'▲':(t.dir==='dn'?'▼':'●'))+'</b>':'')+'</button>'; }).join('')+'</div>';
+    return '<button type="button" class="ch-lg'+(off?' off':'')+'" data-ch-s="'+feEsc_(s.k)+'" title="Clique para '+(off?'exibir':'ocultar')+'"><i class="ch-sw'+(s.slot>=8?' d':'')+'" style="border-color:'+cor+'"></i>'+feEsc_(s.label)+(t?' <b class="ch-tr '+t.dir+'" title="'+(t.dir==='up'?'Tendência de crescimento':(t.dir==='dn'?'Tendência de redução':'Tendência estável'))+'">'+(t.dir==='up'?'▲':(t.dir==='dn'?'▼':'●'))+'</b>':'')+'</button>'+(CH.visao==='p'&&chPodeIr_(s.k)?'<span class="person-link ch-go" data-ch-go="'+feEsc_(s.k)+'" title="Abrir Desempenho por Pessoa" role="link">↗</span>':''); }).join('')+'</div>';
 }
 function chSerVals_(S,B){ const v={}; S.lista.forEach(s=>{ v[s.k]=B.map(b=>s.b[b]!==undefined?Math.round(s.b[b]*100)/100:null); }); return v; }
 function chG0_(host,C,alt){
@@ -14396,9 +14817,15 @@ function chG1_(host,C,alt){
   host.insertAdjacentHTML('beforeend','<div class="ch-scroll'+(alt?' amplo':'')+'"><div style="height:'+alt_+'px;position:relative"><canvas></canvas></div></div>');
   const tot=C.tot, rot={id:'chrot',afterDatasetsDraw(ch){ const c=ch.ctx; c.save(); c.font='11px system-ui'; c.fillStyle=pal.ink; c.textBaseline='middle'; ch.getDatasetMeta(0).data.forEach((b,i)=>{ c.fillText(fHM_(G[i].h)+' · '+chFmtP_(G[i].h/tot*100)+'%',b.x+6,b.y); }); c.restore(); }};
   const op=chBase_(pal,{indexAxis:'y',interaction:{mode:'nearest',intersect:true},layout:{padding:{right:120}}});
+  const linha=(ch,ev)=>{ if(CH.visao!=='p') return -1; const a=ch.chartArea, y=ev.y; if(!a||y<a.top||y>a.bottom) return -1; const i=Math.round(ch.scales.y.getValueForPixel(y)); return i>=0&&i<G.length&&chPodeIr_(G[i].k)?i:-1; };
+
   op.scales={x:{beginAtZero:true,ticks:{color:pal.mu,callback:v=>v+'h'},grid:{color:pal.grid}},y:{ticks:{color:pal.ink,autoSkip:false},grid:{display:false}}};
   op.plugins.tooltip={callbacks:{label:i=>' '+fHM_(G[i.dataIndex].h)+' ('+chFmtP_(G[i.dataIndex].h/tot*100)+'% do total) · '+G[i.dataIndex].pes.size+' pessoa'+(G[i.dataIndex].pes.size>1?'s':'')}};
-  return [new Chart(host.querySelector('canvas'),{type:'bar',data:{labels:G.map(x=>x.label),datasets:[{data:G.map(x=>Math.round(x.h*100)/100),backgroundColor:cor,borderRadius:4,barThickness:18}]},options:op,plugins:[rot]})];
+  const inst=new Chart(host.querySelector('canvas'),{type:'bar',data:{labels:G.map(x=>x.label),datasets:[{data:G.map(x=>Math.round(x.h*100)/100),backgroundColor:cor,borderRadius:4,barThickness:18}]},options:op,plugins:[rot]});
+  // nome (eixo) ou barra clicável → Desempenho por Pessoa (listeners no canvas: o Chart.js só avisa cliques dentro da área do gráfico, e o nome fica fora dela)
+  const cv=inst.canvas; cv.addEventListener('click',e=>{ const i=linha(inst,{y:e.offsetY}); if(i>=0) chIr_(G[i].k); });
+  cv.addEventListener('mousemove',e=>{ cv.style.cursor=linha(inst,{y:e.offsetY})>=0?'pointer':''; });
+  return [inst];
 }
 function chG2_(host,C,alt){
   let G=chGrupos_(C,'d',CH.dim3); if(!G.length) return chVazio_(host); const pal=chCores_(), mx=15, cortado=G.length>mx; G=G.slice(0,mx);
@@ -14421,7 +14848,7 @@ function chG4_(host,C,alt){
   const dim=CH.dim5, G=chGrupos_(C,dim==='pessoa'?'p':'d',dim==='pessoa'?'cargo':dim); if(!G.length) return chVazio_(host); const pal=chCores_();
   let L=G.slice(0,CH_MAX_PESSOAS).map((x,i)=>Object.assign({},x,{slot:i})); if(G.length>CH_MAX_PESSOAS){ const r=G.slice(CH_MAX_PESSOAS); L.push({k:'__demais',label:'Demais ('+r.length+')',h:r.reduce((a,x)=>a+x.h,0),slot:-1}); }
   const vis=L.filter(x=>!CH.oculto.has(x.k));
-  host.insertAdjacentHTML('beforeend','<div class="ch-donut'+(alt?' amplo':'')+'"><div class="ch-cv dn"><canvas></canvas></div><div class="ch-dl">'+L.map(x=>{ const off=CH.oculto.has(x.k); return '<button type="button" class="ch-lg ch-dr'+(off?' off':'')+'" data-ch-s="'+feEsc_(x.k)+'"><i class="ch-sw'+(x.slot>=8?' d':'')+'" style="border-color:'+chCorSerie_(x,{pal:pal.pal,cinza:pal.cinza})+'"></i><span class="n">'+feEsc_(x.label)+'</span><b>'+fHM_(x.h)+'</b><em>'+chFmtP_(x.h/C.tot*100)+'%</em></button>'; }).join('')+'<div class="ch-dt">Total: <b>'+fHM_(C.tot)+'</b> · 100%</div></div></div>');
+  host.insertAdjacentHTML('beforeend','<div class="ch-donut'+(alt?' amplo':'')+'"><div class="ch-cv dn"><canvas></canvas></div><div class="ch-dl">'+L.map(x=>{ const off=CH.oculto.has(x.k); return '<button type="button" class="ch-lg ch-dr'+(off?' off':'')+'" data-ch-s="'+feEsc_(x.k)+'"><i class="ch-sw'+(x.slot>=8?' d':'')+'" style="border-color:'+chCorSerie_(x,{pal:pal.pal,cinza:pal.cinza})+'"></i><span class="n">'+feEsc_(x.label)+'</span><b>'+fHM_(x.h)+'</b><em>'+chFmtP_(x.h/C.tot*100)+'%</em></button>'+(dim==='pessoa'&&chPodeIr_(x.k)?'<span class="person-link ch-go" data-ch-go="'+feEsc_(x.k)+'" title="Abrir Desempenho por Pessoa" role="link">↗</span>':''); }).join('')+'<div class="ch-dt">Total: <b>'+fHM_(C.tot)+'</b> · 100%</div></div></div>');
   const op={responsive:true,maintainAspectRatio:false,animation:false,cutout:'58%',plugins:{legend:{display:false},tooltip:{callbacks:{label:i=>' '+vis[i.dataIndex].label+': '+fHM_(vis[i.dataIndex].h)+' · '+chFmtP_(vis[i.dataIndex].h/C.tot*100)+'%'}}}};
   return [new Chart(host.querySelector('canvas'),{type:'doughnut',data:{labels:vis.map(x=>x.label),datasets:[{data:vis.map(x=>Math.round(x.h*100)/100),backgroundColor:vis.map(x=>chFill_(x,{pal:pal.pal,cinza:pal.cinza,surf:pal.surf})),borderColor:pal.surf,borderWidth:2}]},options:op})];
 }
@@ -14450,22 +14877,22 @@ function chG6_(host,C,alt){
   if(g==='d'&&chDiasEntre_(CH.f.ini,CH.f.fim)>92){ g='s'; nota='Mais de 92 dias: as colunas foram agrupadas por semana.'; }
   const B=chBuckets_(CH.f.ini,CH.f.fim,g), G=chGrupos_({recs:C.recs,g},CH.visao,CH.dim); if(!G.length) return chVazio_(host);
   const pal=chCores_(), mx=G.reduce((a,x)=>Math.max(a,...Object.values(x.b)),0)||1, nc=B.length;
-  const rows=G.map(x=>{ return '<tr><th class="ch-hn" title="'+feEsc_(x.label)+'">'+feEsc_(x.label)+'</th>'+B.map(b=>{ const v=x.b[b]; if(v===undefined) return '<td class="ch-h0" title="'+feEsc_(x.label)+' · '+chBTit_(b,g)+': sem registro"></td>'; const cl=Math.min(4,Math.floor(v/mx*5)); return '<td style="background:'+pal.seq[cl]+';color:'+(cl>=3?'#fff':'#0f172a')+'" title="'+feEsc_(x.label)+' · '+chBTit_(b,g)+': '+fHM_(v)+'">'+(nc<=16?Math.round(v):'')+'</td>'; }).join('')+'<td class="ch-ht">'+fHM_(x.h)+'</td></tr>'; }).join('');
+  const rows=G.map(x=>{ return '<tr><th class="ch-hn" title="'+feEsc_(x.label)+'">'+chLk_(x.k,x.label)+'</th>'+B.map(b=>{ const v=x.b[b]; if(v===undefined) return '<td class="ch-h0" title="'+feEsc_(x.label)+' · '+chBTit_(b,g)+': sem registro"></td>'; const cl=Math.min(4,Math.floor(v/mx*5)); return '<td style="background:'+pal.seq[cl]+';color:'+(cl>=3?'#fff':'#0f172a')+'" title="'+feEsc_(x.label)+' · '+chBTit_(b,g)+': '+fHM_(v)+'">'+(nc<=16?Math.round(v):'')+'</td>'; }).join('')+'<td class="ch-ht">'+fHM_(x.h)+'</td></tr>'; }).join('');
   host.insertAdjacentHTML('beforeend','<div class="ch-heat'+(alt?' amplo':'')+'"><table><thead><tr><th></th>'+B.map(b=>'<th title="'+chBTit_(b,g)+'">'+chBRot_(b,g)+'</th>').join('')+'<th>Total</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="ch-nota"><span class="ch-h0 ch-key"></span> hachurado = sem registro (diferente de 0 h) · escala: '+pal.seq.map(c=>'<span class="ch-key" style="background:'+c+'"></span>').join('')+' mais horas (máx. '+fHM_(mx)+' em '+({d:'um dia',s:'uma semana',m:'um mês'}[g])+')'+(nota?' · '+nota:'')+'</div>');
   return [];
 }
 // ---------- visão em tabela (mesmos números do gráfico) ----------
-function chTab_(cols,rows){ return '<div class="ch-tbw"><table class="ch-tb"><thead><tr>'+cols.map(c=>'<th>'+feEsc_(c)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map((c,i)=>'<td'+(i?' class="n"':'')+'>'+feEsc_(c)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>'; }
+function chTab_(cols,rows,lk){ return '<div class="ch-tbw"><table class="ch-tb"><thead><tr>'+cols.map(c=>'<th>'+feEsc_(c)+'</th>').join('')+'</tr></thead><tbody>'+rows.map((r,ri)=>'<tr>'+r.map((c,i)=>'<td'+(i&&!(lk&&i===lk.col)?' class="n"':'')+'>'+(lk&&i===lk.col&&lk.keys[ri]!==undefined?chLk_(lk.keys[ri],c):feEsc_(c))+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>'; }
 function chTabela_(C){
   const g=CH.graf, hh=v=>v===null||v===undefined?'—':fHM_(v), pc=v=>chFmtP_(v)+'%';
   if(g===0||g===3){ const S=chSeries_(C,true), B=C.buckets, V=chSerVals_(S,B); const rows=B.map((b,i)=>[chBTit_(b,C.g)].concat(S.lista.map(s=>hh(V[s.k][i]))).concat([hh(S.lista.reduce((a,s)=>a+(s.b[b]||0),0)||null)]));
     if(g===0) rows.push(['Tendência'].concat(S.lista.map(s=>{ const t=chTendencia_(V[s.k],C.parcial); return t?(t.dir==='up'?'▲ crescimento':(t.dir==='dn'?'▼ redução':'● estável')):'—'; })).concat([''])); return chTab_(['Período'].concat(S.lista.map(s=>s.label)).concat(['Total']),rows); }
-  if(g===1){ let G=chGrupos_(C,CH.visao,CH.dim); if(CH.ord==='asc') G=G.slice().reverse(); return chTab_(['#',CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim],'Horas','% do total','Tarefas','Reuniões','Geral','Outros','Pessoas'],G.map((x,i)=>[i+1,x.label,fHM_(x.h),pc(x.h/C.tot*100),hh(x.tp[0]||null),hh(x.tp[1]||null),hh(x.tp[2]||null),hh(x.tp[3]||null),x.pes.size])); }
+  if(g===1){ let G=chGrupos_(C,CH.visao,CH.dim); if(CH.ord==='asc') G=G.slice().reverse(); return chTab_(['#',CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim],'Horas','% do total','Tarefas','Reuniões','Geral','Outros','Pessoas'],G.map((x,i)=>[i+1,x.label,fHM_(x.h),pc(x.h/C.tot*100),hh(x.tp[0]||null),hh(x.tp[1]||null),hh(x.tp[2]||null),hh(x.tp[3]||null),x.pes.size]),{col:1,keys:G.map(x=>x.k)}); }
   if(g===2){ const G=chGrupos_(C,'d',CH.dim3); return chTab_([CH_DIMS[CH.dim3],'Tarefas','Reuniões','Geral','Outros','Total','% do total','Pessoas'],G.map(x=>[x.label,hh(x.tp[0]||null),hh(x.tp[1]||null),hh(x.tp[2]||null),hh(x.tp[3]||null),fHM_(x.h),pc(x.h/C.tot*100),x.pes.size])); }
   if(g===4){ const d=CH.dim5, G=chGrupos_(C,d==='pessoa'?'p':'d',d==='pessoa'?'cargo':d); return chTab_([d==='pessoa'?'Pessoa':CH_DIMS[d],'Horas','% do total'],G.map(x=>[x.label,fHM_(x.h),pc(x.h/C.tot*100)]).concat([['Total',fHM_(C.tot),'100%']])); }
-  if(g===5){ const X=chCmpDados_(); if(!X) return '<div class="ch-vazio">Defina os dois períodos.</div>'; return chTab_([CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim],'A · '+X.pc.A.rot,'B · '+X.pc.B.rot,'Diferença','Variação'],X.lin.map(l=>[l.label,hh(l.a||null),hh(l.b||null),(l.a-l.b>0?'+':(l.a-l.b<0?'−':''))+fHM_(Math.abs(l.a-l.b)),l.b>0?(l.a>=l.b?'▲ ':'▼ ')+pc(Math.abs((l.a-l.b)/l.b*100)):'—']).concat([['Total',fHM_(X.tA),fHM_(X.tB),(X.dif>0?'+':(X.dif<0?'−':''))+fHM_(Math.abs(X.dif)),X.pct===null?'—':(X.pct>=0?'▲ ':'▼ ')+pc(Math.abs(X.pct*100))]])); }
+  if(g===5){ const X=chCmpDados_(); if(!X) return '<div class="ch-vazio">Defina os dois períodos.</div>'; return chTab_([CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim],'A · '+X.pc.A.rot,'B · '+X.pc.B.rot,'Diferença','Variação'],X.lin.map(l=>[l.label,hh(l.a||null),hh(l.b||null),(l.a-l.b>0?'+':(l.a-l.b<0?'−':''))+fHM_(Math.abs(l.a-l.b)),l.b>0?(l.a>=l.b?'▲ ':'▼ ')+pc(Math.abs((l.a-l.b)/l.b*100)):'—']).concat([['Total',fHM_(X.tA),fHM_(X.tB),(X.dif>0?'+':(X.dif<0?'−':''))+fHM_(Math.abs(X.dif)),X.pct===null?'—':(X.pct>=0?'▲ ':'▼ ')+pc(Math.abs(X.pct*100))]]),{col:0,keys:X.lin.map(l=>l.k)}); }
   let gg=CH.hm==='auto'?(C.g==='t'||C.g==='a'?'m':C.g):CH.hm; if(gg==='d'&&chDiasEntre_(CH.f.ini,CH.f.fim)>92) gg='s'; const B=chBuckets_(CH.f.ini,CH.f.fim,gg), G=chGrupos_({recs:C.recs,g:gg},CH.visao,CH.dim);
-  return chTab_([CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim]].concat(B.map(b=>chBRot_(b,gg))).concat(['Total']),G.map(x=>[x.label].concat(B.map(b=>hh(x.b[b]))).concat([fHM_(x.h)])));
+  return chTab_([CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim]].concat(B.map(b=>chBRot_(b,gg))).concat(['Total']),G.map(x=>[x.label].concat(B.map(b=>hh(x.b[b]))).concat([fHM_(x.h)])),{col:0,keys:G.map(x=>x.k)});
 }
 const CH_DRAW=[chG0_,chG1_,chG2_,chG3_,chG4_,chG5_,chG6_];
 function chLimpaInst_(arr){ (arr||[]).forEach(c=>{ try{c.destroy();}catch(e){} }); }
@@ -14477,6 +14904,7 @@ function chDesenhar_(host,idx,alt,C){
   return CH_DRAW[idx](host,C,alt)||[];
 }
 function chRender_(){
+  if(!CH.carregado){ chChips_(); return; }
   const C=CH.calc=chCalcular_(); chKpis_(C); chAvisos_(C); chCtl_(); chChips_();
   document.querySelectorAll('#ch-tabs button').forEach(b=>b.setAttribute('aria-selected',String(+b.dataset.chTab===CH.graf)));
   document.getElementById('ch-tb').textContent=CH.tabela?'Ver gráfico':'Ver tabela';
@@ -14553,18 +14981,19 @@ function chAtalho_(k){
 function chLimpar_(){
   Object.assign(CH.f,{g:'m',pess:[],cargo:'',nv:'',area:'',head:'',gestor:'',cli:'',proj:'',tipo:''}); CH.slot={}; CH.oculto=new Set();
   ['ch-cargo','ch-nv','ch-area','ch-head','ch-gestor','ch-cli','ch-proj','ch-tipo'].forEach(id=>{ document.getElementById(id).value=''; }); document.getElementById('ch-pq').value='';
-  chAtalho_('ano'); chLer_(); chSegG_(); chPadraoCmp_(); chPessoasLista_(); chCarregar_(false);
+  chAtalho_('ano'); chLer_(); chSegG_(); chPadraoCmp_(); chCascata_(false); chAuto_();
 }
-function chSegG_(){ document.querySelectorAll('[data-ch-g]').forEach(b=>b.classList.toggle('on',b.dataset.chG===CH.f.g)); }
+function chSegG_(){ document.querySelectorAll('[data-ch-g]').forEach(b=>b.classList.toggle('active',b.dataset.chG===CH.f.g)); }
 function chAjustaFiltrosMobile_(){ const d=document.getElementById('ch-fbox'); if(!d) return; if(window.matchMedia('(min-width:761px)').matches) d.open=true; }
 function initComparativoHoras(){
   const pg=document.getElementById('page-comparativohoras');
   if(!CH.ligado){
     CH.ligado=true; const hoje=chHoje_();
     document.getElementById('ch-ini').value=hoje.slice(0,4)+'-01-01'; document.getElementById('ch-fim').value=hoje; chLer_(); chPadraoCmp_(); chSegG_(); chAjustaFiltrosMobile_(); window.addEventListener('resize',chAjustaFiltrosMobile_);
-    const recarrega=()=>{ chLer_(); chPadraoCmp_(); chCarregar_(false); };
+    const recarrega=()=>{ chLer_(); chPadraoCmp_(); chAuto_(); };
     ['ch-ini','ch-fim'].forEach(id=>document.getElementById(id).addEventListener('change',recarrega));
-    ['ch-cargo','ch-nv','ch-area','ch-head','ch-gestor','ch-cli','ch-proj','ch-tipo'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{ chLer_(); chRender_(); chAmploSync_(); }));
+    ['ch-head','ch-gestor','ch-area','ch-cargo','ch-nv','ch-cli'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{ chLer_(); if(id==='ch-cli') CH.f.proj=''; chCascata_(); chRender_(); chAmploSync_(); }));
+    ['ch-proj','ch-tipo'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{ chLer_(); chRender_(); chAmploSync_(); }));
     document.getElementById('ch-pq').addEventListener('input',debounce(chPessoasLista_,150));
     pg.addEventListener('change',e=>{
       const p=e.target.closest('[data-ch-p]'); if(p){ const em=p.dataset.chP, ar=CH.f.pess;
@@ -14573,7 +15002,7 @@ function initComparativoHoras(){
       const c=e.target.closest('[data-chc]'); if(!c) return; const k=c.dataset.chc, v=c.type==='checkbox'?c.checked:c.value;
       if(k==='dim') CH.dim=v; else if(k==='tend') CH.tend=v; else if(k==='ord') CH.ord=v; else if(k==='dim3') CH.dim3=v; else if(k==='dim5') CH.dim5=v; else if(k==='hm') CH.hm=v;
       else if(k==='cmodo') CH.cmp.modo=v; else if(k==='aIni') CH.cmp.a.ini=v; else if(k==='aFim') CH.cmp.a.fim=v; else if(k==='bIni') CH.cmp.b.ini=v; else if(k==='bFim') CH.cmp.b.fim=v; else CH.cmp[k]=v;
-      CH.oculto=new Set(); if(['cmodo','mA','mB','tA','tB','yA','yB','aIni','aFim','bIni','bFim'].includes(k)) chCarregar_(false); else { chRender_(); chAmploSync_(); }
+      CH.oculto=new Set(); if(['cmodo','mA','mB','tA','tB','yA','yB','aIni','aFim','bIni','bFim'].includes(k)) chAuto_(); else { chRender_(); chAmploSync_(); }
     });
     pg.addEventListener('click',e=>{
       const t=e.target.closest('[data-ch-g]'); if(t){ CH.f.g=t.dataset.chG; chSegG_(); chRender_(); chAmploSync_(); return; }
@@ -14581,23 +15010,27 @@ function initComparativoHoras(){
       const tb=e.target.closest('#ch-tabs button'); if(tb){ CH.graf=+tb.dataset.chTab; CH.oculto=new Set(); chRender_(); return; }
       const v=e.target.closest('[data-ch-v]'); if(v){ CH.visao=v.dataset.chV; CH.oculto=new Set(); chRender_(); chAmploSync_(); return; }
       const s=e.target.closest('[data-ch-s]'); if(s){ const k=s.dataset.chS; CH.oculto.has(k)?CH.oculto.delete(k):CH.oculto.add(k); chRender_(); chAmploSync_(); return; }
+      const go=e.target.closest('[data-ch-go]'); if(go){ chIr_(go.dataset.chGo); return; }
       const x=e.target.closest('[data-ch-x]'); if(x){ const em=x.dataset.chX; CH.f.pess=CH.f.pess.filter(y=>y!==em); delete CH.slot[em]; chPessoasEstado_(); chRender_(); chAmploSync_(); return; }
       if(e.target.closest('#ch-limpar')){ chLimpar_(); return; }
       if(e.target.closest('#ch-tb')){ CH.tabela=!CH.tabela; chRender_(); chAmploSync_(); return; }
       if(e.target.closest('#ch-exp')){ chAmplo_(true); return; }
       const xl=e.target.closest('#ch-xl'); if(xl){ chExcel_(xl); return; }
       const pd=e.target.closest('#ch-pdf'); if(pd){ chPdf_(pd); return; }
-      if(e.target.closest('#ch-atualizar')||e.target.closest('#ch-retry')){ chCarregar_(true); return; }
+      if(e.target.closest('#ch-carregar')){ chCarregar_(CH.carregado); return; }
+      if(e.target.closest('#ch-retry')){ chCarregar_(true); return; }
     });
     document.getElementById('ch-over').addEventListener('click',e=>{
       if(e.target.id==='ch-over'||e.target.closest('#ch-over-x')){ chAmplo_(false); return; }
+      const go=e.target.closest('[data-ch-go]'); if(go){ chIr_(go.dataset.chGo); return; }
       const s=e.target.closest('[data-ch-s]'); if(s){ const k=s.dataset.chS; CH.oculto.has(k)?CH.oculto.delete(k):CH.oculto.add(k); chRender_(); chAmploSync_(); }
     });
     document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!document.getElementById('ch-over').hidden) chAmplo_(false); });
     document.addEventListener('mousedown',e=>{ const d=document.getElementById('ch-pdd'); if(d&&d.open&&!d.contains(e.target)) d.removeAttribute('open'); });
     new MutationObserver(()=>{ if(CH.calc&&pg.classList.contains('active')){ chRender_(); chAmploSync_(); } }).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   }
-  chCarregar_(false);
+  // v18.2.1: nada é buscado ao abrir; o cadastro de pessoas já alimenta os filtros
+  if(!CH.carregado){ chMontarRecs_(); chPrepararPessoas_(); chCascata_(false); chBotao_(false); if(!document.getElementById('ch-status').innerHTML) chVazioPag_(); }
 }
 function chAmploSync_(){ if(!document.getElementById('ch-over').hidden) chAmplo_(true); }
 
@@ -14782,7 +15215,7 @@ async function excluirFeriado_(id){
 // ============================================================
 function avUrl_(action,extra){ return feUrl_(action,extra); }
 function avMsgHtml_(t){ return feEsc_(t).replace(/\n/g,'<br>'); }
-function avDataHoraBr_(s){ return String(s||''); }
+function avDataHoraBr_(s){ return dataTxt_(s,true); }
 // Mostra UM aviso. Resolve {acao:'ciente',pendentes:[...]} ou {acao:'fechar'}.
 function avModal_(av,n,total){
   return new Promise(resolve=>{
@@ -15036,9 +15469,9 @@ function ntFb_(msg,ok){
   el.className='fe-msg '+(ok?'ok':'er'); el.textContent=msg; el.style.display='block';
   clearTimeout(window.__ntFb); window.__ntFb=setTimeout(()=>{ el.style.display='none'; },7000);
 }
-function ntDt_(iso){
+function ntDt_(iso){ // v18.4: carimbo técnico ISO (com fuso) → dd/mm/aaaa hh:mm; a parte local já está em America/Sao_Paulo
   const m=String(iso||'').match(/^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})/);
-  return m?m[3]+'/'+m[2]+'/'+m[1]+' '+m[4]+':'+m[5]:(iso?String(iso):'—');
+  return m?_dtP2(+m[3])+'/'+m[2]+'/'+m[1]+' '+m[4]+':'+m[5]:dataTxt_(iso,true);
 }
 function ntStCls_(e){ return e==='Em processamento'?'Em':e; }
 function ntBadgeEstado_(e){ return '<span class="nt-st '+feEsc_(ntStCls_(e))+'">'+feEsc_(NT_ESTADO_LBL[e]||e)+'</span>'; }
