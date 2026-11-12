@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzpANXbtMqYBfoh3f0VLFiPJqPtP8w8bPfpytZsz2YVmmXspxwl1VIZueNR7Xl6BsuwAQ/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwsKhMtU_DoIzT9-QqtuGYdgRYoyohsEdKbVbb_2ilicljxiYfO1eAbIPcv7ynK-FCM7w/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1791,6 +1791,21 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .ch-cmp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:4px 0 6px;}@media(max-width:700px){.ch-cmp{grid-template-columns:repeat(2,minmax(0,1fr));}}
 .ch-cmp>div{border:1px solid var(--border);border-radius:10px;padding:8px 12px;background:var(--surface-alt);}.ch-cmp small{display:block;color:var(--text-muted);font-size:11px;font-weight:700;}.ch-cmp b{font-size:20px;display:block;}.ch-cmp span{font-size:11.5px;color:var(--text-muted);}
 .ch-cmp b.up{color:#16a34a;}.ch-cmp b.dn{color:#dc2626;}
+/* v18.9 — selo de variação (semáforo): verde = mais horas, vermelho = menos horas, amarelo = estável; 3 intensidades */
+.vr{--bg:#fefce8;--fg:#854d0e;--bd:#fde68a;--ic:#eab308;display:inline-flex;align-items:center;gap:6px;background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:99px;padding:2px 10px 2px 4px;font-weight:700;font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.vr i{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--ic);color:#fff;font-style:normal;font-size:11px;line-height:1;}
+.vr.eq i{color:#422006;}.vr.sm{font-size:11px;padding:1px 8px 1px 3px;}.vr.sm i{width:16px;height:16px;font-size:9px;}
+.vr.up1{--bg:#ecfdf3;--fg:#166534;--bd:#bbf7d0;--ic:#4ade80;}.vr.up2{--bg:#d1fae5;--fg:#166534;--bd:#6ee7b7;--ic:#22c55e;}.vr.up3{--bg:#a7f3d0;--fg:#14532d;--bd:#34d399;--ic:#15803d;}
+.vr.dn1{--bg:#fef2f2;--fg:#991b1b;--bd:#fecaca;--ic:#f87171;}.vr.dn2{--bg:#fee2e2;--fg:#991b1b;--bd:#fca5a5;--ic:#ef4444;}.vr.dn3{--bg:#fecaca;--fg:#7f1d1d;--bd:#f87171;--ic:#b91c1c;}
+.vr.nd{--bg:var(--surface-alt);--fg:var(--text-muted);--bd:var(--border);--ic:var(--border);}.vr.nd i{color:var(--text-muted);}
+html[data-theme="dark"] .vr{--bg:#2b2410;--fg:#fde68a;--bd:#854d0e;}
+html[data-theme="dark"] .vr.up1{--bg:#0f2a1d;--fg:#86efac;--bd:#14532d;}html[data-theme="dark"] .vr.up2{--bg:#123524;--fg:#86efac;--bd:#166534;}html[data-theme="dark"] .vr.up3{--bg:#14532d;--fg:#bbf7d0;--bd:#22c55e;}
+html[data-theme="dark"] .vr.dn1{--bg:#2d1313;--fg:#fca5a5;--bd:#7f1d1d;}html[data-theme="dark"] .vr.dn2{--bg:#3b1515;--fg:#fca5a5;--bd:#991b1b;}html[data-theme="dark"] .vr.dn3{--bg:#7f1d1d;--fg:#fee2e2;--bd:#ef4444;}
+.ch-cmp>div.sem.up{background:#ecfdf3;border-color:#bbf7d0;}.ch-cmp>div.sem.dn{background:#fef2f2;border-color:#fecaca;}.ch-cmp>div.sem.eq{background:#fefce8;border-color:#fde68a;}
+.ch-cmp>div.sem.up b{color:#166534;}.ch-cmp>div.sem.dn b{color:#991b1b;}.ch-cmp>div.sem.eq b{color:#854d0e;}
+html[data-theme="dark"] .ch-cmp>div.sem.up{background:#0f2a1d;border-color:#14532d;}html[data-theme="dark"] .ch-cmp>div.sem.dn{background:#2d1313;border-color:#7f1d1d;}html[data-theme="dark"] .ch-cmp>div.sem.eq{background:#2b2410;border-color:#854d0e;}
+html[data-theme="dark"] .ch-cmp>div.sem.up b{color:#86efac;}html[data-theme="dark"] .ch-cmp>div.sem.dn b{color:#fca5a5;}html[data-theme="dark"] .ch-cmp>div.sem.eq b{color:#fde68a;}
+.ch-tr.vr{font-size:11px;}
 .ch-heat{overflow:auto;max-height:520px;}.ch-heat.amplo{max-height:calc(100vh - 220px);}
 .ch-heat table{border-collapse:separate;border-spacing:2px;font-size:11px;}.ch-heat th{font-weight:600;color:var(--text-muted);padding:2px 4px;white-space:nowrap;position:sticky;top:0;background:var(--surface);z-index:1;}
 .ch-heat th.ch-hn{position:sticky;left:0;top:auto;text-align:right;color:var(--text);max-width:180px;overflow:hidden;text-overflow:ellipsis;z-index:2;}.ch-heat td{min-width:28px;height:24px;text-align:center;border-radius:4px;}.ch-heat td.ch-ht{background:none;font-weight:700;color:var(--text);padding:0 6px;white-space:nowrap;}
@@ -2213,6 +2228,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
         <button class="nav-cat-trigger" type="button" title="Projetos"><span class="nav-cat-ic" aria-hidden="true">◫</span><span class="nav-cat-lbl">Projetos</span><svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-cat-panel">
           <button class="nav-tab" data-page="gerente">Meus Projetos</button>
+          <button class="nav-tab" data-page="equipehoras">Acompanhamento de Horas da Equipe</button>
           <button class="nav-tab" data-page="lider">Projetos por Líder</button>
           <button class="nav-tab" data-page="relatorioprojetos">Relatório de Projetos e Equipes</button>
           <button class="nav-tab" data-page="statusreport">Status Report</button>
@@ -2785,6 +2801,18 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
     </section>
 
     <!-- PAGE PESSOAS OCIOSAS -->
+    <section class="page" id="page-equipehoras">
+      <div class="page-header"><div><h1>Acompanhamento de Horas da Equipe</h1><p>Horas previstas × apontadas dos participantes dos projetos em que você é GP. Horas apontadas não são horas faturáveis.</p></div></div>
+      <div class="filter-bar">
+        <div class="filter-field"><label>Projeto</label><select id="f-eqh-proj"><option value="">Todos os meus projetos</option></select></div>
+        <div class="filter-field"><label>Participante</label><select id="f-eqh-pes"><option value="">Todos (dos meus projetos)</option></select></div>
+        <div class="filter-field"><label>De</label><input type="date" id="f-eqh-de"></div>
+        <div class="filter-field"><label>Até</label><input type="date" id="f-eqh-ate"></div>
+        <div class="filter-field"><label>&nbsp;</label><button type="button" class="btn" id="eqh-csv">Exportar CSV</button></div>
+      </div>
+      <div class="grid grid-kpi" id="kpi-eqh"></div>
+      <div id="eqh-content"></div>
+    </section>
     <section class="page" id="page-ociosos">
       <div class="page-header"><div><h1>Pessoas Disponíveis</h1><p>Colaboradores sem tarefas/horas no Zoho, validado contra a equipe de projetos ativos na aba Portifolio.</p></div></div>
       <div class="filter-bar">
@@ -3104,7 +3132,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v18.5';
+const APP_VERSION='v19.0';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -3270,7 +3298,7 @@ async function attemptLoadWithToken(token, viewAsEmail){
     // os dados ainda.
     CURRENT_USER_NOME=authResp.nome; CURRENT_USER_EMAIL=authResp.email;
     EFFECTIVE_PERFIL=authResp.perfil; VIEW_AS_STATE=null; TODOS_USUARIOS=[];
-    EFFECTIVE_EXCECOES=authResp.excecoes||{add:[],remove:[]};
+    EFFECTIVE_EXCECOES=authResp.excecoes||{add:[],remove:[]}; EFFECTIVE_PAGINAS=authResp.paginas||null;
     const viewasWrapFase1=document.getElementById('viewas-wrap');
     if(viewasWrapFase1) viewasWrapFase1.style.display = (authResp.perfil==='Administrador') ? '' : 'none';
     addLogoutControl(authResp.nome, authResp.perfil);
@@ -3332,10 +3360,22 @@ async function attemptLoadWithToken(token, viewAsEmail){
 // (azul) ou 'melhoria' (verde). O campo tag (texto exato) é o que hoje
 // define a cor do badge — ver TAG_CORES em renderNovidades().
 //
-// Atualize esta data junto com qualquer alteração no array abaixo — ela
-// aparece no card "Última atualização" no topo da tela de Novidades.
-const NOVIDADES_ATUALIZADO_EM='06/11/2026';
+// v18.7: a data do card "Última atualização" é CALCULADA: a mais recente entre os itens deste array (data),
+// as linhas do Histórico da Wiki (WIKI_HISTORICO.d) e esta constante (reserva). Toda atualização do sistema deve
+// registrar uma linha no Histórico e/ou um item aqui — isso basta para a data acompanhar sozinha.
+const NOVIDADES_ATUALIZADO_EM='10/11/2026';
+function novidadesUltimaAtualizacao_(){
+  const br=v=>{const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v||'');return m?m[3]+'-'+m[2]+'-'+m[1]:''};
+  const iso=[br(NOVIDADES_ATUALIZADO_EM)];
+  try{ (NOVIDADES||[]).forEach(n=>iso.push(/^\d{4}-\d{2}-\d{2}$/.test(n.data||'')?n.data:'')); }catch(e){}
+  try{ (WIKI_HISTORICO||[]).forEach(h=>iso.push(br(h.d))); }catch(e){}
+  const mx=iso.filter(Boolean).sort().pop();
+  return mx?mx.slice(8,10)+'/'+mx.slice(5,7)+'/'+mx.slice(0,4):NOVIDADES_ATUALIZADO_EM;
+}
 const NOVIDADES=[
+  {icone:'📋', bg:'#eff6ff', cor:'#2563eb', titulo:'Análise por Pessoa mais objetiva', descricao:'Em Carga e Risco de Alocação, a listagem agora mostra o Head de cada pessoa, a Próxima Entrega pela data de vencimento da próxima tarefa em aberto e a quantidade de Tarefas em aberto. As colunas Complexidade e Prioridade saíram da lista (o Score continua considerando esses fatores).', paginas:['inteligencia'], data:'2026-11-12', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🚦', bg:'#fefce8', cor:'#a16207', titulo:'Semáforo nas variações de horas', descricao:'No Comparativo e Evolução de Horas, as variações agora mostram seta (▲ ▼ ●) e cor de semáforo: verde = mais horas, vermelho = menos horas, amarelo = estável, com tons mais fortes para variações maiores.', data:'2026-11-12'},
+  {icone:'⏱️', bg:'#eff6ff', cor:'#2563eb', titulo:'Acompanhamento de Horas da Equipe (GP)', descricao:'Nova página para o Gerente de Projeto acompanhar horas previstas × apontadas dos participantes dos projetos em que é GP, com total por projeto, filtros e exportação. Usuários comuns e GP passam a abrir o Desempenho por Pessoa só com os próprios dados. As páginas liberadas agora são calculadas pelo servidor.', paginas:['equipehoras','pessoa','permissoes'], data:'2026-11-10', tag:'Novo', tagCor:'nova'},
   {icone:'🧑‍💻', bg:'#f0fdf4', cor:'#16a34a', titulo:'Requisitos de equipe agora têm Cargo', descricao:'Na Edição do Portfólio, cada requisito de equipe pode indicar o Cargo, que depende da Área escolhida (lista com busca, só cargos ativos daquela área). Cargo vazio continua valendo como qualquer cargo da área. Quando preenchido, a Decisão de Alocação considera elegíveis só as pessoas desse cargo.', paginas:['portfolioedit','alocacao'], data:'2026-11-10', tag:'Novo'},
   {icone:'⏳', bg:'#ecfeff', cor:'#0891b2', titulo:'Comparativo de Horas: carregar só quando você pedir', descricao:'A página abre sem buscar dados. Escolha período, agrupamento e filtros e clique em Carregar comparativo. Depois de carregado, mudar filtros atualiza na hora; para outro período, use Atualizar dados.', paginas:['comparativohoras'], data:'2026-11-10', tag:'Melhoria'},
   {icone:'🎛️', bg:'#eff6ff', cor:'#2563eb', titulo:'Comparativo de Horas: filtros em cascata e nome clicável', descricao:'Os filtros foram reordenados (Atalhos, período, agrupamento; depois Head, Gestor, Pessoas, Área, Cargo, Senioridade, Cliente e Projeto) e agora funcionam em cascata: ao escolher um Head, a lista de Pessoas e os demais filtros mostram só quem faz parte dele. Clique no nome de uma pessoa (ranking, tabelas, mapa de calor, legenda ou chips) para abrir o Desempenho por Pessoa já com o mesmo período; o botão Voltar traz o Comparativo como estava.', paginas:['comparativohoras','pessoa'], data:'2026-11-10', tag:'Melhoria'},
@@ -3438,7 +3478,7 @@ function novPrimeiraPaginaDoPerfil_(){
 }
 function renderNovidades(){
   const dateEl=document.getElementById('nov-update-date');
-  if(dateEl) dateEl.textContent=NOVIDADES_ATUALIZADO_EM;
+  if(dateEl) dateEl.textContent=novidadesUltimaAtualizacao_();
   // Cores por texto exato da tag — 4 categorias visuais (verde/azul/ciano/roxo).
   // Cai em "Melhoria" (verde) se aparecer um texto de tag não mapeado aqui.
   const TAG_CORES={
@@ -3653,7 +3693,7 @@ async function carregarDadosCore(token){
       showDataBadge('live');
       updateFooter(j._ultimaAtualizacaoPlanilha, j._backendVersion);
       VIEW_AS_STATE=null; TODOS_USUARIOS=j._todosUsuarios||[];
-      EFFECTIVE_PERFIL=j._perfil; EFFECTIVE_EXCECOES=j._excecoesPermissao||{add:[],remove:[]};
+      EFFECTIVE_PERFIL=j._perfil; EFFECTIVE_EXCECOES=j._excecoesPermissao||{add:[],remove:[]}; EFFECTIVE_PAGINAS=j._paginasPermitidas||null;
       const viewasWrapAdmin=document.getElementById('viewas-wrap');
       if(viewasWrapAdmin) viewasWrapAdmin.style.display=(j._perfil==='Administrador')?'':'none';
       addLogoutControl(j._usuarioNome||j._usuario, j._perfil);
@@ -3684,7 +3724,7 @@ async function carregarDadosCore(token){
     VIEW_AS_STATE = j._viewingAs || null;
     TODOS_USUARIOS = j._todosUsuarios || [];
     EFFECTIVE_PERFIL = VIEW_AS_STATE ? VIEW_AS_STATE.perfil : j._perfil;
-    EFFECTIVE_EXCECOES = j._excecoesPermissao || {add:[],remove:[]};
+    EFFECTIVE_EXCECOES = j._excecoesPermissao || {add:[],remove:[]}; if(j._paginasPermitidas) EFFECTIVE_PAGINAS=j._paginasPermitidas;
     const viewasWrap=document.getElementById('viewas-wrap');
     if(viewasWrap) viewasWrap.style.display = (j._perfil==='Administrador') ? '' : 'none';
     addLogoutControl(j._usuarioNome||j._usuario, j._perfil);
@@ -3808,7 +3848,7 @@ async function carregarDadosCompletos(token, semBannerTopo){
     VIEW_AS_STATE = j._viewingAs || null;
     TODOS_USUARIOS = j._todosUsuarios || [];
     EFFECTIVE_PERFIL = VIEW_AS_STATE ? VIEW_AS_STATE.perfil : j._perfil;
-    EFFECTIVE_EXCECOES = j._excecoesPermissao || {add:[],remove:[]};
+    EFFECTIVE_EXCECOES = j._excecoesPermissao || {add:[],remove:[]}; if(j._paginasPermitidas) EFFECTIVE_PAGINAS=j._paginasPermitidas;
     const viewasWrap=document.getElementById('viewas-wrap');
     if(viewasWrap) viewasWrap.style.display = (j._perfil==='Administrador') ? '' : 'none';
     addLogoutControl(j._usuarioNome||j._usuario, j._perfil);
@@ -3894,7 +3934,7 @@ async function attemptLoadWithTokenClassico(token, viewAsEmail){
     VIEW_AS_STATE = j._viewingAs || null;
     TODOS_USUARIOS = j._todosUsuarios || [];
     EFFECTIVE_PERFIL = VIEW_AS_STATE ? VIEW_AS_STATE.perfil : j._perfil;
-    EFFECTIVE_EXCECOES = j._excecoesPermissao || {add:[],remove:[]};
+    EFFECTIVE_EXCECOES = j._excecoesPermissao || {add:[],remove:[]}; if(j._paginasPermitidas) EFFECTIVE_PAGINAS=j._paginasPermitidas;
 
     const viewasWrap=document.getElementById('viewas-wrap');
     if(viewasWrap) viewasWrap.style.display = (j._perfil==='Administrador') ? '' : 'none';
@@ -4736,13 +4776,12 @@ const PERM_MENU = {
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques/Central de Comando), exclusivas do Administrador.
-  // Também vê Gestão Setorial (sua área) e Gestão Transversal (apoio ao GP).
+  // Também vê Gestão da Área (a sua).
   'Head':           ['cliente','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','statusreport'],
   // Gestor: vê ele mesmo + liderados diretos (coluna Gestor de Pessoas_Area) e os
   // projetos deles — mesmo menu do Head (o recorte de dados vem do backend).
   'Gestor':         ['cliente','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','statusreport'],
   // Tech Lead / PO / SM: veem o(s) projeto(s) onde atuam por completo, junto com a equipe.
-  // Gestão Transversal é a página central desses perfis (LP/GP/SM).
   'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail','statusreport'],
   'PO':             ['cliente','pessoa','gerente','pend','projdetail','statusreport'],
   // 'SM' deve ver somente a página Gerência (mais o Detalhamento do Projeto, que
@@ -4755,7 +4794,7 @@ const PERM_MENU = {
   // 'Projetos' é o perfil do Gerente de Projeto — vê a própria Gerência (com o
   // projeto dele), o Detalhamento do Projeto, e o Status Report semanal do
   // seu projeto. "Andamento dos Projetos" é exclusivo do Administrador.
-  'Projetos':       ['gerente','projdetail','statusreport'],
+  'Projetos':       ['gerente','projdetail','statusreport','pessoa','equipehoras'],
   'Corporativo':    ['cliente','pessoa','projdetail'],
   'Infra':          ['cliente','pessoa','projdetail'],
   'Analytics':      ['cliente','pessoa','projdetail'],
@@ -4775,13 +4814,13 @@ Object.keys(PERM_MENU).forEach(p=>{ PERM_MENU[p]=PERM_MENU[p].filter(x=>x!=='hor
 if(PERM_MENU['Administrador']) PERM_MENU['Administrador'].push('horasapontadas','analisehoras');
 // v18.1: Comparativo de Horas — Administrador e Head (o Head só recebe do servidor as pessoas da própria equipe)
 Object.keys(PERM_MENU).forEach(p=>{ PERM_MENU[p]=PERM_MENU[p].filter(x=>x!=='comparativohoras'); });
-if(PERM_MENU['Administrador']) PERM_MENU['Administrador'].push('comparativohoras');
+if(PERM_MENU['Administrador']) PERM_MENU['Administrador'].push('comparativohoras','equipehoras');
 if(PERM_MENU['Head']) PERM_MENU['Head'].push('comparativohoras');
 // "projdetail" (Detalhamento do Projeto) não é uma aba de menu — é uma página de
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',notificacoes:'Gerenciador de Notificações',horasapontadas:'Gestão de Horas Apontadas',analisehoras:'Análise de Horas',comparativohoras:'Comparativo de Horas',manutencao:'Modo Manutenção',relatorioprojetos:'Relatório de Projetos e Equipes',novidades:'Novidades',wiki:'Wiki / Documentação'};
+const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',notificacoes:'Gerenciador de Notificações',horasapontadas:'Gestão de Horas Apontadas',analisehoras:'Análise de Horas',comparativohoras:'Comparativo de Horas',equipehoras:'Acompanhamento de Horas da Equipe',manutencao:'Modo Manutenção',relatorioprojetos:'Relatório de Projetos e Equipes',novidades:'Novidades',wiki:'Wiki / Documentação'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 // EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
 // PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
@@ -4791,6 +4830,8 @@ let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil 
 // EFFECTIVE_PERFIL sempre que uma resposta do backend chega (auth/core/
 // completa), a partir de authResp.excecoes / j._excecoesPermissao.
 let EFFECTIVE_EXCECOES={add:[],remove:[]};
+// v18.6: lista de páginas calculada pelo SERVIDOR (perfil + exceções). Quando presente, é a fonte de verdade; PERM_MENU vira só reserva.
+let EFFECTIVE_PAGINAS=null;
 // Páginas que podem ser gerenciadas via exceção na tela de Administração de
 // Permissões — todo mundo em PAGE_LABELS, exceto "projdetail" (drill-down
 // automático, não é uma página de menu de verdade) e "permissoes" (a
@@ -4799,7 +4840,7 @@ let EFFECTIVE_EXCECOES={add:[],remove:[]};
 // "novidades" também fica fora: é a tela de entrada exclusiva do
 // Administrador (ver #shell-novidades-placeholder), não uma página de
 // dados com escopo por perfil — não faz sentido liberá-la por exceção.
-const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='feriados' && p!=='manutencao' && p!=='relatorioprojetos' && p!=='avisos' && p!=='notificacoes' && p!=='analisehoras' && p!=='comparativohoras' && p!=='novidades' && p!=='calendario' && p!=='wiki');
+const PAGINAS_GERENCIAVEIS_EXCECAO = Object.keys(PAGE_LABELS).filter(p=>p!=='projdetail' && p!=='permissoes' && p!=='pessoasadmin' && p!=='feriados' && p!=='manutencao' && p!=='avisos' && p!=='notificacoes' && p!=='novidades' && p!=='wiki');
 
 // v15.7: "novidades" é página inicial de TODOS os perfis — sempre liberada
 // (não é gerenciável em Permissões e nenhuma exceção a remove).
@@ -4810,6 +4851,7 @@ function paginasPermitidas(){
   return r.includes('novidades')?r:r.concat('novidades');
 }
 function paginasPermitidasBase_(){
+  if(Array.isArray(EFFECTIVE_PAGINAS)&&EFFECTIVE_PAGINAS.length) return EFFECTIVE_PAGINAS.filter(x=>PAGE_LABELS[x]||x==='novidades');
   const base = PERM_MENU[EFFECTIVE_PERFIL] || PERM_MENU['Sem Perfil Definido'];
   // Administrador sempre tem acesso total por definição do perfil — exceções
   // não se aplicam a ele (não faz sentido restringir/ampliar quem já vê tudo).
@@ -5442,6 +5484,21 @@ function iaCalcularAnalisePessoa_(pessoa, mapaComplexidade, mapaPrioridade, maxP
     });
   });
 
+  // v19.0 — Tarefas EM ABERTO (não concluídas nem canceladas) e Próxima Entrega = menor vencimento de TAREFA em aberto.
+  // Mesma definição de "fechada" da Decisão de Alocação (daFechada_). Com o filtro de Status do Projeto, só os projetos filtrados.
+  const _fechSt=s=>{ const x=String(s||'').toLowerCase(); return x==='done'||x==='cancelado'||x==='cancelada'||x==='concluido'||x==='concluído'; };
+  const qtdTarefasAbertas=Object.entries(statusPessoa).filter(([st])=>!_fechSt(st)).reduce((a,[,v])=>a+v,0);
+  let _prox=null, _venc=null; { const vis=new Set();
+    projetos.forEach(proj=>{ if(vis.has(proj.pj)) return; vis.add(proj.pj);
+      (PROJ_TASKS[proj.pj]||[]).forEach(t=>{
+        if(!((t.responsaveis||[]).some(r=>r.email===ek)||t.email===ek)) return;
+        if(_fechSt(t.status)||t.dt_conc||!t.dt_venc_iso) return;
+        if(t.dt_venc_iso>=hojeISO){ if(!_prox||t.dt_venc_iso<_prox) _prox=t.dt_venc_iso; }
+        else if(!_venc||t.dt_venc_iso<_venc) _venc=t.dt_venc_iso;
+      }); }); }
+  const _dd=iso=>Math.round((Date.parse(iso+'T12:00:00Z')-Date.parse(hojeISO+'T12:00:00Z'))/864e5);
+  const proxTarefa=_prox?{iso:_prox,dias:_dd(_prox),vencida:false}:(_venc?{iso:_venc,dias:_dd(_venc),vencida:true}:null);
+
   // H. Previstas (PHEST) só existe como total da pessoa (sem quebra por
   // projeto) — fica o total em qualquer modo. Com filtro ativo, H. Apontadas
   // = soma de D.tpe[ek][projeto] só dos projetos filtrados, e a % de execução
@@ -5458,7 +5515,7 @@ function iaCalcularAnalisePessoa_(pessoa, mapaComplexidade, mapaPrioridade, maxP
     complexidadeMax: projetosAtivos.length>0?(projetosAtivos.slice().sort((a,b)=>(b.complexidadeScore||0)-(a.complexidadeScore||0))[0].proj.cx||'—'):'—',
     prioridadeMax: projetosAtivos.length>0?(projetosAtivos.slice().sort((a,b)=>(b.prioridadeScore||0)-(a.prioridadeScore||0))[0].proj.pr||'—'):'—',
     proximaEntrega: proximaEntrega?proximaEntrega.prazo:null,
-    qtdTarefasTotal, qtdEmAndamento, qtdBloqueadas, qtdAtrasadas,
+    qtdTarefasTotal, qtdTarefasAbertas, proxTarefa, qtdEmAndamento, qtdBloqueadas, qtdAtrasadas,
     horasPrevistas, horasApontadas, percentualExecucao,
     modoStatus: filtrado?modoStatus:'todos', statusesTarefas,
     composicao: {
@@ -6440,12 +6497,11 @@ function renderInteligenciaAlocacao(){
   const colunasIA=[
     {key:'pessoa',label:'Pessoa',tipo:'texto',get:l=>l.pessoa.a},
     {key:'cargo',label:'Cargo',tipo:'texto',get:l=>l.pessoa.cargo},
+    {key:'head',label:'Head',tipo:'texto',get:l=>l.pessoa.head||''},
     {key:'nivel',label:'Nível',tipo:'texto',get:l=>l.pessoa.nv},
     {key:'projetos',label:'Projetos',tipo:'numero',get:l=>l.qtdProjetos},
-    {key:'complexidade',label:'Complexidade',tipo:'texto',get:l=>l.complexidadeMax==='—'?'':l.complexidadeMax},
-    {key:'prioridade',label:'Prioridade',tipo:'texto',get:l=>l.prioridadeMax==='—'?'':l.prioridadeMax},
-    {key:'entrega',label:'Próxima Entrega',tipo:'data',get:l=>l.proximaEntrega?l.proximaEntrega.data:''},
-    {key:'tarefas',label:'Tarefas',tipo:'numero',get:l=>l.qtdTarefasTotal},
+    {key:'entrega',label:'Próxima Entrega (tarefa)',tipo:'data',get:l=>l.proxTarefa?feBr_(l.proxTarefa.iso):''},
+    {key:'tarefas',label:'Tarefas em aberto',tipo:'numero',get:l=>l.qtdTarefasAbertas},
     {key:'horasPrevistas',label:'H. Previstas',tipo:'horas',get:l=>l.horasPrevistas},
     {key:'horasApontadas',label:'H. Apontadas',tipo:'horas',get:l=>l.horasApontadas},
     {key:'score',label:'Score',tipo:'numero',get:l=>l.score},
@@ -6462,23 +6518,25 @@ function renderInteligenciaAlocacao(){
 
   const sufixoModoIA=modoStatusIA!=='todos'?' · '+projStatusRotulo_(modoStatusIA):'';
   let h='<div class="card"><div class="card-title"><h3>Análise por Pessoa'+(sufixoModoIA?'<span class="sub">'+sufixoModoIA+'</span>':'')+'</h3><span class="sub">'+linhas.length+'</span></div>'+
-    (modoStatusIA!=='todos'?'<div class="ia-nota-previstas">Filtro de projetos ativo ('+projStatusRotulo_(modoStatusIA)+'): Projetos, Tarefas, H. Apontadas, Score e Situação consideram só esses projetos. H. Previstas = total da pessoa (não há quebra por projeto).</div>':'')+
+    (modoStatusIA!=='todos'?'<div class="ia-nota-previstas">Filtro de projetos ativo ('+projStatusRotulo_(modoStatusIA)+'): Projetos, Tarefas em aberto, Próxima Entrega, H. Apontadas, Score e Situação consideram só esses projetos. H. Previstas = total da pessoa (não há quebra por projeto).</div>':'')+
     '<div class="table-wrap" style="max-height:620px"><table>'+
     theadOrdenavel_('ia',colunasIA)+'<tbody>';
   if(linhas.length===0){
-    h+='<tr><td colspan="12" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
+    h+='<tr><td colspan="11" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
   }else{
     linhas.forEach(l=>{
-      const entregaTxt=l.proximaEntrega?(l.proximaEntrega.data+(l.proximaEntrega.diasRestantes!=null?' ('+(l.proximaEntrega.diasRestantes<0?'vencido':l.proximaEntrega.diasRestantes+'d'):'')+')'):'—';
+      const pt=l.proxTarefa;
+      const entregaTxt=!pt?'<span style="color:var(--text-faint)">— sem data</span>':(pt.vencida
+        ?'<span style="color:var(--st-bloqueado);font-weight:700" title="Não há tarefa em aberto a vencer; esta é a vencida mais antiga">'+feBr_(pt.iso)+' · vencida há '+Math.abs(pt.dias)+'d</span>'
+        :feBr_(pt.iso)+' ('+(pt.dias===0?'hoje':pt.dias+'d')+')');
       h+='<tr class="ia-row" data-ia-pessoa="'+l.pessoa.a.replace(/"/g,'&quot;')+'" style="cursor:pointer">'+
         '<td><strong>'+personLinkHtml(l.pessoa.a)+'</strong></td>'+
         '<td>'+(l.pessoa.cargo||'—')+'</td>'+
+        '<td>'+(l.pessoa.head?feEsc_(l.pessoa.head):'<span style="color:var(--text-faint)">—</span>')+'</td>'+
         '<td>'+(l.pessoa.nv||'—')+'</td>'+
         '<td>'+l.qtdProjetos+'</td>'+
-        '<td>'+(l.complexidadeMax!=='—'?'<span class="status-pill">'+l.complexidadeMax+'</span>':'—')+'</td>'+
-        '<td>'+(l.prioridadeMax!=='—'?'<span class="status-pill">'+l.prioridadeMax+'</span>':'—')+'</td>'+
         '<td>'+entregaTxt+'</td>'+
-        '<td>'+l.qtdTarefasTotal+'</td>'+
+        '<td>'+l.qtdTarefasAbertas+'</td>'+
         '<td'+(modoStatusIA!=='todos'?' title="Total da pessoa (não há quebra por projeto)"':'')+'>'+fH(l.horasPrevistas)+'</td>'+
         '<td>'+fH(l.horasApontadas)+'</td>'+
         '<td><div class="ia-score-bar-track"><div class="ia-score-bar-fill" style="width:'+l.score+'%;background:'+iaCorFaixa_(l.faixa)+'"></div></div><span style="font-weight:700;font-size:12px">'+l.score+'</span></td>'+
@@ -8280,9 +8338,19 @@ function renderCliente(){
 }
 
 // === PESSOA ===
+// v18.6: perfis cujo Desempenho por Pessoa é só do próprio usuário (seleção automática e filtro travado).
+// A garantia real é do servidor (escopo/recorte de dados); aqui é só a experiência de uso.
+const PERFIS_SO_PROPRIO_=['Projetos','Corporativo','Infra','Analytics','Data','Dev','Negócios','Produto','Qualidade','Sem Perfil Definido'];
+function pessoaSoProprio_(){ return PERFIS_SO_PROPRIO_.includes(EFFECTIVE_PERFIL); }
+function pessoaProprioNome_(){
+  const em=String((VIEW_AS_STATE&&VIEW_AS_STATE.email)||CURRENT_USER_EMAIL||'').toLowerCase();
+  const p=(D&&D.p||[]).find(x=>String(x.email||'').toLowerCase()===em);
+  return p?p.a:((VIEW_AS_STATE&&VIEW_AS_STATE.nome)||CURRENT_USER_NOME||'');
+}
 function initPessoa(){
   const sel=document.getElementById('f-pes');
   populatePessoaOptions();
+  if(pessoaSoProprio_()) renderPessoa();
   sel.onchange=renderPessoa;
   document.getElementById('f-pes-claude-only').onchange=()=>{populatePessoaOptions();renderPessoa();};
   initPeriodSeg('pes-periodo-seg','f-pes-de','f-pes-ate',renderPessoa);
@@ -8298,11 +8366,22 @@ function populatePessoaOptions(){
   let list=PESA_().filter(p=>p.a&&pessoaEstaAtiva(p));
   if(claudeOnly) list=list.filter(p=>D.cl[(p.email||'').toLowerCase()]);
   const names=list.map(p=>p.a).sort();
+  if(pessoaSoProprio_()){
+    const eu=pessoaProprioNome_();
+    sel.innerHTML=eu?'<option value="'+eu+'">'+eu+'</option>':'<option value="">— Sem cadastro —</option>';
+    sel.value=eu||''; sel.disabled=true;
+    let nota=document.getElementById('pes-lock-note');
+    if(!nota){ nota=document.createElement('div'); nota.id='pes-lock-note'; nota.style.cssText='font-size:12px;color:var(--text-muted);margin:4px 0 0'; sel.parentNode.appendChild(nota); }
+    nota.textContent='Você vê somente o seu próprio desempenho.';
+    return;
+  }
+  sel.disabled=false; const nt=document.getElementById('pes-lock-note'); if(nt) nt.remove();
   sel.innerHTML='<option value="">— Selecione —</option>'+names.map(n=>'<option value="'+n+'">'+n+'</option>').join('');
   if(names.includes(prevVal)) sel.value=prevVal; else document.getElementById('pes-content').innerHTML='<div class="empty-state" style="padding:80px 20px"><p>Selecione uma pessoa.</p></div>';
 }
 function renderPessoa(){
-  const nome=document.getElementById('f-pes').value;const el=document.getElementById('pes-content');
+  let nome=document.getElementById('f-pes').value;
+  if(pessoaSoProprio_()){ nome=pessoaProprioNome_(); const sl=document.getElementById('f-pes'); if(sl&&sl.value!==nome&&nome) sl.value=nome; }const el=document.getElementById('pes-content');
   { const l0=document.getElementById('pes-loc'); if(l0) l0.textContent='—'; }
   if(!nome){el.innerHTML='<div class="empty-state" style="padding:80px 20px"><p>Selecione uma pessoa.</p></div>';return;}
   const info=D.p.find(p=>p.a===nome);if(!info){el.innerHTML='';return;}
@@ -8615,7 +8694,7 @@ function renderPessoa(){
       <span class="sub">${semanasVis.length} semana(s) · capacidade ${fH(capPes.sem)}/sem${capPes.prov?' (provisória)':''}${(ph&&soExcPes)?' com excedente':''}${periodoAtivoPes?' no período selecionado':' · últimas 12 semanas (selecione um período para outra janela)'}</span>
     </div>
     <div style="padding:12px 4px 4px">
-      ${semanasVis.length===0?'<div class="empty-state" style="padding:30px"><p>'+((ph&&soExcPes)?'Nenhuma semana com excedente nesse intervalo.':'Sem dados nesse intervalo.')+'</p></div>':`
+      ${phS.est==='carregando'?'<div style="padding:40px 20px">'+loadingInlineHtml('Carregando horas apontadas oficiais da semana…')+'</div>':semanasVis.length===0?'<div class="empty-state" style="padding:30px"><p>'+((ph&&soExcPes)?'Nenhuma semana com excedente nesse intervalo.':'Sem dados nesse intervalo.')+'</p></div>':`
       <div style="height:260px;margin-bottom:18px"><canvas id="chSemanal"></canvas></div>
       ${ph?pesHaTabela_(semanasParaTabelaOrd,colunasPesSemanasPh):`<div class="table-wrap" style="max-height:320px"><table>${theadOrdenavel_('pessoa-semanas',colunasPesSemanas)}<tbody>
         ${semanasParaTabelaOrd.map(s=>{
@@ -8648,7 +8727,7 @@ function renderPessoa(){
       options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:24}},plugins:{legend:{display:false},tooltip:noTooltip},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}},
       plugins:[valueLabelPlugin(v=>fH(v),false)]});
   }
-  if(semanasVis.length){
+  if(semanasVis.length&&phS.est!=='carregando'){
     const labelsSemana=semanasVis.map(s=>s.monday.slice(8,10)+'/'+s.monday.slice(5,7));
     let dsSem;
     if(ph){
@@ -12744,7 +12823,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v18.5', WIKI_DATA='10/11/2026';
+const WIKI_VER='v19.0', WIKI_DATA='12/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -12773,7 +12852,7 @@ WP('sis-arq','3.1','Arquitetura, componentes e integrações','Como o portal é 
   'O front envia o ID token Google; o <code>doGet</code> valida, aplica o escopo do perfil (<code>restrictDataForRole_</code>) e devolve JSON/JSONP. As gravações também passam por <code>doGet</code> (parâmetro <code>action</code>).',
   'Versões do front e do back precisam ser iguais (<code>APP_VERSION = DASHBOARD_VERSION</code>); após mudar o back, o Apps Script deve ser republicado.','Todo o portal.','Conferir <code>_backendVersion</code> na resposta da API.','Não há ambiente de homologação identificado no repositório.'),
  WR('SIS-012','Publicação do back-end e regra de versionamento','ok','Arquitetura',
-  'O <code>AppsScript_Code.gs</code> traz no topo só um comentário com a versão/atualização vigente; o histórico de versões fica nesta Documentação (aba Histórico) e a publicação segue os passos abaixo.',
+  'O <code>AppsScript_Code.gs</code> traz no topo só um comentário com a versão/atualização vigente; o histórico de versões fica nesta Documentação (aba Histórico) e a publicação segue os passos abaixo. <b>Premissa de toda atualização:</b> registrar a linha no Histórico (com a data) e, quando for novidade para o usuário, o item em Novidades; o card “Última atualização” da tela de Novidades é calculado sozinho a partir dessas datas.',
   '<code>AppsScript_Code.gs</code> (<code>DASHBOARD_VERSION</code>) · <code>index.html</code> (<code>APP_VERSION</code>).','Planilha Google Sheets (Extensões › Apps Script).',
   '<b>Publicar:</b> 1) Extensões › Apps Script na planilha; 2) colar o código no <code>Code.gs</code>; 3) <code>ALLOWED_CLIENT_ID</code> já vem preenchido (só mudar se usar outro Client ID OAuth); 4) Implantar › Nova implantação › App da Web (executar como: eu; acesso: qualquer pessoa); 5) copiar a URL <code>/exec</code> para <code>DASHBOARD_API_URL</code> no <code>index.html</code>; 6) a cada edição, gerar nova versão (Gerenciar implantações › editar › Nova versão).',
   'Versão menor vai de .1 a .9; depois de .9 vem o inteiro seguinte com .0 (v6.9 → v7.0), nunca v6.10. <code>DASHBOARD_VERSION</code> deve ser igual a <code>APP_VERSION</code>. Todo item novo (página ou regra) entra na Wiki/Documentação e no Histórico. O projeto Apps Script (Configurações do projeto) e a planilha devem usar o fuso America/Sao_Paulo. Ao publicar versões com e-mail (MailApp) ou BrasilAPI, o Google pede nova autorização.','Todo o portal.','Conferir <code>_backendVersion</code> na resposta da API.','Mudança só de comentário no .gs não exige republicar.'),
@@ -12799,8 +12878,8 @@ WP('sis-governanca','3.1','Como esta Wiki é mantida','Regras de governança da 
 /* ---------------- 3.2 ---------------- */
 WP('perm-perfis','3.2','Perfis e páginas do menu','Quais perfis existem e quais páginas cada um enxerga.',[
  WR('PERM-001','Menu por perfil (PERM_MENU)','ok','Permissões',
-  'O menu é montado a partir de <code>PERM_MENU[perfil efetivo]</code>. Perfil desconhecido usa “Sem Perfil Definido”. A página Novidades é sempre acrescentada.',
-  '<code>index.html</code> · <code>PERM_MENU</code>, <code>paginasPermitidas()</code>.','Perfil de acesso (Pessoas_Area) e <code>Permissoes_Excecoes</code>.',
+  'Desde a v18.6 a lista de páginas de cada pessoa é calculada <b>pelo servidor</b> (perfil + exceções) e enviada como <code>_paginasPermitidas</code>; o menu usa essa lista. <code>PERM_MENU</code> permanece no front só como reserva. Perfil desconhecido usa “Sem Perfil Definido”. A página Novidades é sempre acrescentada. Ver <a data-w="PERM-024">PERM-024</a>.',
+  '<code>AppsScript_Code.gs</code> · <code>PAGINAS_CATALOGO</code>, <code>PAGINAS_POR_PERFIL</code>, <code>paginasPermitidasServidor_</code>; <code>index.html</code> · <code>EFFECTIVE_PAGINAS</code>, <code>paginasPermitidas()</code>.','Perfil de acesso (Pessoas_Area) e <code>Permissoes_Excecoes</code>.',
   'Páginas permitidas = base do perfil ± exceções do usuário (<a data-w="PERM-002">PERM-002</a>). Administrador: todas, exceto <code>manutencao</code>, que só aparece para as contas fixas autorizadas pelo servidor.',
   'Administrador não sofre exceções.','Menu e navegação.','“Visualizar como” cada perfil e conferir o menu.','O menu do Administrador foi lido de forma resumida; a lista exata está em <code>PERM_MENU[\'Administrador\']</code>.'),
  WR('PERM-003','Perfis existentes (16)','ok','Permissões',
@@ -12809,18 +12888,37 @@ WP('perm-perfis','3.2','Perfis e páginas do menu','Quais perfis existem e quais
   '—','Não existem, no código, os perfis “Administrador Geral”, “Membro” ou “Equipe” como chaves próprias. “Equipe” aparece apenas como conceito (membros de um projeto).','—','—','—','Se esses nomes são usados fora do portal (por exemplo, em outro sistema), isso não foi verificado.')],
 `<h3>Páginas por perfil (base, antes das exceções)</h3><div class="wk-tbl"><table><tr><th>Perfil</th><th>Páginas</th></tr>
 <tr><td>Administrador</td><td>Todas (inclui Calendário, Relatório de Projetos e Equipes, Painel de Status Report, Gestão de Horas Apontadas e as de Administração)</td></tr>
-<tr><td>Head · Gestor</td><td>Portfólio Geral, Carga e Risco, Desempenho por Pessoa, Visão por Área, Projetos por Líder, Meus Projetos, Minha Equipe, Pendências, Pessoas Disponíveis, Gestão da Área, Status Report, Detalhamento</td></tr>
+<tr><td>Head · Gestor</td><td>Portfólio Geral, Carga e Risco, Desempenho por Pessoa, Visão por Área, Projetos por Líder, Meus Projetos, Minha Equipe, Pendências, Pessoas Disponíveis, Gestão da Área, Status Report, Detalhamento (o Head também recebe o Comparativo de Horas)</td></tr>
 <tr><td>Tech Lead · PO</td><td>Portfólio Geral, Desempenho por Pessoa, Meus Projetos, Pendências, Status Report, Detalhamento</td></tr>
-<tr><td>Projetos (Gerente de Projeto)</td><td>Meus Projetos, Status Report, Detalhamento</td></tr>
+<tr><td>Projetos (Gerente de Projeto)</td><td>Meus Projetos, Status Report, Desempenho por Pessoa (só o próprio), Acompanhamento de Horas da Equipe, Detalhamento</td></tr>
 <tr><td>SM (Scrum Master)</td><td>Meus Projetos, Detalhamento</td></tr>
 <tr><td>Corporativo · Infra · Analytics · Data · Dev · Negócios · Produto · Qualidade · Sem Perfil</td><td>Portfólio Geral, Desempenho por Pessoa, Detalhamento</td></tr></table></div>
 <p class="wk-s">Todos os perfis também veem Novidades. Fonte: <code>PERM_MENU</code>. As exceções por usuário (<a data-w="PERM-002">PERM-002</a>) podem somar ou remover páginas.</p>`),
+
+WP('perm-catalogo','3.2','Catálogo de páginas no servidor e diagnóstico','Fonte única de páginas e perfis, e a rotina que aponta inconsistências.',[
+ WR('PERM-024','Catálogo de páginas no servidor (nível 1)','ok','Permissões',
+  'O servidor guarda o catálogo de páginas e as páginas padrão de cada perfil. A página liberada = perfil + exceções (ADD só vale para página gerenciável; REMOVE nunca tira Novidades). O resultado vai ao navegador em <code>_paginasPermitidas</code> e é usado pelo menu e pela guarda de rota. Ações novas exigem a página no servidor (<code>exigirPagina_</code>).',
+  '<code>PAGINAS_CATALOGO</code>, <code>PAGINAS_POR_PERFIL</code>, <code>paginasPermitidasServidor_</code>, <code>exigirPagina_</code>.','Catálogo no código + aba <code>Permissoes_Excecoes</code> (nenhuma aba nova).',
+  'Página nova nasce <b>sem nenhum perfil</b> (somente Administrador) até ser liberada no catálogo ou por exceção. Permitir abrir a página não libera todos os registros: o escopo de dados (nível 2) continua valendo (<a data-w="PERM-010">PERM-010</a>, <a data-w="PERM-025">PERM-025</a>).',
+  'Ao criar uma página, cadastrar no catálogo do servidor <i>e</i> no menu do front.','Menu, Permissões.','Rodar o diagnóstico e conferir o relatório.','Páginas administrativas (Permissões, Pessoas e Perfis, Feriados, Avisos, Notificações, Manutenção) continuam exclusivas do Administrador: as ações têm validação própria por perfil.'),
+ WR('PERM-026','Diagnóstico de permissões (manual)','ok','Permissões',
+  'Função <code>permissoesDiagnostico</code>, executada manualmente no Apps Script. Só lê: lista ids repetidos, perfis com página inexistente, páginas só do Administrador, exceções órfãs (página removida/renomeada) e exceções sem efeito. Não libera nada.',
+  '<code>permissoesDiagnostico</code>.','Grava o relatório na aba <code>Permissoes_Diagnostico</code>.','—','—','Administração.','Executar após criar ou renomear uma página.','Não identifica sozinha páginas novas do front: compara o catálogo do servidor com perfis e exceções.')],
+''),
+
+WP('perm-gp','3.2','Escopo do Gerente de Projeto (GP)','Como o GP enxerga horas dos participantes dos seus projetos.',[
+ WR('PERM-025','Escopo GP pela coluna GP do Portfólio','ok','Permissões',
+  'GP é quem consta na coluna GP do Portfólio. O servidor monta o escopo (projetos onde a pessoa é GP e os participantes dessas equipes) a cada consulta; ser do perfil Projetos não basta. Para o perfil Projetos, horas e alocação por projeto dos colegas só saem para os projetos autorizados; os dados da própria pessoa seguem completos.',
+  '<code>scopeGP_</code>, <code>acompanhamentoHorasEquipe_</code>, <code>restrictDataForRole_</code>.','Portifolio (GP, equipe), Tarefas_Horas_Estimadas, Tarefas_Horas_Apontadas.',
+  'Identidade vem do token. Projeto ou pessoa enviados pelo navegador só restringem dentro do escopo; valores fora dele são descartados. “Visualizar como” é só leitura.',
+  'Head, Gestor, Tech Lead, PO e SM mantêm o escopo anterior (sem recorte por projeto).','Acompanhamento de Horas da Equipe, Desempenho por Pessoa.','GP consultando projeto de outro gerente: nenhuma linha.','O Desempenho por Pessoa do perfil Projetos exibe só o próprio usuário; os participantes são vistos no Acompanhamento de Horas da Equipe. Totais agregados dos colegas (sem nome de projeto) continuam chegando para Meus Projetos.')],
+''),
 
 WP('perm-excecoes','3.2','Exceções individuais de permissão','Como o Administrador libera ou remove páginas para uma pessoa.',[
  WR('PERM-002','Exceções por usuário','ok','Permissões',
   'Cada exceção é uma linha (e-mail, página, tipo add/remove). O perfil continua sendo a base; a exceção só ajusta o menu daquela pessoa.',
   '<code>Permissoes_Excecoes</code> · <code>lerExcecoesPorEmail_</code>, <code>salvarExcecaoPermissao_</code>, <code>PAGINAS_GERENCIAVEIS_EXCECAO</code>.','Aba <code>Permissoes_Excecoes</code> (email, pagina, tipo, data_hora, usuario).',
-  'Não podem ser gerenciadas por exceção: Detalhamento do Projeto, Permissões, Pessoas e Perfis, Feriados, Modo Manutenção, Relatório de Projetos e Equipes, Gestão de Avisos, Novidades, Calendário e esta Wiki.',
+  'Não podem ser gerenciadas por exceção: Detalhamento do Projeto, Permissões, Pessoas e Perfis, Feriados, Modo Manutenção, Gestão de Avisos, Notificações, Novidades e esta Wiki. Desde a v18.6 Calendário, Relatório de Projetos e Equipes, Análise de Horas, Comparativo de Horas e Acompanhamento de Horas da Equipe <b>podem</b> receber exceção.',
   'Administrador ignora exceções. A exceção altera o menu, não os dados: o recorte de dados continua sendo o do perfil (<a data-w="PERM-010">PERM-010</a>).','Menu, Administração › Permissões.','Adicionar exceção a um usuário de teste e conferir o menu em “Visualizar como”.','Gestão de Horas Apontadas é só do Administrador no menu e na consulta (v16.7); o comentário do código diz que exceções individuais continuam valendo para o menu, mas o servidor nega a consulta sem pessoa-alvo a quem não é Administrador.')],
 ''),
 
@@ -12999,6 +13097,17 @@ WP('pess-equipe','3.5','Disponibilidade e equipe','Quem aparece como sem alocaç
 WIKI_PAGINAS.push(
 
 /* ---------------- 3.6 ---------------- */
+WP('pess-eqhoras','3.5','Acompanhamento de Horas da Equipe','Horas previstas × apontadas dos participantes dos projetos do GP.',[
+ WR('PESS-020','Acompanhamento de Horas da Equipe','ok','Pessoas e capacidade',
+  'Página do GP (Projetos › Acompanhamento de Horas da Equipe). Mostra projetos, participantes, horas previstas, apontadas, diferença e % de execução, com projetos expansíveis, total por projeto, ordenação e exportação CSV. “Ver tarefas” abre as tarefas e os apontamentos da pessoa no projeto.',
+  '<code>initEquipeHoras</code> (front) · <code>acompanhamentoHorasEquipe_</code> (servidor).','Portifolio (coluna GP e equipe), Tarefas_Horas_Estimadas, Tarefas_Horas_Apontadas, Tarefas.',
+  'Previstas = horas estimadas por pessoa e tarefa (já divididas igualmente entre os responsáveis, sem duplicar), pela data de término; apontadas = lançamentos da pessoa no projeto, pela data do apontamento. % de execução = apontadas ÷ previstas (“—” sem previstas). Período padrão: do dia 1 do mês até hoje; sem período entram também horas sem data. Apontadas não são horas faturáveis.',
+  'Só projetos em que a pessoa é GP; filtros de projeto e participante listam apenas o que está no vínculo. Administrador vê todos os projetos.','Menu Projetos.','Comparar os totais de um projeto com Detalhamento do Projeto no mesmo período.','Estados: sem permissão, sem projetos vinculados e sem dados no período. Liberação para outros perfis é por exceção; sem projetos como GP a página abre vazia.'),
+ WR('PESS-021','Desempenho por Pessoa: só o próprio','ok','Pessoas e capacidade',
+  'Para Projetos e perfis de área (Corporativo, Infra, Analytics, Data, Dev, Negócios, Produto, Qualidade) a página seleciona automaticamente o próprio nome e trava o filtro.',
+  '<code>pessoaSoProprio_</code>, <code>pessoaProprioNome_</code>.','D.p (já recortado pelo servidor).','A trava é conforto de uso; a proteção real é o recorte do servidor (<a data-w="PERM-010">PERM-010</a>).','—','Desempenho por Pessoa.','Entrar como usuário comum e tentar trocar a pessoa.','Percentis comparativos (P90) usam o conjunto recebido; com dados recortados podem não refletir a empresa toda (a validar).')],
+''),
+
 WP('aloc-param','3.6','Parâmetros, capacidade e pressão','Constantes e limites usados na Carga e Risco de Alocação e na Decisão de Alocação.',[
  WR('ALOC-001','Parâmetros (DA_PARAM)','ok','Carga e Risco',
   'Todos os limites ficam em um único objeto no código. Valores efetivos: capacidade semanal individual da pessoa (40 h/semana provisórias sem cadastro); pressão 70/90/105 %; escalonamento com 3 tarefas atrasadas ou 2 entregas em até 7 dias; cobertura mínima de estimativas 50 %; folga mínima 4 h/sem; teto de utilização ao realocar 90 %; alvo ao liberar 85 %; projeto sem previsão dilui esforço em 4 semanas; vaga disponível exige 16 h/sem livres.',
@@ -13013,7 +13122,10 @@ WP('aloc-param','3.6','Parâmetros, capacidade e pressão','Constantes e limites
   '<code>daCalc_</code>, <code>coberturaMin</code>.','PALOC.n e PALOC.s (tarefas sem estimativa).','—','—','Carga e Risco, Decisão de Alocação.','—','Uma pessoa “Dados insuficientes” não entra como disponível em requisitos.'),
  WR('ALOC-004','Período de análise (7/15/30 dias)','ok','Carga e Risco',
   'O filtro Período de análise vale para toda a página: carga futura (janela), tarefas “vencendo em N dias”, horas apontadas (últimos N dias contados de hoje, inclusive) e jornada de referência = 40 × N ÷ 7. O total histórico de horas apontadas é mantido como linha de referência.',
-  '<code>daApont_</code>, <code>daVencN_</code>.','PM (horas por dia), PALOC.','—','Se o apontamento diário não estiver carregado mostra “—”.','Carga e Risco, Visão executiva, Comparar.','Trocar 15 para 30 dias e ver o card de horas mudar.','—')],
+  '<code>daApont_</code>, <code>daVencN_</code>.','PM (horas por dia), PALOC.','—','Se o apontamento diário não estiver carregado mostra “—”.','Carga e Risco, Visão executiva, Comparar.','Trocar 15 para 30 dias e ver o card de horas mudar.','—'),
+ WR('ALOC-005','Listagem Análise por Pessoa: colunas e regras','ok','Carga e Risco',
+  'Colunas: Pessoa, Cargo, <b>Head</b> (Pessoas_Area), Nível, Projetos, <b>Próxima Entrega (tarefa)</b>, <b>Tarefas em aberto</b>, H. Previstas, H. Apontadas, Score e Situação. <b>Tarefas em aberto</b> = tarefas da pessoa que não estão concluídas nem canceladas (Done, Cancelado, Concluído ou com data de conclusão ficam de fora; Bloqueadas e Backlog contam) — mesma definição de “fechada” da Decisão de Alocação. <b>Próxima Entrega (tarefa)</b> = menor data de vencimento entre as tarefas em aberto da pessoa, a partir de hoje (mostra “hoje” ou “Nd”); se só houver vencidas, mostra a mais antiga em vermelho (“vencida há Nd”); sem data: “— sem data”. As colunas Complexidade e Prioridade saíram da listagem, mas continuam no Score e nos filtros. Com o filtro de Status do Projeto, valem só os projetos filtrados.',
+  '<code>iaCalcularAnalisePessoa_</code> (qtdTarefasAbertas, proxTarefa), <code>colunasIA</code>.','PROJ_TASKS, PSTAT, Pessoas_Area.','—','Carga e Risco de Alocação › Análise por Pessoa.','Pessoa com tarefa Done vencendo amanhã: ela não pode ser a Próxima Entrega nem contar em Tarefas em aberto.','—')],
 ''),
 
 WP('aloc-req','3.6','Requisitos de equipe e déficit','Como o sistema decide se um projeto está coberto.',[
@@ -13125,6 +13237,9 @@ WP('comp-horas','3.8','Comparativo e Evolução de Horas','Gráficos de horas ap
  WR('CH-001','Escopo, fonte e permissão','ok','Horas',
   'Lê os mesmos apontamentos oficiais da Gestão de Horas Apontadas (aba Tarefas_Horas_Apontadas, ação <code>horasApontadas</code> com <code>modo=comparativo</code>). Como o servidor entrega no máximo 400 dias por chamada, a página busca um bloco por ano civil (cada um com menos de 400 dias), junta tudo pela linha da planilha (nenhum lançamento é contado duas vezes) e guarda os blocos na memória; o botão 🔄 recarrega. Administrador vê todas as pessoas; o Head recebe do servidor somente as pessoas do seu escopo (mesmo escopo da Minha Equipe). Nada é gravado e nenhuma rotina existente foi alterada: as demais telas de horas continuam só do Administrador.',
   '<code>initComparativoHoras</code>, <code>chCarregar_</code>, <code>horasApontadas_</code> (parâmetro de escopo), doGet <code>horasApontadas</code>.','Tarefas_Horas_Apontadas, Pessoas_Area, Feriados.','Administrador e Head. Não é liberável por exceção individual.','Gestão › Comparativo de Horas.','Entrar como Head e conferir que só aparecem pessoas da equipe; entrar como Gestor e confirmar que o menu não existe.','—'),
+ WR('CH-011','Setas e semáforo nos indicadores de variação','ok','Horas',
+  'Toda variação entre períodos (KPI “Variação vs período anterior”, cartões e tabela de “Entre períodos”, tendência na legenda, coluna “vs período anterior” na visão em tabela e coluna Sinal do Excel) usa um único selo com seta + cor + texto: <b>▲ verde</b> = mais horas apontadas, <b>▼ vermelho</b> = menos horas, <b>● amarelo</b> = estável, <b>cinza</b> = sem base. A cor tem três intensidades (degradê): estável até ±5%; leve de 5% a 10%; média de 10% a 25%; forte a partir de 25%. Verde/vermelho indicam apenas aumento/redução de horas — não “bom” ou “ruim”.',
+  '<code>chVarCls_</code>, <code>chVarHtml_</code>, <code>chVarTxt_</code>, constantes <code>CH_VAR_EST</code>, <code>CH_VAR_LEVE</code>, <code>CH_VAR_MEDIA</code>.','Calculado no navegador a partir das horas apontadas.','—','Gestão › Comparativo de Horas.','Comparar dois períodos com +30%, +7%, +2% e −15% e conferir seta, cor e intensidade.','—'),
  WR('CH-010','Carga somente pelo botão','ok','Horas','Ao abrir a página nenhum apontamento é buscado: aparece “Escolha os filtros e clique em Carregar comparativo”. Os filtros de perfil (Head, Gestor, Pessoas, Área, Cargo, Senioridade) já funcionam, em cascata, a partir do cadastro; Cliente e Projeto ficam disponíveis depois da primeira carga. O período abre preenchido com o ano atual. Atalhos e datas só preenchem o período. Depois de carregado, mudar filtros recalcula na hora; mudar o período para anos ainda não carregados pede “Atualizar dados”.','<code>chCarregar_</code>, <code>chAuto_</code>, <code>chVazioPag_</code>, <code>CH.carregado</code>.','Apontamentos (planilha).','Administrador e Head.','Gestão › Comparativo de Horas.','Abrir a página e conferir que não há chamada ao servidor até clicar no botão.','—'),
  WR('CH-009','Filtros em cascata e atalho para o desempenho','ok','Horas','Ordem dos filtros: Atalhos, Período inicial, Período final, Agrupar por; depois Head, Gestor, Pessoas, Área/Setor, Cargo, Senioridade, Cliente, Projeto e Tipo de apontamento. Cada filtro só oferece valores que existem dentro dos anteriores (Head → Gestor → Área → Cargo → Senioridade → Pessoas; Cliente → Projeto) e a lista de Pessoas mostra “N de M no escopo”. Ao mudar um filtro, quem estava selecionado e saiu do escopo é removido com aviso. Na visão por pessoa, o nome (ranking, tabelas, mapa de calor, legenda ↗, rosca e chips) abre <b>Desempenho por Pessoa</b> já com a pessoa e o período do Comparativo; o botão Voltar retorna ao Comparativo com filtros e gráfico como estavam. Perfis, pessoas sem cadastro e inativas não viram link.','<code>chCascata_</code>, <code>chLk_</code>, <code>chIr_</code>, <code>goToPessoaDesempenho(nome,per)</code>.','Pessoas_Area, apontamentos.','Administrador e Head (o Head só abre pessoas do seu escopo).','Gestão › Comparativo de Horas.','Escolher um Head e ver Gestor/Pessoas mudarem; clicar num nome e conferir De/Até no Desempenho.','—'),
  WR('CH-002','Quem entra, nomes e perfis','ok','Horas',
@@ -13309,6 +13424,11 @@ WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado d
 WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'12/11/2026',p:'Carga e Risco de Alocação · Análise por Pessoa',desc:'Listagem sem as colunas Complexidade e Prioridade; nova coluna Head após o Cargo; Próxima Entrega passa a ser o menor vencimento de tarefa em aberto (não mais o prazo do projeto); Tarefas passa a contar só as em aberto (não concluídas nem canceladas).',ver:'v19.0'},
+ {d:'12/11/2026',p:'Horas · Comparativo e Evolução de Horas',desc:'Indicadores de variação com setas (▲ positiva, ▼ negativa, ● estável) e paleta de semáforo com degradê por intensidade (estável ±5%; leve até 10%; média até 25%; forte acima): KPI, Entre períodos, legenda de tendência, visão em tabela (nova coluna “vs período anterior”) e Excel (coluna Sinal).',ver:'v18.9'},
+ {d:'12/11/2026',p:'Desempenho por Pessoa · Carga por Semana',desc:'Correção: o gráfico/tabela semanal não mostra mais, durante o carregamento, a versão provisória (referência 40h) que depois era trocada por valores diferentes. Agora aparece “Carregando…” até as horas apontadas oficiais chegarem; em caso de erro, mantém a versão provisória com aviso e botão de nova tentativa.',ver:'v18.8'},
+ {d:'12/11/2026',p:'Novidades · Última atualização',desc:'A data do card “Última atualização” passa a ser calculada automaticamente (a mais recente entre Histórico, Novidades e Wiki), em vez de depender de edição manual.',ver:'v18.7'},
+ {d:'10/11/2026',p:'Sistema · Permissões e acesso',desc:'Catálogo de páginas no servidor (fonte única) e lista de páginas enviada ao navegador; escopo do GP pela coluna GP do Portfólio com recorte de horas por projeto; ação acompanhamentoHorasEquipe; nova página Acompanhamento de Horas da Equipe; Desempenho por Pessoa só do próprio usuário para GP e perfis de área; Calendário, Relatório, Análise e Comparativo de Horas passam a aceitar exceção; rotina permissoesDiagnostico.',ver:'v18.6'},
  {d:'10/11/2026',p:'Sistema · Conversão de datas',desc:'A rotina de conversão passa a preservar os segundos originais (a exibição segue sem segundos) e a padronizar o formato das colunas de data de Pessoas_Area. Relatório de diagnóstico real: 185 células a converter (Avisos, Leituras, Pendências do Zoho), 0 não convertíveis, fusos consistentes.',ver:'v18.5'},
  {d:'10/11/2026',p:'Sistema · Datas e horários',desc:'Padrão único dd/mm/aaaa e dd/mm/aaaa hh:mm em telas, filtros, Excel e logs; fuso único America/Sao_Paulo (TZ_PADRAO) e “hoje” no horário de Brasília; funções centrais de data no front e no back; campo de data com máscara + calendário e validação; Avisos, Leituras e log do Zoho passam a gravar data nativa; rotina administrativa de conversão (diagnóstico, simulação, backup, conversão, validação, restauração). Corrige o “hoje” em UTC (adiantava o dia após as 21h) e o filtro “Até” que ignorava registros com horário.',ver:'v18.4'},
  {d:'10/11/2026',p:'Sistema · Back-end',desc:'Cabeçalho do AppsScript_Code.gs reduzido a um único comentário de versão; passos de publicação e regra de versionamento passaram para a Documentação (SIS-012).',ver:'v18.3'},
@@ -13430,10 +13550,119 @@ const PAGE_INIT_MAP={
   horasapontadas:initHorasApontadas,
   analisehoras:initAnaliseHoras,
   comparativohoras:initComparativoHoras,
+  equipehoras:initEquipeHoras,
   manutencao:initManutencao,
   relatorioprojetos:initRelatorioProjetos,
   wiki:initWiki
 };
+
+
+// ============================================================
+// v18.6 — ACOMPANHAMENTO DE HORAS DA EQUIPE (GP): previstas × apontadas dos participantes dos projetos em que a
+// pessoa é GP (coluna GP do Portfólio). Cálculo e escopo SEMPRE no servidor (ação acompanhamentoHorasEquipe);
+// o front só exibe. Filtros enviados são apenas pedidos de recorte dentro do escopo autorizado.
+// ============================================================
+const EH={dados:null,seq:0,abertos:{},proj:{},ord:{k:'prev',dir:-1},det:{}};
+function eqhVa_(){ return (VIEW_AS_STATE&&VIEW_AS_STATE.email)||''; }
+function eqhFmtH_(v){ return (Math.round((+v||0)*10)/10).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1})+' h'; }
+function eqhPct_(a,p){ return p>0?(a/p*100):null; }
+function eqhBarra_(v){
+  if(v==null) return '—';
+  const c=v>110?'var(--st-bloqueado)':v<80?'var(--pr-media)':'var(--st-feito)';
+  return '<div style="display:flex;gap:8px;align-items:center"><div style="flex:1;min-width:70px;height:8px;border-radius:4px;background:var(--surface-alt);border:1px solid var(--border);overflow:hidden"><i style="display:block;height:100%;width:'+Math.min(100,v)+'%;background:'+c+'"></i></div><span>'+v.toFixed(1).replace('.',',')+'%</span></div>';
+}
+function eqhDif_(a,p){ const d=Math.round((a-p)*10)/10; return '<span style="color:'+(d>0?'var(--st-bloqueado)':d<0?'var(--pr-media)':'var(--st-feito)')+';font-weight:600">'+(d>0?'+':d<0?'−':'')+eqhFmtH_(Math.abs(d))+'</span>'; }
+function initEquipeHoras(){
+  const hoje=hojeISO_(), ini=hoje.slice(0,8)+'01';
+  const de=document.getElementById('f-eqh-de'), ate=document.getElementById('f-eqh-ate');
+  if(de&&!de.value) de.value=ini; if(ate&&!ate.value) ate.value=hoje;
+  ['f-eqh-proj','f-eqh-pes','f-eqh-de','f-eqh-ate'].forEach(id=>{ const el=document.getElementById(id); if(el) el.onchange=()=>eqhCarregar_(); });
+  document.getElementById('eqh-csv').onclick=eqhCsv_;
+  document.getElementById('eqh-content').onclick=eqhClique_;
+  return eqhCarregar_();
+}
+async function eqhCarregar_(){
+  const box=document.getElementById('eqh-content'), kpi=document.getElementById('kpi-eqh');
+  const g=id=>(document.getElementById(id)||{}).value||'';
+  const de=g('f-eqh-de'), ate=g('f-eqh-ate');
+  if(de&&ate&&de>ate){ box.innerHTML='<div class="empty-state" style="padding:40px 20px"><p>A data final não pode ser anterior à inicial.</p></div>'; kpi.innerHTML=''; return; }
+  const seq=++EH.seq; box.innerHTML=loadingInlineHtml('Carregando horas da equipe…');
+  const va=eqhVa_();
+  const extra=(de?'&de='+de:'')+(ate?'&ate='+ate:'')+(g('f-eqh-proj')?'&projeto='+encodeURIComponent(g('f-eqh-proj')):'')+(g('f-eqh-pes')?'&pessoa='+encodeURIComponent(g('f-eqh-pes')):'')+(va?'&viewAs='+encodeURIComponent(va):'');
+  try{
+    const r=await loadDataJSONPComRetry(feUrl_('acompanhamentoHorasEquipe',extra),1);
+    if(seq!==EH.seq) return;
+    if(!r||r.ok===false){
+      kpi.innerHTML='';
+      box.innerHTML='<div class="empty-state" style="padding:60px 20px"><p><b>'+(r&&r.semPermissao?'Seu perfil não tem acesso a esta página.':paEscHtml_((r&&r.message)||'Não foi possível carregar.'))+'</b></p>'+(r&&r.semPermissao?'<p>Peça a liberação ao Administrador, em Permissões.</p>':'')+'</div>';
+      return;
+    }
+    EH.dados=r; EH.det={};
+    eqhPopularFiltros_(r);
+    eqhRender_();
+  }catch(err){ if(seq===EH.seq) box.innerHTML='<div class="empty-state" style="padding:40px 20px"><p>Erro ao carregar. Tente novamente.</p></div>'; }
+}
+function eqhPopularFiltros_(r){
+  const sp=document.getElementById('f-eqh-proj'), sq=document.getElementById('f-eqh-pes');
+  const vp=sp.value, vq=sq.value;
+  sp.innerHTML='<option value="">Todos os meus projetos</option>'+(r.listaProjetos||[]).map(n=>'<option value="'+paEscHtml_(n)+'">'+paEscHtml_(n)+'</option>').join('');
+  sq.innerHTML='<option value="">Todos (dos meus projetos)</option>'+(r.listaParticipantes||[]).map(x=>'<option value="'+paEscHtml_(x.email)+'">'+paEscHtml_(x.nome)+'</option>').join('');
+  if((r.listaProjetos||[]).includes(vp)) sp.value=vp;
+  if((r.listaParticipantes||[]).some(x=>x.email===vq)) sq.value=vq;
+}
+function eqhRender_(){
+  const r=EH.dados, box=document.getElementById('eqh-content'), kpi=document.getElementById('kpi-eqh'); if(!r) return;
+  if(r.semProjetos){ kpi.innerHTML=''; box.innerHTML='<div class="empty-state" style="padding:60px 20px"><p><b>Você ainda não tem projetos vinculados como GP.</b></p><p>Quando um projeto do Portfólio indicar seu nome como GP, ele aparecerá aqui.</p></div>'; return; }
+  const s=r.resumo||{};
+  const card=(v,l,ic)=>kpiHtml({label:l,value:v,icon:ic||'projetos'});
+  kpi.innerHTML=card(s.projetos,'Projetos sob minha responsabilidade','projetos')+card(s.participantes,'Participantes','pessoas')+card(eqhFmtH_(s.prev),'Horas previstas','horas')+card(eqhFmtH_(s.apo),'Horas apontadas','relogio')+card(eqhDif_(s.apo,s.prev),'Diferença (apontadas − previstas)','balanca')+card(s.prev>0?eqhPct_(s.apo,s.prev).toFixed(1).replace('.',',')+'%':'—','% de execução','check');
+  if(!(s.prev>0)&&!(s.apo>0)){ box.innerHTML='<div class="empty-state" style="padding:60px 20px"><p><b>Não há dados para o período selecionado.</b></p><p>Ajuste as datas ou o projeto.</p></div>'; return; }
+  const k=EH.ord.k, d=-EH.ord.dir, val=x=>k==='pct'?(eqhPct_(x.apo,x.prev)??-1):x[k];
+  const seta=c=>EH.ord.k===c?(EH.ord.dir<0?' ▾':' ▴'):'';
+  const projs=(r.projetos||[]).map(p=>({p,prev:p.participantes.reduce((a,x)=>a+x.prev,0),apo:p.participantes.reduce((a,x)=>a+x.apo,0)})).sort((a,b)=>d*(val(b)-val(a)));
+  let h='<div class="table-wrap"><table class="da-t"><thead><tr><th>Participante</th><th>Projeto</th><th data-eqh-ord="prev" style="text-align:right;cursor:pointer">Horas previstas'+seta('prev')+'</th><th data-eqh-ord="apo" style="text-align:right;cursor:pointer">Horas apontadas'+seta('apo')+'</th><th style="text-align:right">Diferença</th><th data-eqh-ord="pct" style="cursor:pointer;min-width:150px">% Execução'+seta('pct')+'</th></tr></thead><tbody>';
+  projs.forEach(o=>{
+    const aberto=EH.abertos[o.p.pj]!==false;
+    h+='<tr data-eqh-proj="'+paEscHtml_(o.p.pj)+'" style="background:var(--surface-alt);font-weight:600;cursor:pointer"><td>'+(aberto?'▾':'▸')+' '+paEscHtml_(o.p.pj)+' <span style="font-weight:400;color:var(--text-muted)">· '+paEscHtml_(o.p.cl||'')+' · '+o.p.participantes.length+' participante(s)</span></td><td></td><td style="text-align:right">'+eqhFmtH_(o.prev)+'</td><td style="text-align:right">'+eqhFmtH_(o.apo)+'</td><td style="text-align:right">'+eqhDif_(o.apo,o.prev)+'</td><td>'+eqhBarra_(eqhPct_(o.apo,o.prev))+'</td></tr>';
+    if(!aberto) return;
+    o.p.participantes.slice().sort((a,b)=>d*(val(b)-val(a))).forEach(x=>{
+      const key=o.p.pj+'|'+x.email;
+      h+='<tr><td style="padding-left:28px">'+paEscHtml_(x.nome)+'</td><td>'+paEscHtml_(o.p.pj)+' · <a href="#" data-eqh-det="'+paEscHtml_(key)+'" data-pj="'+paEscHtml_(o.p.pj)+'" data-em="'+paEscHtml_(x.email)+'">Ver tarefas</a></td><td style="text-align:right">'+eqhFmtH_(x.prev)+'</td><td style="text-align:right">'+eqhFmtH_(x.apo)+'</td><td style="text-align:right">'+eqhDif_(x.apo,x.prev)+'</td><td>'+eqhBarra_(eqhPct_(x.apo,x.prev))+'</td></tr>';
+      if(EH.det[key]) h+='<tr><td colspan="6" style="padding:8px 28px;font-size:12.5px">'+EH.det[key]+'</td></tr>';
+    });
+    h+='<tr style="font-weight:700"><td style="padding-left:28px">Total do '+paEscHtml_(o.p.pj)+'</td><td></td><td style="text-align:right">'+eqhFmtH_(o.prev)+'</td><td style="text-align:right">'+eqhFmtH_(o.apo)+'</td><td style="text-align:right">'+eqhDif_(o.apo,o.prev)+'</td><td>'+eqhBarra_(eqhPct_(o.apo,o.prev))+'</td></tr>';
+  });
+  box.innerHTML=h+'</tbody></table></div><p style="font-size:12px;color:var(--text-muted)">Previstas: horas estimadas por pessoa e tarefa (divididas entre os responsáveis), pela data de término. Apontadas: lançamentos da própria pessoa no projeto. Sem período, entram também as horas sem data.</p>';
+}
+async function eqhClique_(ev){
+  const o=ev.target.closest('[data-eqh-ord]'); if(o){ const k=o.dataset.eqhOrd; EH.ord=EH.ord.k===k?{k,dir:-EH.ord.dir}:{k,dir:-1}; eqhRender_(); return; }
+  const a=ev.target.closest('[data-eqh-det]');
+  if(a){
+    ev.preventDefault(); const key=a.dataset.eqhDet;
+    if(EH.det[key]){ delete EH.det[key]; eqhRender_(); return; }
+    EH.det[key]='Carregando…'; eqhRender_();
+    const g=id=>(document.getElementById(id)||{}).value||''; const va=eqhVa_();
+    try{
+      const r=await loadDataJSONPComRetry(feUrl_('acompanhamentoHorasEquipe','&detalhe=1&projeto='+encodeURIComponent(a.dataset.pj)+'&pessoa='+encodeURIComponent(a.dataset.em)+(g('f-eqh-de')?'&de='+g('f-eqh-de'):'')+(g('f-eqh-ate')?'&ate='+g('f-eqh-ate'):'')+(va?'&viewAs='+encodeURIComponent(va):'')),1);
+      if(!r||!r.ok||!r.detalhe){ EH.det[key]='Não foi possível carregar o detalhamento.'; }
+      else{
+        const t=r.detalhe.tarefas||[], ap=r.detalhe.apontamentos||[];
+        EH.det[key]='<b>Tarefas ('+t.length+')</b>: '+(t.length?t.map(x=>paEscHtml_(x.tarefa)+' <span style="color:var(--text-muted)">['+paEscHtml_(x.status||'—')+']</span>').join(' · '):'nenhuma')+'<br><b>Apontamentos ('+ap.length+')</b>: '+(ap.length?ap.map(x=>dataTxt_(x.data)+' — '+eqhFmtH_(x.horas)).join(' · '):'nenhum no período');
+      }
+    }catch(e){ EH.det[key]='Não foi possível carregar o detalhamento.'; }
+    eqhRender_();
+  }
+  const pr=ev.target.closest('tr[data-eqh-proj]');
+  if(pr&&!ev.target.closest('a')){ const n=pr.dataset.eqhProj; EH.abertos[n]=EH.abertos[n]===false; eqhRender_(); }
+}
+function eqhCsv_(){
+  const r=EH.dados; if(!r||!r.projetos) return;
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const L=[['Participante','Projeto','Horas previstas','Horas apontadas','Diferença','% Execução'].map(q).join(';')];
+  r.projetos.forEach(p=>p.participantes.forEach(x=>{ const pc=eqhPct_(x.apo,x.prev); L.push([x.nome,p.pj,String(x.prev).replace('.',','),String(x.apo).replace('.',','),String(Math.round((x.apo-x.prev)*10)/10).replace('.',','),pc==null?'':pc.toFixed(1).replace('.',',')].map(q).join(';')); }));
+  const blob=new Blob(['﻿'+L.join('\r\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='acompanhamento_horas_equipe_'+hojeISO_()+'.csv'; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+}
 
 // ============================================================
 // CALENDÁRIO DE PROJETOS (v15.3) — NOVA VISUALIZAÇÃO, sem dados novos.
@@ -14744,6 +14973,13 @@ function chTendencia_(vals,ignUlt){ // regressão linear sobre os pontos COM reg
 }
 // ---------- KPIs e avisos ----------
 const chFmtP_=n=>n.toLocaleString('pt-BR',{maximumFractionDigits:1,minimumFractionDigits:0});
+// v18.9 — semáforo de variação. pct = fração (0,148 = +14,8%). Estável ±5%; leve <10%; média <25%; forte ≥25%.
+const CH_VAR_EST=0.05, CH_VAR_LEVE=0.10, CH_VAR_MEDIA=0.25;
+function chVarCls_(pct){ if(pct===null||pct===undefined||!isFinite(pct)) return {c:'nd',seta:'–',nivel:0,dir:'nd'}; const a=Math.abs(pct); if(a<CH_VAR_EST) return {c:'eq',seta:'●',nivel:0,dir:'eq'}; const n=a<CH_VAR_LEVE?1:(a<CH_VAR_MEDIA?2:3), d=pct>0?'up':'dn'; return {c:d+n,seta:d==='up'?'▲':'▼',nivel:n,dir:d}; }
+function chVarTxt_(pct){ const k=chVarCls_(pct); return k.dir==='nd'?'sem base':(k.seta+' '+(pct>0?'+':(pct<0?'−':''))+chFmtP_(Math.abs(pct*100))+'%'); }
+function chVarHtml_(pct,o){ o=o||{}; const k=chVarCls_(pct), nome={up:'Crescimento de horas apontadas',dn:'Redução de horas apontadas',eq:'Variação estável (até ±5%)',nd:'Sem base de comparação'}[k.dir], forca=['','leve','média','forte'][k.nivel];
+  const txt=o.texto!==undefined?o.texto:(k.dir==='nd'?'sem base':(pct>0?'+':(pct<0?'−':''))+chFmtP_(Math.abs(pct*100))+'%');
+  return '<span class="vr '+k.c+(o.sm?' sm':'')+'" title="'+nome+(forca?' · intensidade '+forca:'')+'"><i aria-hidden="true">'+k.seta+'</i>'+feEsc_(txt)+'</span>'; }
 function chKpis_(C){
   const f=CH.f, n=C.nProf, top=C.pessoas[0], vh=C.antTem?(C.tot-C.antTot)/C.antTot:null;
   const ant=C.ant?haBr_(C.ant.ini)+' a '+haBr_(C.ant.fim):'';
@@ -14753,7 +14989,7 @@ function chKpis_(C){
     k({label:'Média por profissional',value:n?fHM_(C.tot/n):'—',foot:'só quem apontou no período',icon:'pessoas',color:'#4f46e5',bg:'#eef2ff'})+
     k({label:'Profissionais com apontamentos',value:String(n),foot:'de '+C.nEsc+' no escopo dos filtros',icon:'pessoas',color:'#0284c7',bg:'#e0f2fe'})+
     k({label:'Maior volume de horas',value:top?feEsc_(chRotP_(top.e)):'—',valueFontSize:top&&chRotP_(top.e).length>16?'15px':'',foot:top?fHM_(top.h)+' ('+chFmtP_(top.h/C.tot*100)+'%)':'sem apontamentos',icon:'tarefas',color:'#059669',bg:'#ecfdf5'})+
-    k({label:'Variação vs período anterior',value:vh===null?'—':(vh>0?'▲ ':(vh<0?'▼ ':'= '))+chFmtP_(Math.abs(vh*100))+'%',valueColor:vh===null?'':(vh>0?'#16a34a':(vh<0?'#dc2626':'')),foot:vh===null?(C.ant?'sem apontamentos em '+ant:'período anterior indisponível'):(C.tot-C.antTot>=0?'+':'−')+fHM_(Math.abs(C.tot-C.antTot))+' · vs '+ant,icon:'relogio',color:'#b45309',bg:'#fef3c7'})+
+    k({label:'Variação vs período anterior',value:chVarHtml_(vh),foot:vh===null?(C.ant?'sem apontamentos em '+ant:'período anterior indisponível'):(C.tot-C.antTot>=0?'+':'−')+fHM_(Math.abs(C.tot-C.antTot))+' · vs '+ant,icon:'relogio',color:'#b45309',bg:'#fef3c7'})+
     k({label:'Média por dia útil',value:C.du?fHM_(C.tot/C.du):'—',foot:C.du?C.du+' dias úteis'+(n?' · '+fHM_(C.tot/C.du/n)+' por profissional':''):'sem dias úteis no período',icon:'calendario',color:'#6d28d9',bg:'#ede9fe'});
 }
 function chAvisos_(C){
@@ -14795,7 +15031,7 @@ function chBase_(pal,extra){
 }
 function chLegenda_(S,vals,parcial){
   return '<div class="ch-leg">'+S.lista.map(s=>{ const off=CH.oculto.has(s.k), cor=chCorSerie_(s,S.pal), t=vals&&vals[s.k]?chTendencia_(vals[s.k],parcial):null;
-    return '<button type="button" class="ch-lg'+(off?' off':'')+'" data-ch-s="'+feEsc_(s.k)+'" title="Clique para '+(off?'exibir':'ocultar')+'"><i class="ch-sw'+(s.slot>=8?' d':'')+'" style="border-color:'+cor+'"></i>'+feEsc_(s.label)+(t?' <b class="ch-tr '+t.dir+'" title="'+(t.dir==='up'?'Tendência de crescimento':(t.dir==='dn'?'Tendência de redução':'Tendência estável'))+'">'+(t.dir==='up'?'▲':(t.dir==='dn'?'▼':'●'))+'</b>':'')+'</button>'+(CH.visao==='p'&&chPodeIr_(s.k)?'<span class="person-link ch-go" data-ch-go="'+feEsc_(s.k)+'" title="Abrir Desempenho por Pessoa" role="link">↗</span>':''); }).join('')+'</div>';
+    return '<button type="button" class="ch-lg'+(off?' off':'')+'" data-ch-s="'+feEsc_(s.k)+'" title="Clique para '+(off?'exibir':'ocultar')+'"><i class="ch-sw'+(s.slot>=8?' d':'')+'" style="border-color:'+cor+'"></i>'+feEsc_(s.label)+(t?' '+chVarHtml_(t.rel,{sm:1,texto:(t.dir==='up'?'crescimento':(t.dir==='dn'?'redução':'estável'))}):'')+'</button>'+(CH.visao==='p'&&chPodeIr_(s.k)?'<span class="person-link ch-go" data-ch-go="'+feEsc_(s.k)+'" title="Abrir Desempenho por Pessoa" role="link">↗</span>':''); }).join('')+'</div>';
 }
 function chSerVals_(S,B){ const v={}; S.lista.forEach(s=>{ v[s.k]=B.map(b=>s.b[b]!==undefined?Math.round(s.b[b]*100)/100:null); }); return v; }
 function chG0_(host,C,alt){
@@ -14861,15 +15097,15 @@ function chCmpDados_(){
 }
 function chG5_(host,C,alt){
   const X=chCmpDados_(), pal=chCores_(); if(!X){ host.insertAdjacentHTML('beforeend','<div class="ch-vazio">Defina os dois períodos a comparar.</div>'); return []; }
-  const seta=X.pct===null?'—':(X.pct>0?'▲':(X.pct<0?'▼':'●')), cl=X.pct===null?'':(X.pct>0?'up':(X.pct<0?'dn':''));
+  const seta=X.pct===null?'—':(X.pct>0?'▲':(X.pct<0?'▼':'●')), kV=chVarCls_(X.pct), cl=X.pct===null?'':(kV.dir==='nd'?'':kV.dir);
   const duA=X.pc.A.du, duB=X.pc.B.du, difDU=duA!==duB;
-  host.insertAdjacentHTML('beforeend','<div class="ch-cmp"><div><small>'+feEsc_(X.pc.A.rot)+'</small><b>'+fHM_(X.tA)+'</b><span>'+haBr_(X.pc.A.ini)+' a '+haBr_(X.pc.A.fim)+' · '+duA+' dias úteis</span></div><div><small>'+feEsc_(X.pc.B.rot)+'</small><b>'+fHM_(X.tB)+'</b><span>'+haBr_(X.pc.B.ini)+' a '+haBr_(X.pc.B.fim)+' · '+duB+' dias úteis</span></div><div><small>Diferença</small><b class="'+cl+'">'+(X.dif>0?'+':(X.dif<0?'−':''))+fHM_(Math.abs(X.dif))+'</b><span>horas (A − B)</span></div><div><small>Variação</small><b class="'+cl+'">'+seta+' '+(X.pct===null?'sem base':chFmtP_(Math.abs(X.pct*100))+'%')+'</b><span>'+(X.pct===null?'período B sem apontamentos':(X.pct>0?'crescimento':(X.pct<0?'redução':'estável')))+'</span></div></div>'
+  host.insertAdjacentHTML('beforeend','<div class="ch-cmp"><div><small>'+feEsc_(X.pc.A.rot)+'</small><b>'+fHM_(X.tA)+'</b><span>'+haBr_(X.pc.A.ini)+' a '+haBr_(X.pc.A.fim)+' · '+duA+' dias úteis</span></div><div><small>'+feEsc_(X.pc.B.rot)+'</small><b>'+fHM_(X.tB)+'</b><span>'+haBr_(X.pc.B.ini)+' a '+haBr_(X.pc.B.fim)+' · '+duB+' dias úteis</span></div><div class="sem '+cl+'"><small>Diferença</small><b class="'+cl+'">'+(X.dif>0?'+':(X.dif<0?'−':''))+fHM_(Math.abs(X.dif))+'</b><span>horas (A − B)</span></div><div class="sem '+cl+'"><small>Variação</small><b>'+chVarHtml_(X.pct)+'</b><span>'+(X.pct===null?'período B sem apontamentos':({up:'crescimento',dn:'redução',eq:'estável'}[kV.dir]))+'</span></div></div>'
     +(difDU?'<div class="ch-nota">Os intervalos têm números de dias úteis diferentes ('+duA+' × '+duB+'). Média por dia útil: A '+(duA?fHM_(X.tA/duA):'—')+' · B '+(duB?fHM_(X.tB/duB):'—')+'.</div>':'<div class="ch-nota">Intervalos equivalentes: '+duA+' dias úteis em cada período.</div>'));
   if(!X.lin.length) return chVazio_(host);
   let L=X.lin.slice(0,CH_MAX_PESSOAS); if(X.lin.length>CH_MAX_PESSOAS){ const r=X.lin.slice(CH_MAX_PESSOAS); L=L.concat({label:'Demais ('+r.length+')',a:r.reduce((s,x)=>s+x.a,0),b:r.reduce((s,x)=>s+x.b,0)}); }
   host.insertAdjacentHTML('beforeend','<div class="ch-leg"><span class="ch-lg"><i class="ch-sw" style="border-color:'+pal.pal[0]+'"></i>A · '+feEsc_(X.pc.A.rot)+'</span><span class="ch-lg"><i class="ch-sw" style="border-color:'+pal.cinza+'"></i>B · '+feEsc_(X.pc.B.rot)+'</span></div><div class="ch-cv'+(alt?' amplo':'')+'"><canvas></canvas></div>');
   const op=chBase_(pal,{interaction:{mode:'index',intersect:false}}); op.scales.x.ticks.maxRotation=40;
-  op.plugins.tooltip={callbacks:{footer:it=>{ const l=L[it[0].dataIndex], d=l.a-l.b; return 'Diferença: '+(d>0?'+':(d<0?'−':''))+fHM_(Math.abs(d))+(l.b>0?' ('+(d>0?'▲':(d<0?'▼':''))+chFmtP_(Math.abs(d/l.b*100))+'%)':''); },label:i=>' '+(i.datasetIndex?'B':'A')+': '+fHM_(i.parsed.y)}};
+  op.plugins.tooltip={callbacks:{footer:it=>{ const l=L[it[0].dataIndex], d=l.a-l.b; return 'Diferença: '+(d>0?'+':(d<0?'−':''))+fHM_(Math.abs(d))+(l.b>0?' ('+chVarTxt_(d/l.b)+')':''); },label:i=>' '+(i.datasetIndex?'B':'A')+': '+fHM_(i.parsed.y)}};
   return [new Chart(host.querySelector('canvas'),{type:'bar',data:{labels:L.map(x=>x.label),datasets:[{label:'A',data:L.map(x=>Math.round(x.a*100)/100),backgroundColor:pal.pal[0],borderRadius:3},{label:'B',data:L.map(x=>Math.round(x.b*100)/100),backgroundColor:pal.cinza,borderRadius:3}]},options:op})];
 }
 function chG6_(host,C,alt){
@@ -14882,15 +15118,15 @@ function chG6_(host,C,alt){
   return [];
 }
 // ---------- visão em tabela (mesmos números do gráfico) ----------
-function chTab_(cols,rows,lk){ return '<div class="ch-tbw"><table class="ch-tb"><thead><tr>'+cols.map(c=>'<th>'+feEsc_(c)+'</th>').join('')+'</tr></thead><tbody>'+rows.map((r,ri)=>'<tr>'+r.map((c,i)=>'<td'+(i&&!(lk&&i===lk.col)?' class="n"':'')+'>'+(lk&&i===lk.col&&lk.keys[ri]!==undefined?chLk_(lk.keys[ri],c):feEsc_(c))+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>'; }
+function chTab_(cols,rows,lk){ return '<div class="ch-tbw"><table class="ch-tb"><thead><tr>'+cols.map(c=>'<th>'+feEsc_(c)+'</th>').join('')+'</tr></thead><tbody>'+rows.map((r,ri)=>'<tr>'+r.map((c,i)=>'<td'+(i&&!(lk&&i===lk.col)?' class="n"':'')+'>'+(lk&&i===lk.col&&lk.keys[ri]!==undefined?chLk_(lk.keys[ri],c):(c&&c.html!==undefined?c.html:feEsc_(c)))+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>'; }
 function chTabela_(C){
   const g=CH.graf, hh=v=>v===null||v===undefined?'—':fHM_(v), pc=v=>chFmtP_(v)+'%';
-  if(g===0||g===3){ const S=chSeries_(C,true), B=C.buckets, V=chSerVals_(S,B); const rows=B.map((b,i)=>[chBTit_(b,C.g)].concat(S.lista.map(s=>hh(V[s.k][i]))).concat([hh(S.lista.reduce((a,s)=>a+(s.b[b]||0),0)||null)]));
-    if(g===0) rows.push(['Tendência'].concat(S.lista.map(s=>{ const t=chTendencia_(V[s.k],C.parcial); return t?(t.dir==='up'?'▲ crescimento':(t.dir==='dn'?'▼ redução':'● estável')):'—'; })).concat([''])); return chTab_(['Período'].concat(S.lista.map(s=>s.label)).concat(['Total']),rows); }
+  if(g===0||g===3){ const S=chSeries_(C,true), B=C.buckets, V=chSerVals_(S,B); const TT=B.map(b=>S.lista.reduce((a,s)=>a+(s.b[b]||0),0)); const rows=B.map((b,i)=>[chBTit_(b,C.g)].concat(S.lista.map(s=>hh(V[s.k][i]))).concat([hh(TT[i]||null),(i>0&&TT[i-1]>0&&TT[i]>0&&!(C.parcial&&i===B.length-1))?{html:chVarHtml_((TT[i]-TT[i-1])/TT[i-1],{sm:1})}:'—']));
+    if(g===0) rows.push(['Tendência'].concat(S.lista.map(s=>{ const t=chTendencia_(V[s.k],C.parcial); return t?{html:chVarHtml_(t.rel,{sm:1,texto:(t.dir==='up'?'crescimento':(t.dir==='dn'?'redução':'estável'))})}:'—'; })).concat(['','']));  return chTab_(['Período'].concat(S.lista.map(s=>s.label)).concat(['Total','vs período anterior']),rows); }
   if(g===1){ let G=chGrupos_(C,CH.visao,CH.dim); if(CH.ord==='asc') G=G.slice().reverse(); return chTab_(['#',CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim],'Horas','% do total','Tarefas','Reuniões','Geral','Outros','Pessoas'],G.map((x,i)=>[i+1,x.label,fHM_(x.h),pc(x.h/C.tot*100),hh(x.tp[0]||null),hh(x.tp[1]||null),hh(x.tp[2]||null),hh(x.tp[3]||null),x.pes.size]),{col:1,keys:G.map(x=>x.k)}); }
   if(g===2){ const G=chGrupos_(C,'d',CH.dim3); return chTab_([CH_DIMS[CH.dim3],'Tarefas','Reuniões','Geral','Outros','Total','% do total','Pessoas'],G.map(x=>[x.label,hh(x.tp[0]||null),hh(x.tp[1]||null),hh(x.tp[2]||null),hh(x.tp[3]||null),fHM_(x.h),pc(x.h/C.tot*100),x.pes.size])); }
   if(g===4){ const d=CH.dim5, G=chGrupos_(C,d==='pessoa'?'p':'d',d==='pessoa'?'cargo':d); return chTab_([d==='pessoa'?'Pessoa':CH_DIMS[d],'Horas','% do total'],G.map(x=>[x.label,fHM_(x.h),pc(x.h/C.tot*100)]).concat([['Total',fHM_(C.tot),'100%']])); }
-  if(g===5){ const X=chCmpDados_(); if(!X) return '<div class="ch-vazio">Defina os dois períodos.</div>'; return chTab_([CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim],'A · '+X.pc.A.rot,'B · '+X.pc.B.rot,'Diferença','Variação'],X.lin.map(l=>[l.label,hh(l.a||null),hh(l.b||null),(l.a-l.b>0?'+':(l.a-l.b<0?'−':''))+fHM_(Math.abs(l.a-l.b)),l.b>0?(l.a>=l.b?'▲ ':'▼ ')+pc(Math.abs((l.a-l.b)/l.b*100)):'—']).concat([['Total',fHM_(X.tA),fHM_(X.tB),(X.dif>0?'+':(X.dif<0?'−':''))+fHM_(Math.abs(X.dif)),X.pct===null?'—':(X.pct>=0?'▲ ':'▼ ')+pc(Math.abs(X.pct*100))]]),{col:0,keys:X.lin.map(l=>l.k)}); }
+  if(g===5){ const X=chCmpDados_(); if(!X) return '<div class="ch-vazio">Defina os dois períodos.</div>'; return chTab_([CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim],'A · '+X.pc.A.rot,'B · '+X.pc.B.rot,'Diferença','Variação'],X.lin.map(l=>[l.label,hh(l.a||null),hh(l.b||null),(l.a-l.b>0?'+':(l.a-l.b<0?'−':''))+fHM_(Math.abs(l.a-l.b)),l.b>0?{html:chVarHtml_((l.a-l.b)/l.b,{sm:1})}:(l.a>0?{html:chVarHtml_(null,{sm:1})}:'—')]).concat([['Total',fHM_(X.tA),fHM_(X.tB),(X.dif>0?'+':(X.dif<0?'−':''))+fHM_(Math.abs(X.dif)),X.pct===null?'—':{html:chVarHtml_(X.pct,{sm:1})}]]),{col:0,keys:X.lin.map(l=>l.k)}); }
   let gg=CH.hm==='auto'?(C.g==='t'||C.g==='a'?'m':C.g):CH.hm; if(gg==='d'&&chDiasEntre_(CH.f.ini,CH.f.fim)>92) gg='s'; const B=chBuckets_(CH.f.ini,CH.f.fim,gg), G=chGrupos_({recs:C.recs,g:gg},CH.visao,CH.dim);
   return chTab_([CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim]].concat(B.map(b=>chBRot_(b,gg))).concat(['Total']),G.map(x=>[x.label].concat(B.map(b=>hh(x.b[b]))).concat([fHM_(x.h)])),{col:0,keys:G.map(x=>x.k)});
 }
@@ -14933,8 +15169,10 @@ async function chExcel_(btn){
       C.pessoas.map((x,i)=>{ const p=CH.pes[x.e]||{}; return [i+1,chRotP_(x.e),p.cargo||'',p.nv||'',p.area||'',p.head||'',p.gestor||'',hx(x.h),x.h/C.tot,hx(x.tp[0]),hx(x.tp[1]),hx(x.tp[2]),hx(x.tp[3])]; }));
     const pf=[]; Object.keys(CH_DIMS).forEach(d=>chGruposRecs_(C.recs,C.g,'f',d).forEach(x=>pf.push([CH_DIMS[d],x.label,hx(x.h),x.h/C.tot,x.pes.size,hx(x.tp[0]),hx(x.tp[1]),hx(x.tp[2]),hx(x.tp[3])])));
     add('Por perfil',[['Dimensão',16],['Valor',30],['Horas',14,HMM],['% do total',12,'0.0%'],['Pessoas',10],['Tarefas',12,HMM],['Reuniões',12,HMM],['Geral',12,HMM],['Outros',12,HMM]],pf);
-    const X=chCmpDados_(); if(X) add('Comparativo',[[CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim],30],['A · '+X.pc.A.rot+' ('+haBr_(X.pc.A.ini)+' a '+haBr_(X.pc.A.fim)+')',28,HMM],['B · '+X.pc.B.rot+' ('+haBr_(X.pc.B.ini)+' a '+haBr_(X.pc.B.fim)+')',28,HMM],['Diferença (A − B)',16,'+[h]:mm;-[h]:mm'],['Variação',12,'0.0%']],
-      X.lin.map(l=>[l.label,hx(l.a),hx(l.b),hx(l.a-l.b),l.b>0?(l.a-l.b)/l.b:'']).concat([['TOTAL',hx(X.tA),hx(X.tB),hx(X.dif),X.pct===null?'':X.pct]]));
+    const X=chCmpDados_(); if(X) add('Comparativo',[[CH.visao==='p'?'Pessoa':CH_DIMS[CH.dim],30],['A · '+X.pc.A.rot+' ('+haBr_(X.pc.A.ini)+' a '+haBr_(X.pc.A.fim)+')',28,HMM],['B · '+X.pc.B.rot+' ('+haBr_(X.pc.B.ini)+' a '+haBr_(X.pc.B.fim)+')',28,HMM],['Diferença (A − B)',16,'+[h]:mm;-[h]:mm'],['Variação',12,'0.0%'],['Sinal',22]],
+      X.lin.map(l=>[l.label,hx(l.a),hx(l.b),hx(l.a-l.b),l.b>0?(l.a-l.b)/l.b:'',chVarTxt_(l.b>0?(l.a-l.b)/l.b:null)]).concat([['TOTAL',hx(X.tA),hx(X.tB),hx(X.dif),X.pct===null?'':X.pct,chVarTxt_(X.pct)]]));
+    if(X){ const wsC=wb.getWorksheet('Comparativo'), COR={up:['FFD1FAE5','FF166534'],dn:['FFFEE2E2','FF991B1B'],eq:['FFFEF9C3','FF854D0E'],nd:['FFF1F5F9','FF64748B']};
+      wsC.eachRow((r,n)=>{ if(n<2) return; const v=r.getCell(5).value, k=chVarCls_(v===''||v===null?null:v), c=COR[k.dir]; [5,6].forEach(ci=>{ const ce=r.getCell(ci); ce.fill={type:'pattern',pattern:'solid',fgColor:{argb:c[0]}}; ce.font={bold:true,color:{argb:c[1]}}; }); }); }
     const CAP=100000, det=C.recs.slice().sort((a,b)=>a.d<b.d?-1:(a.d>b.d?1:a.row-b.row)).slice(0,CAP).map(r=>{ const p=CH.pes[r.e]||{}, pj=CH.projs[r.pj]||{}; return [haIsoParaDate_(r.d),chRotP_(r.e),p.cargo||'',p.nv||'',p.area||'',p.head||'',p.gestor||'',pj.cl||'',pj.pj||'',CH_TIPOS[r.tp],hx(r.h),r.row]; });
     add('Lançamentos'+(C.recs.length>CAP?' (primeiros '+CAP+')':''),[['Data',12,'dd/mm/yyyy'],['Pessoa',30],['Cargo',22],['Senioridade',16],['Área',22],['Head',22],['Gestor',22],['Cliente',26],['Projeto',34],['Tipo',12],['Horas',10,HMM],['Linha na planilha',12]],det);
     const buf=await wb.xlsx.writeBuffer(), url=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
