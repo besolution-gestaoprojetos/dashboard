@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwsKhMtU_DoIzT9-QqtuGYdgRYoyohsEdKbVbb_2ilicljxiYfO1eAbIPcv7ynK-FCM7w/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyxYxwDcWV8vYaqG5eMjuQCW8j_wvnMCc_95glRHa2ZuHOuG-G8eB5TO1vSGFhBgtyP5Q/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -3132,7 +3132,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v19.0';
+const APP_VERSION='v19.1';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -3373,6 +3373,7 @@ function novidadesUltimaAtualizacao_(){
   return mx?mx.slice(8,10)+'/'+mx.slice(5,7)+'/'+mx.slice(0,4):NOVIDADES_ATUALIZADO_EM;
 }
 const NOVIDADES=[
+  {icone:'⬇️', bg:'#ecfdf5', cor:'#059669', titulo:'Exportar Excel na Análise por Pessoa', descricao:'Em Carga e Risco de Alocação, o card Análise por Pessoa ganhou o botão Exportar Excel: leva as mesmas colunas da tela, respeitando os filtros e a ordenação, e inclui a coluna Clientes / Projetos com o nome de cada cliente e projeto da pessoa.', paginas:['inteligencia'], data:'2026-11-12', tag:'Nova', tagCor:'nova'},
   {icone:'📋', bg:'#eff6ff', cor:'#2563eb', titulo:'Análise por Pessoa mais objetiva', descricao:'Em Carga e Risco de Alocação, a listagem agora mostra o Head de cada pessoa, a Próxima Entrega pela data de vencimento da próxima tarefa em aberto e a quantidade de Tarefas em aberto. As colunas Complexidade e Prioridade saíram da lista (o Score continua considerando esses fatores).', paginas:['inteligencia'], data:'2026-11-12', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🚦', bg:'#fefce8', cor:'#a16207', titulo:'Semáforo nas variações de horas', descricao:'No Comparativo e Evolução de Horas, as variações agora mostram seta (▲ ▼ ●) e cor de semáforo: verde = mais horas, vermelho = menos horas, amarelo = estável, com tons mais fortes para variações maiores.', data:'2026-11-12'},
   {icone:'⏱️', bg:'#eff6ff', cor:'#2563eb', titulo:'Acompanhamento de Horas da Equipe (GP)', descricao:'Nova página para o Gerente de Projeto acompanhar horas previstas × apontadas dos participantes dos projetos em que é GP, com total por projeto, filtros e exportação. Usuários comuns e GP passam a abrir o Desempenho por Pessoa só com os próprios dados. As páginas liberadas agora são calculadas pelo servidor.', paginas:['equipehoras','pessoa','permissoes'], data:'2026-11-10', tag:'Novo', tagCor:'nova'},
@@ -6517,7 +6518,7 @@ function renderInteligenciaAlocacao(){
     ${IA_FAIXAS_SCORE.map(f=>kpiHtml({label:f.emoji+' '+f.label,value:contagemFaixas[f.label]})).join('')}`;
 
   const sufixoModoIA=modoStatusIA!=='todos'?' · '+projStatusRotulo_(modoStatusIA):'';
-  let h='<div class="card"><div class="card-title"><h3>Análise por Pessoa'+(sufixoModoIA?'<span class="sub">'+sufixoModoIA+'</span>':'')+'</h3><span class="sub">'+linhas.length+'</span></div>'+
+  let h='<div class="card"><div class="card-title"><h3>Análise por Pessoa'+(sufixoModoIA?'<span class="sub">'+sufixoModoIA+'</span>':'')+'</h3><span class="sub">'+linhas.length+'</span><button type="button" class="filter-clear" id="ia-xl" style="margin-left:auto"'+(linhas.length?'':' disabled')+'>⬇ Exportar Excel</button></div>'+
     (modoStatusIA!=='todos'?'<div class="ia-nota-previstas">Filtro de projetos ativo ('+projStatusRotulo_(modoStatusIA)+'): Projetos, Tarefas em aberto, Próxima Entrega, H. Apontadas, Score e Situação consideram só esses projetos. H. Previstas = total da pessoa (não há quebra por projeto).</div>':'')+
     '<div class="table-wrap" style="max-height:620px"><table>'+
     theadOrdenavel_('ia',colunasIA)+'<tbody>';
@@ -6546,10 +6547,51 @@ function renderInteligenciaAlocacao(){
   }
   h+='</tbody></table></div></div>';
   document.getElementById('inteligencia-content').innerHTML=h;
+  IA_EXP={linhas,colunas:colunasIA,modo:modoStatusIA,filtros:[['Pessoa',fPessoa],['Gestor',fGestor],['Qtd. de Projetos',fQtdProj],['Situação',fSituacao],['Complexidade',fComplexidade],['Prioridade',fPrioridade],['Status da Tarefa',fStatus]].filter(x=>x[1]!=='')};
+  { const bx=document.getElementById('ia-xl'); if(bx) bx.onclick=()=>iaExportarExcel_(bx); }
 
   document.querySelectorAll('#inteligencia-content .ia-row').forEach(row=>{
     row.addEventListener('click',(e)=>{ if(e.target.closest('.person-link')) return; iaAbrirModalDetalhe(row.dataset.iaPessoa); });
   });
+}
+// v19.1 — Exportar Excel da Análise por Pessoa (respeita filtros e ordenação; mesmas colunas da tela + Clientes / Projetos)
+let IA_EXP=null;
+function iaClientesProjetos_(l){
+  const vis=new Set(), out=[];
+  (l.projetos||[]).forEach(p=>{ const k=(p.cl||'')+'\u0001'+(p.pj||''); if(vis.has(k)) return; vis.add(k); out.push((p.cl||'(sem cliente)')+' — '+(p.pj||'')); });
+  return out.sort((a,b)=>a.localeCompare(b,'pt-BR'));
+}
+async function iaExportarExcel_(btn){
+  const E=IA_EXP; if(!E||!E.linhas.length) return;
+  const txt=btn.textContent; btn.disabled=true; btn.textContent='Gerando…';
+  try{
+    const ExcelJS=await calCarregarExcelJS_(), wb=new ExcelJS.Workbook(), HMM='[h]:mm', hojeISO=hojeISO_();
+    const ws=wb.addWorksheet('Análise por Pessoa');
+    const cols=[['Pessoa',28],['Cargo',22],['Head',22],['Nível',18],['Projetos',10],['Clientes / Projetos',44],['Próxima Entrega (tarefa)',24],['Tarefas em aberto',14],['H. Previstas',13],['H. Apontadas',13],['Score',9],['Situação',16]];
+    ws.columns=cols.map(c=>({header:c[0],width:c[1]}));
+    E.linhas.forEach(l=>{
+      const cp=iaClientesProjetos_(l), pt=l.proxTarefa;
+      const r=ws.addRow([l.pessoa.a||'',l.pessoa.cargo||'',l.pessoa.head||'',l.pessoa.nv||'',l.qtdProjetos,cp.join('\n'),
+        pt?haIsoParaDate_(pt.iso):'sem data',l.qtdTarefasAbertas,(l.horasPrevistas||0)/24,(l.horasApontadas||0)/24,l.score,l.faixa.label]);
+      r.getCell(6).alignment={wrapText:true,vertical:'top'}; r.height=Math.max(15,15*Math.max(1,cp.length));
+      r.eachCell(c=>{ if(c.col!==6) c.alignment={vertical:'top'}; });
+      const c7=r.getCell(7); if(pt){ c7.numFmt='dd/mm/yyyy'; c7.alignment={horizontal:'right',vertical:'top'}; if(pt.vencida) c7.font={bold:true,color:{argb:'FFB91C1C'}}; } else c7.font={color:{argb:'FF64748B'}};
+      r.getCell(9).numFmt=HMM; r.getCell(10).numFmt=HMM;
+    });
+    const h=ws.getRow(1); h.height=22; h.eachCell(c=>{c.font={bold:true,color:{argb:'FFFFFFFF'}};c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF0C4A6E'}};c.alignment={vertical:'middle',horizontal:'left',wrapText:true};});
+    ws.views=[{state:'frozen',ySplit:1}]; ws.autoFilter={from:{row:1,column:1},to:{row:1,column:cols.length}};
+    const w2=wb.addWorksheet('Filtros'); w2.columns=[{width:34},{width:80}];
+    const L=[['Tela','Carga e Risco de Alocação › Análise por Pessoa']].concat(E.filtros).concat([
+      ['Status do Projeto',E.modo!=='todos'?projStatusRotulo_(E.modo):'Todos'],['Pessoas na planilha',E.linhas.length],
+      ['Gerado em',new Date().toLocaleString('pt-BR')],['Gerado por',CURRENT_USER_NOME||CURRENT_USER_EMAIL||'—'],
+      ['Tarefas em aberto','Tarefas da pessoa que não estão concluídas nem canceladas (Bloqueadas e Backlog contam).'],
+      ['Próxima Entrega (tarefa)','Menor vencimento entre as tarefas em aberto, a partir de hoje; se só houver vencidas, a mais antiga (em vermelho).']]);
+    if(E.modo!=='todos') L.push(['Observação','Com filtro de Status do Projeto, Projetos, Clientes / Projetos, Tarefas em aberto, Próxima Entrega e H. Apontadas consideram só esses projetos; H. Previstas = total da pessoa.']);
+    L.forEach(x=>w2.addRow(x)); w2.getColumn(1).font={bold:true}; w2.getColumn(2).alignment={wrapText:true,vertical:'top'};
+    const buf=await wb.xlsx.writeBuffer(), url=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+    const a=document.createElement('a'); a.href=url; a.download='Carga_e_Risco_Analise_por_Pessoa_'+hojeISO+'.xlsx'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),4000);
+  }catch(e){ console.warn('Falha ao exportar (Análise por Pessoa).',e); mostrarToastPermissao('Não foi possível gerar o Excel: '+((e&&e.message)||'erro'),false); }
+  finally{ btn.disabled=false; btn.textContent=txt; }
 }
 function iaCorFaixa_(faixa){ return faixa.label==='Sobrecarga'?'#dc2626':faixa.label==='Alto Risco'?'#ea580c':faixa.label==='Atenção'?'#ca8a04':'#16a34a'; }
 function iaCorFaixaBg_(faixa){ return faixa.label==='Sobrecarga'?'rgba(220,38,38,.12)':faixa.label==='Alto Risco'?'rgba(234,88,12,.12)':faixa.label==='Atenção'?'rgba(202,138,4,.12)':'rgba(22,163,74,.12)'; }
@@ -12823,7 +12865,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v19.0', WIKI_DATA='12/11/2026';
+const WIKI_VER='v19.1', WIKI_DATA='12/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -13124,8 +13166,8 @@ WP('aloc-param','3.6','Parâmetros, capacidade e pressão','Constantes e limites
   'O filtro Período de análise vale para toda a página: carga futura (janela), tarefas “vencendo em N dias”, horas apontadas (últimos N dias contados de hoje, inclusive) e jornada de referência = 40 × N ÷ 7. O total histórico de horas apontadas é mantido como linha de referência.',
   '<code>daApont_</code>, <code>daVencN_</code>.','PM (horas por dia), PALOC.','—','Se o apontamento diário não estiver carregado mostra “—”.','Carga e Risco, Visão executiva, Comparar.','Trocar 15 para 30 dias e ver o card de horas mudar.','—'),
  WR('ALOC-005','Listagem Análise por Pessoa: colunas e regras','ok','Carga e Risco',
-  'Colunas: Pessoa, Cargo, <b>Head</b> (Pessoas_Area), Nível, Projetos, <b>Próxima Entrega (tarefa)</b>, <b>Tarefas em aberto</b>, H. Previstas, H. Apontadas, Score e Situação. <b>Tarefas em aberto</b> = tarefas da pessoa que não estão concluídas nem canceladas (Done, Cancelado, Concluído ou com data de conclusão ficam de fora; Bloqueadas e Backlog contam) — mesma definição de “fechada” da Decisão de Alocação. <b>Próxima Entrega (tarefa)</b> = menor data de vencimento entre as tarefas em aberto da pessoa, a partir de hoje (mostra “hoje” ou “Nd”); se só houver vencidas, mostra a mais antiga em vermelho (“vencida há Nd”); sem data: “— sem data”. As colunas Complexidade e Prioridade saíram da listagem, mas continuam no Score e nos filtros. Com o filtro de Status do Projeto, valem só os projetos filtrados.',
-  '<code>iaCalcularAnalisePessoa_</code> (qtdTarefasAbertas, proxTarefa), <code>colunasIA</code>.','PROJ_TASKS, PSTAT, Pessoas_Area.','—','Carga e Risco de Alocação › Análise por Pessoa.','Pessoa com tarefa Done vencendo amanhã: ela não pode ser a Próxima Entrega nem contar em Tarefas em aberto.','—')],
+  'Colunas: Pessoa, Cargo, <b>Head</b> (Pessoas_Area), Nível, Projetos, <b>Próxima Entrega (tarefa)</b>, <b>Tarefas em aberto</b>, H. Previstas, H. Apontadas, Score e Situação. <b>Tarefas em aberto</b> = tarefas da pessoa que não estão concluídas nem canceladas (Done, Cancelado, Concluído ou com data de conclusão ficam de fora; Bloqueadas e Backlog contam) — mesma definição de “fechada” da Decisão de Alocação. <b>Próxima Entrega (tarefa)</b> = menor data de vencimento entre as tarefas em aberto da pessoa, a partir de hoje (mostra “hoje” ou “Nd”); se só houver vencidas, mostra a mais antiga em vermelho (“vencida há Nd”); sem data: “— sem data”. As colunas Complexidade e Prioridade saíram da listagem, mas continuam no Score e nos filtros. Com o filtro de Status do Projeto, valem só os projetos filtrados. <b>Exportar Excel</b> (botão no card): respeita filtros e ordenação, mesmas colunas da tela mais <b>Clientes / Projetos</b> (“Cliente — Projeto”, um por linha, após Projetos), datas e horas como valores do Excel, aba “Filtros” com o resumo.',
+  '<code>iaCalcularAnalisePessoa_</code> (qtdTarefasAbertas, proxTarefa), <code>colunasIA</code>, <code>iaExportarExcel_</code>.','PROJ_TASKS, PSTAT, Pessoas_Area.','—','Carga e Risco de Alocação › Análise por Pessoa.','Pessoa com tarefa Done vencendo amanhã: ela não pode ser a Próxima Entrega nem contar em Tarefas em aberto.','—')],
 ''),
 
 WP('aloc-req','3.6','Requisitos de equipe e déficit','Como o sistema decide se um projeto está coberto.',[
@@ -13424,6 +13466,7 @@ WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado d
 WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'12/11/2026',p:'Carga e Risco de Alocação · Análise por Pessoa',desc:'Novo botão Exportar Excel no card Análise por Pessoa: respeita filtros e ordenação, traz as mesmas colunas da tela e a coluna Clientes / Projetos (Cliente — Projeto, um por linha) após Projetos; aba Filtros com o resumo da exportação.',ver:'v19.1'},
  {d:'12/11/2026',p:'Carga e Risco de Alocação · Análise por Pessoa',desc:'Listagem sem as colunas Complexidade e Prioridade; nova coluna Head após o Cargo; Próxima Entrega passa a ser o menor vencimento de tarefa em aberto (não mais o prazo do projeto); Tarefas passa a contar só as em aberto (não concluídas nem canceladas).',ver:'v19.0'},
  {d:'12/11/2026',p:'Horas · Comparativo e Evolução de Horas',desc:'Indicadores de variação com setas (▲ positiva, ▼ negativa, ● estável) e paleta de semáforo com degradê por intensidade (estável ±5%; leve até 10%; média até 25%; forte acima): KPI, Entre períodos, legenda de tendência, visão em tabela (nova coluna “vs período anterior”) e Excel (coluna Sinal).',ver:'v18.9'},
  {d:'12/11/2026',p:'Desempenho por Pessoa · Carga por Semana',desc:'Correção: o gráfico/tabela semanal não mostra mais, durante o carregamento, a versão provisória (referência 40h) que depois era trocada por valores diferentes. Agora aparece “Carregando…” até as horas apontadas oficiais chegarem; em caso de erro, mantém a versão provisória com aviso e botão de nova tentativa.',ver:'v18.8'},
