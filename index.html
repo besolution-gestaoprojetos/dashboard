@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyxYxwDcWV8vYaqG5eMjuQCW8j_wvnMCc_95glRHa2ZuHOuG-G8eB5TO1vSGFhBgtyP5Q/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbw4LhE-9yz7GN6SBq09jdoO0O-eCYdVYBNxa616XGixZMytCRaaoiD3wyBPDcjW6gZO2Q/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2804,12 +2804,14 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
     <section class="page" id="page-equipehoras">
       <div class="page-header"><div><h1>Acompanhamento de Horas da Equipe</h1><p>Horas previstas × apontadas dos participantes dos projetos em que você é GP. Horas apontadas não são horas faturáveis.</p></div></div>
       <div class="filter-bar">
-        <div class="filter-field"><label>Projeto</label><select id="f-eqh-proj"><option value="">Todos os meus projetos</option></select></div>
-        <div class="filter-field"><label>Participante</label><select id="f-eqh-pes"><option value="">Todos (dos meus projetos)</option></select></div>
-        <div class="filter-field"><label>De</label><input type="date" id="f-eqh-de"></div>
-        <div class="filter-field"><label>Até</label><input type="date" id="f-eqh-ate"></div>
-        <div class="filter-field"><label>&nbsp;</label><button type="button" class="btn" id="eqh-csv">Exportar CSV</button></div>
+        <div class="filter-field fit"><label>Atalhos</label><span class="seg-control" role="group" aria-label="Atalhos de período"><button type="button" class="seg-btn active" data-eqh-at="mes">Mês atual</button><button type="button" class="seg-btn" data-eqh-at="mesant">Mês anterior</button><button type="button" class="seg-btn" data-eqh-at="30d">Últimos 30 dias</button><button type="button" class="seg-btn" data-eqh-at="tri">Trimestre</button><button type="button" class="seg-btn" data-eqh-at="ano">Ano atual</button></span></div>
+        <div class="filter-field"><label for="f-eqh-de">De</label><input type="date" id="f-eqh-de"></div>
+        <div class="filter-field"><label for="f-eqh-ate">Até</label><input type="date" id="f-eqh-ate"></div>
+        <div class="filter-field"><label for="f-eqh-proj">Projeto</label><select id="f-eqh-proj"><option value="">Todos os meus projetos</option></select></div>
+        <div class="filter-field"><label for="f-eqh-pes">Participante</label><select id="f-eqh-pes"><option value="">Todos (dos meus projetos)</option></select></div>
+        <div class="filter-field fit"><label style="visibility:hidden">.</label><span><button type="button" class="filter-clear" id="eqh-limpar">Limpar filtros</button> <button type="button" class="btn-primary-cal" id="eqh-aplicar">Aplicar filtros</button></span></div>
       </div>
+      <div id="eqh-msg" class="ch-fmsg" aria-live="polite"></div>
       <div class="grid grid-kpi" id="kpi-eqh"></div>
       <div id="eqh-content"></div>
     </section>
@@ -2962,6 +2964,15 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
       </div>
     </div>
     <div id="sr-exec-modal-body" class="task-modal-body" style="padding:0;background:#f1f5f9"></div>
+  </div>
+</div>
+<div id="eqh-modal-overlay" class="task-modal-overlay">
+  <div class="task-modal-card">
+    <div class="task-modal-header">
+      <h3 id="eqh-modal-title">Tarefas</h3>
+      <button id="eqh-modal-close" type="button" aria-label="Fechar">✕</button>
+    </div>
+    <div id="eqh-modal-body" class="task-modal-body"></div>
   </div>
 </div>
 <div id="ia-modal-overlay" class="task-modal-overlay">
@@ -3132,7 +3143,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v19.1';
+const APP_VERSION='v19.2';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -3373,6 +3384,7 @@ function novidadesUltimaAtualizacao_(){
   return mx?mx.slice(8,10)+'/'+mx.slice(5,7)+'/'+mx.slice(0,4):NOVIDADES_ATUALIZADO_EM;
 }
 const NOVIDADES=[
+  {icone:'🔎', bg:'#eff6ff', cor:'#2563eb', titulo:'Acompanhamento de Horas da Equipe mais ágil', descricao:'A tela agora tem atalhos de período, o filtro Participante mostra só as pessoas do projeto escolhido, e os dados só carregam ao clicar em Aplicar filtros. A coluna Projeto saiu da tabela e o botão Ver tarefas abre as tarefas da pessoa em uma janela. O botão Exportar CSV foi removido.', paginas:['equipehoras'], data:'2026-11-12', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'⬇️', bg:'#ecfdf5', cor:'#059669', titulo:'Exportar Excel na Análise por Pessoa', descricao:'Em Carga e Risco de Alocação, o card Análise por Pessoa ganhou o botão Exportar Excel: leva as mesmas colunas da tela, respeitando os filtros e a ordenação, e inclui a coluna Clientes / Projetos com o nome de cada cliente e projeto da pessoa.', paginas:['inteligencia'], data:'2026-11-12', tag:'Nova', tagCor:'nova'},
   {icone:'📋', bg:'#eff6ff', cor:'#2563eb', titulo:'Análise por Pessoa mais objetiva', descricao:'Em Carga e Risco de Alocação, a listagem agora mostra o Head de cada pessoa, a Próxima Entrega pela data de vencimento da próxima tarefa em aberto e a quantidade de Tarefas em aberto. As colunas Complexidade e Prioridade saíram da lista (o Score continua considerando esses fatores).', paginas:['inteligencia'], data:'2026-11-12', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🚦', bg:'#fefce8', cor:'#a16207', titulo:'Semáforo nas variações de horas', descricao:'No Comparativo e Evolução de Horas, as variações agora mostram seta (▲ ▼ ●) e cor de semáforo: verde = mais horas, vermelho = menos horas, amarelo = estável, com tons mais fortes para variações maiores.', data:'2026-11-12'},
@@ -12865,7 +12877,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v19.1', WIKI_DATA='12/11/2026';
+const WIKI_VER='v19.2', WIKI_DATA='12/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -13141,8 +13153,8 @@ WIKI_PAGINAS.push(
 /* ---------------- 3.6 ---------------- */
 WP('pess-eqhoras','3.5','Acompanhamento de Horas da Equipe','Horas previstas × apontadas dos participantes dos projetos do GP.',[
  WR('PESS-020','Acompanhamento de Horas da Equipe','ok','Pessoas e capacidade',
-  'Página do GP (Projetos › Acompanhamento de Horas da Equipe). Mostra projetos, participantes, horas previstas, apontadas, diferença e % de execução, com projetos expansíveis, total por projeto, ordenação e exportação CSV. “Ver tarefas” abre as tarefas e os apontamentos da pessoa no projeto.',
-  '<code>initEquipeHoras</code> (front) · <code>acompanhamentoHorasEquipe_</code> (servidor).','Portifolio (coluna GP e equipe), Tarefas_Horas_Estimadas, Tarefas_Horas_Apontadas, Tarefas.',
+  'Página do GP (Projetos › Acompanhamento de Horas da Equipe). Mostra projetos, participantes, horas previstas, apontadas, diferença e % de execução, com projetos expansíveis, total por projeto e ordenação (padrão das demais tabelas). A tela só carrega depois de “Aplicar filtros” (Limpar filtros volta ao mês atual e “Todos”); atalhos de período: Mês atual, Mês anterior, Últimos 30 dias, Trimestre e Ano atual. O filtro Participante lista só quem pertence ao projeto selecionado. A coluna Tarefas tem o botão “Ver tarefas”, que abre um modal com as tarefas e os apontamentos da pessoa no projeto. Não há exportação CSV.',
+  '<code>initEquipeHoras</code>, <code>eqhCarregar_</code>, <code>eqhAbrirTarefas_</code> (front) · <code>acompanhamentoHorasEquipe_</code> (servidor; <code>filtros=1</code> devolve só as listas de projeto e participante, sem calcular horas).','Portifolio (coluna GP e equipe), Tarefas_Horas_Estimadas, Tarefas_Horas_Apontadas, Tarefas.',
   'Previstas = horas estimadas por pessoa e tarefa (já divididas igualmente entre os responsáveis, sem duplicar), pela data de término; apontadas = lançamentos da pessoa no projeto, pela data do apontamento. % de execução = apontadas ÷ previstas (“—” sem previstas). Período padrão: do dia 1 do mês até hoje; sem período entram também horas sem data. Apontadas não são horas faturáveis.',
   'Só projetos em que a pessoa é GP; filtros de projeto e participante listam apenas o que está no vínculo. Administrador vê todos os projetos.','Menu Projetos.','Comparar os totais de um projeto com Detalhamento do Projeto no mesmo período.','Estados: sem permissão, sem projetos vinculados e sem dados no período. Liberação para outros perfis é por exceção; sem projetos como GP a página abre vazia.'),
  WR('PESS-021','Desempenho por Pessoa: só o próprio','ok','Pessoas e capacidade',
@@ -13466,6 +13478,7 @@ WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado d
 WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'12/11/2026',p:'Projetos · Acompanhamento de Horas da Equipe',desc:'Ajuste de padrão: removido o botão Exportar CSV; tabela no padrão das demais (ordenação global) e sem a coluna Projeto; nova coluna Tarefas com “Ver tarefas” em modal; filtro Participante restrito ao projeto selecionado; atalhos de período; a tela só carrega após “Aplicar filtros”. Backend: ação leve filtros=1 (republicar o Apps Script).',ver:'v19.2'},
  {d:'12/11/2026',p:'Carga e Risco de Alocação · Análise por Pessoa',desc:'Novo botão Exportar Excel no card Análise por Pessoa: respeita filtros e ordenação, traz as mesmas colunas da tela e a coluna Clientes / Projetos (Cliente — Projeto, um por linha) após Projetos; aba Filtros com o resumo da exportação.',ver:'v19.1'},
  {d:'12/11/2026',p:'Carga e Risco de Alocação · Análise por Pessoa',desc:'Listagem sem as colunas Complexidade e Prioridade; nova coluna Head após o Cargo; Próxima Entrega passa a ser o menor vencimento de tarefa em aberto (não mais o prazo do projeto); Tarefas passa a contar só as em aberto (não concluídas nem canceladas).',ver:'v19.0'},
  {d:'12/11/2026',p:'Horas · Comparativo e Evolução de Horas',desc:'Indicadores de variação com setas (▲ positiva, ▼ negativa, ● estável) e paleta de semáforo com degradê por intensidade (estável ±5%; leve até 10%; média até 25%; forte acima): KPI, Entre períodos, legenda de tendência, visão em tabela (nova coluna “vs período anterior”) e Excel (coluna Sinal).',ver:'v18.9'},
@@ -13605,7 +13618,7 @@ const PAGE_INIT_MAP={
 // pessoa é GP (coluna GP do Portfólio). Cálculo e escopo SEMPRE no servidor (ação acompanhamentoHorasEquipe);
 // o front só exibe. Filtros enviados são apenas pedidos de recorte dentro do escopo autorizado.
 // ============================================================
-const EH={dados:null,seq:0,abertos:{},proj:{},ord:{k:'prev',dir:-1},det:{}};
+const EH={dados:null,seq:0,abertos:{},listas:null,aplic:null,seqL:0};
 function eqhVa_(){ return (VIEW_AS_STATE&&VIEW_AS_STATE.email)||''; }
 function eqhFmtH_(v){ return (Math.round((+v||0)*10)/10).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1})+' h'; }
 function eqhPct_(a,p){ return p>0?(a/p*100):null; }
@@ -13615,96 +13628,127 @@ function eqhBarra_(v){
   return '<div style="display:flex;gap:8px;align-items:center"><div style="flex:1;min-width:70px;height:8px;border-radius:4px;background:var(--surface-alt);border:1px solid var(--border);overflow:hidden"><i style="display:block;height:100%;width:'+Math.min(100,v)+'%;background:'+c+'"></i></div><span>'+v.toFixed(1).replace('.',',')+'%</span></div>';
 }
 function eqhDif_(a,p){ const d=Math.round((a-p)*10)/10; return '<span style="color:'+(d>0?'var(--st-bloqueado)':d<0?'var(--pr-media)':'var(--st-feito)')+';font-weight:600">'+(d>0?'+':d<0?'−':'')+eqhFmtH_(Math.abs(d))+'</span>'; }
+// v19.2 — Acompanhamento de Horas da Equipe: filtros com atalhos, carregamento só ao clicar em "Aplicar filtros",
+// Participante dependente do Projeto, tabela no padrão (motor de ordenação global) e modal "Ver tarefas".
+const EH_COLS=[
+  {key:'nome',label:'Participante',tipo:'texto',get:x=>x.nome},
+  {key:'prev',label:'Horas previstas',tipo:'numero',get:x=>x.prev,thStyle:'text-align:right'},
+  {key:'apo',label:'Horas apontadas',tipo:'numero',get:x=>x.apo,thStyle:'text-align:right'},
+  {key:'dif',label:'Diferença',tipo:'numero',get:x=>x.apo-x.prev,thStyle:'text-align:right'},
+  {key:'pct',label:'% Execução',tipo:'numero',get:x=>{ const v=eqhPct_(x.apo,x.prev); return v===null?'':v; },thStyle:'min-width:150px'},
+  {label:'Tarefas',thStyle:'text-align:center'}
+];
+function eqhAtalho_(k){
+  const h=hojeISO_(), Y=+h.slice(0,4), M=+h.slice(5,7), iso=(y,m,d)=>{ const t=new Date(Date.UTC(y,m-1,d)); return t.toISOString().slice(0,10); };
+  if(k==='mes') return [iso(Y,M,1),h];
+  if(k==='mesant') return [iso(Y,M-1,1),iso(Y,M,0)];
+  if(k==='30d'){ const t=new Date(Date.parse(h+'T12:00:00Z')-29*864e5); return [t.toISOString().slice(0,10),h]; }
+  if(k==='tri') return [iso(Y,Math.floor((M-1)/3)*3+1,1),h];
+  return [iso(Y,1,1),h];
+}
+function eqhMarcarAtalho_(k){ document.querySelectorAll('[data-eqh-at]').forEach(b=>b.classList.toggle('active',b.dataset.eqhAt===k)); }
+function eqhAviso_(t){ const m=document.getElementById('eqh-msg'); if(m) m.textContent=t||''; }
+function eqhVazio_(t,sub){ return '<div class="empty-state" style="padding:50px 20px"><p><b>'+t+'</b></p>'+(sub?'<p>'+sub+'</p>':'')+'</div>'; }
 function initEquipeHoras(){
-  const hoje=hojeISO_(), ini=hoje.slice(0,8)+'01';
   const de=document.getElementById('f-eqh-de'), ate=document.getElementById('f-eqh-ate');
-  if(de&&!de.value) de.value=ini; if(ate&&!ate.value) ate.value=hoje;
-  ['f-eqh-proj','f-eqh-pes','f-eqh-de','f-eqh-ate'].forEach(id=>{ const el=document.getElementById(id); if(el) el.onchange=()=>eqhCarregar_(); });
-  document.getElementById('eqh-csv').onclick=eqhCsv_;
+  if(de&&!de.value&&ate&&!ate.value){ const a=eqhAtalho_('mes'); de.value=a[0]; ate.value=a[1]; }
+  const pend=()=>{ if(EH.dados) eqhAviso_('Filtros alterados. Clique em “Aplicar filtros” para atualizar.'); };
+  document.querySelectorAll('[data-eqh-at]').forEach(b=>b.onclick=()=>{ const a=eqhAtalho_(b.dataset.eqhAt); de.value=a[0]; ate.value=a[1]; eqhMarcarAtalho_(b.dataset.eqhAt); pend(); });
+  [de,ate].forEach(el=>el.onchange=()=>{ eqhMarcarAtalho_(''); pend(); });
+  document.getElementById('f-eqh-proj').onchange=()=>{ eqhPopularPes_(); pend(); };
+  document.getElementById('f-eqh-pes').onchange=pend;
+  document.getElementById('eqh-aplicar').onclick=()=>eqhCarregar_();
+  document.getElementById('eqh-limpar').onclick=()=>{ const a=eqhAtalho_('mes'); de.value=a[0]; ate.value=a[1]; eqhMarcarAtalho_('mes'); document.getElementById('f-eqh-proj').value=''; eqhPopularPes_(); EH.dados=null; EH.aplic=null; EH.seq++; document.getElementById('kpi-eqh').innerHTML=''; eqhAviso_(''); eqhInicial_(); };
   document.getElementById('eqh-content').onclick=eqhClique_;
-  return eqhCarregar_();
+  const mo=document.getElementById('eqh-modal-overlay'); mo.onclick=e=>{ if(e.target===mo||e.target.closest('#eqh-modal-close')) mo.classList.remove('show'); };
+  SORT_RERENDER['eqh']=()=>eqhRender_();
+  if(!SORT_STATE['eqh']) SORT_STATE['eqh']={col:'prev',dir:2};
+  if(EH.dados){ eqhRender_(); return; }
+  return EH.listas?eqhInicial_():eqhCarregarListas_();
+}
+function eqhInicial_(){ const box=document.getElementById('eqh-content'); if(EH.listas&&EH.listas.semProjetos){ box.innerHTML=eqhVazio_('Você ainda não tem projetos vinculados como GP.','Quando um projeto do Portfólio indicar seu nome como GP, ele aparecerá aqui.'); return; } box.innerHTML=eqhVazio_('Selecione os filtros e clique em “Aplicar filtros”.','Os indicadores e a tabela só são carregados depois do clique.'); }
+async function eqhCarregarListas_(){
+  const box=document.getElementById('eqh-content'), seq=++EH.seqL; box.innerHTML=loadingInlineHtml('Carregando filtros…');
+  const va=eqhVa_();
+  try{
+    const r=await loadDataJSONPComRetry(feUrl_('acompanhamentoHorasEquipe','&filtros=1'+(va?'&viewAs='+encodeURIComponent(va):'')),1);
+    if(seq!==EH.seqL) return;
+    if(!r||r.ok===false){ box.innerHTML=eqhVazio_(r&&r.semPermissao?'Seu perfil não tem acesso a esta página.':paEscHtml_((r&&r.message)||'Não foi possível carregar os filtros.'),r&&r.semPermissao?'Peça a liberação ao Administrador, em Permissões.':''); return; }
+    EH.listas=r; eqhPopularFiltros_(); eqhInicial_();
+  }catch(err){ if(seq===EH.seqL) box.innerHTML=eqhVazio_('Erro ao carregar os filtros. Tente novamente.'); }
+}
+function eqhPopularFiltros_(){
+  const sp=document.getElementById('f-eqh-proj'), L=EH.listas||{}, vp=sp.value;
+  sp.innerHTML='<option value="">Todos os meus projetos</option>'+(L.listaProjetos||[]).map(n=>'<option value="'+paEscHtml_(n)+'">'+paEscHtml_(n)+'</option>').join('');
+  if((L.listaProjetos||[]).includes(vp)) sp.value=vp;
+  eqhPopularPes_();
+}
+// Participante: só quem pertence ao projeto selecionado (ou todos os participantes dos projetos do GP).
+function eqhPopularPes_(){
+  const sq=document.getElementById('f-eqh-pes'), L=EH.listas||{}, pj=document.getElementById('f-eqh-proj').value, vq=sq.value;
+  const lista=pj?((L.participantesPorProjeto||{})[pj]||[]):(L.listaParticipantes||[]);
+  sq.innerHTML='<option value="">'+(pj?'Todos (do projeto '+paEscHtml_(pj)+')':'Todos (dos meus projetos)')+'</option>'+lista.map(x=>'<option value="'+paEscHtml_(x.email)+'">'+paEscHtml_(x.nome)+'</option>').join('');
+  if(lista.some(x=>x.email===vq)) sq.value=vq;
 }
 async function eqhCarregar_(){
   const box=document.getElementById('eqh-content'), kpi=document.getElementById('kpi-eqh');
   const g=id=>(document.getElementById(id)||{}).value||'';
   const de=g('f-eqh-de'), ate=g('f-eqh-ate');
-  if(de&&ate&&de>ate){ box.innerHTML='<div class="empty-state" style="padding:40px 20px"><p>A data final não pode ser anterior à inicial.</p></div>'; kpi.innerHTML=''; return; }
-  const seq=++EH.seq; box.innerHTML=loadingInlineHtml('Carregando horas da equipe…');
+  if(de&&ate&&de>ate){ box.innerHTML=eqhVazio_('A data final não pode ser anterior à inicial.'); kpi.innerHTML=''; return; }
+  eqhAviso_('');
+  const seq=++EH.seq; box.innerHTML=loadingInlineHtml('Carregando horas da equipe…'); kpi.innerHTML='';
   const va=eqhVa_();
   const extra=(de?'&de='+de:'')+(ate?'&ate='+ate:'')+(g('f-eqh-proj')?'&projeto='+encodeURIComponent(g('f-eqh-proj')):'')+(g('f-eqh-pes')?'&pessoa='+encodeURIComponent(g('f-eqh-pes')):'')+(va?'&viewAs='+encodeURIComponent(va):'');
   try{
     const r=await loadDataJSONPComRetry(feUrl_('acompanhamentoHorasEquipe',extra),1);
     if(seq!==EH.seq) return;
-    if(!r||r.ok===false){
-      kpi.innerHTML='';
-      box.innerHTML='<div class="empty-state" style="padding:60px 20px"><p><b>'+(r&&r.semPermissao?'Seu perfil não tem acesso a esta página.':paEscHtml_((r&&r.message)||'Não foi possível carregar.'))+'</b></p>'+(r&&r.semPermissao?'<p>Peça a liberação ao Administrador, em Permissões.</p>':'')+'</div>';
-      return;
-    }
-    EH.dados=r; EH.det={};
-    eqhPopularFiltros_(r);
+    if(!r||r.ok===false){ kpi.innerHTML=''; box.innerHTML=eqhVazio_(r&&r.semPermissao?'Seu perfil não tem acesso a esta página.':paEscHtml_((r&&r.message)||'Não foi possível carregar.'),r&&r.semPermissao?'Peça a liberação ao Administrador, em Permissões.':''); return; }
+    EH.dados=r; EH.aplic={de,ate};
     eqhRender_();
-  }catch(err){ if(seq===EH.seq) box.innerHTML='<div class="empty-state" style="padding:40px 20px"><p>Erro ao carregar. Tente novamente.</p></div>'; }
-}
-function eqhPopularFiltros_(r){
-  const sp=document.getElementById('f-eqh-proj'), sq=document.getElementById('f-eqh-pes');
-  const vp=sp.value, vq=sq.value;
-  sp.innerHTML='<option value="">Todos os meus projetos</option>'+(r.listaProjetos||[]).map(n=>'<option value="'+paEscHtml_(n)+'">'+paEscHtml_(n)+'</option>').join('');
-  sq.innerHTML='<option value="">Todos (dos meus projetos)</option>'+(r.listaParticipantes||[]).map(x=>'<option value="'+paEscHtml_(x.email)+'">'+paEscHtml_(x.nome)+'</option>').join('');
-  if((r.listaProjetos||[]).includes(vp)) sp.value=vp;
-  if((r.listaParticipantes||[]).some(x=>x.email===vq)) sq.value=vq;
+  }catch(err){ if(seq===EH.seq) box.innerHTML=eqhVazio_('Erro ao carregar. Tente novamente.'); }
 }
 function eqhRender_(){
   const r=EH.dados, box=document.getElementById('eqh-content'), kpi=document.getElementById('kpi-eqh'); if(!r) return;
-  if(r.semProjetos){ kpi.innerHTML=''; box.innerHTML='<div class="empty-state" style="padding:60px 20px"><p><b>Você ainda não tem projetos vinculados como GP.</b></p><p>Quando um projeto do Portfólio indicar seu nome como GP, ele aparecerá aqui.</p></div>'; return; }
+  if(r.semProjetos){ kpi.innerHTML=''; box.innerHTML=eqhVazio_('Você ainda não tem projetos vinculados como GP.','Quando um projeto do Portfólio indicar seu nome como GP, ele aparecerá aqui.'); return; }
   const s=r.resumo||{};
   const card=(v,l,ic)=>kpiHtml({label:l,value:v,icon:ic||'projetos'});
   kpi.innerHTML=card(s.projetos,'Projetos sob minha responsabilidade','projetos')+card(s.participantes,'Participantes','pessoas')+card(eqhFmtH_(s.prev),'Horas previstas','horas')+card(eqhFmtH_(s.apo),'Horas apontadas','relogio')+card(eqhDif_(s.apo,s.prev),'Diferença (apontadas − previstas)','balanca')+card(s.prev>0?eqhPct_(s.apo,s.prev).toFixed(1).replace('.',',')+'%':'—','% de execução','check');
-  if(!(s.prev>0)&&!(s.apo>0)){ box.innerHTML='<div class="empty-state" style="padding:60px 20px"><p><b>Não há dados para o período selecionado.</b></p><p>Ajuste as datas ou o projeto.</p></div>'; return; }
-  const k=EH.ord.k, d=-EH.ord.dir, val=x=>k==='pct'?(eqhPct_(x.apo,x.prev)??-1):x[k];
-  const seta=c=>EH.ord.k===c?(EH.ord.dir<0?' ▾':' ▴'):'';
-  const projs=(r.projetos||[]).map(p=>({p,prev:p.participantes.reduce((a,x)=>a+x.prev,0),apo:p.participantes.reduce((a,x)=>a+x.apo,0)})).sort((a,b)=>d*(val(b)-val(a)));
-  let h='<div class="table-wrap"><table class="da-t"><thead><tr><th>Participante</th><th>Projeto</th><th data-eqh-ord="prev" style="text-align:right;cursor:pointer">Horas previstas'+seta('prev')+'</th><th data-eqh-ord="apo" style="text-align:right;cursor:pointer">Horas apontadas'+seta('apo')+'</th><th style="text-align:right">Diferença</th><th data-eqh-ord="pct" style="cursor:pointer;min-width:150px">% Execução'+seta('pct')+'</th></tr></thead><tbody>';
-  projs.forEach(o=>{
+  if(!(s.prev>0)&&!(s.apo>0)){ box.innerHTML=eqhVazio_('Não há dados para o período selecionado.','Ajuste as datas ou o projeto.'); return; }
+  const st=SORT_STATE['eqh']||{col:null,dir:0}, col=st.col?EH_COLS.find(c=>c.key===st.col):null;
+  const ord=arr=>col?ordenarLinhas_(arr,col,st.dir):arr;
+  const grupos=ord((r.projetos||[]).map(p=>({nome:p.pj,p,prev:p.participantes.reduce((a,x)=>a+x.prev,0),apo:p.participantes.reduce((a,x)=>a+x.apo,0)})));
+  let h='<div class="card"><div class="card-title"><h3>Horas por participante</h3><span class="sub">'+grupos.length+' projeto(s) · '+eqhDtBr_(EH.aplic&&EH.aplic.de)+' a '+eqhDtBr_(EH.aplic&&EH.aplic.ate)+'</span></div><div class="table-wrap"><table class="da-t">'+theadOrdenavel_('eqh',EH_COLS)+'<tbody>';
+  grupos.forEach(o=>{
     const aberto=EH.abertos[o.p.pj]!==false;
-    h+='<tr data-eqh-proj="'+paEscHtml_(o.p.pj)+'" style="background:var(--surface-alt);font-weight:600;cursor:pointer"><td>'+(aberto?'▾':'▸')+' '+paEscHtml_(o.p.pj)+' <span style="font-weight:400;color:var(--text-muted)">· '+paEscHtml_(o.p.cl||'')+' · '+o.p.participantes.length+' participante(s)</span></td><td></td><td style="text-align:right">'+eqhFmtH_(o.prev)+'</td><td style="text-align:right">'+eqhFmtH_(o.apo)+'</td><td style="text-align:right">'+eqhDif_(o.apo,o.prev)+'</td><td>'+eqhBarra_(eqhPct_(o.apo,o.prev))+'</td></tr>';
+    h+='<tr data-eqh-proj="'+paEscHtml_(o.p.pj)+'" style="background:var(--surface-alt);font-weight:600;cursor:pointer"><td>'+(aberto?'▾':'▸')+' '+paEscHtml_(o.p.pj)+' <span style="font-weight:400;color:var(--text-muted)">· '+paEscHtml_(o.p.cl||'')+' · '+o.p.participantes.length+' participante(s)</span></td><td style="text-align:right">'+eqhFmtH_(o.prev)+'</td><td style="text-align:right">'+eqhFmtH_(o.apo)+'</td><td style="text-align:right">'+eqhDif_(o.apo,o.prev)+'</td><td>'+eqhBarra_(eqhPct_(o.apo,o.prev))+'</td><td></td></tr>';
     if(!aberto) return;
-    o.p.participantes.slice().sort((a,b)=>d*(val(b)-val(a))).forEach(x=>{
-      const key=o.p.pj+'|'+x.email;
-      h+='<tr><td style="padding-left:28px">'+paEscHtml_(x.nome)+'</td><td>'+paEscHtml_(o.p.pj)+' · <a href="#" data-eqh-det="'+paEscHtml_(key)+'" data-pj="'+paEscHtml_(o.p.pj)+'" data-em="'+paEscHtml_(x.email)+'">Ver tarefas</a></td><td style="text-align:right">'+eqhFmtH_(x.prev)+'</td><td style="text-align:right">'+eqhFmtH_(x.apo)+'</td><td style="text-align:right">'+eqhDif_(x.apo,x.prev)+'</td><td>'+eqhBarra_(eqhPct_(x.apo,x.prev))+'</td></tr>';
-      if(EH.det[key]) h+='<tr><td colspan="6" style="padding:8px 28px;font-size:12.5px">'+EH.det[key]+'</td></tr>';
+    ord(o.p.participantes.map(x=>Object.assign({},x))).forEach(x=>{
+      h+='<tr><td style="padding-left:28px">'+paEscHtml_(x.nome)+'</td><td style="text-align:right">'+eqhFmtH_(x.prev)+'</td><td style="text-align:right">'+eqhFmtH_(x.apo)+'</td><td style="text-align:right">'+eqhDif_(x.apo,x.prev)+'</td><td>'+eqhBarra_(eqhPct_(x.apo,x.prev))+'</td><td style="text-align:center"><button type="button" class="filter-clear" data-eqh-det="1" data-pj="'+paEscHtml_(o.p.pj)+'" data-em="'+paEscHtml_(x.email)+'" data-nome="'+paEscHtml_(x.nome)+'">Ver tarefas</button></td></tr>';
     });
-    h+='<tr style="font-weight:700"><td style="padding-left:28px">Total do '+paEscHtml_(o.p.pj)+'</td><td></td><td style="text-align:right">'+eqhFmtH_(o.prev)+'</td><td style="text-align:right">'+eqhFmtH_(o.apo)+'</td><td style="text-align:right">'+eqhDif_(o.apo,o.prev)+'</td><td>'+eqhBarra_(eqhPct_(o.apo,o.prev))+'</td></tr>';
   });
-  box.innerHTML=h+'</tbody></table></div><p style="font-size:12px;color:var(--text-muted)">Previstas: horas estimadas por pessoa e tarefa (divididas entre os responsáveis), pela data de término. Apontadas: lançamentos da própria pessoa no projeto. Sem período, entram também as horas sem data.</p>';
+  box.innerHTML=h+'</tbody></table></div></div><p style="font-size:12px;color:var(--text-muted)">Previstas: horas estimadas por pessoa e tarefa (divididas entre os responsáveis), pela data de término. Apontadas: lançamentos da própria pessoa no projeto. Sem período, entram também as horas sem data.</p>';
 }
-async function eqhClique_(ev){
-  const o=ev.target.closest('[data-eqh-ord]'); if(o){ const k=o.dataset.eqhOrd; EH.ord=EH.ord.k===k?{k,dir:-EH.ord.dir}:{k,dir:-1}; eqhRender_(); return; }
-  const a=ev.target.closest('[data-eqh-det]');
-  if(a){
-    ev.preventDefault(); const key=a.dataset.eqhDet;
-    if(EH.det[key]){ delete EH.det[key]; eqhRender_(); return; }
-    EH.det[key]='Carregando…'; eqhRender_();
-    const g=id=>(document.getElementById(id)||{}).value||''; const va=eqhVa_();
-    try{
-      const r=await loadDataJSONPComRetry(feUrl_('acompanhamentoHorasEquipe','&detalhe=1&projeto='+encodeURIComponent(a.dataset.pj)+'&pessoa='+encodeURIComponent(a.dataset.em)+(g('f-eqh-de')?'&de='+g('f-eqh-de'):'')+(g('f-eqh-ate')?'&ate='+g('f-eqh-ate'):'')+(va?'&viewAs='+encodeURIComponent(va):'')),1);
-      if(!r||!r.ok||!r.detalhe){ EH.det[key]='Não foi possível carregar o detalhamento.'; }
-      else{
-        const t=r.detalhe.tarefas||[], ap=r.detalhe.apontamentos||[];
-        EH.det[key]='<b>Tarefas ('+t.length+')</b>: '+(t.length?t.map(x=>paEscHtml_(x.tarefa)+' <span style="color:var(--text-muted)">['+paEscHtml_(x.status||'—')+']</span>').join(' · '):'nenhuma')+'<br><b>Apontamentos ('+ap.length+')</b>: '+(ap.length?ap.map(x=>dataTxt_(x.data)+' — '+eqhFmtH_(x.horas)).join(' · '):'nenhum no período');
-      }
-    }catch(e){ EH.det[key]='Não foi possível carregar o detalhamento.'; }
-    eqhRender_();
-  }
-  const pr=ev.target.closest('tr[data-eqh-proj]');
-  if(pr&&!ev.target.closest('a')){ const n=pr.dataset.eqhProj; EH.abertos[n]=EH.abertos[n]===false; eqhRender_(); }
+function eqhDtBr_(iso){ return iso?feBr_(iso):'—'; }
+function eqhDtAny_(v){ return v?(/^\d{4}-\d\d-\d\d/.test(String(v))?feBr_(String(v).slice(0,10)):paEscHtml_(String(v))):'—'; }
+async function eqhAbrirTarefas_(pj,em,nome){
+  const ov=document.getElementById('eqh-modal-overlay'), body=document.getElementById('eqh-modal-body'), ap=EH.aplic||{};
+  document.getElementById('eqh-modal-title').textContent='Tarefas — '+nome+' · '+pj;
+  body.innerHTML=loadingInlineHtml('Carregando tarefas…'); ov.classList.add('show');
+  const va=eqhVa_();
+  try{
+    const r=await loadDataJSONPComRetry(feUrl_('acompanhamentoHorasEquipe','&detalhe=1&projeto='+encodeURIComponent(pj)+'&pessoa='+encodeURIComponent(em)+(ap.de?'&de='+ap.de:'')+(ap.ate?'&ate='+ap.ate:'')+(va?'&viewAs='+encodeURIComponent(va):'')),1);
+    if(!r||!r.ok||!r.detalhe){ body.innerHTML=eqhVazio_('Não foi possível carregar o detalhamento.'); return; }
+    const t=r.detalhe.tarefas||[], a=r.detalhe.apontamentos||[];
+    body.innerHTML='<p style="margin:0 0 10px;color:var(--text-muted);font-size:13px">Período: '+eqhDtBr_(ap.de)+' a '+eqhDtBr_(ap.ate)+'</p>'
+      +'<h4 style="margin:0 0 6px">Tarefas ('+t.length+')</h4>'
+      +(t.length?'<div class="table-wrap"><table class="da-t"><thead><tr><th>Tarefa</th><th>Status</th><th>Vencimento</th><th>Conclusão</th></tr></thead><tbody>'+t.map(x=>'<tr><td>'+paEscHtml_(x.tarefa||'')+'</td><td>'+paEscHtml_(x.status||'—')+'</td><td>'+eqhDtAny_(x.dt_venc)+'</td><td>'+eqhDtAny_(x.dt_conc)+'</td></tr>').join('')+'</tbody></table></div>':'<p style="color:var(--text-muted)">Nenhuma tarefa.</p>')
+      +'<h4 style="margin:14px 0 6px">Apontamentos no período ('+a.length+')</h4>'
+      +(a.length?'<div class="table-wrap"><table class="da-t"><thead><tr><th>Data</th><th style="text-align:right">Horas</th></tr></thead><tbody>'+a.map(x=>'<tr><td>'+dataTxt_(x.data)+'</td><td style="text-align:right">'+eqhFmtH_(x.horas)+'</td></tr>').join('')+'</tbody></table></div>':'<p style="color:var(--text-muted)">Nenhum apontamento no período.</p>');
+  }catch(e){ body.innerHTML=eqhVazio_('Não foi possível carregar o detalhamento.'); }
 }
-function eqhCsv_(){
-  const r=EH.dados; if(!r||!r.projetos) return;
-  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
-  const L=[['Participante','Projeto','Horas previstas','Horas apontadas','Diferença','% Execução'].map(q).join(';')];
-  r.projetos.forEach(p=>p.participantes.forEach(x=>{ const pc=eqhPct_(x.apo,x.prev); L.push([x.nome,p.pj,String(x.prev).replace('.',','),String(x.apo).replace('.',','),String(Math.round((x.apo-x.prev)*10)/10).replace('.',','),pc==null?'':pc.toFixed(1).replace('.',',')].map(q).join(';')); }));
-  const blob=new Blob(['﻿'+L.join('\r\n')],{type:'text/csv;charset=utf-8'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='acompanhamento_horas_equipe_'+hojeISO_()+'.csv'; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+function eqhClique_(ev){
+  const b=ev.target.closest('[data-eqh-det]'); if(b){ ev.preventDefault(); eqhAbrirTarefas_(b.dataset.pj,b.dataset.em,b.dataset.nome||''); return; }
+  const pr=ev.target.closest('tr[data-eqh-proj]'); if(pr){ const n=pr.dataset.eqhProj; EH.abertos[n]=EH.abertos[n]===false; eqhRender_(); }
 }
 
 // ============================================================
