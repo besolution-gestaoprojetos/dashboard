@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyV-irf_LIxptwnhhO0nbMX_WDRJ6Oet0kDntTncLpaujPE4SQBhLaXhNOf7a2SRxbU0Q/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxfH4DVpnIKkzxwzBHW57rsDd9IjzqvHVeEig8ZRLVn9G9Y-Xvbf8ClwUdIzaA-Knlhsg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1869,8 +1869,8 @@ td.hr-ed{background:rgba(234,179,8,.2)}
 .hr-save{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-top:10px}
 .hr-nota{font-size:12.5px;color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin:8px 0}.hr-nota b{color:var(--text)}.hr-nota.er{border-color:#fca5a5}
 .hr-ck{display:flex;gap:6px;align-items:center;font-size:13px;padding:6px 0}
-.hr-ov{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:9000;display:flex;align-items:flex-start;justify-content:center;padding:4vh 14px;overflow:auto}
-.hr-md{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:100%}.hr-mh{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)}.hr-mb{padding:12px 16px}
+.hr-ov{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:10050;display:flex;align-items:flex-start;justify-content:center;padding:calc(var(--topbar-h,60px) + 12px) 14px 14px}
+.hr-md{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:100%;display:flex;flex-direction:column;max-height:calc(100vh - var(--topbar-h,60px) - 26px)}.hr-mh{flex:none;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)}.hr-mb{padding:12px 16px;overflow:auto;min-height:0}
 #pa-hier-view select{max-width:230px}
 .pa-fchips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px;}
 .pa-fchips button{border:1px solid var(--border);background:var(--surface);color:var(--text-muted);border-radius:99px;padding:5px 12px;font:600 12px var(--font-body);cursor:pointer;}
@@ -2023,8 +2023,10 @@ body.nav-collapsed .nav-nov-badge{display:none;}
 #page-horasapontadas .ha-leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px;}
 #page-analisehoras .ha-leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px;}
 .pa-pc{position:relative}
+.pa-hier-ro input[type=text]{width:100%;box-sizing:border-box;background:var(--surface-alt);color:var(--text-muted);cursor:not-allowed}
+.pa-hier-ro .pa-hier-go{color:var(--primary);font-weight:700}
 .pa-pc-busca{width:100%;box-sizing:border-box}
-.pa-pc-lista{position:absolute;left:0;right:0;top:100%;z-index:50;margin-top:4px;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 10px 28px rgba(15,23,42,.18);max-height:260px;overflow:auto;padding:4px}
+.pa-pc-lista{position:fixed;z-index:10040;margin-top:4px;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 10px 28px rgba(15,23,42,.18);max-height:260px;overflow:auto;padding:4px}
 .pa-pc-op{padding:7px 10px;font-size:13px;border-radius:7px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
 .pa-pc-op small{color:var(--text-muted);font-size:11.5px;text-align:right}
 .pa-pc-op:hover,.pa-pc-op.at{background:var(--primary-100);color:var(--primary)}
@@ -3160,7 +3162,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v19.4';
+const APP_VERSION='v19.5';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -3401,6 +3403,7 @@ function novidadesUltimaAtualizacao_(){
   return mx?mx.slice(8,10)+'/'+mx.slice(5,7)+'/'+mx.slice(0,4):NOVIDADES_ATUALIZADO_EM;
 }
 const NOVIDADES=[
+  {icone:'🔒', bg:'#eff6ff', cor:'#2563eb', titulo:'Head e Gestor no cadastro de pessoa seguem a Hierarquia', descricao:'No formulário de pessoa, Head e Gestor aparecem somente para leitura quando a pessoa já está na aba Hierarquia, com atalho para editar lá. Assim existe uma única fonte de verdade e nenhuma alteração é ignorada.', paginas:['pessoasadmin'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
   {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Hierarquia e várias funções por pessoa', descricao:'Em Pessoas e Perfis, a nova aba Hierarquia permite definir o Head e o Gestor de cada pessoa (por e-mail) e dar mais de uma função (cargo) a quem acumula papéis, como Tech Lead e PO. Quem é Gestor ou Head de alguém passa a ver os dados dos liderados diretos. Os filtros de Cargo reconhecem todas as funções.', paginas:['pessoasadmin'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
   {icone:'🧹', bg:'#ecfdf5', cor:'#059669', titulo:'Gestor e Head sem nomes repetidos', descricao:'Os filtros de Gestor e Head não mostram mais o mesmo nome duas vezes (como “Antonio” e “Antônio”, ou com espaço sobrando). Cada pessoa aparece uma única vez, com a grafia do cadastro.', data:'2026-11-16', tag:'Correção', tagCor:'melhoria'},
   {icone:'🔎', bg:'#eff6ff', cor:'#2563eb', titulo:'Acompanhamento de Horas da Equipe mais ágil', descricao:'A tela agora tem atalhos de período, o filtro Participante mostra só as pessoas do projeto escolhido, e os dados só carregam ao clicar em Aplicar filtros. A coluna Projeto saiu da tabela e o botão Ver tarefas abre as tarefas da pessoa em uma janela. O botão Exportar CSV foi removido.', paginas:['equipehoras'], data:'2026-11-12', tag:'Melhoria', tagCor:'melhoria'},
@@ -7691,21 +7694,27 @@ function hrAbrirFuncoes_(email){
   hrRenderFuncoes_(p,fechar);
 }
 function hrRenderFuncoes_(p,fechar){
-  const L=HR_FN.lista, cg=(sel)=>'<option value="">— escolha —</option>'+[...new Set(HR.cargos.concat(sel?[sel]:[]))].sort((a,b)=>a.localeCompare(b,'pt-BR')).map(c=>'<option'+(c===sel?' selected':'')+'>'+hrE_(c)+'</option>').join('');
+  const L=HR_FN.lista, cg=(sel)=>'<option value="">— escolha —</option>'+[...new Set(HR.cargos.concat(sel?[sel]:[]))].sort((a,b)=>a.localeCompare(b,'pt-BR')).map(c=>'<option'+(c===sel?' selected':'')+'>'+hrE_(c)+'</option>').join('')+'<option value="__novo__">＋ Cadastrar novo cargo…</option>';
   const nv=(sel)=>'<option value="">—</option>'+[...new Set(HR.niveis.concat(sel?[sel]:[]))].sort((a,b)=>a.localeCompare(b,'pt-BR')).map(c=>'<option'+(c===sel?' selected':'')+'>'+hrE_(c)+'</option>').join('');
   document.getElementById('hr-fn-corpo').innerHTML='<div class="table-wrap"><table style="min-width:0"><thead><tr><th>Principal</th><th>Função (cargo)</th><th>Nível</th><th></th></tr></thead><tbody>'+
-    L.map((x,i)=>'<tr><td><input type="radio" name="hr-pr" data-i="'+i+'" aria-label="Função principal"'+(x.principal?' checked':'')+'></td><td><select data-k="cargo" data-i="'+i+'">'+cg(x.cargo)+'</select></td><td><select data-k="nv" data-i="'+i+'">'+nv(x.nv)+'</select></td><td><button type="button" class="filter-clear" data-rm="'+i+'"'+(L.length<2?' disabled':'')+'>Remover</button></td></tr>').join('')+
+    L.map((x,i)=>'<tr><td><input type="radio" name="hr-pr" data-i="'+i+'" aria-label="Função principal"'+(x.principal?' checked':'')+'></td><td>'+(x.novo?'<input type="text" data-k="cargo" data-i="'+i+'" maxlength="60" placeholder="Nome do novo cargo (ex.: Gestor)" value="'+hrE_(x.cargo)+'" aria-label="Novo cargo" style="width:100%"> <button type="button" class="hr-lk" data-lista="'+i+'">usar a lista</button>':'<select data-k="cargo" data-i="'+i+'">'+cg(x.cargo)+'</select>')+'</td><td><select data-k="nv" data-i="'+i+'">'+nv(x.nv)+'</select></td><td><button type="button" class="filter-clear" data-rm="'+i+'"'+(L.length<2?' disabled':'')+'>Remover</button></td></tr>').join('')+
     '</tbody></table></div><p style="margin:10px 0"><button type="button" class="filter-clear" id="hr-fn-add">+ Adicionar função</button></p>'+
-    '<div class="hr-nota">A função <b>principal</b> vale para contagens, capacidade e análises (a pessoa é contada <b>uma vez</b>). As demais aparecem como etiquetas e entram nos filtros de Cargo. O perfil de acesso continua sendo um só (aba de perfis); páginas extras via Exceções.</div>'+
+    '<div class="hr-nota">A função <b>principal</b> vale para contagens, capacidade e análises (a pessoa é contada <b>uma vez</b>). As demais aparecem como etiquetas e entram nos filtros de Cargo. Falta um cargo na lista? Use <b>＋ Cadastrar novo cargo…</b>; ele passa a existir para todos. Quem tem função de Gestor, Gerente, Coordenador, Líder, Diretor ou Head aparece nas listas de Gestor (e Head, para a função Head) do cadastro de pessoas. O perfil de acesso continua sendo um só (aba de perfis); páginas extras via Exceções.</div>'+
     '<div id="hr-fn-msg" style="color:var(--st-bloqueado);font-size:13px;min-height:18px"></div>'+
     '<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">'+(p.funcoesDef?'<button type="button" class="filter-clear" id="hr-fn-pad">Voltar ao padrão (Pessoas_Area)</button>':'<span></span>')+'<button type="button" class="sr-btn sr-btn-primary" id="hr-fn-ok">Salvar</button></div>';
   const c=document.getElementById('hr-fn-corpo');
   c.querySelectorAll('input[name=hr-pr]').forEach(r=>r.onchange=()=>{ L.forEach((x,i)=>x.principal=(i===+r.dataset.i)); });
-  c.querySelectorAll('select[data-k]').forEach(s=>s.onchange=()=>{ L[+s.dataset.i][s.dataset.k]=s.value; });
+  c.querySelectorAll('select[data-k]').forEach(s=>s.onchange=()=>{
+    const x=L[+s.dataset.i];
+    if(s.value==='__novo__'){ x.novo=true; x.cargo=''; hrRenderFuncoes_(p,fechar); const inp=document.querySelector('#hr-fn-corpo input[data-k=cargo][data-i="'+s.dataset.i+'"]'); if(inp) inp.focus(); return; }
+    x[s.dataset.k]=s.value; });
+  c.querySelectorAll('input[type=text][data-k=cargo]').forEach(i=>i.oninput=()=>{ L[+i.dataset.i].cargo=i.value; });
+  c.querySelectorAll('[data-lista]').forEach(b=>b.onclick=()=>{ const x=L[+b.dataset.lista]; x.novo=false; x.cargo=''; hrRenderFuncoes_(p,fechar); });
   c.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.rm, era=L[i].principal; L.splice(i,1); if(era&&L.length) L[0].principal=true; hrRenderFuncoes_(p,fechar); });
   document.getElementById('hr-fn-add').onclick=()=>{ L.push({cargo:'',nv:'',principal:false}); hrRenderFuncoes_(p,fechar); };
   const salvar=async(lista)=>{
     const msg=document.getElementById('hr-fn-msg'); msg.textContent='';
+    lista.forEach(x=>{ x.cargo=String(x.cargo||'').replace(/\s+/g,' ').trim(); const ex=HR.cargos.find(c=>peNormalizarHeader(c)===peNormalizarHeader(x.cargo)); if(ex) x.cargo=ex; }); // mesmo cargo, mesma grafia
     if(lista.length){ if(lista.some(x=>!x.cargo)){ msg.textContent='Escolha o cargo de todas as funções (ou remova a linha vazia).'; return; }
       const v=new Set(lista.map(x=>peNormalizarHeader(x.cargo))); if(v.size<lista.length){ msg.textContent='Há funções repetidas.'; return; } }
     const b=document.getElementById('hr-fn-ok'); b.disabled=true; b.textContent='Salvando…';
@@ -8010,9 +8019,21 @@ async function carregarPessoaParaEdicao(nomePessoa){
 function paEhCampoData(headerNorm){
   return headerNorm.indexOf('data')!==-1 && headerNorm.indexOf('dias')===-1;
 }
+// v19.5: pessoa do formulário já está na tabela Hierarquia? (D.p traz Head/Gestor efetivos e p.hier)
+function paHierDoForm_(){
+  const campos=(PA_ULTIMA_LEITURA&&PA_ULTIMA_LEITURA.campos)||[]; const ce=campos.find(c=>paKey_(c.header)==='email'); if(!ce||!ce.valor) return null;
+  const em=String(ce.valor).trim().toLowerCase(); const p=(D.p||[]).find(x=>String(x.email||'').toLowerCase()===em);
+  return (p&&p.hier)?p:null;
+}
 function paConstruirInputHtml(c,i){
   const headerNorm=peNormalizarHeader(c.header);
   const valorEscapado=(c.valor===null||c.valor===undefined?'':String(c.valor)).replace(/"/g,'&quot;');
+  if((headerNorm==='gestor'||headerNorm==='head')&&paHierDoForm_()){
+    const hp=paHierDoForm_(), efetivo=String((headerNorm==='head'?hp.head:hp.gestor)||'');
+    return '<div class="pa-hier-ro" data-pa-papel="'+headerNorm+'"><input type="hidden" class="pa-campo" data-pa-idx="'+i+'" value="'+valorEscapado+'">'+
+      '<input type="text" readonly tabindex="-1" value="'+paEscHtml_(efetivo)+'" placeholder="— sem '+(headerNorm==='head'?'head':'gestor')+' —" aria-label="'+paEscHtml_(c.header)+' (definido na Hierarquia)">'+
+      '<div class="pa-hint">🔒 Definido na aba <a href="#" class="pa-hier-go">Hierarquia</a>. Para alterar, edite lá (esta tela não grava mais '+(headerNorm==='head'?'o Head':'o Gestor')+' desta pessoa).</div></div>';
+  }
   if(headerNorm==='gestor'||headerNorm==='head'){
     // v18.0 — lista pesquisável de pessoas elegíveis pelo CARGO (não pelo perfil de acesso). O valor gravado continua sendo o nome (Assinatura).
     return '<div class="pa-pc" data-pa-papel="'+headerNorm+'"><input type="hidden" class="pa-campo" data-pa-idx="'+i+'" value="'+valorEscapado+'">'+
@@ -8345,14 +8366,20 @@ function paLigarLocalizacao_(){
 const PA_CARGOS_GESTOR=['gestor','gerente','coordenador','lider','diretor','head'];   // cobre Gestora/Coordenadora/Diretora/Líder
 const PA_CARGOS_HEAD=['head'];
 function paNormTxt_(v){ return peNormalizarHeader(v); }
-function paFonteElegiveis_(){ return (PA_LISTA_CACHE&&PA_LISTA_CACHE.length)?PA_LISTA_CACHE.map(p=>({nome:String(p.nome||'').trim(),completo:String(p.nome_completo||'').trim(),cargo:String(p.cargo||''),area:String(p.area||''),status:p.status})):(D.p||[]).map(p=>({nome:String(p.a||'').trim(),completo:'',cargo:String(p.cargo||''),area:String(p.area||''),status:p.status})); }
+function paFuncoesPorEmail_(){ // v19.4: funções (cargos) adicionais por e-mail — Hierarquia (se aberta) ou dados do dashboard
+  const m={}; (D.p||[]).forEach(p=>{ if(p.email&&p.funcoes) m[String(p.email).toLowerCase()]=p.funcoes.slice(); });
+  if(HR.ok) HR.pessoas.forEach(p=>{ if(p.email) m[p.email]=(p.funcoes||[]).map(f=>f.cargo); });
+  return m;
+}
+function paFonteElegiveis_(){ const fm=paFuncoesPorEmail_(); return (PA_LISTA_CACHE&&PA_LISTA_CACHE.length)?PA_LISTA_CACHE.map(p=>({nome:String(p.nome||'').trim(),completo:String(p.nome_completo||'').trim(),cargo:String(p.cargo||''),funcoes:fm[String(p.email||'').toLowerCase()]||[],area:String(p.area||''),status:p.status})):(D.p||[]).map(p=>({nome:String(p.a||'').trim(),completo:'',cargo:String(p.cargo||''),funcoes:p.funcoes||[],area:String(p.area||''),status:p.status})); }
 function paEhElegivel_(papel,p){
   if(!p.nome||paNormTxt_(p.status)==='inativo') return false;
-  const cg=paNormTxt_(p.cargo); if(!cg) return false;
-  return (papel==='head'?PA_CARGOS_HEAD:PA_CARGOS_GESTOR).some(t=>cg.includes(t));
+  const termos=(papel==='head'?PA_CARGOS_HEAD:PA_CARGOS_GESTOR);
+  return [p.cargo].concat(p.funcoes||[]).some(c=>{ const cg=paNormTxt_(c); return cg&&termos.some(t=>cg.includes(t)); }); // v19.4: qualquer função da pessoa vale
 }
 function paAssinaturaAtual_(){ const el=document.querySelector('#pa-form-view .pa-campo[data-pa-idx]'); const campos=(PA_ULTIMA_LEITURA&&PA_ULTIMA_LEITURA.campos)||PA_NOVA_CAMPOS||[]; const i=campos.findIndex(c=>paKey_(c.header)==='assinatura'); if(i<0) return ''; const e=document.querySelector('#pa-form-view .pa-campo[data-pa-idx="'+i+'"]'); return e?String(e.value||'').trim():''; }
 function paLigarPessoaCombos_(){
+  document.querySelectorAll('#pa-form-view .pa-hier-go').forEach(a=>a.onclick=ev=>{ ev.preventDefault(); paAba_('hier'); });
   document.querySelectorAll('#pa-form-view .pa-pc').forEach(wrap=>{
     const papel=wrap.dataset.paPapel, hid=wrap.querySelector('input[type=hidden]'), busca=wrap.querySelector('.pa-pc-busca'), lista=wrap.querySelector('.pa-pc-lista'), aviso=wrap.querySelector('.pa-pc-aviso');
     const valorInicial=hid.value; let ativo=-1, opcoes=[];
@@ -8363,7 +8390,15 @@ function paLigarPessoaCombos_(){
       if(ok){ aviso.hidden=true; return; }
       aviso.hidden=false; aviso.textContent='⚠ “'+v+'” não está entre as pessoas elegíveis para '+(papel==='head'?'Head':'Gestor')+' (cargo ou status mudou, ou o nome não existe). O valor foi mantido; escolha outra pessoa só se quiser trocar.';
     };
-    const fecha=()=>{ lista.hidden=true; busca.value=hid.value; };
+    // v19.4: lista flutuante (não é cortada pelo card): abre para baixo ou para cima, onde houver mais espaço, e cabe inteira na tela
+    const posiciona=()=>{
+      if(lista.hidden) return;
+      const r=busca.getBoundingClientRect(), topo=(document.querySelector('header,#topbar,.topbar')||{getBoundingClientRect:()=>({bottom:0})}).getBoundingClientRect().bottom, vh=window.innerHeight, m=10;
+      const abaixo=vh-r.bottom-m, acima=r.top-Math.max(topo,0)-m, baixo=abaixo>=Math.min(lista.scrollHeight+8,240)||abaixo>=acima, esp=Math.max(120,baixo?abaixo:acima);
+      lista.style.left=r.left+'px'; lista.style.width=r.width+'px'; lista.style.right='auto'; lista.style.maxHeight=Math.min(esp,420)+'px';
+      if(baixo){ lista.style.top=(r.bottom+4)+'px'; lista.style.bottom='auto'; } else { lista.style.top='auto'; lista.style.bottom=(vh-r.top+4)+'px'; }
+    };
+    const fecha=()=>{ lista.hidden=true; busca.value=hid.value; window.removeEventListener('resize',posiciona); window.removeEventListener('scroll',posiciona,true); };
     const abre=()=>{
       const t=paNormTxt_(busca.dataset.filtrando==='1'?busca.value:'');
       const el=elegiveis().filter(p=>!t||paNormTxt_(p.nome+' '+p.completo).includes(t));
@@ -8374,7 +8409,7 @@ function paLigarPessoaCombos_(){
       if(atual){ opcoes.push({v:''}); h+='<div class="pa-pc-op" data-i="'+(opcoes.length-1)+'" role="option" style="color:var(--text-muted)"><span>— Limpar —</span></div>'; }
       if(!el.length&&!atual) h='<div class="pa-pc-vz">Nenhuma pessoa elegível'+(t?' para essa busca':' com cargo de '+(papel==='head'?'Head':'Gestor'))+'.</div>';
       else if(!el.length) h+='<div class="pa-pc-vz">Nenhuma pessoa elegível para essa busca.</div>';
-      lista.innerHTML=h; lista.hidden=false; ativo=-1;
+      lista.innerHTML=h; lista.hidden=false; ativo=-1; posiciona(); window.addEventListener('resize',posiciona); window.addEventListener('scroll',posiciona,true);
     };
     const escolhe=v=>{ if(v!==hid.value){ hid.value=v; hid.dispatchEvent(new Event('input',{bubbles:true})); } busca.dataset.filtrando='0'; busca.value=v; lista.hidden=true; atualizaAviso(); };
     busca.addEventListener('focus',()=>{ busca.dataset.filtrando='0'; busca.select(); abre(); });
@@ -13118,7 +13153,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v19.4', WIKI_DATA='16/11/2026';
+const WIKI_VER='v19.5', WIKI_DATA='16/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -13380,12 +13415,12 @@ WP('pess-cadastro','3.5','Cadastro de pessoas','Campos, status e participação 
  WR('PESS-011','Hierarquia: Pessoas × Head × Gestor (tabela editável)','ok','Pessoas',
   'Nova aba <b>Hierarquia</b> em Pessoas e Perfis. Head e Gestor de cada pessoa são escolhidos em lista e guardados por <b>e-mail</b> na aba <code>Pessoas_Hierarquia</code> (um Head e um Gestor por pessoa). O botão “Importar de Pessoas_Area” preenche a tabela só para quem ainda não tem linha (nunca sobrescreve o que foi editado) e lista os nomes que não casaram com nenhuma pessoa. Filtros por Head, Gestor, área e situação; alertas de sem gestor, sem head e inconsistências (gestor/head = a própria pessoa, ciclo, nome não encontrado); coluna de liderados diretos; botão “Ver alterações”.',
   '<code>hierarquiaListar_</code>, <code>hierarquiaImportar_</code>, <code>hierarquiaSalvar_</code>, <code>aplicarHierarquiaFuncoes_</code>, <code>equipeDiretaDe_</code>, <code>computeScope_</code> (AppsScript_Code.gs); <code>hrCarregar_</code>, <code>hrRender_</code>, <code>hrSalvar_</code> (index.html).','Abas Pessoas_Hierarquia (email, nome, head_email, gestor_email, origem, atualizado_em, atualizado_por) e Pessoas_Area; log em Log_Alteracoes.','Só o Administrador lista, importa e salva.',
-  'Quando existe linha na tabela, ela vale sobre as colunas Head/Gestor de Pessoas_Area em todo o sistema (todos os filtros de Gestor e Head leem a tabela). Sem linha, vale Pessoas_Area. Ao salvar: Head/Gestor precisam existir no cadastro, não podem ser a própria pessoa e não podem formar ciclo; se houver erro, nada é gravado. <b>Alcance:</b> quem aparece como Gestor ou Head de alguém passa a ver os dados dos liderados diretos (pessoas, horas, alocação e projetos), somados ao escopo do seu perfil, qualquer que seja o perfil; as páginas continuam as do perfil. Só liderados diretos (não a cadeia inteira); Head continua vendo as áreas em que é Head.',
+  'Quando existe linha na tabela, ela vale sobre as colunas Head/Gestor de Pessoas_Area em todo o sistema (todos os filtros de Gestor e Head leem a tabela). Sem linha, vale Pessoas_Area. Ao salvar: Head/Gestor precisam existir no cadastro, não podem ser a própria pessoa e não podem formar ciclo; se houver erro, nada é gravado. <b>Alcance:</b> quem aparece como Gestor ou Head de alguém passa a ver os dados dos liderados diretos (pessoas, horas, alocação e projetos), somados ao escopo do seu perfil, qualquer que seja o perfil; as páginas continuam as do perfil. Só liderados diretos (não a cadeia inteira); Head continua vendo as áreas em que é Head. <b>Formulário de pessoa (v19.5):</b> quando a pessoa já tem linha na Hierarquia, os campos Head e Gestor do formulário ficam somente leitura (mostram o valor da Hierarquia, com atalho para a aba) e não são mais gravados em Pessoas_Area por essa tela; pessoas ainda não importadas e cadastros novos continuam editáveis como antes.',
   'Pessoas e Perfis › Hierarquia.','Importar, editar um Gestor, salvar e conferir o filtro Gestor; logar como Tech Lead que é Gestor de alguém e conferir que vê a equipe.','Os painéis refletem a alteração após a próxima atualização dos dados (cache de até ~10 min). Exige republicar o Apps Script.'),
  WR('PESS-012','Várias funções (cargos) por pessoa','ok','Pessoas',
   'Cada pessoa pode ter uma <b>função principal</b> e funções adicionais (ex.: Tech Lead e PO). Edição pelo botão “Funções” na aba Hierarquia (cargo, nível e qual é a principal), gravada em <code>Pessoas_Funcoes</code>. Sem linhas nessa aba, vale o Cargo/Nível de Pessoas_Area, então nenhum número muda para quem não tem funções adicionais.',
   '<code>funcoesSalvar_</code>, <code>lerFuncoesMapa_</code>, <code>aplicarHierarquiaFuncoes_</code>; campo <code>funcoes</code> em cada pessoa do payload.','Aba Pessoas_Funcoes (email, funcao, nivel, principal, atualizado_em, atualizado_por).','Só o Administrador edita.',
-  'A pessoa é contada <b>uma vez</b> (headcount, capacidade, horas e análises usam a função principal). Os filtros de Cargo (Análise de Horas, Comparativo e Evolução de Horas, Relatório de Projetos) aceitam qualquer uma das funções. O perfil de acesso continua único por pessoa; páginas extras usam as Exceções de página. “Voltar ao padrão” apaga as funções e restaura o Cargo de Pessoas_Area.',
+  'Falta um cargo na lista: “＋ Cadastrar novo cargo…” no próprio editor (vale para todos). Quem tem função de gestão (Gestor, Gerente, Coordenador, Líder, Diretor; Head para Head) entra nas listas de Gestor/Head do cadastro de pessoas, além de quem tem esse cargo principal. A pessoa é contada <b>uma vez</b> (headcount, capacidade, horas e análises usam a função principal). Os filtros de Cargo (Análise de Horas, Comparativo e Evolução de Horas, Relatório de Projetos) aceitam qualquer uma das funções. O perfil de acesso continua único por pessoa; páginas extras usam as Exceções de página. “Voltar ao padrão” apaga as funções e restaura o Cargo de Pessoas_Area.',
   'Pessoas e Perfis › Hierarquia › Funções; filtros de Cargo.','Dar a uma pessoa as funções Tech Lead (principal) e PO e filtrar por PO em Análise de Horas.','Outras telas que mostram só “Cargo” exibem a função principal.')],
 ''),
 
@@ -13733,7 +13768,8 @@ WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado d
 WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
 );
 const WIKI_HISTORICO=[
- {d:'16/11/2026',p:'Pessoas e Perfis · Hierarquia e Funções',desc:'Nova aba Hierarquia (Pessoas × Head × Gestor, por e-mail, editável pelo Administrador, com importação de Pessoas_Area, alertas, filtros e log). Várias funções (cargo) por pessoa, com uma principal. Quem é Gestor ou Head de alguém vê a equipe direta, qualquer que seja o perfil. Filtros de Cargo reconhecem todas as funções. Novas abas Pessoas_Hierarquia e Pessoas_Funcoes. Republicar o Apps Script.',ver:'v19.4'},
+ {d:'16/11/2026',p:'Pessoas e Perfis · Formulário de pessoa',desc:'Head e Gestor no formulário de pessoa ficam somente leitura (com atalho para a aba Hierarquia) quando a pessoa já está na tabela de Hierarquia, evitando duas fontes de verdade e alterações ignoradas. Pessoas ainda não importadas e cadastros novos seguem editáveis. Republicar o Apps Script (novo campo hier).',ver:'v19.5'},
+ {d:'16/11/2026',p:'Pessoas e Perfis · Hierarquia e Funções',desc:'Nova aba Hierarquia (Pessoas × Head × Gestor, por e-mail, editável pelo Administrador, com importação de Pessoas_Area, alertas, filtros e log). Várias funções (cargo) por pessoa, com uma principal. Quem é Gestor ou Head de alguém vê a equipe direta, qualquer que seja o perfil. Filtros de Cargo reconhecem todas as funções. Novas abas Pessoas_Hierarquia e Pessoas_Funcoes. Ajuste de usabilidade: janelas de Funções e de alterações abrem abaixo da barra superior e rolam por dentro em telas baixas; as listas de Gestor/Head do cadastro abrem por cima do card, inteiras na tela; novo cargo pode ser cadastrado no editor de Funções, e quem tem função de gestão (ex.: Tech Lead com função Gestor) passa a aparecer nas listas de Gestor/Head do cadastro. Republicar o Apps Script.',ver:'v19.4'},
  {d:'16/11/2026',p:'Filtros Gestor e Head · nomes duplicados',desc:'Correção: o mesmo gestor/head aparecia duas vezes nos filtros (ex.: “Antonio”/“Antônio”, espaço extra, caractere invisível). O servidor agora envia uma única grafia por pessoa (a do cadastro, ou a mais frequente). Novo diagnóstico nomesGestorHeadDiagnostico() para achar as linhas a corrigir em Pessoas_Area. Republicar o Apps Script.',ver:'v19.3'},
  {d:'12/11/2026',p:'Projetos · Acompanhamento de Horas da Equipe',desc:'Ajuste de padrão: removido o botão Exportar CSV; tabela no padrão das demais (ordenação global) e sem a coluna Projeto; nova coluna Tarefas com “Ver tarefas” em modal; filtro Participante restrito ao projeto selecionado; atalhos de período; a tela só carrega após “Aplicar filtros”. Backend: ação leve filtros=1 (republicar o Apps Script).',ver:'v19.2'},
  {d:'12/11/2026',p:'Carga e Risco de Alocação · Análise por Pessoa',desc:'Novo botão Exportar Excel no card Análise por Pessoa: respeita filtros e ordenação, traz as mesmas colunas da tela e a coluna Clientes / Projetos (Cliente — Projeto, um por linha) após Projetos; aba Filtros com o resumo da exportação.',ver:'v19.1'},
