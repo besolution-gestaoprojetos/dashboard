@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbw4LhE-9yz7GN6SBq09jdoO0O-eCYdVYBNxa616XGixZMytCRaaoiD3wyBPDcjW6gZO2Q/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyV-irf_LIxptwnhhO0nbMX_WDRJ6Oet0kDntTncLpaujPE4SQBhLaXhNOf7a2SRxbU0Q/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1857,6 +1857,21 @@ body.ch-trava{overflow:hidden;}
 .pa-sw input:focus-visible+span{outline:3px solid #818cf8;outline-offset:2px;}
 .pa-bar{position:sticky;bottom:0;z-index:5;display:flex;gap:10px;justify-content:flex-end;align-items:center;padding:12px 0 4px;background:linear-gradient(transparent,var(--bg,#eaf5fc) 35%);}
 .pa-dirty{margin-right:auto;font-size:12px;color:#b45309;font-weight:700;}
+.hr-chip{display:inline-block;border:1px solid var(--border);background:var(--surface-alt);border-radius:99px;padding:1px 9px;font-size:12px;margin:1px 3px 1px 0;white-space:nowrap}
+.hr-chip.pr{background:#e0f2fe;border-color:#bae6fd;color:#075985;font-weight:700}
+html[data-theme="dark"] .hr-chip.pr{background:rgba(125,211,252,.16);border-color:rgba(125,211,252,.4);color:#7dd3fc}
+.hr-lk{color:var(--primary);font-weight:700;border:1px solid var(--border);background:var(--surface);border-radius:8px;padding:2px 9px;font:700 12px var(--font-body);cursor:pointer}
+.hr-bns{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 12px}.hr-bn{border-radius:10px;padding:6px 12px;font-size:13px;font-weight:600}
+.hr-bn.ok,.hr-st.ok{background:#dcfce7;color:#166534}.hr-bn.wn,.hr-st.wn{background:#fef9c3;color:#854d0e}.hr-bn.er,.hr-st.er{background:#fee2e2;color:#991b1b}
+html[data-theme="dark"] .hr-bn.ok,html[data-theme="dark"] .hr-st.ok{background:rgba(22,163,74,.2);color:#86efac}html[data-theme="dark"] .hr-bn.wn,html[data-theme="dark"] .hr-st.wn{background:rgba(202,138,4,.22);color:#fde68a}html[data-theme="dark"] .hr-bn.er,html[data-theme="dark"] .hr-st.er{background:rgba(220,38,38,.22);color:#fca5a5}
+.hr-st{display:inline-block;border-radius:99px;padding:1px 9px;font-size:12px;font-weight:700;white-space:nowrap}
+td.hr-ed{background:rgba(234,179,8,.2)}
+.hr-save{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-top:10px}
+.hr-nota{font-size:12.5px;color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin:8px 0}.hr-nota b{color:var(--text)}.hr-nota.er{border-color:#fca5a5}
+.hr-ck{display:flex;gap:6px;align-items:center;font-size:13px;padding:6px 0}
+.hr-ov{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:9000;display:flex;align-items:flex-start;justify-content:center;padding:4vh 14px;overflow:auto}
+.hr-md{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:100%}.hr-mh{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)}.hr-mb{padding:12px 16px}
+#pa-hier-view select{max-width:230px}
 .pa-fchips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px;}
 .pa-fchips button{border:1px solid var(--border);background:var(--surface);color:var(--text-muted);border-radius:99px;padding:5px 12px;font:600 12px var(--font-body);cursor:pointer;}
 .pa-fchips button.on{background:var(--primary);color:#fff;border-color:var(--primary);}
@@ -2371,7 +2386,9 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
     <!-- PAGE ADMINISTRAÇÃO DE PESSOAS -->
     <section class="page" id="page-pessoasadmin">
       <div class="page-header"><div><h1>Pessoas e Perfis</h1><p>Cadastro, perfil de acesso e último login — fonte única de identidade do dashboard (aba Pessoas_Area).</p></div></div>
+      <div class="rp-seg" id="pa-tabs" style="margin-bottom:14px"><button type="button" data-v="pessoas" class="on">Pessoas e perfis</button><button type="button" data-v="hier">Hierarquia</button></div>
       <div id="pa-feedback" style="display:none;margin-bottom:14px;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600"></div>
+      <div id="pa-hier-view" style="display:none"></div>
       <div id="pa-lista-view"></div>
       <div id="pa-form-view" style="display:none"></div>
     </section>
@@ -3143,7 +3160,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v19.2';
+const APP_VERSION='v19.4';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -3384,6 +3401,8 @@ function novidadesUltimaAtualizacao_(){
   return mx?mx.slice(8,10)+'/'+mx.slice(5,7)+'/'+mx.slice(0,4):NOVIDADES_ATUALIZADO_EM;
 }
 const NOVIDADES=[
+  {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Hierarquia e várias funções por pessoa', descricao:'Em Pessoas e Perfis, a nova aba Hierarquia permite definir o Head e o Gestor de cada pessoa (por e-mail) e dar mais de uma função (cargo) a quem acumula papéis, como Tech Lead e PO. Quem é Gestor ou Head de alguém passa a ver os dados dos liderados diretos. Os filtros de Cargo reconhecem todas as funções.', paginas:['pessoasadmin'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
+  {icone:'🧹', bg:'#ecfdf5', cor:'#059669', titulo:'Gestor e Head sem nomes repetidos', descricao:'Os filtros de Gestor e Head não mostram mais o mesmo nome duas vezes (como “Antonio” e “Antônio”, ou com espaço sobrando). Cada pessoa aparece uma única vez, com a grafia do cadastro.', data:'2026-11-16', tag:'Correção', tagCor:'melhoria'},
   {icone:'🔎', bg:'#eff6ff', cor:'#2563eb', titulo:'Acompanhamento de Horas da Equipe mais ágil', descricao:'A tela agora tem atalhos de período, o filtro Participante mostra só as pessoas do projeto escolhido, e os dados só carregam ao clicar em Aplicar filtros. A coluna Projeto saiu da tabela e o botão Ver tarefas abre as tarefas da pessoa em uma janela. O botão Exportar CSV foi removido.', paginas:['equipehoras'], data:'2026-11-12', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'⬇️', bg:'#ecfdf5', cor:'#059669', titulo:'Exportar Excel na Análise por Pessoa', descricao:'Em Carga e Risco de Alocação, o card Análise por Pessoa ganhou o botão Exportar Excel: leva as mesmas colunas da tela, respeitando os filtros e a ordenação, e inclui a coluna Clientes / Projetos com o nome de cada cliente e projeto da pessoa.', paginas:['inteligencia'], data:'2026-11-12', tag:'Nova', tagCor:'nova'},
   {icone:'📋', bg:'#eff6ff', cor:'#2563eb', titulo:'Análise por Pessoa mais objetiva', descricao:'Em Carga e Risco de Alocação, a listagem agora mostra o Head de cada pessoa, a Próxima Entrega pela data de vencimento da próxima tarefa em aberto e a quantidade de Tarefas em aberto. As colunas Complexidade e Prioridade saíram da lista (o Score continua considerando esses fatores).', paginas:['inteligencia'], data:'2026-11-12', tag:'Melhoria', tagCor:'melhoria'},
@@ -7470,6 +7489,8 @@ let PA_MODO='lista'; // 'lista' | 'form'
 let PA_PERFIS_VALIDOS=[]; // lista de perfis reconhecidos, devolvida pelo backend — popula o dropdown de "Perfil de Acesso"
 function initPessoasAdmin(){
   PA_MODO='lista';
+  document.querySelectorAll('#pa-tabs button').forEach(b=>b.onclick=()=>paAba_(b.dataset.v));
+  paAba_('pessoas');
   carregarListaPessoasAdmin();
 }
 function paFeedback(msg,ok,ms){
@@ -7482,9 +7503,229 @@ function paFeedback(msg,ok,ms){
   window.__paFeedbackTimeout=setTimeout(()=>{ el.style.display='none'; },ms||5000);
 }
 function paMostrarView(modo){
-  PA_MODO=modo;
+  PA_MODO=modo; PA_ABA='pessoas';
+  { const hv=document.getElementById('pa-hier-view'); if(hv) hv.style.display='none'; document.querySelectorAll('#pa-tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v==='pessoas')); }
   document.getElementById('pa-lista-view').style.display=modo==='lista'?'':'none';
   document.getElementById('pa-form-view').style.display=modo==='form'?'':'none';
+}
+
+// ---------- v19.4: HIERARQUIA (Pessoas × Head × Gestor) e FUNÇÕES ----------
+let PA_ABA='pessoas';
+const HR={ok:false,pessoas:[],cargos:[],niveis:[],tabela:false,ed:{},pend:[],f:{q:'',head:'',gestor:'',area:'',sit:'',lider:'',inativos:false}};
+function hrE_(v){ return paEscHtml_(v); }
+function hrCall_(action,payload){
+  const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+  return loadDataJSONPComRetry(DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action='+action+(payload?'&payload='+encodeURIComponent(JSON.stringify(payload)):''),action==='hierarquiaListar'?1:0);
+}
+function paAba_(a){
+  PA_ABA=a;
+  document.querySelectorAll('#pa-tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v===a));
+  const h=document.getElementById('pa-hier-view');
+  if(a==='hier'){
+    document.getElementById('pa-lista-view').style.display='none'; document.getElementById('pa-form-view').style.display='none'; h.style.display='';
+    if(HR.ok) hrRender_(); else hrCarregar_();
+  }else{ h.style.display='none'; paMostrarView(PA_MODO); }
+}
+async function hrCarregar_(){
+  const h=document.getElementById('pa-hier-view');
+  h.innerHTML=loadingInlineHtml('Carregando hierarquia…');
+  try{
+    const r=await hrCall_('hierarquiaListar');
+    if(!r||!r.ok){ h.innerHTML='<div class="empty-state" style="padding:50px 20px"><p>'+hrE_((r&&r.message)||'Não foi possível carregar a hierarquia.')+'</p><button type="button" class="filter-clear" id="hr-retry" style="margin-top:12px">Tentar novamente</button></div>'; document.getElementById('hr-retry').onclick=hrCarregar_; return; }
+    HR.pessoas=r.pessoas||[]; HR.cargos=r.cargos||[]; HR.niveis=r.niveis||[]; HR.tabela=!!r.tabelaPopulada; HR.ed={}; HR.ok=true;
+    hrRender_();
+  }catch(e){ h.innerHTML='<div class="empty-state" style="padding:50px 20px"><p>Falha ao contatar o servidor. Verifique sua conexão.</p><button type="button" class="filter-clear" id="hr-retry" style="margin-top:12px">Tentar novamente</button></div>'; document.getElementById('hr-retry').onclick=hrCarregar_; }
+}
+const hrEf_=p=>HR.ed[p.email]||{headEmail:p.headEmail||'',gestorEmail:p.gestorEmail||''};
+const hrNome_=e=>{ const p=HR.pessoas.find(x=>x.email===e); return p?p.nome:(e||''); };
+function hrAtivas_(){ return HR.pessoas.filter(p=>p.email&&(HR.f.inativos||peNormalizarHeader(p.status)!=='inativo')); }
+function hrLiderados_(email){ return HR.pessoas.filter(p=>p.email&&p.email!==email&&peNormalizarHeader(p.status)!=='inativo'&&(hrEf_(p).gestorEmail===email||hrEf_(p).headEmail===email)); }
+function hrCiclo_(p,campo){ let a=hrEf_(p)[campo+'Email'],n=0; while(a&&n<100){ if(a===p.email) return true; const q=HR.pessoas.find(x=>x.email===a); a=q?hrEf_(q)[campo+'Email']:''; n++; } return false; }
+// situação: er (inconsistência) > sg (sem gestor) > sh (sem head) > ok | topo
+function hrSit_(p){
+  const e=hrEf_(p), tx=[];
+  if(!p.email) return {k:'er',t:'Sem e-mail no cadastro'};
+  if(e.gestorEmail===p.email) tx.push('Gestor = a própria pessoa');
+  if(e.headEmail===p.email) tx.push('Head = a própria pessoa');
+  if(!tx.length&&(hrCiclo_(p,'gestor')||hrCiclo_(p,'head'))) tx.push('Ciclo na cadeia');
+  if(!HR.ed[p.email]&&(p.gestorPendente||p.headPendente)) tx.push('Nome não encontrado: '+(p.gestorPendente||p.headPendente));
+  if(tx.length) return {k:'er',t:tx.join(' · ')};
+  const lid=hrLiderados_(p.email).length;
+  if(!e.gestorEmail&&!e.headEmail) return lid?{k:'ok',t:'OK · topo'}:{k:'sg',t:'Sem gestor e sem head'};
+  if(!e.gestorEmail) return {k:'sg',t:'Sem gestor'};
+  if(!e.headEmail) return {k:'sh',t:'Sem head'};
+  return {k:'ok',t:'OK'+(lid?' · atua como '+(HR.pessoas.some(x=>hrEf_(x).headEmail===p.email)?'head':'gestor'):'')};
+}
+function hrOpcoes_(sel,incluirVazio){
+  return '<option value="">'+(incluirVazio||'— sem —')+'</option>'+hrAtivas_().concat(HR.pessoas.filter(p=>p.email===sel&&!hrAtivas_().includes(p))).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR')).map(p=>'<option value="'+hrE_(p.email)+'"'+(p.email===sel?' selected':'')+'>'+hrE_(p.nome)+'</option>').join('');
+}
+function hrFuncoesChips_(p){
+  const f=p.funcoes||[]; if(!f.length) return '<span class="ha-mut">—</span>';
+  return f.map((x,i)=>'<span class="hr-chip'+(x.principal?' pr':'')+'" title="'+(x.principal?'Função principal':'Função adicional')+(x.nv?' · '+hrE_(x.nv):'')+'">'+hrE_(x.cargo)+'</span>').join('');
+}
+function hrLinha_(p){
+  const e=hrEf_(p), s=hrSit_(p), lid=hrLiderados_(p.email).length, ed=!!HR.ed[p.email];
+  const cls={ok:'hr-st ok',sg:'hr-st wn',sh:'hr-st wn',er:'hr-st er'}[s.k];
+  return '<tr data-hr-email="'+hrE_(p.email)+'"><td><b>'+hrE_(p.nome)+'</b><br><small class="ha-mut">'+hrE_(p.email||'sem e-mail')+(peNormalizarHeader(p.status)==='inativo'?' · inativo':'')+'</small></td>'+
+    '<td>'+hrFuncoesChips_(p)+' <button type="button" class="hr-lk" data-hr-fn="'+hrE_(p.email)+'">Funções</button></td><td>'+hrE_(p.area||'—')+'</td>'+
+    '<td'+(ed&&e.headEmail!==(p.headEmail||'')?' class="hr-ed"':'')+'><select data-hr-sel="head" aria-label="Head de '+hrE_(p.nome)+'">'+hrOpcoes_(e.headEmail,'— sem head —')+'</select></td>'+
+    '<td'+(ed&&e.gestorEmail!==(p.gestorEmail||'')?' class="hr-ed"':'')+'><select data-hr-sel="gestor" aria-label="Gestor de '+hrE_(p.nome)+'">'+hrOpcoes_(e.gestorEmail,'— sem gestor —')+'</select></td>'+
+    '<td style="text-align:right">'+(lid?'<b>'+lid+'</b> <button type="button" class="hr-lk" data-hr-ver="'+hrE_(p.email)+'">ver</button>':'—')+'</td>'+
+    '<td><span class="'+cls+'">'+hrE_(s.t)+'</span></td></tr>';
+}
+function hrFiltradas_(){
+  const f=HR.f, q=peNormalizarHeader(f.q);
+  return hrAtivas_().filter(p=>{
+    const e=hrEf_(p), s=hrSit_(p);
+    if(q&&!(peNormalizarHeader(p.nome).includes(q)||peNormalizarHeader(p.email).includes(q)||peNormalizarHeader(p.nomeCompleto).includes(q))) return false;
+    if(f.head&&e.headEmail!==f.head) return false; if(f.gestor&&e.gestorEmail!==f.gestor) return false; if(f.area&&p.area!==f.area) return false;
+    if(f.lider&&!(p.email!==f.lider&&(e.gestorEmail===f.lider||e.headEmail===f.lider))) return false;
+    if(f.sit==='sg'&&s.k!=='sg') return false; if(f.sit==='sh'&&s.k!=='sh') return false; if(f.sit==='er'&&s.k!=='er') return false;
+    return true;
+  }).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+}
+function hrResumo_(){
+  const at=hrAtivas_(), c={sg:0,sh:0,er:0}; at.forEach(p=>{ const k=hrSit_(p).k; if(c[k]!==undefined) c[k]++; });
+  return '<span class="hr-bn ok">'+at.length+' pessoas</span><span class="hr-bn wn">'+c.sg+' sem gestor</span><span class="hr-bn wn">'+c.sh+' sem head</span><span class="hr-bn er">'+c.er+' inconsistência'+(c.er===1?'':'s')+'</span>';
+}
+function hrBarraSalvar_(){
+  const n=Object.keys(HR.ed).length;
+  return '<span class="ha-mut">'+(n?'<b>'+n+' alteração'+(n>1?'ões':'')+'</b> não salva'+(n>1?'s':'')+' (campos amarelos)':'Nenhuma alteração pendente.')+'</span><span><button type="button" class="filter-clear" id="hr-desc"'+(n?'':' disabled')+'>Descartar</button> <button type="button" class="sr-btn sr-btn-primary" id="hr-salvar"'+(n?'':' disabled')+'>Salvar alterações</button></span>';
+}
+function hrRender_(){
+  const h=document.getElementById('pa-hier-view'), f=HR.f, at=hrAtivas_();
+  const heads=[...new Set(at.map(p=>hrEf_(p).headEmail).filter(Boolean))], gests=[...new Set(at.map(p=>hrEf_(p).gestorEmail).filter(Boolean))], areas=[...new Set(at.map(p=>p.area).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const opt=(arr,sel,lab,fn)=>'<option value="">'+lab+'</option>'+arr.map(v=>'<option value="'+hrE_(v)+'"'+(v===sel?' selected':'')+'>'+hrE_(fn?fn(v):v)+'</option>').join('');
+  const lista=hrFiltradas_();
+  h.innerHTML='<div class="card"><div class="card-title"><h3>Hierarquia · Pessoas × Head × Gestor</h3><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="filter-clear" id="hr-log">📜 Ver alterações</button><button type="button" class="filter-clear" id="hr-imp" title="Preenche, a partir de Pessoas_Area, só quem ainda não tem linha na tabela (nunca sobrescreve o que foi editado)">⬇ Importar de Pessoas_Area</button></span></div>'+
+    (HR.tabela?'':'<div class="hr-nota"><b>A tabela ainda não foi criada.</b> Até importar, o sistema segue lendo Head e Gestor de Pessoas_Area. Clique em “Importar de Pessoas_Area” para começar a editar aqui.</div>')+
+    '<div class="hr-bns" id="hr-bns">'+hrResumo_()+'</div><div id="hr-pend"></div>'+
+    '<div class="filter-bar" style="margin-bottom:10px"><div class="filter-field"><label for="hr-q">Buscar pessoa</label><input id="hr-q" placeholder="Nome ou e-mail" value="'+hrE_(f.q)+'"></div>'+
+    '<div class="filter-field"><label for="hr-fh">Head</label><select id="hr-fh">'+opt(heads.sort((a,b)=>hrNome_(a).localeCompare(hrNome_(b),'pt-BR')),f.head,'Todos',hrNome_)+'</select></div>'+
+    '<div class="filter-field"><label for="hr-fg">Gestor</label><select id="hr-fg">'+opt(gests.sort((a,b)=>hrNome_(a).localeCompare(hrNome_(b),'pt-BR')),f.gestor,'Todos',hrNome_)+'</select></div>'+
+    '<div class="filter-field"><label for="hr-fa">Área</label><select id="hr-fa">'+opt(areas,f.area,'Todas')+'</select></div>'+
+    '<div class="filter-field"><label for="hr-fs">Situação</label><select id="hr-fs"><option value="">Todas</option><option value="sg"'+(f.sit==='sg'?' selected':'')+'>Sem gestor</option><option value="sh"'+(f.sit==='sh'?' selected':'')+'>Sem head</option><option value="er"'+(f.sit==='er'?' selected':'')+'>Inconsistências</option></select></div>'+
+    '<div class="filter-field"><label>&nbsp;</label><label class="hr-ck"><input type="checkbox" id="hr-fi"'+(f.inativos?' checked':'')+'> Incluir inativos</label></div></div>'+
+    (f.lider?'<div class="hr-nota">Mostrando só os liderados diretos de <b>'+hrE_(hrNome_(f.lider))+'</b> <button type="button" class="hr-lk" id="hr-lid-x">limpar</button></div>':'')+
+    '<div class="table-wrap" style="max-height:600px"><table><thead><tr><th>Pessoa</th><th>Funções (cargos)</th><th>Área</th><th>Head</th><th>Gestor</th><th style="text-align:right">Liderados diretos</th><th>Situação</th></tr></thead><tbody id="hr-tb">'+
+    (lista.length?lista.map(hrLinha_).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--text-faint);padding:26px">Nenhuma pessoa encontrada com esses filtros.</td></tr>')+'</tbody></table></div>'+
+    '<div class="hr-save" id="hr-bar">'+hrBarraSalvar_()+'</div>'+
+    '<div class="hr-nota"><b>Como funciona:</b> Head e Gestor são guardados por <b>e-mail</b>, então grafias diferentes do mesmo nome deixam de existir. Só o Administrador edita e cada alteração vai para o log. Quem aparece como Gestor ou Head de alguém passa a ver os dados dos liderados diretos, qualquer que seja o perfil (as <b>páginas</b> continuam as do perfil). Os painéis refletem a alteração após a próxima atualização dos dados (até ~10 min).</div></div>';
+  hrLigar_();
+}
+function hrAtualizaLinha_(email){
+  const p=HR.pessoas.find(x=>x.email===email), tr=document.querySelector('#hr-tb tr[data-hr-email="'+email.replace(/"/g,'\\"')+'"]'); if(!p||!tr) return;
+  tr.outerHTML=hrLinha_(p); hrLigarLinhas_();
+  document.getElementById('hr-bns').innerHTML=hrResumo_(); document.getElementById('hr-bar').innerHTML=hrBarraSalvar_(); hrLigarBarra_();
+  // situação dos demais pode mudar (ciclo, liderados): atualiza só a coluna de situação/liderados das outras linhas
+  document.querySelectorAll('#hr-tb tr[data-hr-email]').forEach(r=>{ const q=HR.pessoas.find(x=>x.email===r.dataset.hrEmail); if(!q||q.email===email) return; const s=hrSit_(q); const c=r.lastElementChild.firstElementChild; if(c){ c.className={ok:'hr-st ok',sg:'hr-st wn',sh:'hr-st wn',er:'hr-st er'}[s.k]; c.textContent=s.t; } });
+}
+function hrLigarLinhas_(){
+  document.querySelectorAll('#hr-tb [data-hr-sel]').forEach(s=>s.onchange=()=>{
+    const email=s.closest('tr').dataset.hrEmail, p=HR.pessoas.find(x=>x.email===email), cur=Object.assign({},hrEf_(p));
+    cur[s.dataset.hrSel+'Email']=s.value;
+    if(cur.headEmail===(p.headEmail||'')&&cur.gestorEmail===(p.gestorEmail||'')) delete HR.ed[email]; else HR.ed[email]=cur;
+    hrAtualizaLinha_(email);
+  });
+  document.querySelectorAll('#hr-tb [data-hr-fn]').forEach(b=>b.onclick=()=>hrAbrirFuncoes_(b.dataset.hrFn));
+  document.querySelectorAll('#hr-tb [data-hr-ver]').forEach(b=>b.onclick=()=>{ HR.f.lider=b.dataset.hrVer; hrRender_(); });
+}
+function hrLigarBarra_(){
+  const d=document.getElementById('hr-desc'), s=document.getElementById('hr-salvar');
+  if(d) d.onclick=()=>{ HR.ed={}; hrRender_(); };
+  if(s) s.onclick=hrSalvar_;
+}
+function hrLigar_(){
+  const f=HR.f, g=id=>document.getElementById(id);
+  g('hr-q').oninput=debounce(()=>{ f.q=g('hr-q').value; hrRenderTabela_(); },200);
+  [['hr-fh','head'],['hr-fg','gestor'],['hr-fa','area'],['hr-fs','sit']].forEach(([id,k])=>g(id).onchange=()=>{ f[k]=g(id).value; hrRenderTabela_(); });
+  g('hr-fi').onchange=()=>{ f.inativos=g('hr-fi').checked; hrRender_(); };
+  g('hr-imp').onclick=hrImportar_; g('hr-log').onclick=hrAbrirLog_;
+  const x=g('hr-lid-x'); if(x) x.onclick=()=>{ f.lider=''; hrRender_(); };
+  hrLigarLinhas_(); hrLigarBarra_(); hrPendencias_();
+}
+function hrRenderTabela_(){
+  const lista=hrFiltradas_();
+  document.getElementById('hr-tb').innerHTML=lista.length?lista.map(hrLinha_).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--text-faint);padding:26px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
+  hrLigarLinhas_();
+}
+function hrPendencias_(){
+  const el=document.getElementById('hr-pend'); if(!el) return;
+  el.innerHTML=HR.pend.length?'<div class="hr-nota er"><b>'+HR.pend.length+' nome(s) de Head/Gestor não casaram com nenhuma pessoa do cadastro:</b> '+HR.pend.slice(0,12).map(x=>hrE_(x.nome)+' ('+x.campo+': “'+hrE_(x.texto)+'”)').join('; ')+(HR.pend.length>12?'…':'')+'. Escolha a pessoa correta na tabela.</div>':'';
+}
+async function hrSalvar_(){
+  const itens=Object.keys(HR.ed).map(e=>({email:e,headEmail:HR.ed[e].headEmail,gestorEmail:HR.ed[e].gestorEmail}));
+  if(!itens.length) return;
+  const b=document.getElementById('hr-salvar'); b.disabled=true; b.textContent='Salvando…';
+  try{
+    const r=await hrCall_('hierarquiaSalvar',{itens});
+    if(r&&r.ok){
+      itens.forEach(it=>{ const p=HR.pessoas.find(x=>x.email===it.email); if(p){ p.headEmail=it.headEmail; p.gestorEmail=it.gestorEmail; p.origem='tabela'; p.headPendente=''; p.gestorPendente=''; } });
+      HR.ed={}; HR.tabela=true; hrRender_(); paFeedback('Hierarquia salva ('+(r.salvos||0)+' pessoa'+((r.salvos||0)===1?'':'s')+' alterada'+((r.salvos||0)===1?'':'s')+').',true);
+    }else{ b.disabled=false; b.textContent='Salvar alterações'; paFeedback((r&&r.message)||'Não foi possível salvar.',false,9000); }
+  }catch(e){ b.disabled=false; b.textContent='Salvar alterações'; paFeedback('Falha ao contatar o servidor. Nada foi salvo.',false); }
+}
+async function hrImportar_(){
+  const b=document.getElementById('hr-imp'); b.disabled=true; b.textContent='Importando…';
+  try{
+    const r=await hrCall_('hierarquiaImportar');
+    if(r&&r.ok){ HR.pend=r.pendencias||[]; await hrCarregar_(); paFeedback(r.importadas?(r.importadas+' pessoa(s) importada(s) de Pessoas_Area'+(HR.pend.length?' · '+HR.pend.length+' nome(s) sem correspondência':'')+'.'):'Nada a importar: todos já estão na tabela.',true,7000); }
+    else{ b.disabled=false; b.textContent='⬇ Importar de Pessoas_Area'; paFeedback((r&&r.message)||'Não foi possível importar.',false); }
+  }catch(e){ b.disabled=false; b.textContent='⬇ Importar de Pessoas_Area'; paFeedback('Falha ao contatar o servidor.',false); }
+}
+// ----- modal genérico -----
+function hrModal_(titulo,corpo,largura){
+  let o=document.getElementById('hr-ov'); if(o) o.remove();
+  o=document.createElement('div'); o.id='hr-ov'; o.className='hr-ov'; o.setAttribute('role','dialog'); o.setAttribute('aria-modal','true');
+  o.innerHTML='<div class="hr-md" style="max-width:'+(largura||720)+'px"><div class="hr-mh"><b>'+hrE_(titulo)+'</b><button type="button" class="filter-clear" id="hr-x" aria-label="Fechar">✕</button></div><div class="hr-mb" id="hr-mb">'+corpo+'</div></div>';
+  document.body.appendChild(o);
+  const fechar=()=>{ o.remove(); document.removeEventListener('keydown',esc); }, esc=ev=>{ if(ev.key==='Escape') fechar(); };
+  document.addEventListener('keydown',esc); o.onclick=ev=>{ if(ev.target===o) fechar(); }; document.getElementById('hr-x').onclick=fechar;
+  return fechar;
+}
+let HR_FN={email:'',lista:[]};
+function hrAbrirFuncoes_(email){
+  const p=HR.pessoas.find(x=>x.email===email); if(!p) return;
+  HR_FN={email,lista:(p.funcoes&&p.funcoes.length?p.funcoes:[{cargo:p.cargo||'',nv:p.nv||'',principal:true}]).map(x=>({cargo:x.cargo,nv:x.nv||'',principal:!!x.principal}))};
+  const fechar=hrModal_('Funções — '+p.nome,'<div id="hr-fn-corpo"></div>',720);
+  hrRenderFuncoes_(p,fechar);
+}
+function hrRenderFuncoes_(p,fechar){
+  const L=HR_FN.lista, cg=(sel)=>'<option value="">— escolha —</option>'+[...new Set(HR.cargos.concat(sel?[sel]:[]))].sort((a,b)=>a.localeCompare(b,'pt-BR')).map(c=>'<option'+(c===sel?' selected':'')+'>'+hrE_(c)+'</option>').join('');
+  const nv=(sel)=>'<option value="">—</option>'+[...new Set(HR.niveis.concat(sel?[sel]:[]))].sort((a,b)=>a.localeCompare(b,'pt-BR')).map(c=>'<option'+(c===sel?' selected':'')+'>'+hrE_(c)+'</option>').join('');
+  document.getElementById('hr-fn-corpo').innerHTML='<div class="table-wrap"><table style="min-width:0"><thead><tr><th>Principal</th><th>Função (cargo)</th><th>Nível</th><th></th></tr></thead><tbody>'+
+    L.map((x,i)=>'<tr><td><input type="radio" name="hr-pr" data-i="'+i+'" aria-label="Função principal"'+(x.principal?' checked':'')+'></td><td><select data-k="cargo" data-i="'+i+'">'+cg(x.cargo)+'</select></td><td><select data-k="nv" data-i="'+i+'">'+nv(x.nv)+'</select></td><td><button type="button" class="filter-clear" data-rm="'+i+'"'+(L.length<2?' disabled':'')+'>Remover</button></td></tr>').join('')+
+    '</tbody></table></div><p style="margin:10px 0"><button type="button" class="filter-clear" id="hr-fn-add">+ Adicionar função</button></p>'+
+    '<div class="hr-nota">A função <b>principal</b> vale para contagens, capacidade e análises (a pessoa é contada <b>uma vez</b>). As demais aparecem como etiquetas e entram nos filtros de Cargo. O perfil de acesso continua sendo um só (aba de perfis); páginas extras via Exceções.</div>'+
+    '<div id="hr-fn-msg" style="color:var(--st-bloqueado);font-size:13px;min-height:18px"></div>'+
+    '<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">'+(p.funcoesDef?'<button type="button" class="filter-clear" id="hr-fn-pad">Voltar ao padrão (Pessoas_Area)</button>':'<span></span>')+'<button type="button" class="sr-btn sr-btn-primary" id="hr-fn-ok">Salvar</button></div>';
+  const c=document.getElementById('hr-fn-corpo');
+  c.querySelectorAll('input[name=hr-pr]').forEach(r=>r.onchange=()=>{ L.forEach((x,i)=>x.principal=(i===+r.dataset.i)); });
+  c.querySelectorAll('select[data-k]').forEach(s=>s.onchange=()=>{ L[+s.dataset.i][s.dataset.k]=s.value; });
+  c.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.rm, era=L[i].principal; L.splice(i,1); if(era&&L.length) L[0].principal=true; hrRenderFuncoes_(p,fechar); });
+  document.getElementById('hr-fn-add').onclick=()=>{ L.push({cargo:'',nv:'',principal:false}); hrRenderFuncoes_(p,fechar); };
+  const salvar=async(lista)=>{
+    const msg=document.getElementById('hr-fn-msg'); msg.textContent='';
+    if(lista.length){ if(lista.some(x=>!x.cargo)){ msg.textContent='Escolha o cargo de todas as funções (ou remova a linha vazia).'; return; }
+      const v=new Set(lista.map(x=>peNormalizarHeader(x.cargo))); if(v.size<lista.length){ msg.textContent='Há funções repetidas.'; return; } }
+    const b=document.getElementById('hr-fn-ok'); b.disabled=true; b.textContent='Salvando…';
+    try{ const r=await hrCall_('funcoesSalvar',{email:p.email,funcoes:lista});
+      if(r&&r.ok){ fechar(); await hrCarregar_(); paFeedback('Funções de '+p.nome+' salvas.',true); }
+      else{ b.disabled=false; b.textContent='Salvar'; msg.textContent=(r&&r.message)||'Não foi possível salvar.'; }
+    }catch(e){ b.disabled=false; b.textContent='Salvar'; msg.textContent='Falha ao contatar o servidor. Nada foi salvo.'; }
+  };
+  document.getElementById('hr-fn-ok').onclick=()=>salvar(L.map(x=>({cargo:x.cargo,nv:x.nv,principal:x.principal})));
+  const pad=document.getElementById('hr-fn-pad'); if(pad) pad.onclick=()=>salvar([]);
+}
+async function hrAbrirLog_(){
+  hrModal_('Alterações de hierarquia e funções','<div id="hr-log-c">'+loadingInlineHtml('Carregando…')+'</div>',900);
+  try{
+    const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
+    const r=await loadDataJSONPComRetry(DASHBOARD_API_URL+sep+'token='+encodeURIComponent(AUTH_TOKEN)+'&action=listarLogAlteracoes',1), c=document.getElementById('hr-log-c'); if(!c) return;
+    if(!r||!r.ok){ c.innerHTML='<p>'+hrE_((r&&r.message)||'Não foi possível carregar.')+'</p>'; return; }
+    const L=(r.log||[]).filter(l=>l.tabela==='Pessoas_Hierarquia'||l.tabela==='Pessoas_Funcoes').slice(0,300);
+    c.innerHTML=L.length?'<div class="table-wrap" style="max-height:440px"><table><thead><tr><th>Data/hora</th><th>Quem alterou</th><th>Pessoa</th><th>Campo</th><th>Antes</th><th>Depois</th></tr></thead><tbody>'+L.map(l=>'<tr><td>'+hrE_(dataTxt_(l.data_hora,true))+'</td><td>'+hrE_(l.usuario_nome||l.usuario_email)+'</td><td>'+hrE_(hrNome_(l.identificador)||l.identificador)+'</td><td>'+hrE_(l.campo||'—')+'</td><td>'+hrE_(l.valor_anterior||'—')+'</td><td>'+hrE_(l.valor_novo||'—')+'</td></tr>').join('')+'</tbody></table></div>':'<p class="ha-mut">Nenhuma alteração registrada ainda.</p>';
+  }catch(e){ const c=document.getElementById('hr-log-c'); if(c) c.innerHTML='<p>Falha ao contatar o servidor.</p>'; }
 }
 
 // ---------- LISTA / BUSCA ----------
@@ -9109,7 +9350,7 @@ function rpMembros_(p){
     const pe=(email&&byEmail[String(email).toLowerCase()])||byName[haN_(nome)]||null;
     if(pe&&!pessoaParticipaAnalises_(pe)) return; // v17.1 — Participa_Analises = Não: fora da equipe/organograma/contagens (o projeto continua)
     const cg=pe?String(pe.cargo||'').trim():'', nv=pe?String(pe.nv||'').trim():'';
-    out.push({nome:pe?pe.a:NOME_NAO_CADASTRADO,papel,cargo:cg,nv,cargoTxt:cg?(nv&&nv!=='—'?cg+' · '+nv:cg):'',area:pe?String(pe.area||'').trim():'',gestor:pe?String(pe.gestor||'').trim():'',semCadastro:!pe});
+    out.push({nome:pe?pe.a:NOME_NAO_CADASTRADO,papel,cargo:cg,nv,cargoTxt:cg?(nv&&nv!=='—'?cg+' · '+nv:cg):'',area:pe?String(pe.area||'').trim():'',gestor:pe?String(pe.gestor||'').trim():'',semCadastro:!pe,fns:pe?(pe.funcoes||[]):[]});
   };
   (p.alocacoes||[]).forEach(a=>{const orig=a.nome_origem||a.nome;mk(orig,a.papel,a.email);vistos.add(haN_(orig));});
   (p.eq||[]).forEach(n=>{if(!vistos.has(haN_(n))){mk(n,'Outros','');vistos.add(haN_(n));}});
@@ -9121,7 +9362,7 @@ function rpCalcular_(){
   const c=g('rp-cli').value,t=haN_(g('rp-proj').value),s=g('rp-st').value,a=g('rp-area').value,cg=g('rp-cargo').value;
   const L=((D&&D.pj)||[]).filter(p=>(!c||p.cl===c)&&(!t||haN_(p.pj).includes(t))&&(!s||(s==='nc'?!projetoConcluidoStatus_(p.st):p.st===s)))
     .map(p=>({p,m:rpMembros_(p)}));
-  return L.filter(x=>(!a||x.m.some(y=>y.area===a))&&(!cg||x.m.some(y=>y.cargo===cg)));
+  return L.filter(x=>(!a||x.m.some(y=>y.area===a))&&(!cg||x.m.some(y=>y.cargo===cg||(y.fns||[]).includes(cg))));
 }
 function rpCols_(){
   const d=RP.datas, cols=[
@@ -9141,7 +9382,7 @@ function rpVarHtml_(p){
 function rpChips_(x){
   const a=document.getElementById('rp-area').value,cg=document.getElementById('rp-cargo').value;
   return x.m.map(y=>{
-    const ok=(!a||y.area===a)&&(!cg||y.cargo===cg);
+    const ok=(!a||y.area===a)&&(!cg||y.cargo===cg||(y.fns||[]).includes(cg));
     return '<span class="rp-chip'+(y.papel==='Gerente do Projeto'?' gp':'')+'" style="'+(ok?'':'opacity:.4')+'"><b>'+feEsc_(y.nome)+'</b><small>'+(y.cargoTxt?feEsc_(y.cargoTxt):'<i style="color:#b45309">sem cargo</i>')+' · '+feEsc_(y.papel)+'</small></span>';
   }).join('');
 }
@@ -9217,7 +9458,7 @@ function initRelatorioProjetos(){
   const sel=(id,vals,ini)=>{const v=g(id).value;g(id).innerHTML=ini+vals.map(x=>'<option>'+feEsc_(x)+'</option>').join('');if(vals.includes(v))g(id).value=v;};
   sel('rp-cli',[...new Set(pj.map(p=>p.cl).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),'<option value="">Todos</option>');
   sel('rp-area',[...new Set(pess.map(p=>String(p.area||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),'<option value="">Todas</option>');
-  sel('rp-cargo',[...new Set(pess.map(p=>String(p.cargo||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),'<option value="">Todos</option>');
+  sel('rp-cargo',[...new Set(pess.flatMap(p=>[p.cargo,...(p.funcoes||[])]).map(c=>String(c||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),'<option value="">Todos</option>');
   const sts=[...new Set(pj.map(p=>p.st).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')), v0=g('rp-st').value||'nc';
   g('rp-st').innerHTML='<option value="nc">Não concluídos</option><option value="">Todos</option>'+sts.map(x=>'<option>'+feEsc_(x)+'</option>').join(''); g('rp-st').value=[...g('rp-st').options].some(o=>o.value===v0)?v0:'nc';
   if(!RP.ligado){
@@ -12877,7 +13118,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v19.2', WIKI_DATA='12/11/2026';
+const WIKI_VER='v19.4', WIKI_DATA='16/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -12910,6 +13151,10 @@ WP('sis-arq','3.1','Arquitetura, componentes e integrações','Como o portal é 
   '<code>AppsScript_Code.gs</code> (<code>DASHBOARD_VERSION</code>) · <code>index.html</code> (<code>APP_VERSION</code>).','Planilha Google Sheets (Extensões › Apps Script).',
   '<b>Publicar:</b> 1) Extensões › Apps Script na planilha; 2) colar o código no <code>Code.gs</code>; 3) <code>ALLOWED_CLIENT_ID</code> já vem preenchido (só mudar se usar outro Client ID OAuth); 4) Implantar › Nova implantação › App da Web (executar como: eu; acesso: qualquer pessoa); 5) copiar a URL <code>/exec</code> para <code>DASHBOARD_API_URL</code> no <code>index.html</code>; 6) a cada edição, gerar nova versão (Gerenciar implantações › editar › Nova versão).',
   'Versão menor vai de .1 a .9; depois de .9 vem o inteiro seguinte com .0 (v6.9 → v7.0), nunca v6.10. <code>DASHBOARD_VERSION</code> deve ser igual a <code>APP_VERSION</code>. Todo item novo (página ou regra) entra na Wiki/Documentação e no Histórico. O projeto Apps Script (Configurações do projeto) e a planilha devem usar o fuso America/Sao_Paulo. Ao publicar versões com e-mail (MailApp) ou BrasilAPI, o Google pede nova autorização.','Todo o portal.','Conferir <code>_backendVersion</code> na resposta da API.','Mudança só de comentário no .gs não exige republicar.'),
+ WR('SIS-022','Nomes de Gestor e Head: uma grafia por pessoa','ok','Arquitetura',
+  'Nos filtros Gestor e Head (Carga e Risco, Equipe, Comparativo e demais), a mesma pessoa nunca aparece duas vezes. O servidor compara os nomes sem diferenciar acento, maiúscula, espaço extra/duplo ou caractere invisível (“Antonio” = “Antônio”) e envia uma única grafia: a do cadastro (Assinatura ou Nome Completo em Pessoas_Area), quando existir; senão a mais frequente; em empate, a com acento. A planilha não é alterada.',
+  '<code>canonizarNomesGestorHead_</code> e <code>nomesGestorHeadDiagnostico()</code> (<code>AppsScript_Code.gs</code>).','Pessoas_Area (colunas Gestor e Head).',
+  'Rodar <code>nomesGestorHeadDiagnostico()</code> (manual, só leitura) gera a aba <b>Nomes_Duplicados_Diagnostico</b> com a grafia adotada, as grafias encontradas (espaços e caracteres invisíveis aparecem marcados) e as linhas de Pessoas_Area a corrigir na origem.','—','Filtros Gestor/Head.','Cadastrar o mesmo gestor com e sem acento e conferir que o filtro mostra um único nome.','Exige republicar o Apps Script.'),
  WR('SIS-013','Rotina de conversão de datas (administrativa)','ok','Arquitetura','Funções do Apps Script executadas <b>manualmente</b> (nunca automáticas) para levar as colunas de data dos dados do sistema ao padrão <a data-w="TRANS-025">TRANS-025</a>. Converte só abas do sistema; abas de conector (Portifolio, Tarefas, Horas) e <code>Notif_*</code> entram no diagnóstico, mas não são alteradas.','<code>AppsScript_Code.gs</code>: <code>datasDiagnostico</code>, <code>datasSimular</code>, <code>datasAutorizarConversao</code>, <code>datasConverter</code>, <code>datasValidar</code>, <code>datasRestaurarBackup</code>.','Abas: Avisos, Avisos_Leituras, Zoho_Sync_Log, Zoho_Sync_Pendencias, Log_Alteracoes, Feriados, Permissoes_Excecoes, Status_Report, Status_Report_Cronograma, Portifolio_Requisitos. Relatórios em <code>Conversao_Datas_Relatorio</code> e <code>Conversao_Datas_Log</code>; backups ocultos <code>BKP_Datas_*</code>.',
   '1) <code>datasDiagnostico()</code> lê todas as abas (só leitura): coluna, tipo (nativa/ISO/BR), formato, contagens e fusos; 2) <code>datasSimular()</code> mostra, por coluna, quantos mudam, exemplos original → esperado e o que não converte; 3) <code>datasAutorizarConversao()</code> (vale 24 h e exige simulação); 4) <code>datasConverter()</code> faz o backup das abas afetadas, converte em blocos, formata as colunas e valida; 5) <code>datasValidar()</code>; recuperação: <code>datasRestaurarBackup(\'Aba\')</code>.',
   'Idempotente (reexecutar não altera o que já é data nativa); para antes de ~4,5 min e continua na próxima execução; erro em um registro não interrompe os demais; cada célula convertida ou ignorada é registrada no log; valores americanos (mm/dd/aaaa), anos de 2 dígitos e inválidos NÃO são alterados e aparecem na simulação; célula só com data em coluna de data e hora continua só com data; os <b>segundos originais são preservados</b> no valor gravado (a precisão não se perde) e apenas a exibição os oculta; <code>Pessoas_Area</code> (Data de entrada, Data Distrato, último acesso) recebe só o formato padrão, sem mudar valores.','Colunas de data das abas listadas.','Rodar a simulação e conferir o relatório antes de autorizar; após converter, “ainda a converter” deve ser 0.','Antes de converter: ajustar o fuso do projeto Apps Script e da planilha para America/Sao_Paulo. Após publicar nova versão do back, a sincronização de Avisos/Zoho já grava data nativa.'),
@@ -13131,7 +13376,17 @@ WP('pess-cadastro','3.5','Cadastro de pessoas','Campos, status e participação 
   '<code>criarPessoaCompleta_</code>, <code>enviarEmailNovoContratado_</code>.','Pessoas_Area.','—','Administrador somente.','Pessoas e Perfis.','—','Exige autorização do Google para envio de e-mail na publicação.'),
  WR('PESS-006','Gestor e Head: quem pode ser escolhido','ok','Pessoas',
   'Os campos Gestor e Head são listas com busca por nome. Aparece só quem está Ativo e tem, no campo Cargo (não no Perfil de Acesso), a palavra: Head (para Head) ou Gestor/Gestora, Gerente, Coordenador(a), Líder, Diretor(a) ou Head (para Gestor). A própria pessoa não aparece. O valor gravado continua sendo o nome (Assinatura).',
-  '<code>paEhElegivel_</code>, <code>paLigarPessoaCombos_</code>, <code>PA_CARGOS_GESTOR</code>, <code>PA_CARGOS_HEAD</code>.','Pessoas_Area (Cargo, Status, Gestor, Head).','Administrador somente.','Valor antigo que deixou de ser elegível é mantido e marcado “fora da regra”; nada é apagado nem trocado sozinho.','Pessoas e Perfis (edição e nova pessoa).','Mudar o cargo de alguém e conferir as listas; abrir uma pessoa com Head antigo.','Cargo com outra grafia (ex.: “Chefe”) não entra: ajustar a lista de palavras no código.')],
+  '<code>paEhElegivel_</code>, <code>paLigarPessoaCombos_</code>, <code>PA_CARGOS_GESTOR</code>, <code>PA_CARGOS_HEAD</code>.','Pessoas_Area (Cargo, Status, Gestor, Head).','Administrador somente.','Valor antigo que deixou de ser elegível é mantido e marcado “fora da regra”; nada é apagado nem trocado sozinho.','Pessoas e Perfis (edição e nova pessoa).','Mudar o cargo de alguém e conferir as listas; abrir uma pessoa com Head antigo.','Cargo com outra grafia (ex.: “Chefe”) não entra: ajustar a lista de palavras no código.'),
+ WR('PESS-011','Hierarquia: Pessoas × Head × Gestor (tabela editável)','ok','Pessoas',
+  'Nova aba <b>Hierarquia</b> em Pessoas e Perfis. Head e Gestor de cada pessoa são escolhidos em lista e guardados por <b>e-mail</b> na aba <code>Pessoas_Hierarquia</code> (um Head e um Gestor por pessoa). O botão “Importar de Pessoas_Area” preenche a tabela só para quem ainda não tem linha (nunca sobrescreve o que foi editado) e lista os nomes que não casaram com nenhuma pessoa. Filtros por Head, Gestor, área e situação; alertas de sem gestor, sem head e inconsistências (gestor/head = a própria pessoa, ciclo, nome não encontrado); coluna de liderados diretos; botão “Ver alterações”.',
+  '<code>hierarquiaListar_</code>, <code>hierarquiaImportar_</code>, <code>hierarquiaSalvar_</code>, <code>aplicarHierarquiaFuncoes_</code>, <code>equipeDiretaDe_</code>, <code>computeScope_</code> (AppsScript_Code.gs); <code>hrCarregar_</code>, <code>hrRender_</code>, <code>hrSalvar_</code> (index.html).','Abas Pessoas_Hierarquia (email, nome, head_email, gestor_email, origem, atualizado_em, atualizado_por) e Pessoas_Area; log em Log_Alteracoes.','Só o Administrador lista, importa e salva.',
+  'Quando existe linha na tabela, ela vale sobre as colunas Head/Gestor de Pessoas_Area em todo o sistema (todos os filtros de Gestor e Head leem a tabela). Sem linha, vale Pessoas_Area. Ao salvar: Head/Gestor precisam existir no cadastro, não podem ser a própria pessoa e não podem formar ciclo; se houver erro, nada é gravado. <b>Alcance:</b> quem aparece como Gestor ou Head de alguém passa a ver os dados dos liderados diretos (pessoas, horas, alocação e projetos), somados ao escopo do seu perfil, qualquer que seja o perfil; as páginas continuam as do perfil. Só liderados diretos (não a cadeia inteira); Head continua vendo as áreas em que é Head.',
+  'Pessoas e Perfis › Hierarquia.','Importar, editar um Gestor, salvar e conferir o filtro Gestor; logar como Tech Lead que é Gestor de alguém e conferir que vê a equipe.','Os painéis refletem a alteração após a próxima atualização dos dados (cache de até ~10 min). Exige republicar o Apps Script.'),
+ WR('PESS-012','Várias funções (cargos) por pessoa','ok','Pessoas',
+  'Cada pessoa pode ter uma <b>função principal</b> e funções adicionais (ex.: Tech Lead e PO). Edição pelo botão “Funções” na aba Hierarquia (cargo, nível e qual é a principal), gravada em <code>Pessoas_Funcoes</code>. Sem linhas nessa aba, vale o Cargo/Nível de Pessoas_Area, então nenhum número muda para quem não tem funções adicionais.',
+  '<code>funcoesSalvar_</code>, <code>lerFuncoesMapa_</code>, <code>aplicarHierarquiaFuncoes_</code>; campo <code>funcoes</code> em cada pessoa do payload.','Aba Pessoas_Funcoes (email, funcao, nivel, principal, atualizado_em, atualizado_por).','Só o Administrador edita.',
+  'A pessoa é contada <b>uma vez</b> (headcount, capacidade, horas e análises usam a função principal). Os filtros de Cargo (Análise de Horas, Comparativo e Evolução de Horas, Relatório de Projetos) aceitam qualquer uma das funções. O perfil de acesso continua único por pessoa; páginas extras usam as Exceções de página. “Voltar ao padrão” apaga as funções e restaura o Cargo de Pessoas_Area.',
+  'Pessoas e Perfis › Hierarquia › Funções; filtros de Cargo.','Dar a uma pessoa as funções Tech Lead (principal) e PO e filtrar por PO em Análise de Horas.','Outras telas que mostram só “Cargo” exibem a função principal.')],
 ''),
 
 WP('pess-equipe','3.5','Disponibilidade e equipe','Quem aparece como sem alocação, disponível ou com carga elevada.',[
@@ -13478,6 +13733,8 @@ WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado d
 WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'16/11/2026',p:'Pessoas e Perfis · Hierarquia e Funções',desc:'Nova aba Hierarquia (Pessoas × Head × Gestor, por e-mail, editável pelo Administrador, com importação de Pessoas_Area, alertas, filtros e log). Várias funções (cargo) por pessoa, com uma principal. Quem é Gestor ou Head de alguém vê a equipe direta, qualquer que seja o perfil. Filtros de Cargo reconhecem todas as funções. Novas abas Pessoas_Hierarquia e Pessoas_Funcoes. Republicar o Apps Script.',ver:'v19.4'},
+ {d:'16/11/2026',p:'Filtros Gestor e Head · nomes duplicados',desc:'Correção: o mesmo gestor/head aparecia duas vezes nos filtros (ex.: “Antonio”/“Antônio”, espaço extra, caractere invisível). O servidor agora envia uma única grafia por pessoa (a do cadastro, ou a mais frequente). Novo diagnóstico nomesGestorHeadDiagnostico() para achar as linhas a corrigir em Pessoas_Area. Republicar o Apps Script.',ver:'v19.3'},
  {d:'12/11/2026',p:'Projetos · Acompanhamento de Horas da Equipe',desc:'Ajuste de padrão: removido o botão Exportar CSV; tabela no padrão das demais (ordenação global) e sem a coluna Projeto; nova coluna Tarefas com “Ver tarefas” em modal; filtro Participante restrito ao projeto selecionado; atalhos de período; a tela só carrega após “Aplicar filtros”. Backend: ação leve filtros=1 (republicar o Apps Script).',ver:'v19.2'},
  {d:'12/11/2026',p:'Carga e Risco de Alocação · Análise por Pessoa',desc:'Novo botão Exportar Excel no card Análise por Pessoa: respeita filtros e ordenação, traz as mesmas colunas da tela e a coluna Clientes / Projetos (Cliente — Projeto, um por linha) após Projetos; aba Filtros com o resumo da exportação.',ver:'v19.1'},
  {d:'12/11/2026',p:'Carga e Risco de Alocação · Análise por Pessoa',desc:'Listagem sem as colunas Complexidade e Prioridade; nova coluna Head após o Cargo; Próxima Entrega passa a ser o menor vencimento de tarefa em aberto (não mais o prazo do projeto); Tarefas passa a contar só as em aberto (não concluídas nem canceladas).',ver:'v19.0'},
@@ -14470,7 +14727,7 @@ function ahPrepararDados_(r){
   const dts=r.datas||{};
   AH.roster=((D&&D.p)||[]).filter(x=>x.email).map(x=>{
     const e=String(x.email).toLowerCase(), dd=dts[e]||['','']; const cid=(x.cidade||'').trim(), uf=(x.estado||'').trim();
-    return {e,a:x.a||'',area:x.area||'',head:x.head||'',cargo:x.cargo||'',nv:x.nv||'',ativo:pessoaEstaAtiva(x),participa:pessoaParticipaAnalises_(x),
+    return {e,a:x.a||'',area:x.area||'',head:x.head||'',cargo:x.cargo||'',fn:x.funcoes||[],nv:x.nv||'',ativo:pessoaEstaAtiva(x),participa:pessoaParticipaAnalises_(x),
       loc:(cid&&uf)?cid+'/'+uf:(cid||uf||(x.localidade||'').trim()),entrada:dd[0]||'',distrato:dd[1]||'',reg:true,jd:capPessoa_(x).dia,capDef:capPessoa_(x).def};
   });
   AH.porEmail={}; AH.roster.forEach(p=>{ AH.porEmail[p.e]=p; });
@@ -14485,7 +14742,7 @@ function ahPrepararDados_(r){
 function ahMarcarOpc_(sel,vals,atual,vazio){ sel.innerHTML='<option value="">'+vazio+'</option>'+vals.map(v=>'<option>'+feEsc_(v)+'</option>').join(''); if(vals.includes(atual)) sel.value=atual; else sel.value=''; }
 function ahPreencherFiltros_(){
   const uniq=f=>[...new Set(AH.roster.map(f).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'pt-BR'));
-  ahMarcarOpc_(document.getElementById('ah-area'),uniq(p=>p.area),AH.f.area,'Todas'); ahMarcarOpc_(document.getElementById('ah-cargo'),uniq(p=>p.cargo),AH.f.cargo,'Todos');
+  ahMarcarOpc_(document.getElementById('ah-area'),uniq(p=>p.area),AH.f.area,'Todas'); ahMarcarOpc_(document.getElementById('ah-cargo'),[...new Set(AH.roster.flatMap(p=>[p.cargo,...(p.fn||[])]).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'pt-BR')),AH.f.cargo,'Todos');
   ahMarcarOpc_(document.getElementById('ah-nv'),uniq(p=>p.nv),AH.f.nv,'Todas');
   ahMarcarOpc_(document.getElementById('ah-cli'),[...new Set(AH.projs.map(p=>p.cl).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),AH.f.cliente,'Todos');
   const heads=uniq(p=>p.head); AH.f.heads=new Set([...AH.f.heads].filter(h=>heads.includes(h)));
@@ -14515,7 +14772,7 @@ function ahCalcular_(){
   const cand=AH.roster.filter(p=>{
     if(p.reg){ if(!p.ativo||!p.participa) return false; }
     else if(filtraPes) return false;
-    if(f.heads.size&&!f.heads.has(p.head)) return false; if(f.area&&p.area!==f.area) return false; if(f.cargo&&p.cargo!==f.cargo) return false; if(f.nv&&p.nv!==f.nv) return false;
+    if(f.heads.size&&!f.heads.has(p.head)) return false; if(f.area&&p.area!==f.area) return false; if(f.cargo&&p.cargo!==f.cargo&&!(p.fn||[]).includes(f.cargo)) return false; if(f.nv&&p.nv!==f.nv) return false;
     if(q){ const nn=haN_(ahNomeP_(p)); if(exato?nn!==q:(!nn.includes(q)&&p.e!==q)) return false; }
     return true;
   });
@@ -14900,7 +15157,7 @@ function chPrepararPessoas_(){
   const dts=(CH.dadosBase&&CH.dadosBase.datas)||{};
   CH.pes={}; CH.roster=[];
   ((D&&D.p)||[]).filter(x=>x.email).forEach(x=>{
-    const e=String(x.email).toLowerCase(), p={e,n:x.a||'Nome não cadastrado',reg:true,cargo:x.cargo||'',nv:x.nv||'',area:x.area||'',head:x.head||'',gestor:x.gestor||'',ativo:pessoaEstaAtiva(x),participa:pessoaParticipaAnalises_(x)};
+    const e=String(x.email).toLowerCase(), p={e,n:x.a||'Nome não cadastrado',reg:true,cargo:x.cargo||'',fn:x.funcoes||[],nv:x.nv||'',area:x.area||'',head:x.head||'',gestor:x.gestor||'',ativo:pessoaEstaAtiva(x),participa:pessoaParticipaAnalises_(x)};
     CH.pes[e]=p; CH.roster.push(p);
   });
   Object.values(CH.blocos).forEach(b=>(b.usuarios||[]).forEach(u=>{ if(!CH.pes[u.e]){ const p={e:u.e,n:u.n||'Nome não cadastrado',reg:false,cargo:'',nv:'',area:'',head:'',gestor:'',ativo:true,participa:true}; CH.pes[u.e]=p; CH.roster.push(p); } }));
@@ -14970,7 +15227,7 @@ const CH_ORD_V={head:'Todos',gestor:'Todos',area:'Todas',cargo:'Todos',nv:'Todas
 // cascata: cada filtro só oferece valores que existem dentro dos filtros anteriores
 function chCascata_(aviso){
   const f=CH.f, srt=a=>a.sort((x,y)=>String(x).localeCompare(String(y),'pt-BR')), limpos=[];
-  CH_ORD.forEach((k,i)=>{ const vals=srt([...new Set(CH.roster.filter(p=>p.reg&&chPessoaOk_(p,f,i)).map(p=>p[k]).filter(Boolean))]); const ant=f[k]; f[k]=chMkSel_('ch-'+k,vals,ant,CH_ORD_V[k]); if(ant&&!f[k]) limpos.push(k); });
+  CH_ORD.forEach((k,i)=>{ const vals=srt([...new Set(CH.roster.filter(p=>p.reg&&chPessoaOk_(p,f,i)).flatMap(p=>k==='cargo'?[p.cargo,...(p.fn||[])]:[p[k]]).filter(Boolean))]); const ant=f[k]; f[k]=chMkSel_('ch-'+k,vals,ant,CH_ORD_V[k]); if(ant&&!f[k]) limpos.push(k); });
   const cls=[...new Set(CH.projs.map(p=>p.cl).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
   f.cli=chMkSel_('ch-cli',cls,f.cli,'Todos');
   f.proj=chMkSel_('ch-proj',[...new Set(CH.projs.filter(p=>!f.cli||p.cl===f.cli).map(p=>p.pj).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR')),f.proj,'Todos');
@@ -15010,7 +15267,7 @@ function chFiltroRec_(r,f){
   if(p.reg&&(!p.ativo||!p.participa)) return false;
   if(f.pess.length&&!f.pess.includes(r.e)) return false;
   if(!p.reg&&(f.cargo||f.nv||f.area||f.head||f.gestor)) return false;
-  if(f.cargo&&p.cargo!==f.cargo) return false; if(f.nv&&p.nv!==f.nv) return false; if(f.area&&p.area!==f.area) return false; if(f.head&&p.head!==f.head) return false; if(f.gestor&&p.gestor!==f.gestor) return false;
+  if(f.cargo&&p.cargo!==f.cargo&&!(p.fn||[]).includes(f.cargo)) return false; if(f.nv&&p.nv!==f.nv) return false; if(f.area&&p.area!==f.area) return false; if(f.head&&p.head!==f.head) return false; if(f.gestor&&p.gestor!==f.gestor) return false;
   if(f.cli||f.proj){ const pj=CH.projs[r.pj]||{}; if(f.cli&&pj.cl!==f.cli) return false; if(f.proj&&pj.pj!==f.proj) return false; }
   if(f.tipo!==''&&String(r.tp)!==f.tipo) return false;
   return true;
@@ -15027,7 +15284,7 @@ function chCalcular_(){
   recs.forEach(r=>{ const x=byP[r.e]||(byP[r.e]={e:r.e,h:0,tp:[0,0,0,0]}); x.h+=r.h; x.tp[r.tp]+=r.h; });
   const pessoas=Object.values(byP).sort((a,b)=>b.h-a.h||chRotP_(a.e).localeCompare(chRotP_(b.e),'pt-BR'));
   const du=chDU_(f.ini,fimEf<f.ini?f.ini:fimEf), ant=chAnterior_({ini:f.ini,fim:f.fim}), antRecs=ant?chRecsDe_(ant.ini,ant.fim):[], antTot=chTotal_(antRecs);
-  const nEsc=new Set(CH.roster.filter(p=>(p.reg?(p.ativo&&p.participa):true)).filter(p=>{ if(f.pess.length&&!f.pess.includes(p.e)) return false; if(!p.reg&&(f.cargo||f.nv||f.area||f.head||f.gestor)) return false; return (!f.cargo||p.cargo===f.cargo)&&(!f.nv||p.nv===f.nv)&&(!f.area||p.area===f.area)&&(!f.head||p.head===f.head)&&(!f.gestor||p.gestor===f.gestor); }).map(p=>p.e)).size;
+  const nEsc=new Set(CH.roster.filter(p=>(p.reg?(p.ativo&&p.participa):true)).filter(p=>{ if(f.pess.length&&!f.pess.includes(p.e)) return false; if(!p.reg&&(f.cargo||f.nv||f.area||f.head||f.gestor)) return false; return (!f.cargo||p.cargo===f.cargo||(p.fn||[]).includes(f.cargo))&&(!f.nv||p.nv===f.nv)&&(!f.area||p.area===f.area)&&(!f.head||p.head===f.head)&&(!f.gestor||p.gestor===f.gestor); }).map(p=>p.e)).size;
   return {g,recs,tot,pessoas,byP,nProf:pessoas.length,du,ant,antTot,antTem:antRecs.length>0,nEsc,buckets:chBuckets_(f.ini,f.fim,g),notas,fimEf,parcial:chParcial_(chBuckets_(f.ini,f.fim,g),g,f.fim>hoje?hoje:f.fim)};
 }
 function chBFim_(k,g){ if(g==='d') return k; if(g==='s') return haAdd_(k,6); if(g==='m') return chUlt_(k); if(g==='t') return chUlt_(k.slice(0,4)+'-'+chP2_((+k.slice(6)-1)*3+3)); return k+'-12-31'; }
