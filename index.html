@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbxfH4DVpnIKkzxwzBHW57rsDd9IjzqvHVeEig8ZRLVn9G9Y-Xvbf8ClwUdIzaA-Knlhsg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbypy_-hA0cnh5mH1heYGY8qrei6nBCAtpP6ty-lNfBswSnyzxdTuvqS5bAE-x7G-Psepg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1857,6 +1857,28 @@ body.ch-trava{overflow:hidden;}
 .pa-sw input:focus-visible+span{outline:3px solid #818cf8;outline-offset:2px;}
 .pa-bar{position:sticky;bottom:0;z-index:5;display:flex;gap:10px;justify-content:flex-end;align-items:center;padding:12px 0 4px;background:linear-gradient(transparent,var(--bg,#eaf5fc) 35%);}
 .pa-dirty{margin-right:auto;font-size:12px;color:#b45309;font-weight:700;}
+/* ===== v19.6 · PADRÃO UX (barra fixa de ações, toasts, estados de campo) ===== */
+.ux-bar{position:sticky;bottom:40px;z-index:40;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px 14px;box-shadow:0 -8px 24px -6px rgba(15,44,74,.18);margin-top:14px}
+.ux-bar .ux-st{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--text-muted);min-width:0}
+.ux-bar .ux-dot{width:10px;height:10px;border-radius:50%;background:var(--st-feito,#16a34a);flex:none}
+.ux-bar .ux-pill{display:none;border-radius:99px;padding:1px 9px;font-size:11px;font-weight:800;background:rgba(202,138,4,.18);color:#a16207}
+.ux-bar .ux-btns{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto}
+.ux-bar.dirty{border-color:#ca8a04;box-shadow:0 0 0 2px rgba(202,138,4,.35),0 -8px 24px -6px rgba(15,44,74,.18)}
+.ux-bar.dirty .ux-dot{background:#ca8a04}.ux-bar.dirty .ux-st{color:var(--text);font-weight:700}.ux-bar.dirty .ux-pill{display:inline}
+.ux-bar.busy .ux-dot{background:#0284c7;animation:uxp 1s infinite}.ux-bar.erro{border-color:#dc2626;box-shadow:0 0 0 2px rgba(220,38,38,.3)}.ux-bar.erro .ux-dot{background:#dc2626}
+@keyframes uxp{50%{opacity:.35}}
+.ux-bar button:disabled{opacity:.5;cursor:not-allowed}
+.pa-bar.ux-bar{background:var(--surface);padding:10px 14px}
+#ux-toasts{position:fixed;right:16px;top:calc(var(--topbar-h,60px) + 10px);z-index:10060;display:flex;flex-direction:column;gap:8px;max-width:min(380px,calc(100vw - 32px));pointer-events:none}
+.ux-toast{pointer-events:auto;display:flex;gap:10px;align-items:flex-start;border:1px solid;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600;box-shadow:0 10px 24px -8px rgba(15,23,42,.3);background:var(--surface);color:var(--text);animation:uxin .18s ease-out}
+.ux-toast.ok{border-color:#86efac;background:rgba(22,163,74,.12)}.ux-toast.er{border-color:#fca5a5;background:rgba(220,38,38,.12)}.ux-toast.inf{border-color:#7dd3fc;background:rgba(2,132,199,.12)}
+.ux-toast b{flex:none}.ux-toast button{margin-left:auto;border:0;background:none;color:inherit;cursor:pointer;font-size:15px;line-height:1;opacity:.7}
+@keyframes uxin{from{opacity:0;transform:translateY(-6px)}}
+#pa-feedback,#pe-feedback,#sr-feedback,#fe-feedback,#av-feedback,#nt-feedback{display:none !important}
+.pa-invalid,.pa-campo.pa-invalid{border-color:#dc2626 !important;outline:3px solid rgba(220,38,38,.18)}
+.pa-campo:focus,.fe-panel input:focus,.fe-panel select:focus,.fe-panel textarea:focus{outline:3px solid rgba(2,132,199,.2);border-color:#0284c7}
+#fe-lista tr[data-fe-id]{cursor:pointer}#fe-lista tr[data-fe-id]:hover td{background:var(--surface-hover)}
+
 .hr-chip{display:inline-block;border:1px solid var(--border);background:var(--surface-alt);border-radius:99px;padding:1px 9px;font-size:12px;margin:1px 3px 1px 0;white-space:nowrap}
 .hr-chip.pr{background:#e0f2fe;border-color:#bae6fd;color:#075985;font-weight:700}
 html[data-theme="dark"] .hr-chip.pr{background:rgba(125,211,252,.16);border-color:rgba(125,211,252,.4);color:#7dd3fc}
@@ -2441,7 +2463,7 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
             <label class="fe-chk"><input type="checkbox" id="fe-rec" checked><span>🔁 Repete anualmente (fixo dia/mês — ex: 07/09, 25/12)</span></label>
             <div id="fe-loc-wrap" style="display:none"><label id="fe-loc-lbl">Localidade</label><input type="text" id="fe-loc" maxlength="80" placeholder="Ex: SP"></div>
           </div>
-          <div class="fe-actions"><button type="button" class="fe-btn-sec" id="fe-cancelar" style="display:none">Cancelar edição</button><button type="button" class="fe-btn" id="fe-salvar">+ Cadastrar Feriado</button></div>
+          <div class="fe-actions ux-bar" id="fe-bar"><span class="ux-st"><i class="ux-dot"></i><span class="ux-tx">Nenhuma alteração pendente</span><span class="ux-pill"></span></span><span class="ux-btns"><button type="button" class="fe-btn-sec" id="fe-cancelar" style="display:none">Cancelar edição</button><button type="button" class="fe-btn" id="fe-salvar" disabled>+ Cadastrar Feriado</button></span></div>
         </div>
         <div class="fe-list-head"><b>FERIADOS CADASTRADOS</b><span class="fe-cnt" id="fe-cnt"></span></div>
         <div class="fe-tools"><input type="text" id="fe-busca" placeholder="Buscar descrição ou localidade…"><select id="fe-ftipo"><option value="">Todos os tipos</option><option>Nacional</option><option>Estadual</option><option>Municipal</option></select><select id="fe-fano"></select></div>
@@ -2465,7 +2487,8 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
             <div class="av-g2"><div><label>Enviar para · Perfis de acesso</label><div class="av-chips" id="av-perfis"></div></div>
               <div><label>Enviar para · Pessoas específicas</label><input type="text" id="av-busca" placeholder="Buscar pessoa pelo nome…"><div class="av-chips" id="av-pes"></div><div class="av-sel" id="av-selp"></div></div></div>
             <div class="av-g2" style="align-items:center"><label class="fe-chk"><input type="checkbox" id="av-obrig" checked><span>🔒 Obrigatório (bloqueia o acesso até “Ciente / Lido”)</span></label>
-              <div style="text-align:right"><span id="av-alc" style="color:var(--text-muted);font-size:12.5px;margin-right:10px"></span><button type="button" class="fe-btn-sec" id="av-cancelar" style="display:none">Cancelar edição</button> <button type="button" class="fe-btn" id="av-salvar">Salvar aviso</button></div></div>
+              <div style="text-align:right"><span id="av-alc" style="color:var(--text-muted);font-size:12.5px"></span></div></div>
+            <div class="ux-bar" id="av-bar"><span class="ux-st"><i class="ux-dot"></i><span class="ux-tx">Nenhuma alteração pendente</span><span class="ux-pill"></span></span><span class="ux-btns"><button type="button" class="fe-btn-sec" id="av-cancelar" style="display:none">Cancelar edição</button> <button type="button" class="fe-btn" id="av-salvar" disabled>Salvar aviso</button></span></div>
           </div>
           <div class="fe-list-head"><b>AVISOS CADASTRADOS</b><span class="fe-cnt" id="av-cnt"></span></div>
           <div class="fe-tools"><input type="text" id="av-lbusca" placeholder="Buscar aviso…"><select id="av-lstatus"><option value="">Todos os status</option><option>Ativo</option><option>Rascunho</option><option>Inativo</option><option>Expirado</option></select></div>
@@ -3162,7 +3185,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v19.5';
+const APP_VERSION='v19.7';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -3403,6 +3426,8 @@ function novidadesUltimaAtualizacao_(){
   return mx?mx.slice(8,10)+'/'+mx.slice(5,7)+'/'+mx.slice(0,4):NOVIDADES_ATUALIZADO_EM;
 }
 const NOVIDADES=[
+  {icone:'📝', bg:'#eff6ff', cor:'#2563eb', titulo:'Status Report com barra de ações e aviso de alterações', descricao:'O Status Report ganhou menu lateral de etapas e uma barra fixa que mostra quando há alterações não salvas. Salvar Rascunho só habilita quando algo mudou, os campos obrigatórios aparecem destacados ao finalizar e o sistema avisa antes de trocar de projeto ou semana com alterações pendentes.', paginas:['statusreport'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
+  {icone:'✨', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo padrão de edição nas telas de cadastro', descricao:'Barra fixa no rodapé mostra quando há alterações não salvas (com a quantidade de campos) e o botão Salvar só habilita quando algo mudou. Avisos de sucesso e erro agora aparecem como toast. Em Feriados, é só clicar na linha para editar. Vale para tema claro e escuro.', paginas:['pessoasadmin','feriados','avisos','manutencao','portfolioedit'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
   {icone:'🔒', bg:'#eff6ff', cor:'#2563eb', titulo:'Head e Gestor no cadastro de pessoa seguem a Hierarquia', descricao:'No formulário de pessoa, Head e Gestor aparecem somente para leitura quando a pessoa já está na aba Hierarquia, com atalho para editar lá. Assim existe uma única fonte de verdade e nenhuma alteração é ignorada.', paginas:['pessoasadmin'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
   {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Hierarquia e várias funções por pessoa', descricao:'Em Pessoas e Perfis, a nova aba Hierarquia permite definir o Head e o Gestor de cada pessoa (por e-mail) e dar mais de uma função (cargo) a quem acumula papéis, como Tech Lead e PO. Quem é Gestor ou Head de alguém passa a ver os dados dos liderados diretos. Os filtros de Cargo reconhecem todas as funções.', paginas:['pessoasadmin'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
   {icone:'🧹', bg:'#ecfdf5', cor:'#059669', titulo:'Gestor e Head sem nomes repetidos', descricao:'Os filtros de Gestor e Head não mostram mais o mesmo nome duas vezes (como “Antonio” e “Antônio”, ou com espaço sobrando). Cada pessoa aparece uma única vez, com a grafia do cadastro.', data:'2026-11-16', tag:'Correção', tagCor:'melhoria'},
@@ -6707,6 +6732,7 @@ function initPortfolioEdit(){
   carregarListaPortfolio();
 }
 function peFeedback(msg,ok){
+  uxToast(msg,ok?'ok':'er');
   const el=document.getElementById('pe-feedback');
   el.textContent=msg;
   el.style.background=ok?'rgba(22,163,74,.12)':'rgba(220,38,38,.12)';
@@ -7097,15 +7123,15 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos, cliente){
 
   if(campos.some(c=>zsEhCampo_(c.header))) h+=zsCardFormHtml_(zsInfo);
   if(!reqFeito) h+=peReqCardHtml_();
-  h+='<div class="sr-actions">'+
-    '<button type="button" class="sr-btn sr-btn-primary" id="pe-btn-salvar">💾 Salvar Alterações</button>'+
-    '<button type="button" class="sr-btn" id="pe-btn-excluir" style="border-color:var(--st-bloqueado);color:var(--st-bloqueado)">🗑️ Excluir Projeto</button>'+
-    '</div>';
+  h+=uxBarHtml_('pe','<button type="button" class="sr-btn" id="pe-btn-excluir" style="border-color:var(--st-bloqueado);color:var(--st-bloqueado)">🗑️ Excluir Projeto</button>'+
+    '<button type="button" class="sr-btn sr-btn-primary" id="pe-btn-salvar" disabled>💾 Salvar Alterações</button>');
 
   document.getElementById('pe-form-view').innerHTML=h;
   document.getElementById('pe-voltar-btn').onclick=carregarListaPortfolio;
   document.getElementById('pe-btn-salvar').onclick=salvarEdicaoPortfolio;
   document.getElementById('pe-btn-excluir').onclick=excluirProjetoAtual;
+  uxTrack('pe',{getState:()=>{ const o={}; document.querySelectorAll('#pe-form-view .pe-campo').forEach(el=>{ o[el.dataset.peIdx]=el.type==='checkbox'?!!el.checked:el.value; }); return o; },btnSalvar:'pe-btn-salvar'});
+  uxLigar('pe',document.getElementById('pe-form-view'));
   document.querySelectorAll('[id^="pe-equipe-mostrar-mais-"]').forEach(btn=>{
     btn.onclick=()=>{
       const idx=btn.id.replace('pe-equipe-mostrar-mais-','');
@@ -7423,8 +7449,9 @@ async function salvarEdicaoPortfolio(){
     if(el.type==='checkbox') valores[idx]=el.checked;
     else valores[idx]=el.value;
   });
+  let falhou=false;
   const btn=document.getElementById('pe-btn-salvar');
-  btn.disabled=true;
+  btn.disabled=true; uxBusy('pe',true);
   mostrarLoadingGlobal('Salvando alterações…');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
@@ -7435,13 +7462,13 @@ async function salvarEdicaoPortfolio(){
       mostrarSalvoOk_();
       carregarProjetoParaEdicao(String(valores[1]==null?PE_ULTIMA_LEITURA.projeto:valores[1]).trim(),String(valores[0]==null?'':valores[0]).trim()); // recarrega (usa cliente/projeto já salvos, caso tenham sido editados) pra refletir o que foi salvo de verdade
     }else{
-      peFeedback((r&&r.message)||'Não foi possível salvar as alterações.',false);
+      falhou=true; peFeedback((r&&r.message)||'Não foi possível salvar as alterações.',false);
     }
   }catch(e){
-    peFeedback('Falha ao contatar o servidor. Tente novamente.',false);
+    falhou=true; peFeedback('Falha ao contatar o servidor. Tente novamente.',false);
   }
   esconderLoadingGlobal();
-  btn.disabled=false;
+  btn.disabled=false; if(falhou) uxBusy('pe',false,false); else uxCheck('pe');
 }
 
 // ---------- EXCLUIR ----------
@@ -7496,7 +7523,52 @@ function initPessoasAdmin(){
   paAba_('pessoas');
   carregarListaPessoasAdmin();
 }
+
+// ===== v19.6 · PADRÃO UX — toasts + barra fixa com estado "não salvo" =====
+function uxToast(msg,tipo,ms){
+  let c=document.getElementById('ux-toasts');
+  if(!c){ c=document.createElement('div'); c.id='ux-toasts'; c.setAttribute('role','status'); c.setAttribute('aria-live','polite'); document.body.appendChild(c); }
+  const t=document.createElement('div'); t.className='ux-toast '+(tipo||'inf');
+  const ic=tipo==='ok'?'✓':tipo==='er'?'⚠':'ℹ';
+  t.innerHTML='<b>'+ic+'</b><span></span><button type="button" aria-label="Fechar">×</button>';
+  t.children[1].textContent=String(msg==null?'':msg);
+  const fecha=()=>{ if(t.parentNode) t.parentNode.removeChild(t); };
+  t.children[2].onclick=fecha; c.appendChild(t);
+  while(c.children.length>4) c.removeChild(c.firstChild);
+  setTimeout(fecha,ms||(tipo==='er'?7000:4500));
+}
+const UXT={};
+function uxBarHtml_(id,btnsHtml,txtOk){
+  return '<div class="ux-bar" id="'+id+'-bar"><span class="ux-st"><i class="ux-dot"></i><span class="ux-tx">'+(txtOk||'Nenhuma alteração pendente')+'</span><span class="ux-pill"></span></span><span class="ux-btns">'+btnsHtml+'</span></div>';
+}
+function uxEstado_(id,estado,n){
+  const t=UXT[id]; if(!t) return; const bar=document.getElementById(id+'-bar'); if(!bar) return;
+  bar.classList.remove('dirty','busy','erro'); if(estado!=='ok') bar.classList.add(estado);
+  const tx=bar.querySelector('.ux-tx'), pl=bar.querySelector('.ux-pill');
+  tx.textContent=estado==='dirty'?'Você possui alterações não salvas':estado==='busy'?'Salvando…':estado==='erro'?'Não foi possível salvar — revise e tente de novo':t.txtOk;
+  pl.textContent=n?n+(n===1?' campo':' campos'):'';
+  if(t.btnSalvar){ const b=document.getElementById(t.btnSalvar); if(b&&estado!=='busy') b.disabled=t.sempreAtivo?false:estado!=='dirty'&&estado!=='erro'; }
+}
+// cfg: {getState:()=>objeto plano, btnSalvar:id, txtOk, sempreAtivo}
+function uxTrack(id,cfg){
+  UXT[id]=Object.assign({base:null,dirty:false,txtOk:'Nenhuma alteração pendente'},cfg);
+  uxBase(id);
+}
+function uxBase(id){ const t=UXT[id]; if(!t) return; try{ t.base=JSON.stringify(t.getState()); }catch(e){ t.base=null; } t.dirty=false; uxEstado_(id,'ok',0); }
+function uxCheck(id){
+  const t=UXT[id]; if(!t||t.base==null) return;
+  let a,b; try{ a=t.getState(); b=JSON.parse(t.base); }catch(e){ return; }
+  const ks=new Set(Object.keys(a).concat(Object.keys(b))); let n=0;
+  ks.forEach(k=>{ if(JSON.stringify(a[k])!==JSON.stringify(b[k])) n++; });
+  t.dirty=n>0; uxEstado_(id,t.dirty?'dirty':'ok',n);
+}
+function uxBusy(id,on,ok){ const t=UXT[id]; if(!t) return; if(on){ uxEstado_(id,'busy',0); const b=t.btnSalvar&&document.getElementById(t.btnSalvar); if(b) b.disabled=true; } else if(ok===false){ uxEstado_(id,'erro',0); const b=t.btnSalvar&&document.getElementById(t.btnSalvar); if(b) b.disabled=false; } else uxCheck(id); }
+function uxLigar(id,root){ if(!root) return; ['input','change'].forEach(ev=>root.addEventListener(ev,()=>uxCheck(id))); }
+function uxAlgumSujo_(){ return Object.keys(UXT).some(k=>UXT[k].dirty&&document.getElementById(k+'-bar')); }
+window.addEventListener('beforeunload',e=>{ if(uxAlgumSujo_()){ e.preventDefault(); e.returnValue=''; } });
+
 function paFeedback(msg,ok,ms){
+  uxToast(msg,ok?'ok':'er',ms);
   const el=document.getElementById('pa-feedback');
   el.textContent=msg;
   el.style.background=ok?'rgba(22,163,74,.12)':'rgba(220,38,38,.12)';
@@ -8104,8 +8176,9 @@ async function salvarEdicaoPessoaAdmin(){
     if(el.type==='checkbox') valores[idx]=el.checked;
     else valores[idx]=el.value;
   });
+  let falhou=false;
   const btn=document.getElementById('pa-btn-salvar');
-  btn.disabled=true;
+  btn.disabled=true; uxBusy('pa',true);
   mostrarLoadingGlobal('Salvando alterações…');
   try{
     const sep=DASHBOARD_API_URL.indexOf('?')!==-1?'&':'?';
@@ -8115,6 +8188,7 @@ async function salvarEdicaoPessoaAdmin(){
     if(r && r.ok){
       mostrarSalvoOk_();
       PA_DIRTY=false;
+      setTimeout(()=>{ uxBase('pa'); },0);
       const cps=PA_ULTIMA_LEITURA.campos, antes=cps.map(c=>c.valor);
       paCapDerivados_(cps,valores);
       const renomeou=cps.some((c,i)=>paKey_(c.header)==='assinatura' && String(antes[i]||'').trim()!==String(valores[i]||'').trim());
@@ -8141,13 +8215,13 @@ async function salvarEdicaoPessoaAdmin(){
         if(afetou) atualizarDadosAposCadastroPessoas_(); // indicadores refletem a mudança sem limpar o navegador
       }
     }else{
-      paFeedback((r&&r.message)||'Não foi possível salvar as alterações.',false);
+      falhou=true; paFeedback((r&&r.message)||'Não foi possível salvar as alterações.',false);
     }
   }catch(e){
-    paFeedback('Falha ao contatar o servidor. Tente novamente.',false);
+    falhou=true; paFeedback('Falha ao contatar o servidor. Tente novamente.',false);
   }
   esconderLoadingGlobal();
-  btn.disabled=false;
+  btn.disabled=false; if(falhou) uxBusy('pa',false,false); else uxCheck('pa');
 }
 
 // ============================================================
@@ -8429,8 +8503,11 @@ function paLigarFormulario_(){
   PA_DIRTY=false;
   const box=document.getElementById('pa-form-view');
   const ind=document.getElementById('pa-dirty');
-  const marca=()=>{ PA_DIRTY=true; if(ind) ind.textContent='● Alterações não salvas'; };
+  const nova=!!document.getElementById('pa-btn-cadastrar');
+  const marca=()=>{ PA_DIRTY=true; };
   box.querySelectorAll('.pa-campo').forEach(el=>{ el.addEventListener('input',marca); el.addEventListener('change',marca); });
+  uxTrack('pa',{getState:paEstadoForm_,btnSalvar:nova?'pa-btn-cadastrar':'pa-btn-salvar',sempreAtivo:nova,txtOk:nova?'Novo cadastro — preencha os dados':'Nenhuma alteração pendente'});
+  uxLigar('pa',box);
   const part=document.getElementById('pa-participa');
   if(part) part.addEventListener('change',()=>{
     const on=part.checked;
@@ -8459,8 +8536,10 @@ function paValidarFormulario_(campos){
   return ok;
 }
 function paBarraAcoesHtml_(idSalvar,rotuloSalvar){
-  return '<div class="pa-bar"><span class="pa-dirty" id="pa-dirty"></span><button type="button" class="filter-clear" id="pa-btn-cancelar">Cancelar</button><button type="button" class="sr-btn sr-btn-primary" id="'+idSalvar+'">'+rotuloSalvar+'</button></div>';
+  const nova=idSalvar==='pa-btn-cadastrar';
+  return uxBarHtml_('pa','<button type="button" class="filter-clear" id="pa-btn-cancelar">Descartar / Cancelar</button><button type="button" class="sr-btn sr-btn-primary" id="'+idSalvar+'">'+rotuloSalvar+'</button>',nova?'Novo cadastro — preencha os dados':'Nenhuma alteração pendente').replace('class="ux-bar"','class="ux-bar pa-bar"');
 }
+function paEstadoForm_(){ const o={}; document.querySelectorAll('#pa-form-view .pa-campo').forEach(el=>{ const k=el.dataset.paIdx||el.id; o[k]=el.type==='checkbox'?!!el.checked:el.value; }); return o; }
 function paCancelar_(){
   if(PA_DIRTY && !confirm('Há alterações não salvas. Descartar e voltar para a lista?')) return;
   PA_DIRTY=false; carregarListaPessoasAdmin();
@@ -9312,7 +9391,7 @@ function mtModal_(html){
   bg.addEventListener('mousedown',e=>{ if(e.target===bg) fim(); });
   return fim;
 }
-function mtToast_(t){ if(typeof feFeedback_==='function'&&document.getElementById('fe-feedback')){} const d=document.createElement('div'); d.textContent=t; d.style.cssText='position:fixed;bottom:20px;right:20px;background:#0f172a;color:#fff;padding:10px 16px;border-radius:10px;z-index:100010;font-weight:600'; document.body.appendChild(d); setTimeout(()=>d.remove(),2800); }
+function mtToast_(t){ uxToast(t,'er'); }
 function mtRender_(){
   const el=document.getElementById('mt-root'); const c=MT.cfg; if(!el||!c) return;
   const on=c.ativa;
@@ -9320,7 +9399,7 @@ function mtRender_(){
   '<div class="mt-two"><div>'+
    '<div class="card" style="margin-bottom:14px"><div class="card-title"><h3>Mensagem exibida aos usuários</h3></div><textarea id="mt-msg" maxlength="500" aria-label="Mensagem de manutenção">'+feEsc_(c.mensagem)+'</textarea><div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;align-items:end"><div class="filter-field"><label for="mt-prev">Previsão de retorno (opcional)</label><input type="datetime-local" id="mt-prev" value="'+feEsc_(c.previsao||'')+'"></div></div></div>'+
    '<div class="card" style="margin-bottom:14px"><div class="card-title"><h3>Aviso prévio (opcional)</h3></div><div class="mt-mut" style="margin-bottom:8px">Faixa amarela para todos antes de bloquear — não impede o uso. Some quando a manutenção é ativada.</div><label style="display:flex;gap:8px;align-items:center;margin-bottom:8px;font-size:13px"><input type="checkbox" id="mt-pre"'+(c.pre?' checked':'')+'> Exibir aviso de manutenção programada</label><input id="mt-pretxt" maxlength="200" style="width:100%" value="'+feEsc_(c.preTexto)+'" placeholder="Ex.: Manutenção programada hoje às 18h. Salve o que estiver fazendo." aria-label="Texto do aviso prévio"></div>'+
-   '<div style="margin-bottom:14px"><button type="button" class="mt-b pri" id="mt-sv">Salvar mensagem e aviso</button></div>'+
+   uxBarHtml_('mt','<button type="button" class="mt-b pri" id="mt-sv" disabled>Salvar mensagem e aviso</button>')+
    '<div class="card"><div class="card-title"><h3>Histórico</h3></div><div class="table-wrap" style="max-height:340px"><table><thead><tr><th>Quando</th><th>Quem</th><th>Ação</th><th>Motivo / mensagem</th></tr></thead><tbody>'+
      (MT.log.map(l=>'<tr><td>'+feEsc_(l.q)+'</td><td>'+feEsc_(l.u)+'</td><td><span class="ha-tg '+(l.a==='Ativou'?'exc':l.a==='Desativou'?'hol':'g')+'">'+feEsc_(l.a)+'</span></td><td><small class="mt-mut">'+feEsc_(l.m)+'</small></td></tr>').join('')||'<tr><td colspan="4" class="mt-mut" style="text-align:center;padding:18px">Sem registros ainda.</td></tr>')+
    '</tbody></table></div></div></div><div>'+
@@ -9332,7 +9411,8 @@ function mtRender_(){
   '</div></div>';
   const form=()=>({mensagem:document.getElementById('mt-msg').value,previsao:document.getElementById('mt-prev').value,pre:document.getElementById('mt-pre').checked,preTexto:document.getElementById('mt-pretxt').value});
   document.getElementById('mt-sw').onclick=()=>mtConfirmar_(!on,form);
-  document.getElementById('mt-sv').onclick=async()=>{ const b=document.getElementById('mt-sv'); b.disabled=true; await mtSalvar_(Object.assign(form(),{motivo:''}),'Mensagem e aviso salvos.'); b.disabled=false; };
+  uxTrack('mt',{getState:form,btnSalvar:'mt-sv'}); uxLigar('mt',document.getElementById('mt-root'));
+  document.getElementById('mt-sv').onclick=async()=>{ uxBusy('mt',true); const ok=await mtSalvar_(Object.assign(form(),{motivo:''}),'Mensagem e aviso salvos.'); if(!ok) uxBusy('mt',false,false); };
   document.getElementById('mt-tb').onclick=()=>{ const e=document.getElementById('mt-tst').value.trim().toLowerCase(); document.getElementById('mt-tr').innerHTML=!e?'':(MT.contas.indexOf(e)!==-1?'<span class="ha-tg hol">✔ Passa — conta autorizada</span>':'<span class="ha-tg exc">✖ Bloqueado — verá a tela de manutenção</span>'); };
 }
 async function mtSalvar_(pl,okMsg){
@@ -12193,9 +12273,10 @@ function initStatusReport(){
   const projetos=[...new Set(D.pj.map(p=>p.pj))].sort();
   const sel=document.getElementById('f-sr-projeto');
   sel.innerHTML=projetos.map(p=>'<option value="'+p.replace(/"/g,'&quot;')+'">'+p+'</option>').join('');
-  sel.onchange=()=>{ SR_STATE.weekOffset=0; renderStatusReport(); };
-  document.getElementById('sr-semana-prev').onclick=()=>{ SR_STATE.weekOffset--; renderStatusReport(); };
-  document.getElementById('sr-semana-next').onclick=()=>{ SR_STATE.weekOffset++; renderStatusReport(); };
+  sel.dataset.prev=sel.value;
+  sel.onchange=()=>{ if(!srConfirmaSair_()){ sel.value=sel.dataset.prev; return; } sel.dataset.prev=sel.value; SR_STATE.weekOffset=0; renderStatusReport(); };
+  document.getElementById('sr-semana-prev').onclick=()=>{ if(!srConfirmaSair_()) return; SR_STATE.weekOffset--; renderStatusReport(); };
+  document.getElementById('sr-semana-next').onclick=()=>{ if(!srConfirmaSair_()) return; SR_STATE.weekOffset++; renderStatusReport(); };
   renderStatusReport();
 }
 function srSemanaAtual(){
@@ -12205,6 +12286,7 @@ function srSemanaAtual(){
 }
 function srFmtBr(iso){ if(!iso) return '—'; const [y,m,dd]=iso.split('-'); return dd+'/'+m+'/'+y; }
 function srFeedback(msg,ok){
+  uxToast(msg,ok?'ok':'er');
   const el=document.getElementById('sr-feedback');
   el.textContent=msg;
   el.style.background=ok?'rgba(22,163,74,.12)':'rgba(220,38,38,.12)';
@@ -12306,8 +12388,26 @@ function srDuplicarDesfazer_(){
   SR_DUP_DESFAZER=null; const b=g('sr-dup-banner'); if(b) b.remove();
   srFeedback('Duplicação desfeita.',true);
 }
+function srEstadoForm_(){
+  const g=id=>{ const e=document.getElementById(id); return e?e.value:''; };
+  const o={st:g('sr-status-projeto'),nr:g('sr-nivel-risco'),cr:g('sr-criticidade'),pv:g('sr-previsao'),rs:g('sr-resumo'),dc:g('sr-decisoes'),rk:g('sr-riscos')};
+  srColetarAtividades().forEach((a,i)=>{ o['a'+i]=a; });
+  o.cron=JSON.stringify((SR_STATE.entregas||[]).map(e=>[e._estado,e.id_entrega||e._k,e.titulo,e.data_inicio,e.data_previsao_entrega]))+'|'+((SR_STATE.excluidas||[]).length);
+  return o;
+}
+let SR_FALHOU=false;
+function srErroCampo_(id,msg){
+  const el=document.getElementById(id); if(el){ el.classList.add('pa-invalid'); el.scrollIntoView({behavior:'smooth',block:'center'}); try{ el.focus({preventScroll:true}); }catch(e){} }
+  uxBusy('sr',false,false);
+  const tx=document.querySelector('#sr-bar .ux-tx'); if(tx) tx.textContent=msg;
+}
+function srConfirmaSair_(){
+  if(UXT.sr&&UXT.sr.dirty&&document.getElementById('sr-bar')) return confirm('Você possui alterações não salvas neste report. Trocar de projeto ou semana descarta o que foi editado. Continuar?');
+  return true;
+}
 function srSetBotoesDisabled(v){
   ['sr-btn-rascunho','sr-btn-finalizar'].forEach(id=>{ const b=document.getElementById(id); if(b) b.disabled=v; });
+  if(v) uxBusy('sr',true); else if(SR_FALHOU){ SR_FALHOU=false; uxBusy('sr',false,false); } else uxCheck('sr');
 }
 function renderStatusReport(){
   SR_DUP_DESFAZER=null;
@@ -12321,7 +12421,7 @@ function renderStatusReport(){
   const podeEditar=!existente || existente.status_preenchimento!=='Finalizado';
 
   let h='';
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Identificação</h3>'+(podeEditar?'<button type="button" class="filter-clear" id="sr-dup-btn" style="border-color:#7c3aed;color:#7c3aed"'+(srRefAnterior_()?' title="Preenche a tela com o report mais recente anterior a esta semana"':' disabled title="Este projeto não tem report anterior a esta semana"')+'>⧉ Duplicar report anterior</button>':'')+'</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;font-size:13px">'+
+  h+='<div class="card" id="sr-b1" style="margin-bottom:16px"><div class="card-title"><h3>Identificação</h3>'+(podeEditar?'<button type="button" class="filter-clear" id="sr-dup-btn" style="border-color:#7c3aed;color:#7c3aed"'+(srRefAnterior_()?' title="Preenche a tela com o report mais recente anterior a esta semana"':' disabled title="Este projeto não tem report anterior a esta semana"')+'>⧉ Duplicar report anterior</button>':'')+'</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;font-size:13px">'+
     '<div><span style="font-size:11px;color:var(--text-faint);display:block">Projeto</span><strong>'+(projeto||'—')+'</strong></div>'+
     '<div><span style="font-size:11px;color:var(--text-faint);display:block">Cliente</span>'+(proj?proj.cl:'—')+'</div>'+
     '<div><span style="font-size:11px;color:var(--text-faint);display:block">Gerente de Projeto</span>'+(CURRENT_USER_NOME||'—')+'</div>'+
@@ -12334,7 +12434,7 @@ function renderStatusReport(){
   }
 
   const fd=existente||{};
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Status do Projeto</h3></div><div class="sr-grid-4">'+
+  h+='<div class="card" id="sr-b2" style="margin-bottom:16px"><div class="card-title"><h3>Status do Projeto</h3></div><div class="sr-grid-4">'+
     '<div class="sr-field"><label>Status/Fase do Projeto<span class="sr-required">*</span></label><select id="sr-status-projeto" '+(podeEditar?'':'disabled')+'>'+srOpcoesComLegado(SR_STATUS_PROJETO_OPCOES,fd.status_projeto).map(s=>'<option value="'+s+'"'+(fd.status_projeto===s?' selected':'')+'>'+s+'</option>').join('')+'</select></div>'+
     '<div class="sr-field"><label>Nível de Risco<span class="sr-required">*</span></label><select id="sr-nivel-risco" '+(podeEditar?'':'disabled')+'>'+SR_NIVEL_RISCO_OPCOES.map(s=>'<option value="'+s+'"'+(fd.nivel_risco===s?' selected':'')+'>'+s+'</option>').join('')+'</select></div>'+
     '<div class="sr-field"><label>Sprint / Semana</label><input type="text" id="sr-previsao" placeholder="Ex: Sprint 12, Semana de 18/08..." value="'+(fd.previsao_proxima_fase||'').replace(/"/g,'&quot;')+'" '+(podeEditar?'':'disabled')+'></div>'+
@@ -12349,7 +12449,7 @@ function renderStatusReport(){
     '</div>'+
   '</div></div>';
 
-  h+='<div class="card" style="margin-bottom:16px"><div class="sr-grid-2">'+
+  h+='<div class="card" id="sr-b3" style="margin-bottom:16px"><div class="sr-grid-2">'+
     '<div class="sr-field" style="margin-bottom:0"><label>Resumo Executivo / Andamento da Semana<span class="sr-required">*</span></label><textarea id="sr-resumo" placeholder="O que aconteceu de mais relevante nesta semana..." '+(podeEditar?'':'disabled')+'>'+(fd.resumo_executivo||'')+'</textarea></div>'+
     '<div class="sr-field" style="margin-bottom:0"><label>Decisões e Pontos Importantes</label><textarea id="sr-decisoes" placeholder="Decisões estratégicas/técnicas tomadas, alinhamentos importantes..." '+(podeEditar?'':'disabled')+'>'+(fd.decisoes_pontos_atencao||'')+'</textarea></div>'+
   '</div></div>';
@@ -12359,19 +12459,19 @@ function renderStatusReport(){
   let atividadesIniciais=[];
   try{ atividadesIniciais=fd.atividades_json?JSON.parse(fd.atividades_json):[]; }catch(e){ atividadesIniciais=[]; }
   if(atividadesIniciais.length===0) atividadesIniciais=[null];
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Plano de Ação / Próximos Passos</h3></div>'+
+  h+='<div class="card" id="sr-b4" style="margin-bottom:16px"><div class="card-title"><h3>Plano de Ação / Próximos Passos</h3></div>'+
     '<div id="sr-ativ-body">'+atividadesIniciais.map(a=>srAtividadeRowHtml(a)).join('')+'</div>'+
     (podeEditar?'<button type="button" class="sr-ativ-add" id="sr-ativ-add-btn">+ Adicionar atividade</button>':'')+
   '</div>';
   srCronoCarregar_(existente);
-  h+=srCronoCardHtml_(podeEditar);
+  h+='<div id="sr-b5">'+srCronoCardHtml_(podeEditar)+'</div>';
 
   if(podeEditar){
-    h+='<div class="sr-actions">'+
-      '<button type="button" class="sr-btn" id="sr-btn-rascunho">💾 Salvar Rascunho</button>'+
-      '<button type="button" class="sr-btn sr-btn-primary" id="sr-btn-finalizar">✓ Finalizar Report</button>'+
-    '</div>';
+    h+=uxBarHtml_('sr','<button type="button" class="sr-btn" id="sr-btn-rascunho" disabled>💾 Salvar Rascunho</button>'+
+      '<button type="button" class="sr-btn sr-btn-primary" id="sr-btn-finalizar">✓ Finalizar Report</button>',existente?'Rascunho salvo — nenhuma alteração pendente':'Novo report — preencha e salve o rascunho');
   }
+  const srNav=[['sr-b1','Identificação'],['sr-b2','Status do projeto'],['sr-b3','Resumo e decisões'],['sr-b4','Plano de ação'],['sr-b5','Cronograma']];
+  h='<div class="pa-layout"><nav class="pa-steps">'+srNav.map((n,i)=>'<a href="#'+n[0]+'" data-sr-nav="'+n[0]+'"><i>'+(i+1)+'</i>'+n[1]+'</a>').join('')+'</nav><div>'+h+'</div></div>';
 
   // Histórico (função reutilizada também no botão "Histórico de Status Reports"
   // do Detalhamento do Projeto e no Painel de Status Reports do Administrador)
@@ -12379,6 +12479,15 @@ function renderStatusReport(){
 
   document.getElementById('sr-content').innerHTML=h;
   srCronoRender_(podeEditar);
+  document.querySelectorAll('#sr-content [data-sr-nav]').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); const t=document.getElementById(a.dataset.srNav); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); }));
+  delete UXT.sr;
+  if(podeEditar){
+    const raiz=document.getElementById('sr-content');
+    uxTrack('sr',{getState:srEstadoForm_,btnSalvar:'sr-btn-rascunho',txtOk:existente?'Rascunho salvo — nenhuma alteração pendente':'Novo report — preencha e salve o rascunho'});
+    uxLigar('sr',raiz);
+    raiz.addEventListener('click',e=>{ if(e.target.closest&&e.target.closest('#sr-bar')) return; setTimeout(()=>uxCheck('sr'),0); });
+    raiz.addEventListener('input',e=>{ if(e.target.classList) e.target.classList.remove('pa-invalid'); });
+  }
 
   // Wiring pós-render
   if(podeEditar){
@@ -12661,10 +12770,12 @@ async function srSalvar(finalizar){
   const resumo=document.getElementById('sr-resumo').value.trim();
   if(finalizar && !resumo){
     srFeedback('Preencha ao menos o Resumo Executivo antes de finalizar.',false);
+    srErroCampo_('sr-resumo','Faltam campos obrigatórios para finalizar');
     return;
   }
   if(finalizar && !criticidade){
     srFeedback('Selecione a Criticidade antes de finalizar.',false);
+    srErroCampo_('sr-criticidade','Faltam campos obrigatórios para finalizar');
     return;
   }
   if(SR_STATE.cronEditK!==null){
@@ -12715,16 +12826,16 @@ async function srSalvar(finalizar){
         SR_STATE.reportAtual=r.record;
         srCronoRender_(true);
         srFeedback('Rascunho salvo, mas o cronograma não foi totalmente gravado: '+falhaCron,false);
-        esconderLoadingGlobal(); srSetBotoesDisabled(false); return;
+        SR_FALHOU=true; esconderLoadingGlobal(); srSetBotoesDisabled(false); return;
       }
       mostrarSalvoOk_(finalizar?'Status Report finalizado.':'Rascunho salvo.');
       renderStatusReport();
       srMostrarConfirmacaoSalvo(finalizar);
     }else{
-      srFeedback((r&&r.message)||'Não foi possível salvar o Status Report.',false);
+      SR_FALHOU=true; srFeedback((r&&r.message)||'Não foi possível salvar o Status Report.',false);
     }
   }catch(e){
-    srFeedback('Falha ao contatar o servidor. Verifique sua conexão e tente novamente.',false);
+    SR_FALHOU=true; srFeedback('Falha ao contatar o servidor. Verifique sua conexão e tente novamente.',false);
   }
   esconderLoadingGlobal();
   srSetBotoesDisabled(false);
@@ -12951,20 +13062,7 @@ async function togglePermissaoExcecao(email, pagina, noPadrao, checkboxEl){
   }
   renderPermissoesUsuario();
 }
-function mostrarToastPermissao(msg, ok){
-  let el=document.getElementById('perm-toast');
-  if(!el){
-    el=document.createElement('div');
-    el.id='perm-toast';
-    el.style.cssText='position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:99999;padding:12px 22px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 6px 18px rgba(0,0,0,.25);color:#fff;transition:opacity .3s;';
-    document.body.appendChild(el);
-  }
-  el.style.background=ok?'#16a34a':'#dc2626';
-  el.textContent=msg;
-  el.style.opacity='1';
-  clearTimeout(el._timeout);
-  el._timeout=setTimeout(()=>{ el.style.opacity='0'; }, 2800);
-}
+function mostrarToastPermissao(msg, ok){ uxToast(msg,ok?'ok':'er'); }
 function initStatusReportPainel(){
   const projetos=[...new Set(D.pj.map(p=>p.pj))].sort();
   const gerentes=[...new Set(STATUS_REPORTS.map(r=>r.gerente_nome).filter(Boolean))].sort();
@@ -13153,7 +13251,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v19.5', WIKI_DATA='16/11/2026';
+const WIKI_VER='v19.7', WIKI_DATA='17/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -13186,6 +13284,11 @@ WP('sis-arq','3.1','Arquitetura, componentes e integrações','Como o portal é 
   '<code>AppsScript_Code.gs</code> (<code>DASHBOARD_VERSION</code>) · <code>index.html</code> (<code>APP_VERSION</code>).','Planilha Google Sheets (Extensões › Apps Script).',
   '<b>Publicar:</b> 1) Extensões › Apps Script na planilha; 2) colar o código no <code>Code.gs</code>; 3) <code>ALLOWED_CLIENT_ID</code> já vem preenchido (só mudar se usar outro Client ID OAuth); 4) Implantar › Nova implantação › App da Web (executar como: eu; acesso: qualquer pessoa); 5) copiar a URL <code>/exec</code> para <code>DASHBOARD_API_URL</code> no <code>index.html</code>; 6) a cada edição, gerar nova versão (Gerenciar implantações › editar › Nova versão).',
   'Versão menor vai de .1 a .9; depois de .9 vem o inteiro seguinte com .0 (v6.9 → v7.0), nunca v6.10. <code>DASHBOARD_VERSION</code> deve ser igual a <code>APP_VERSION</code>. Todo item novo (página ou regra) entra na Wiki/Documentação e no Histórico. O projeto Apps Script (Configurações do projeto) e a planilha devem usar o fuso America/Sao_Paulo. Ao publicar versões com e-mail (MailApp) ou BrasilAPI, o Google pede nova autorização.','Todo o portal.','Conferir <code>_backendVersion</code> na resposta da API.','Mudança só de comentário no .gs não exige republicar.'),
+ WR('SIS-023','Padrão de edição: barra fixa, avisos em toast e campos','ok','Arquitetura',
+  'Telas de cadastro seguem o mesmo padrão: formulário sempre editável, <b>barra fixa no rodapé</b> com o estado (“Nenhuma alteração pendente” → “Você possui alterações não salvas” + quantidade de campos) e botão Salvar que só habilita quando há alteração. Mensagens de sucesso, erro e informação aparecem como <b>toast</b> no canto superior direito (fecha sozinho). O modal “Salvo com sucesso!” continua nos salvamentos. Vale para tema claro e escuro.',
+  '<code>uxToast</code>, <code>uxBarHtml_</code>, <code>uxTrack</code>, <code>uxBase</code>, <code>uxCheck</code>, <code>uxBusy</code> (index.html). Aplicado em: Pessoas e Perfis (formulário), Feriados, Gestão de Avisos, Modo Manutenção, Edição de Portfólio e Status Report; toasts em todas as telas que usavam faixas de mensagem.','Nenhuma aba nova; só interface.',
+  'O estado “alterado” compara os valores atuais com os do último carregamento/salvamento: voltar ao valor original some o aviso. Fechar ou recarregar a página com alterações pendentes mostra o aviso do navegador. Em Feriados, clicar na linha carrega o feriado no formulário (não há botão Editar). Permissões grava a cada marcação (salvamento automático), por isso não tem barra.',
+  'Editar um campo em Pessoas e Perfis e ver a barra mudar; voltar ao valor original; salvar.','Cadastros › Feriados, Gestão de Avisos, Modo Manutenção, Edição de Portfólio.','Detalhe do projeto é só leitura (sem barra).'),
  WR('SIS-022','Nomes de Gestor e Head: uma grafia por pessoa','ok','Arquitetura',
   'Nos filtros Gestor e Head (Carga e Risco, Equipe, Comparativo e demais), a mesma pessoa nunca aparece duas vezes. O servidor compara os nomes sem diferenciar acento, maiúscula, espaço extra/duplo ou caractere invisível (“Antonio” = “Antônio”) e envia uma única grafia: a do cadastro (Assinatura ou Nome Completo em Pessoas_Area), quando existir; senão a mais frequente; em empate, a com acento. A planilha não é alterada.',
   '<code>canonizarNomesGestorHead_</code> e <code>nomesGestorHeadDiagnostico()</code> (<code>AppsScript_Code.gs</code>).','Pessoas_Area (colunas Gestor e Head).',
@@ -13768,6 +13871,8 @@ WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado d
 WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'17/11/2026',p:'Status Report · Padrão de edição',desc:'O Status Report segue o novo padrão: menu lateral de etapas, barra fixa no rodapé com “alterações não salvas” e contagem de campos (inclui atividades e cronograma), Salvar Rascunho só habilita quando há alteração, campos obrigatórios destacados ao finalizar (com ida ao primeiro) e aviso ao trocar de projeto ou semana com alterações pendentes. Regras, campos e dados gravados não mudaram. Só interface: versão do Apps Script igualada.',ver:'v19.7'},
+ {d:'16/11/2026',p:'Geral · Padrão de edição (UX)',desc:'Novo padrão visual de edição: barra fixa no rodapé com estado “alterações não salvas” e contagem de campos, Salvar habilitado só quando há alteração, avisos em toast (claro/escuro) no lugar das faixas de mensagem e aviso ao sair com alterações pendentes. Aplicado em Pessoas e Perfis, Feriados (clique na linha para editar), Gestão de Avisos, Modo Manutenção e Edição de Portfólio. Só interface: versão do Apps Script igualada (republicar apenas para sincronizar).',ver:'v19.6'},
  {d:'16/11/2026',p:'Pessoas e Perfis · Formulário de pessoa',desc:'Head e Gestor no formulário de pessoa ficam somente leitura (com atalho para a aba Hierarquia) quando a pessoa já está na tabela de Hierarquia, evitando duas fontes de verdade e alterações ignoradas. Pessoas ainda não importadas e cadastros novos seguem editáveis. Republicar o Apps Script (novo campo hier).',ver:'v19.5'},
  {d:'16/11/2026',p:'Pessoas e Perfis · Hierarquia e Funções',desc:'Nova aba Hierarquia (Pessoas × Head × Gestor, por e-mail, editável pelo Administrador, com importação de Pessoas_Area, alertas, filtros e log). Várias funções (cargo) por pessoa, com uma principal. Quem é Gestor ou Head de alguém vê a equipe direta, qualquer que seja o perfil. Filtros de Cargo reconhecem todas as funções. Novas abas Pessoas_Hierarquia e Pessoas_Funcoes. Ajuste de usabilidade: janelas de Funções e de alterações abrem abaixo da barra superior e rolam por dentro em telas baixas; as listas de Gestor/Head do cadastro abrem por cima do card, inteiras na tela; novo cargo pode ser cadastrado no editor de Funções, e quem tem função de gestão (ex.: Tech Lead com função Gestor) passa a aparecer nas listas de Gestor/Head do cadastro. Republicar o Apps Script.',ver:'v19.4'},
  {d:'16/11/2026',p:'Filtros Gestor e Head · nomes duplicados',desc:'Correção: o mesmo gestor/head aparecia duas vezes nos filtros (ex.: “Antonio”/“Antônio”, espaço extra, caractere invisível). O servidor agora envia uma única grafia por pessoa (a do cadastro, ou a mais frequente). Novo diagnóstico nomesGestorHeadDiagnostico() para achar as linhas a corrigir em Pessoas_Area. Republicar o Apps Script.',ver:'v19.3'},
@@ -14232,6 +14337,7 @@ function feDiaSemana_(f){
   return FE_DIAS[d.getDay()];
 }
 function feFeedback_(msg,ok){
+  uxToast(msg,ok?'ok':'er');
   const el=document.getElementById('fe-feedback');
   el.className='fe-msg '+(ok?'ok':'er'); el.textContent=msg; el.style.display='block';
   clearTimeout(window.__feFbTimeout); window.__feFbTimeout=setTimeout(()=>{ el.style.display='none'; },5000);
@@ -15695,11 +15801,14 @@ function initFeriados(){
   document.getElementById('fe-fano').onchange=renderListaFeriados;
   document.getElementById('fe-salvar').onclick=salvarFeriado_;
   document.getElementById('fe-cancelar').onclick=feLimparFormulario_;
+  uxTrack('fe',{getState:()=>({d:document.getElementById('fe-data').value,s:document.getElementById('fe-desc').value,t:document.getElementById('fe-tipo').value,l:document.getElementById('fe-loc').value,r:document.getElementById('fe-rec').checked}),btnSalvar:'fe-salvar'});
+  uxLigar('fe',document.querySelector('#page-feriados .fe-form'));
   document.getElementById('fe-imp-nac').onclick=feAbrirImportNacional_;
   document.getElementById('fe-imp-xls').onclick=feAbrirImportPlanilha_;
   document.getElementById('fe-imp-modelo').onclick=feBaixarModelo_;
   document.getElementById('fe-lista').addEventListener('click',e=>{
-    const b=e.target.closest('[data-fe-acao]'); if(!b) return;
+    const b=e.target.closest('[data-fe-acao]');
+    if(!b){ const tr=e.target.closest('tr[data-fe-id]'); if(tr) feEditar_(tr.dataset.feId); return; }
     if(b.dataset.feAcao==='editar') feEditar_(b.dataset.feId); else excluirFeriado_(b.dataset.feId);
   });
   feAtualizarLocalidade_();
@@ -15757,11 +15866,11 @@ function renderListaFeriados(){
   }else{
     ord.forEach(f=>{
       const dm=f.data.slice(8)+'/'+f.data.slice(5,7);
-      h+='<tr'+(f.id===FE_EDIT_ID?' class="fe-edit-row"':'')+'><td>'+(f.recorrente?'<b>'+dm+'</b> <small style="color:var(--text-faint)">(todo ano)</small>':feBr_(f.data))+'</td>'+
+      h+='<tr data-fe-id="'+feEsc_(f.id)+'" title="Clique para editar"'+(f.id===FE_EDIT_ID?' class="fe-edit-row"':'')+'><td>'+(f.recorrente?'<b>'+dm+'</b> <small style="color:var(--text-faint)">(todo ano)</small>':feBr_(f.data))+'</td>'+
         '<td>'+feDiaSemana_(f)+(f.recorrente?' <small style="color:var(--text-faint)">('+new Date().getFullYear()+')</small>':'')+'</td>'+
         '<td><strong>'+feEsc_(f.descricao)+'</strong></td><td><span class="fe-tp '+feEsc_(f.tipo)+'">'+feEsc_(f.tipo)+'</span></td>'+
         '<td>'+(f.localidade?feEsc_(f.localidade):'—')+'</td><td>'+(f.recorrente?'🔁 Todo ano':'Única vez')+'</td>'+
-        '<td><div class="fe-acoes"><button type="button" class="fe-mini" data-fe-acao="editar" data-fe-id="'+feEsc_(f.id)+'">Editar</button><button type="button" class="fe-mini del" data-fe-acao="excluir" data-fe-id="'+feEsc_(f.id)+'">Excluir</button></div></td></tr>';
+        '<td><div class="fe-acoes"><button type="button" class="fe-mini del" data-fe-acao="excluir" data-fe-id="'+feEsc_(f.id)+'">Excluir</button></div></td></tr>';
     });
   }
   h+='</tbody></table>';
@@ -15775,7 +15884,7 @@ function feLimparFormulario_(){
   document.getElementById('fe-form-titulo').textContent='＋ CADASTRAR NOVO FERIADO';
   document.getElementById('fe-salvar').textContent='+ Cadastrar Feriado';
   document.getElementById('fe-cancelar').style.display='none';
-  feAtualizarLocalidade_(); renderListaFeriados();
+  feAtualizarLocalidade_(); renderListaFeriados(); uxBase('fe');
 }
 function feEditar_(id){
   const f=FE_LISTA.find(x=>x.id===id); if(!f) return;
@@ -15786,7 +15895,7 @@ function feEditar_(id){
   document.getElementById('fe-form-titulo').textContent='✎ EDITANDO FERIADO';
   document.getElementById('fe-salvar').textContent='💾 Salvar alteração';
   document.getElementById('fe-cancelar').style.display='';
-  feAtualizarLocalidade_(); renderListaFeriados();
+  feAtualizarLocalidade_(); renderListaFeriados(); uxBase('fe');
   document.getElementById('fe-data').scrollIntoView({behavior:'smooth',block:'center'});
 }
 async function salvarFeriado_(){
@@ -15795,7 +15904,7 @@ async function salvarFeriado_(){
   if(!data||!desc){ feFeedback_('Informe a data e a descrição do feriado.',false); return; }
   const payload={data:data,descricao:desc,tipo:tipo,localidade:tipo==='Nacional'?'':document.getElementById('fe-loc').value.trim(),recorrente:document.getElementById('fe-rec').checked};
   const editando=FE_EDIT_ID;
-  const btn=document.getElementById('fe-salvar'); btn.disabled=true;
+  const btn=document.getElementById('fe-salvar'); btn.disabled=true; uxBusy('fe',true);
   try{
     const url=editando?feUrl_('atualizarFeriado','&id='+encodeURIComponent(editando)+'&payload='+encodeURIComponent(JSON.stringify(payload)))
                       :feUrl_('criarFeriado','&payload='+encodeURIComponent(JSON.stringify(payload)));
@@ -15811,7 +15920,7 @@ async function salvarFeriado_(){
   }catch(e){
     feFeedback_('Falha ao contatar o servidor. Confira a lista antes de tentar de novo.',false);
   }
-  btn.disabled=false;
+  btn.disabled=false; uxCheck('fe');
 }
 async function excluirFeriado_(id){
   const f=FE_LISTA.find(x=>x.id===id); if(!f) return;
@@ -15889,6 +15998,7 @@ async function avGateMidSessao_(){
 let AV_LISTA=[], AV_TODOS=[], AV_PERFIS=[], AV_PESSOAS=[], AV_EDIT_ID=null, AV_CTRL=null;
 let AV_SEL_PERFIS=new Set(), AV_SEL_PESSOAS=new Set();
 function avFeedback_(msg,ok){
+  uxToast(msg,ok?'ok':'er');
   const el=document.getElementById('av-feedback');
   el.className='fe-msg '+(ok?'ok':'er'); el.textContent=msg; el.style.display='block';
   clearTimeout(window.__avFbTimeout); window.__avFbTimeout=setTimeout(()=>{ el.style.display='none'; },5000);
@@ -15897,6 +16007,8 @@ function initAvisos(){
   document.querySelectorAll('[data-av-tab]').forEach(b=>b.onclick=()=>avAba_(b.dataset.avTab));
   document.getElementById('av-salvar').onclick=avSalvar_;
   document.getElementById('av-cancelar').onclick=avLimpar_;
+  uxTrack('av',{getState:()=>({t:document.getElementById('av-titulo').value,m:document.getElementById('av-msg').value,tp:document.getElementById('av-tipo').value,pr:document.getElementById('av-prio').value,st:document.getElementById('av-status').value,i:document.getElementById('av-ini').value,e:document.getElementById('av-exp').value,o:document.getElementById('av-obrig').checked,pf:[...AV_SEL_PERFIS].sort(),ps:[...AV_SEL_PESSOAS].sort()}),btnSalvar:'av-salvar'});
+  uxLigar('av',document.querySelector('#av-t-gestao .fe-form'));
   document.getElementById('av-busca').oninput=debounce(avRenderPessoas_,150);
   document.getElementById('av-msg').oninput=avContaMsg_;
   document.getElementById('av-lbusca').oninput=debounce(avRenderLista_,200);
@@ -15910,7 +16022,7 @@ function initAvisos(){
     if(ac==='editar') avEditar_(id); else if(ac==='excluir') avExcluir_(id); else if(ac==='controle') avAbrirControle_(id); else avMudarStatus_(id,ac==='ativar'?'Ativo':'Inativo');
   });
   document.getElementById('av-ini').value=avHojeIso_();
-  avContaMsg_();
+  avContaMsg_(); uxBase('av');
   avCarregar_();
 }
 function avHojeIso_(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -15942,17 +16054,17 @@ function avRenderPerfis_(){
     const p=c.dataset.p;
     if(p==='*'){ AV_SEL_PERFIS=AV_SEL_PERFIS.has('*')?new Set():new Set(['*']); }
     else{ AV_SEL_PERFIS.delete('*'); AV_SEL_PERFIS.has(p)?AV_SEL_PERFIS.delete(p):AV_SEL_PERFIS.add(p); }
-    avRenderPerfis_(); avAlcance_();
+    avRenderPerfis_(); avAlcance_(); uxCheck('av');
   });
 }
 function avRenderPessoas_(){
   const q=peNormalizarHeader(document.getElementById('av-busca').value), box=document.getElementById('av-pes');
   const achados=q?AV_PESSOAS.filter(p=>peNormalizarHeader(p.nome+' '+p.assinatura).includes(q)).slice(0,24):[];
   box.innerHTML=achados.map(p=>'<span class="av-chip '+(AV_SEL_PESSOAS.has(p.assinatura)?'on':'')+'" data-u="'+feEsc_(p.assinatura)+'">'+feEsc_(p.nome)+' <small>· '+feEsc_(p.perfil)+'</small></span>').join('')||(q?'<small style="color:var(--text-faint)">Ninguém encontrado.</small>':'<small style="color:var(--text-faint)">Digite um nome para buscar.</small>');
-  box.querySelectorAll('.av-chip').forEach(c=>c.onclick=()=>{ const u=c.dataset.u; AV_SEL_PESSOAS.has(u)?AV_SEL_PESSOAS.delete(u):AV_SEL_PESSOAS.add(u); avRenderPessoas_(); avAlcance_(); });
+  box.querySelectorAll('.av-chip').forEach(c=>c.onclick=()=>{ const u=c.dataset.u; AV_SEL_PESSOAS.has(u)?AV_SEL_PESSOAS.delete(u):AV_SEL_PESSOAS.add(u); avRenderPessoas_(); avAlcance_(); uxCheck('av'); });
   const sel=document.getElementById('av-selp');
   sel.innerHTML=[...AV_SEL_PESSOAS].map(u=>{ const p=AV_PESSOAS.find(x=>x.assinatura===u); return '<span data-u="'+feEsc_(u)+'" title="Clique para remover">'+feEsc_(p?p.nome:u)+' ✕</span>'; }).join('')||'<em style="color:var(--text-faint)">Nenhuma pessoa específica</em>';
-  sel.querySelectorAll('span[data-u]').forEach(s=>s.onclick=()=>{ AV_SEL_PESSOAS.delete(s.dataset.u); avRenderPessoas_(); avAlcance_(); });
+  sel.querySelectorAll('span[data-u]').forEach(s=>s.onclick=()=>{ AV_SEL_PESSOAS.delete(s.dataset.u); avRenderPessoas_(); avAlcance_(); uxCheck('av'); });
 }
 function avAlcance_(){
   const todos=AV_SEL_PERFIS.has('*');
@@ -15986,7 +16098,7 @@ function avLimpar_(){
   document.getElementById('av-tipo').value='Informação'; document.getElementById('av-prio').value='Normal'; document.getElementById('av-status').value='Ativo';
   document.getElementById('av-ini').value=avHojeIso_(); document.getElementById('av-obrig').checked=true;
   document.getElementById('av-form-titulo').textContent='＋ NOVO AVISO'; document.getElementById('av-cancelar').style.display='none';
-  avContaMsg_(); avRenderPerfis_(); avRenderPessoas_(); avAlcance_(); avRenderLista_();
+  avContaMsg_(); avRenderPerfis_(); avRenderPessoas_(); avAlcance_(); avRenderLista_(); uxBase('av');
 }
 function avEditar_(id){
   const a=AV_LISTA.find(x=>x.id===id); if(!a) return;
@@ -15996,7 +16108,7 @@ function avEditar_(id){
   document.getElementById('av-status').value=a.statusGravado; document.getElementById('av-ini').value=a.inicio; document.getElementById('av-exp').value=a.expiracao||'';
   document.getElementById('av-obrig').checked=!!a.obrigatorio; document.getElementById('av-busca').value='';
   document.getElementById('av-form-titulo').textContent='✎ EDITANDO AVISO'; document.getElementById('av-cancelar').style.display='';
-  avContaMsg_(); avRenderPerfis_(); avRenderPessoas_(); avAlcance_(); avRenderLista_();
+  avContaMsg_(); avRenderPerfis_(); avRenderPessoas_(); avAlcance_(); avRenderLista_(); uxBase('av');
   document.getElementById('av-titulo').scrollIntoView({behavior:'smooth',block:'center'});
 }
 async function avSalvar_(){
@@ -16083,6 +16195,7 @@ async function ntCall_(acao,params,retries){
   return r;
 }
 function ntFb_(msg,ok){
+  uxToast(msg,ok?'ok':'er');
   const el=document.getElementById('nt-feedback'); if(!el) return;
   el.className='fe-msg '+(ok?'ok':'er'); el.textContent=msg; el.style.display='block';
   clearTimeout(window.__ntFb); window.__ntFb=setTimeout(()=>{ el.style.display='none'; },7000);
