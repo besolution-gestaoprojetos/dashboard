@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbypy_-hA0cnh5mH1heYGY8qrei6nBCAtpP6ty-lNfBswSnyzxdTuvqS5bAE-x7G-Psepg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzz70oFG-l0jRUjUPhRMSBOutD_NnZ6q-6EZ5DWo3u0AaHqnw0PO8fYEHvqhYYi_mwXGg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2145,6 +2145,46 @@ tr.rp-row{cursor:pointer;}tr.rp-row.sel td{background:#e0f2fe;}tr.rp-row:focus-v
 #page-pessoa .pes-loc{font-weight:700;font-size:13px;min-height:36px;display:flex;align-items:center;}
 @media (max-width:760px){#page-horasapontadas .ha-charts{grid-template-columns:1fr;}#page-horasapontadas .ha-exports{margin-left:0;}}
 @media (max-width:760px){#page-analisehoras .ha-charts{grid-template-columns:1fr;}#page-analisehoras .ha-exports{margin-left:0;}}
+
+/* ===== v19.8 · PADRÃO UX — visual (cabeçalho, cartões de seção, campos) ===== */
+.ux-hero{display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow-sm);margin-bottom:16px}
+.ux-av{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,#0f2c4a,#1d4e89);color:#fff;font-weight:800;font-size:19px;display:flex;align-items:center;justify-content:center;flex:none}
+.ux-hero h2{margin:0;font-size:21px;font-weight:800}
+.ux-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.ux-bd{border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700;background:var(--surface-alt);color:var(--text-muted);border:1px solid var(--border)}
+.ux-bd.ok{background:rgba(22,163,74,.14);color:#15803d;border-color:rgba(22,163,74,.3)}.ux-bd.inf{background:rgba(2,132,199,.14);color:#0369a1;border-color:rgba(2,132,199,.3)}
+html[data-theme="dark"] .ux-bd.ok{color:#4ade80}html[data-theme="dark"] .ux-bd.inf{color:#7dd3fc}
+.ux-meta{margin-left:auto;display:flex;gap:22px;font-size:12px;color:var(--text-muted)}.ux-meta b{display:block;color:var(--text);font-size:13px}
+.pa-steps,#sr-content .pa-steps{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px;box-shadow:var(--shadow-sm)}
+.pa-steps a i{border:1px solid var(--border);background:transparent}
+.pa-steps a:hover{background:var(--surface-alt)}
+#pa-form-view .pa-bloco{padding:0 !important;border-radius:14px;box-shadow:var(--shadow-sm);margin-bottom:14px !important}
+#pa-form-view .pa-bloco .pa-sh{justify-content:flex-start !important;text-align:left;display:flex;gap:12px;align-items:center;margin:0 !important;padding:13px 18px;background:var(--surface-alt);border-bottom:1px solid var(--border);border-radius:14px 14px 0 0}
+#pa-form-view .pa-bloco .pa-sh h3{font-size:15px;margin:0;display:block}
+#pa-form-view .pa-bloco .pa-sh .pa-d{margin:2px 0 0;font-size:12.5px;color:var(--text-muted)}
+.pa-ic,#sr-content .card-title h3::before,#pe-form-view .card-title h3::before{width:32px;height:32px;border-radius:10px;background:rgba(2,132,199,.14);display:inline-flex;align-items:center;justify-content:center;font-size:16px;flex:none}
+#pa-form-view .pa-bloco .pa-sb{padding:16px 18px 8px}
+#pa-form-view .pa-g{gap:4px 16px}
+#pa-form-view .pa-g .sr-field{margin-bottom:12px}
+#sr-content .card,#pe-form-view .card{border-radius:14px;box-shadow:var(--shadow-sm)}
+#sr-content .card-title h3,#pe-form-view .card-title h3{display:flex;align-items:center;gap:10px;font-size:15px}
+#sr-b1 .card-title h3::before{content:'🪪'}#sr-b2 .card-title h3::before{content:'🚦'}#sr-b4 .card-title h3::before{content:'✅'}#sr-b5 .card-title h3::before{content:'📅'}
+#pa-form-view .sr-field label,#sr-content .sr-field label,#pe-form-view .sr-field label{font-size:12px;font-weight:700;color:var(--text);margin-bottom:5px;text-transform:none}
+#pa-form-view .sr-field input[type=text],#pa-form-view .sr-field input[type=date],#pa-form-view .sr-field input[type=number],#pa-form-view .sr-field input.dt-txt,#pa-form-view .sr-field select,#pa-form-view .sr-field textarea,
+#sr-content .sr-field input[type=text],#sr-content .sr-field input.dt-txt,#sr-content .sr-field select,#sr-content .sr-field textarea,#pe-form-view .sr-field input[type=text],#pe-form-view .sr-field input[type=date],#pe-form-view .sr-field input[type=number],#pe-form-view .sr-field input.dt-txt,#pe-form-view .sr-field select,#pe-form-view .sr-field textarea{padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);min-height:42px}
+#pa-form-view input[readonly],#pa-form-view input:disabled,#pa-form-view select:disabled{background:var(--surface-alt);color:var(--text-muted)}
+.ux-chg{border-color:#ca8a04 !important;background:rgba(202,138,4,.10) !important}
+
+/* ===== v19.9 · PADRÃO UX — telas de análise (cartões, filtros, tabelas) ===== */
+.card>.card-title:first-child{margin:-16px -18px 14px;padding:11px 18px;background:var(--surface-alt);border-bottom:1px solid var(--border)}
+.card:has(>.card-title:first-child)::before{display:none}
+.card{border-radius:14px}
+.ux-ico{display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;width:28px;height:28px;margin-right:10px;border-radius:9px;background:rgba(2,132,199,.14);font-size:15px;line-height:1;flex:none}
+.filter-bar{border-radius:14px}
+.filter-field select,.filter-field input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=range]):not([type=hidden]):not([type=color]){border-radius:10px}
+.filter-field select:focus,.filter-field input:focus{border-color:#0284c7;box-shadow:0 0 0 3px rgba(2,132,199,.2)}
+.filter-clear{border-radius:99px}
+.table-wrap{border:1px solid var(--border);border-radius:10px}
 </style>
 </head>
 <body>
@@ -3185,7 +3225,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v19.7';
+const APP_VERSION='v20.1';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -3420,14 +3460,23 @@ const NOVIDADES_ATUALIZADO_EM='10/11/2026';
 function novidadesUltimaAtualizacao_(){
   const br=v=>{const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v||'');return m?m[3]+'-'+m[2]+'-'+m[1]:''};
   const iso=[br(NOVIDADES_ATUALIZADO_EM)];
-  try{ (NOVIDADES||[]).forEach(n=>iso.push(/^\d{4}-\d{2}-\d{2}$/.test(n.data||'')?n.data:'')); }catch(e){}
+  try{ (NOVIDADES||[]).concat(NOVIDADES_ARQUIVO||[]).forEach(n=>iso.push(/^\d{4}-\d{2}-\d{2}$/.test(n.data||'')?n.data:'')); }catch(e){}
   try{ (WIKI_HISTORICO||[]).forEach(h=>iso.push(br(h.d))); }catch(e){}
   const mx=iso.filter(Boolean).sort().pop();
   return mx?mx.slice(8,10)+'/'+mx.slice(5,7)+'/'+mx.slice(0,4):NOVIDADES_ATUALIZADO_EM;
 }
 const NOVIDADES=[
+  {icone:'🗂️', bg:'#eff6ff', cor:'#2563eb', titulo:'Novidades mais enxuta: só os 6 últimos cards', descricao:'Esta página agora mostra apenas as 6 novidades mais recentes. As anteriores continuam disponíveis na Wiki/Documentação, em Histórico › Novidades anteriores.', paginas:[], data:'2026-11-17', tag:'Mudança', tagCor:'mudanca'},
+  {icone:'👥', bg:'#eff6ff', cor:'#2563eb', titulo:'Lista de Pessoas e Perfis mais enxuta', descricao:'A lista agora mostra só Assinatura, Nome Completo, E-mail, Cargo, Área, Perfil de Acesso e Último Acesso. Clique na linha para abrir a pessoa; os demais dados continuam no formulário.', paginas:['pessoasadmin'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
+  {icone:'🎨', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo visual em todas as telas de análise', descricao:'Cartões com título em faixa e ícone, filtros com campos arredondados e foco destacado, botão Limpar filtros em pílula e tabelas com moldura. Os dados e gráficos continuam os mesmos. Claro e escuro.', paginas:['cliente','area','setorial','analisehoras','topexec','equipehoras'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
+  {icone:'🎨', bg:'#eff6ff', cor:'#2563eb', titulo:'Formulários com visual renovado', descricao:'Pessoas e Perfis agora tem cabeçalho com iniciais e selos, seções em cartões com ícone e descrição, menu de etapas em cartão e campos com destaque amarelo quando alterados. Status Report e Edição de Portfólio seguem o mesmo visual.', paginas:['pessoasadmin','statusreport','portfolioedit'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
   {icone:'📝', bg:'#eff6ff', cor:'#2563eb', titulo:'Status Report com barra de ações e aviso de alterações', descricao:'O Status Report ganhou menu lateral de etapas e uma barra fixa que mostra quando há alterações não salvas. Salvar Rascunho só habilita quando algo mudou, os campos obrigatórios aparecem destacados ao finalizar e o sistema avisa antes de trocar de projeto ou semana com alterações pendentes.', paginas:['statusreport'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
   {icone:'✨', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo padrão de edição nas telas de cadastro', descricao:'Barra fixa no rodapé mostra quando há alterações não salvas (com a quantidade de campos) e o botão Salvar só habilita quando algo mudou. Avisos de sucesso e erro agora aparecem como toast. Em Feriados, é só clicar na linha para editar. Vale para tema claro e escuro.', paginas:['pessoasadmin','feriados','avisos','manutencao','portfolioedit'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
+];
+// v20.1: a página Novidades exibe só os 6 cards mais recentes (os 6 primeiros acima, tomados ANTES do filtro por perfil).
+// Os anteriores ficam aqui e são exibidos na Wiki (3.15 · Novidades anteriores). Ao lançar uma novidade nova, inclua-a no topo de
+// NOVIDADES e mova o 7º card (o mais antigo) para o topo de NOVIDADES_ARQUIVO.
+const NOVIDADES_ARQUIVO=[
   {icone:'🔒', bg:'#eff6ff', cor:'#2563eb', titulo:'Head e Gestor no cadastro de pessoa seguem a Hierarquia', descricao:'No formulário de pessoa, Head e Gestor aparecem somente para leitura quando a pessoa já está na aba Hierarquia, com atalho para editar lá. Assim existe uma única fonte de verdade e nenhuma alteração é ignorada.', paginas:['pessoasadmin'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
   {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Hierarquia e várias funções por pessoa', descricao:'Em Pessoas e Perfis, a nova aba Hierarquia permite definir o Head e o Gestor de cada pessoa (por e-mail) e dar mais de uma função (cargo) a quem acumula papéis, como Tech Lead e PO. Quem é Gestor ou Head de alguém passa a ver os dados dos liderados diretos. Os filtros de Cargo reconhecem todas as funções.', paginas:['pessoasadmin'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
   {icone:'🧹', bg:'#ecfdf5', cor:'#059669', titulo:'Gestor e Head sem nomes repetidos', descricao:'Os filtros de Gestor e Head não mostram mais o mesmo nome duas vezes (como “Antonio” e “Antônio”, ou com espaço sobrando). Cada pessoa aparece uma única vez, com a grafia do cadastro.', data:'2026-11-16', tag:'Correção', tagCor:'melhoria'},
@@ -7130,7 +7179,7 @@ function renderFormularioPortfolioEdit(nomeProjeto, campos, cliente){
   document.getElementById('pe-voltar-btn').onclick=carregarListaPortfolio;
   document.getElementById('pe-btn-salvar').onclick=salvarEdicaoPortfolio;
   document.getElementById('pe-btn-excluir').onclick=excluirProjetoAtual;
-  uxTrack('pe',{getState:()=>{ const o={}; document.querySelectorAll('#pe-form-view .pe-campo').forEach(el=>{ o[el.dataset.peIdx]=el.type==='checkbox'?!!el.checked:el.value; }); return o; },btnSalvar:'pe-btn-salvar'});
+  uxTrack('pe',{el:k=>document.querySelector('#pe-form-view [data-pe-idx="'+k+'"]'),getState:()=>{ const o={}; document.querySelectorAll('#pe-form-view .pe-campo').forEach(el=>{ o[el.dataset.peIdx]=el.type==='checkbox'?!!el.checked:el.value; }); return o; },btnSalvar:'pe-btn-salvar'});
   uxLigar('pe',document.getElementById('pe-form-view'));
   document.querySelectorAll('[id^="pe-equipe-mostrar-mais-"]').forEach(btn=>{
     btn.onclick=()=>{
@@ -7538,6 +7587,19 @@ function uxToast(msg,tipo,ms){
   setTimeout(fecha,ms||(tipo==='er'?7000:4500));
 }
 const UXT={};
+const UX_EMOJI=/^\s*((?:\p{Extended_Pictographic}|\p{Regional_Indicator})[\uFE0F\u200D\p{Extended_Pictographic}]*)\s*/u;
+let UX_DEC_T=null;
+function uxDecorar_(){
+  document.querySelectorAll('.card>.card-title:first-child h3').forEach(h=>{
+    if(h.querySelector(':scope>.ux-ico')||h.closest('#sr-content,#pe-form-view,.pa-bloco')) return;
+    let ico=''; const n=h.firstChild;
+    if(n&&n.nodeType===3){ const m=n.textContent.match(UX_EMOJI); if(m){ ico=m[1]; n.textContent=n.textContent.slice(m[0].length); } }
+    if(!ico){ const c=h.closest('.card'); ico=c.querySelector('canvas')?'📈':c.querySelector('table')?'🗂️':'📋'; }
+    const sp=document.createElement('span'); sp.className='ux-ico'; sp.setAttribute('aria-hidden','true'); sp.textContent=ico; h.insertBefore(sp,h.firstChild);
+  });
+}
+function uxAgendaDecorar_(){ if(UX_DEC_T) return; UX_DEC_T=setTimeout(()=>{ UX_DEC_T=null; try{ uxDecorar_(); }catch(e){} },80); }
+document.addEventListener('DOMContentLoaded',()=>{ uxAgendaDecorar_(); new MutationObserver(uxAgendaDecorar_).observe(document.body,{childList:true,subtree:true}); });
 function uxBarHtml_(id,btnsHtml,txtOk){
   return '<div class="ux-bar" id="'+id+'-bar"><span class="ux-st"><i class="ux-dot"></i><span class="ux-tx">'+(txtOk||'Nenhuma alteração pendente')+'</span><span class="ux-pill"></span></span><span class="ux-btns">'+btnsHtml+'</span></div>';
 }
@@ -7554,13 +7616,17 @@ function uxTrack(id,cfg){
   UXT[id]=Object.assign({base:null,dirty:false,txtOk:'Nenhuma alteração pendente'},cfg);
   uxBase(id);
 }
-function uxBase(id){ const t=UXT[id]; if(!t) return; try{ t.base=JSON.stringify(t.getState()); }catch(e){ t.base=null; } t.dirty=false; uxEstado_(id,'ok',0); }
+function uxMarca_(t,a,b){
+  if(!t.el) return;
+  new Set(Object.keys(a).concat(Object.keys(b))).forEach(k=>{ const el=t.el(k); if(el) el.classList.toggle('ux-chg',JSON.stringify(a[k])!==JSON.stringify(b[k])); });
+}
+function uxBase(id){ const t=UXT[id]; if(!t) return; try{ t.base=JSON.stringify(t.getState()); }catch(e){ t.base=null; } t.dirty=false; try{ const a=t.getState(); uxMarca_(t,a,a); }catch(e){} uxEstado_(id,'ok',0); }
 function uxCheck(id){
   const t=UXT[id]; if(!t||t.base==null) return;
   let a,b; try{ a=t.getState(); b=JSON.parse(t.base); }catch(e){ return; }
   const ks=new Set(Object.keys(a).concat(Object.keys(b))); let n=0;
   ks.forEach(k=>{ if(JSON.stringify(a[k])!==JSON.stringify(b[k])) n++; });
-  t.dirty=n>0; uxEstado_(id,t.dirty?'dirty':'ok',n);
+  t.dirty=n>0; uxMarca_(t,a,b); uxEstado_(id,t.dirty?'dirty':'ok',n);
 }
 function uxBusy(id,on,ok){ const t=UXT[id]; if(!t) return; if(on){ uxEstado_(id,'busy',0); const b=t.btnSalvar&&document.getElementById(t.btnSalvar); if(b) b.disabled=true; } else if(ok===false){ uxEstado_(id,'erro',0); const b=t.btnSalvar&&document.getElementById(t.btnSalvar); if(b) b.disabled=false; } else uxCheck(id); }
 function uxLigar(id,root){ if(!root) return; ['input','change'].forEach(ev=>root.addEventListener(ev,()=>uxCheck(id))); }
@@ -7839,41 +7905,30 @@ function renderListaPessoasAdmin(termoBusca){
     peNormalizarHeader(p.status).includes(termo) || peNormalizarHeader(p.estado).includes(termo) || peNormalizarHeader(p.cidade).includes(termo)
   )).filter(paAplicaChip_);
   const colunasPessoasAdmin=[
-    {key:'status',label:'Status',tipo:'texto',get:p=>peNormalizarHeader(p.status)==='inativo'?'Inativo':'Ativo'},
-    {key:'nome',label:'Nome',tipo:'texto',get:p=>p.nome},
+    {key:'nome',label:'Assinatura',tipo:'texto',get:p=>p.nome},
     {key:'nomecompleto',label:'Nome Completo',tipo:'texto',get:p=>p.nome_completo},
     {key:'email',label:'E-mail',tipo:'texto',get:p=>p.email},
     {key:'cargo',label:'Cargo',tipo:'texto',get:p=>p.cargo},
     {key:'area',label:'Área',tipo:'texto',get:p=>p.area},
-    {key:'estado',label:'Estado',tipo:'texto',get:p=>p.estado},
-    {key:'cidade',label:'Cidade',tipo:'texto',get:p=>p.cidade},
-    {key:'participa',label:'Análises',tipo:'texto',get:p=>p.participa===false?'Não':'Sim'},
-    {key:'jornada',label:'Jornada',tipo:'texto',get:p=>(p.modelo&&p.capacidade_definida)?p.modelo:'zz'},
     {key:'perfil',label:'Perfil de Acesso',tipo:'texto',get:p=>p.perfil},
-    {key:'ultimoacesso',label:'Último Acesso',tipo:'data',get:p=>p.ultimo_acesso},
-    {label:''}
+    {key:'ultimoacesso',label:'Último Acesso',tipo:'data',get:p=>p.ultimo_acesso}
   ];
   const stPA=SORT_STATE['pessoasadmin']||{col:null,dir:0};
   const filtradosOrd=stPA.col?ordenarLinhas_(filtrados,colunasPessoasAdmin.find(c=>c.key===stPA.col),stPA.dir):filtrados;
   let h='<div class="card"><div class="card-title"><h3>Pessoas ('+PA_LISTA_CACHE.length+')</h3>'+
     '<span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="filter-clear" id="pa-mig-btn" style="padding:7px 14px" title="Separa o valor antigo de Localidade em Estado e Cidade (com pré-visualização)">📍 Migrar Localidade</button><button type="button" class="sr-btn sr-btn-primary" id="pa-novo-btn" style="padding:7px 16px">+ Nova Pessoa</button></span></div>'+
     (function(){ const c=paContagensChips_(); const chip=(k,t)=>'<button type="button" data-pa-chip="'+k+'" class="'+(PA_FILTRO===k?'on':'')+'">'+t+'</button>'; return '<div class="pa-fchips">'+chip('todas','Todas ('+c.todas+')')+chip('ativas','Ativas ('+c.ativas+')')+chip('inativas','Inativas ('+c.inativas+')')+chip('nao','Fora das análises ('+c.nao+')')+chip('semloc','Sem estado/cidade ('+c.semloc+')')+chip('semcap','Capacidade não definida ('+c.semcap+')')+(PA_FILTRO==='semcap'?'<button type="button" class="filter-clear" id="pa-cap-exp" style="margin-left:8px">⬇ Exportar pendências</button>':'')+'</div>'; })()+
-    '<input type="text" id="pa-busca" placeholder="Buscar por nome, e-mail, cargo, área, estado, cidade, perfil ou status…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" class="ctl-form" style="width:100%;margin-bottom:14px">'+
+    '<input type="text" id="pa-busca" placeholder="Buscar por nome, e-mail, cargo, área ou perfil…" value="'+(termoBusca||'').replace(/"/g,'&quot;')+'" class="ctl-form" style="width:100%;margin-bottom:14px">'+
     '<div class="table-wrap" style="max-height:560px"><table>'+theadOrdenavel_('pessoasadmin',colunasPessoasAdmin)+'<tbody>';
   if(filtradosOrd.length===0){
-    h+='<tr><td colspan="13" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada'+(termo?' com esse termo de busca':'')+'.</td></tr>';
+    h+='<tr><td colspan="7" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada'+(termo?' com esse termo de busca':'')+'.</td></tr>';
   }else{
     filtradosOrd.forEach(p=>{
       const statusInativo=peNormalizarHeader(p.status)==='inativo';
       h+='<tr style="cursor:pointer" class="pa-lista-row" data-pa-pessoa="'+p.nome.replace(/"/g,'&quot;')+'">'+
-        '<td>'+(statusInativo?'<span class="status-pill" style="background:var(--surface-alt);color:var(--text-muted)">Inativo</span>':'<span class="status-pill">Ativo</span>')+'</td>'+
         '<td><strong>'+p.nome+'</strong></td><td>'+(p.nome_completo||'—')+'</td><td>'+(p.email||'—')+'</td><td>'+(p.cargo||'—')+'</td><td>'+(p.area||'—')+'</td>'+
-        '<td>'+(p.estado||'—')+'</td><td>'+(p.cidade||'—')+'</td>'+
-        '<td>'+(p.participa===false?'<span class="pa-pill bad">Não</span>':'<span class="pa-pill info">Sim'+(p.participa_vazio?' <small>(vazio)</small>':'')+'</span>')+'</td>'+
-        '<td>'+paJornadaTxt_(p)+'</td>'+
         '<td>'+(p.perfil?'<span class="status-pill">'+p.perfil+'</span>':'<span style="color:var(--text-faint)">Sem Perfil Definido</span>')+'</td>'+
-        '<td>'+feEsc_(dataTxt_(p.ultimo_acesso,true))+'</td>'+
-        '<td><button type="button" class="filter-clear" style="padding:5px 12px">Abrir</button></td></tr>';
+        '<td>'+feEsc_(dataTxt_(p.ultimo_acesso,true))+'</td></tr>';
     });
   }
   h+='</tbody></table></div></div>';
@@ -7972,7 +8027,7 @@ async function abrirFormularioNovaPessoa(){
 }
 function renderFormularioNovaPessoa_(){
   let h='<button type="button" class="filter-clear" id="pa-voltar-btn" style="margin-bottom:14px">← Voltar para a lista</button>';
-  h+='<div class="page-header" style="padding:0 0 16px"><h2 style="font-size:20px;font-weight:800">Nova pessoa</h2></div>';
+  h+=paHeroHtml_('Nova pessoa',PA_NOVA_CAMPOS,true);
   h+=paBlocosHtml_(PA_NOVA_CAMPOS,true);
   h+='<div class="card pa-email-card" style="margin-bottom:16px"><div class="card-title"><h3>✉️ Aviso por e-mail</h3></div>'+
     '<label style="display:flex;align-items:center;gap:10px;font-weight:700;margin-bottom:12px;cursor:pointer"><input type="checkbox" id="pa-enviar-email" checked style="width:18px;height:18px"> Enviar e-mail ao cadastrar</label>'+
@@ -8153,7 +8208,7 @@ function paConstruirInputHtml(c,i){
 }
 function renderFormularioPessoaAdmin(nomePessoa, campos){
   let h='<button type="button" class="filter-clear" id="pa-voltar-btn" style="margin-bottom:14px">← Voltar para a lista</button>';
-  h+='<div class="page-header" style="padding:0 0 16px"><h2 style="font-size:20px;font-weight:800">'+nomePessoa+'</h2></div>';
+  h+=paHeroHtml_(nomePessoa,campos,false);
   // O campo "Último Acesso" (readonly) não recebe o atributo data-pa-idx, então
   // fica automaticamente de fora do payload de salvar — nunca é sobrescrito.
   h+=paBlocosHtml_(campos,false);
@@ -8298,6 +8353,18 @@ const PA_BLOCOS=[
   {n:4,t:'Modelo de contratação e jornada',d:'Capacidade usada em alocação, disponibilidade e horas apontadas.'},
   {n:6,t:'Outros campos',d:'Demais colunas de Pessoas_Area.'}
 ];
+const PA_ICO={1:'🪪',2:'💼',3:'📍',4:'🕒',5:'🔐',6:'🧩'};
+function paHeroHtml_(titulo,campos,nova){
+  const val=k=>{ const c=(campos||[]).find(c=>paKey_(c.header)===k); return c&&c.valor!=null?String(c.valor).trim():''; };
+  const base=val('nomecompleto')||val('assinatura')||String(titulo||'');
+  const ini=nova?'＋':(base.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x.charAt(0)).join('').toUpperCase()||'?');
+  const st=val('status'), bd=[];
+  if(nova) bd.push('<span class="ux-bd inf">Novo cadastro</span>');
+  else{ if(st) bd.push('<span class="ux-bd '+(/^ativ/i.test(st)?'ok':'')+'">'+paEscHtml_(st)+'</span>'); const pf=val('perfildeacesso')||val('perfilacesso'); if(pf) bd.push('<span class="ux-bd inf">'+paEscHtml_(pf)+'</span>'); }
+  [val('cargo'),val('area')].forEach(v=>{ if(v) bd.push('<span class="ux-bd">'+paEscHtml_(v)+'</span>'); });
+  const meta='';
+  return '<div class="ux-hero"><div class="ux-av">'+paEscHtml_(ini)+'</div><div><h2>'+paEscHtml_(nova?titulo:base)+'</h2><div class="ux-badges">'+bd.join('')+'</div></div>'+(meta?'<div class="ux-meta">'+meta+'</div>':'')+'</div>';
+}
 function paBlocosHtml_(campos,nova){
   const por={1:[],2:[],3:[],4:[],5:[],6:[]};
   const capIdx=paCapIdx_(campos), temCap=capIdx.mo>=0&&(capIdx.cs>=0||capIdx.cm>=0);
@@ -8306,7 +8373,7 @@ function paBlocosHtml_(campos,nova){
   campos.map((c,i)=>({c,i})).sort((a,b)=>ord(paKey_(a.c.header))-ord(paKey_(b.c.header))||a.i-b.i).forEach(x=>{ if(temCap&&PA_CAP_KEYS.includes(paKey_(x.c.header))) return; por[paBlocoDe_(x.c.header)].push(paCampoHtml_(x.c,x.i,nova)); });
   if(temCap) por[4]=[paCapBlocoHtml_(campos,capIdx)];
   let nav='',cards='',pos=0,par=[];
-  const card=(b,num,itens)=>'<div class="card pa-bloco" id="pa-b'+b.n+'"><div class="card-title"><h3>'+num+' · '+b.t+' <span class="pa-d">'+b.d+'</span></h3></div><div class="pa-g">'+itens.join('')+'</div></div>';
+  const card=(b,num,itens)=>'<div class="card pa-bloco" id="pa-b'+b.n+'"><div class="card-title pa-sh"><span class="pa-ic">'+(PA_ICO[b.n]||'•')+'</span><div><h3>'+b.t+'</h3><p class="pa-d">'+b.d+'</p></div></div><div class="pa-sb"><div class="pa-g">'+itens.join('')+'</div></div></div>';
   const fechaPar=()=>{ if(par.length){ cards+='<div class="pa-par">'+par.join('')+'</div>'; par=[]; } };
   PA_BLOCOS.forEach(b=>{
     const itens=por[b.n].filter(Boolean);
@@ -8506,7 +8573,7 @@ function paLigarFormulario_(){
   const nova=!!document.getElementById('pa-btn-cadastrar');
   const marca=()=>{ PA_DIRTY=true; };
   box.querySelectorAll('.pa-campo').forEach(el=>{ el.addEventListener('input',marca); el.addEventListener('change',marca); });
-  uxTrack('pa',{getState:paEstadoForm_,btnSalvar:nova?'pa-btn-cadastrar':'pa-btn-salvar',sempreAtivo:nova,txtOk:nova?'Novo cadastro — preencha os dados':'Nenhuma alteração pendente'});
+  uxTrack('pa',{getState:paEstadoForm_,el:k=>document.querySelector('#pa-form-view [data-pa-idx="'+k+'"]')||document.getElementById(k),btnSalvar:nova?'pa-btn-cadastrar':'pa-btn-salvar',sempreAtivo:nova,txtOk:nova?'Novo cadastro — preencha os dados':'Nenhuma alteração pendente'});
   uxLigar('pa',box);
   const part=document.getElementById('pa-participa');
   if(part) part.addEventListener('change',()=>{
@@ -12483,7 +12550,7 @@ function renderStatusReport(){
   delete UXT.sr;
   if(podeEditar){
     const raiz=document.getElementById('sr-content');
-    uxTrack('sr',{getState:srEstadoForm_,btnSalvar:'sr-btn-rascunho',txtOk:existente?'Rascunho salvo — nenhuma alteração pendente':'Novo report — preencha e salve o rascunho'});
+    uxTrack('sr',{getState:srEstadoForm_,el:k=>document.getElementById({st:'sr-status-projeto',nr:'sr-nivel-risco',cr:'sr-criticidade',pv:'sr-previsao',rs:'sr-resumo',dc:'sr-decisoes',rk:'sr-riscos'}[k]||'_'),btnSalvar:'sr-btn-rascunho',txtOk:existente?'Rascunho salvo — nenhuma alteração pendente':'Novo report — preencha e salve o rascunho'});
     uxLigar('sr',raiz);
     raiz.addEventListener('click',e=>{ if(e.target.closest&&e.target.closest('#sr-bar')) return; setTimeout(()=>uxCheck('sr'),0); });
     raiz.addEventListener('input',e=>{ if(e.target.classList) e.target.classList.remove('pa-invalid'); });
@@ -13251,7 +13318,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v19.7', WIKI_DATA='17/11/2026';
+const WIKI_VER='v20.1', WIKI_DATA='17/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -13868,9 +13935,14 @@ WP('rev-diverg','3.15','Divergências e lacunas abertas','O que foi encontrado d
 <tr><td>D8</td><td>“Consumo de Horas (mês)” compara horas do mês com a estimativa total dos ativos. <a data-w="CMD-002">CMD-002</a></td><td><span class="b pa">Interpretar com cuidado</span></td></tr>
 <tr><td>D9</td><td>Perfis “Administrador Geral”, “Membro” e “Equipe” não existem como chaves de perfil. <a data-w="PERM-003">PERM-003</a></td><td><span class="b pv">Validar</span></td></tr></table></div>`),
 
-WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>')
+WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das revisões da Wiki.',[],'<div id="wk-hist"></div>'),
+WP('rev-nov','3.15','Novidades anteriores','Cards antigos da página Novidades. A página Novidades mostra só os 6 mais recentes; os demais ficam aqui, do mais novo para o mais antigo.',[],'<div id="wk-nov"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'17/11/2026',p:'Novidades · Limite de cards',desc:'A página Novidades passou a mostrar apenas os 6 cards mais recentes (considerados antes do filtro por perfil). Os cards anteriores (72) foram movidos, sem perda, para a Wiki, em 3.15 › Novidades anteriores. Regra para novos lançamentos: o card novo entra no topo de Novidades e o mais antigo dos 6 passa para o arquivo. Versão do Apps Script igualada.',m:'Deixar a página Novidades mais leve e objetiva.',o:'Solicitação do usuário',v:'Pendente de validação em produção',ver:'v20.1'},
+ {d:'17/11/2026',p:'Pessoas e Perfis · Lista',desc:'A lista passou a exibir apenas Assinatura, Nome Completo, E-mail, Cargo, Área, Perfil de Acesso e Último Acesso. Saíram da lista Status, Estado, Cidade, Análises, Jornada e o botão Abrir (a linha inteira abre a pessoa). Os chips Todas/Ativas/Inativas continuam filtrando e os dados seguem no formulário. Somente interface: versão do Apps Script igualada.',ver:'v20.0'},
+ {d:'17/11/2026',p:'Geral · Padrão de edição (telas de análise)',desc:'Novo visual aplicado em todas as telas de análise: título dos cartões em faixa com fundo suave e ícone (usa o emoji do próprio título; senão ícone padrão), filtros com campos arredondados, foco destacado e botão “Limpar filtros” em pílula, tabelas com moldura arredondada. Só visual: dados, gráficos, cálculos, filtros e permissões não mudaram. Versão do Apps Script igualada.',ver:'v19.9'},
+ {d:'17/11/2026',p:'Geral · Padrão de edição (visual)',desc:'Visual do novo padrão aplicado de fato nos formulários: Pessoas e Perfis ganhou cabeçalho com iniciais, selos (status, perfil, cargo, área) e Head/Gestor; seções em cartões com ícone, título e descrição; menu de etapas em cartão; campos com cantos arredondados, foco destacado e destaque amarelo nos campos alterados. Status Report e Edição de Portfólio receberam os mesmos cartões, ícones e campos. Somente interface: versão do Apps Script igualada.',ver:'v19.8'},
  {d:'17/11/2026',p:'Status Report · Padrão de edição',desc:'O Status Report segue o novo padrão: menu lateral de etapas, barra fixa no rodapé com “alterações não salvas” e contagem de campos (inclui atividades e cronograma), Salvar Rascunho só habilita quando há alteração, campos obrigatórios destacados ao finalizar (com ida ao primeiro) e aviso ao trocar de projeto ou semana com alterações pendentes. Regras, campos e dados gravados não mudaram. Só interface: versão do Apps Script igualada.',ver:'v19.7'},
  {d:'16/11/2026',p:'Geral · Padrão de edição (UX)',desc:'Novo padrão visual de edição: barra fixa no rodapé com estado “alterações não salvas” e contagem de campos, Salvar habilitado só quando há alteração, avisos em toast (claro/escuro) no lugar das faixas de mensagem e aviso ao sair com alterações pendentes. Aplicado em Pessoas e Perfis, Feriados (clique na linha para editar), Gestão de Avisos, Modo Manutenção e Edição de Portfólio. Só interface: versão do Apps Script igualada (republicar apenas para sincronizar).',ver:'v19.6'},
  {d:'16/11/2026',p:'Pessoas e Perfis · Formulário de pessoa',desc:'Head e Gestor no formulário de pessoa ficam somente leitura (com atalho para a aba Hierarquia) quando a pessoa já está na tabela de Hierarquia, evitando duas fontes de verdade e alterações ignoradas. Pessoas ainda não importadas e cadastros novos seguem editáveis. Republicar o Apps Script (novo campo hier).',ver:'v19.5'},
@@ -13949,6 +14021,7 @@ function wkPagina_(id,regraId){
   document.getElementById('wk-main').innerHTML='<div class="wk-crumb">Wiki › '+p.cat+' '+cn+'</div><h2>'+wkEsc_(p.t)+'</h2>'+
    '<div class="wk-meta"><span>Atualizada em '+p.upd+'</span><span>Revisada na '+p.ver+'</span><span>'+p.regras.length+' regra(s)</span>'+velha+'</div>'+
    '<p class="wk-s">'+wkEsc_(p.resumo)+'</p>'+p.corpo+p.regras.map((r,i)=>wkRegraHtml_(r,regraId?r.id===regraId:i===0)).join('');
+  if(p.id==='rev-nov'){ const h=document.getElementById('wk-nov'); if(h) h.innerHTML='<div class="wk-tbl"><table><tr><th>Data</th><th>Novidade</th><th>Descrição</th><th>Tipo</th><th>Páginas</th></tr>'+NOVIDADES_ARQUIVO.map(n=>'<tr><td>'+(n.data?n.data.slice(8,10)+'/'+n.data.slice(5,7)+'/'+n.data.slice(0,4):'')+'</td><td>'+wkEsc_((n.icone||'')+' '+n.titulo)+'</td><td>'+wkEsc_(n.descricao)+'</td><td>'+wkEsc_(n.tag||'')+'</td><td>'+((n.paginas&&n.paginas.length)?wkEsc_(n.paginas.map(x=>PAGE_LABELS[x]||x).join(', ')):'Geral')+'</td></tr>').join('')+'</table></div>'; }
   if(p.id==='rev-hist'){ const h=document.getElementById('wk-hist'); if(h) h.innerHTML='<div class="wk-tbl"><table><tr><th>Data</th><th>Página</th><th>Descrição</th><th>Motivo</th><th>Origem</th><th>Validação</th></tr>'+WIKI_HISTORICO.map(x=>'<tr><td>'+x.d+'</td><td>'+wkEsc_(x.p)+'</td><td>'+wkEsc_(x.desc)+'</td><td>'+wkEsc_(x.m)+'</td><td>'+wkEsc_(x.o)+'</td><td>'+wkEsc_(x.v)+'</td></tr>').join('')+'</table></div>'; }
   if(regraId){ const el=document.getElementById('wk-r-'+regraId); if(el) setTimeout(()=>el.scrollIntoView({block:'center',behavior:'smooth'}),30); }
 }
