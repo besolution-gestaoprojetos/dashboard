@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzz70oFG-l0jRUjUPhRMSBOutD_NnZ6q-6EZ5DWo3u0AaHqnw0PO8fYEHvqhYYi_mwXGg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwYOArso38MrecIKJRx7i48KySVcTuIVsXSW2vs4LCo3rsG90N6kP3i9tclCBM0t0PP0g/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -3225,7 +3225,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v20.1';
+const APP_VERSION='v20.3';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -3466,17 +3466,19 @@ function novidadesUltimaAtualizacao_(){
   return mx?mx.slice(8,10)+'/'+mx.slice(5,7)+'/'+mx.slice(0,4):NOVIDADES_ATUALIZADO_EM;
 }
 const NOVIDADES=[
+  {icone:'⚡', bg:'#fff7ed', cor:'#ea580c', titulo:'Carregamento mais rápido nos bastidores', descricao:'Otimizamos o cache do servidor e a verificação de login para reduzir o tempo de resposta das páginas. Nada muda na tela, nos dados ou nas permissões.', paginas:[], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🕒', bg:'#eff6ff', cor:'#2563eb', titulo:'Ver tarefas mostra só as horas apontadas', descricao:'No Acompanhamento de Horas da Equipe, “Ver tarefas” agora lista Data, Tarefa e Horas apontadas por dia, dentro do período, projeto e participante filtrados. O total bate com as Horas apontadas da tabela.', paginas:['equipehoras'], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🗂️', bg:'#eff6ff', cor:'#2563eb', titulo:'Novidades mais enxuta: só os 6 últimos cards', descricao:'Esta página agora mostra apenas as 6 novidades mais recentes. As anteriores continuam disponíveis na Wiki/Documentação, em Histórico › Novidades anteriores.', paginas:[], data:'2026-11-17', tag:'Mudança', tagCor:'mudanca'},
   {icone:'👥', bg:'#eff6ff', cor:'#2563eb', titulo:'Lista de Pessoas e Perfis mais enxuta', descricao:'A lista agora mostra só Assinatura, Nome Completo, E-mail, Cargo, Área, Perfil de Acesso e Último Acesso. Clique na linha para abrir a pessoa; os demais dados continuam no formulário.', paginas:['pessoasadmin'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
   {icone:'🎨', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo visual em todas as telas de análise', descricao:'Cartões com título em faixa e ícone, filtros com campos arredondados e foco destacado, botão Limpar filtros em pílula e tabelas com moldura. Os dados e gráficos continuam os mesmos. Claro e escuro.', paginas:['cliente','area','setorial','analisehoras','topexec','equipehoras'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
   {icone:'🎨', bg:'#eff6ff', cor:'#2563eb', titulo:'Formulários com visual renovado', descricao:'Pessoas e Perfis agora tem cabeçalho com iniciais e selos, seções em cartões com ícone e descrição, menu de etapas em cartão e campos com destaque amarelo quando alterados. Status Report e Edição de Portfólio seguem o mesmo visual.', paginas:['pessoasadmin','statusreport','portfolioedit'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
-  {icone:'📝', bg:'#eff6ff', cor:'#2563eb', titulo:'Status Report com barra de ações e aviso de alterações', descricao:'O Status Report ganhou menu lateral de etapas e uma barra fixa que mostra quando há alterações não salvas. Salvar Rascunho só habilita quando algo mudou, os campos obrigatórios aparecem destacados ao finalizar e o sistema avisa antes de trocar de projeto ou semana com alterações pendentes.', paginas:['statusreport'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
-  {icone:'✨', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo padrão de edição nas telas de cadastro', descricao:'Barra fixa no rodapé mostra quando há alterações não salvas (com a quantidade de campos) e o botão Salvar só habilita quando algo mudou. Avisos de sucesso e erro agora aparecem como toast. Em Feriados, é só clicar na linha para editar. Vale para tema claro e escuro.', paginas:['pessoasadmin','feriados','avisos','manutencao','portfolioedit'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
 ];
 // v20.1: a página Novidades exibe só os 6 cards mais recentes (os 6 primeiros acima, tomados ANTES do filtro por perfil).
 // Os anteriores ficam aqui e são exibidos na Wiki (3.15 · Novidades anteriores). Ao lançar uma novidade nova, inclua-a no topo de
 // NOVIDADES e mova o 7º card (o mais antigo) para o topo de NOVIDADES_ARQUIVO.
 const NOVIDADES_ARQUIVO=[
+  {icone:'📝', bg:'#eff6ff', cor:'#2563eb', titulo:'Status Report com barra de ações e aviso de alterações', descricao:'O Status Report ganhou menu lateral de etapas e uma barra fixa que mostra quando há alterações não salvas. Salvar Rascunho só habilita quando algo mudou, os campos obrigatórios aparecem destacados ao finalizar e o sistema avisa antes de trocar de projeto ou semana com alterações pendentes.', paginas:['statusreport'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
+  {icone:'✨', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo padrão de edição nas telas de cadastro', descricao:'Barra fixa no rodapé mostra quando há alterações não salvas (com a quantidade de campos) e o botão Salvar só habilita quando algo mudou. Avisos de sucesso e erro agora aparecem como toast. Em Feriados, é só clicar na linha para editar. Vale para tema claro e escuro.', paginas:['pessoasadmin','feriados','avisos','manutencao','portfolioedit'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
   {icone:'🔒', bg:'#eff6ff', cor:'#2563eb', titulo:'Head e Gestor no cadastro de pessoa seguem a Hierarquia', descricao:'No formulário de pessoa, Head e Gestor aparecem somente para leitura quando a pessoa já está na aba Hierarquia, com atalho para editar lá. Assim existe uma única fonte de verdade e nenhuma alteração é ignorada.', paginas:['pessoasadmin'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
   {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Hierarquia e várias funções por pessoa', descricao:'Em Pessoas e Perfis, a nova aba Hierarquia permite definir o Head e o Gestor de cada pessoa (por e-mail) e dar mais de uma função (cargo) a quem acumula papéis, como Tech Lead e PO. Quem é Gestor ou Head de alguém passa a ver os dados dos liderados diretos. Os filtros de Cargo reconhecem todas as funções.', paginas:['pessoasadmin'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
   {icone:'🧹', bg:'#ecfdf5', cor:'#059669', titulo:'Gestor e Head sem nomes repetidos', descricao:'Os filtros de Gestor e Head não mostram mais o mesmo nome duas vezes (como “Antonio” e “Antônio”, ou com espaço sobrando). Cada pessoa aparece uma única vez, com a grafia do cadastro.', data:'2026-11-16', tag:'Correção', tagCor:'melhoria'},
@@ -4299,14 +4301,15 @@ function sortParseDateBR_(v){
   if(v instanceof Date) return isNaN(v.getTime())?NaN:v.getTime();
   const s=String(v).trim();
   if(s==='' || s==='—' || s==='-') return NaN;
-  let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+  // v20.3: quando o texto traz hora (dd/MM/aaaa HH:mm[:ss] ou aaaa-MM-dd HH:mm), ela entra na ordenação; sem hora = 00:00 (igual a antes)
+  let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})(?:[ T,]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
   if(m){
     let dd=parseInt(m[1],10), mm=parseInt(m[2],10), yy=parseInt(m[3],10);
     if(yy<100) yy+=2000;
-    const d=new Date(yy,mm-1,dd);
+    const d=new Date(yy,mm-1,dd,parseInt(m[4]||'0',10),parseInt(m[5]||'0',10),parseInt(m[6]||'0',10));
     return isNaN(d.getTime())?NaN:d.getTime();
   }
-  m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?!.*\d:\d\d)/);
   if(m){
     const d=new Date(parseInt(m[1],10),parseInt(m[2],10)-1,parseInt(m[3],10));
     return isNaN(d.getTime())?NaN:d.getTime();
@@ -13318,7 +13321,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v20.1', WIKI_DATA='17/11/2026';
+const WIKI_VER='v20.3', WIKI_DATA='18/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -13613,8 +13616,8 @@ WIKI_PAGINAS.push(
 /* ---------------- 3.6 ---------------- */
 WP('pess-eqhoras','3.5','Acompanhamento de Horas da Equipe','Horas previstas × apontadas dos participantes dos projetos do GP.',[
  WR('PESS-020','Acompanhamento de Horas da Equipe','ok','Pessoas e capacidade',
-  'Página do GP (Projetos › Acompanhamento de Horas da Equipe). Mostra projetos, participantes, horas previstas, apontadas, diferença e % de execução, com projetos expansíveis, total por projeto e ordenação (padrão das demais tabelas). A tela só carrega depois de “Aplicar filtros” (Limpar filtros volta ao mês atual e “Todos”); atalhos de período: Mês atual, Mês anterior, Últimos 30 dias, Trimestre e Ano atual. O filtro Participante lista só quem pertence ao projeto selecionado. A coluna Tarefas tem o botão “Ver tarefas”, que abre um modal com as tarefas e os apontamentos da pessoa no projeto. Não há exportação CSV.',
-  '<code>initEquipeHoras</code>, <code>eqhCarregar_</code>, <code>eqhAbrirTarefas_</code> (front) · <code>acompanhamentoHorasEquipe_</code> (servidor; <code>filtros=1</code> devolve só as listas de projeto e participante, sem calcular horas).','Portifolio (coluna GP e equipe), Tarefas_Horas_Estimadas, Tarefas_Horas_Apontadas, Tarefas.',
+  'Página do GP (Projetos › Acompanhamento de Horas da Equipe). Mostra projetos, participantes, horas previstas, apontadas, diferença e % de execução, com projetos expansíveis, total por projeto e ordenação (padrão das demais tabelas). A tela só carrega depois de “Aplicar filtros” (Limpar filtros volta ao mês atual e “Todos”); atalhos de período: Mês atual, Mês anterior, Últimos 30 dias, Trimestre e Ano atual. O filtro Participante lista só quem pertence ao projeto selecionado. A coluna Tarefas tem o botão “Ver tarefas”, que abre um modal com uma lista única Data × Tarefa × Horas apontadas (total por dia e total no período), só com as horas apontadas dentro do período, do projeto e do participante filtrados; tarefas sem hora no período não aparecem. O total do modal é igual às “Horas apontadas” da linha. Não há exportação CSV.',
+  '<code>initEquipeHoras</code>, <code>eqhCarregar_</code>, <code>eqhAbrirTarefas_</code> (front) · <code>acompanhamentoHorasEquipe_</code> (servidor; o detalhe usa o campo interno <code>HAPT</code>, apontadas por pessoa × projeto × data × tarefa, que nunca vai ao navegador; <code>filtros=1</code> devolve só as listas de projeto e participante, sem calcular horas).','Portifolio (coluna GP e equipe), Tarefas_Horas_Estimadas, Tarefas_Horas_Apontadas, Tarefas.',
   'Previstas = horas estimadas por pessoa e tarefa (já divididas igualmente entre os responsáveis, sem duplicar), pela data de término; apontadas = lançamentos da pessoa no projeto, pela data do apontamento. % de execução = apontadas ÷ previstas (“—” sem previstas). Período padrão: do dia 1 do mês até hoje; sem período entram também horas sem data. Apontadas não são horas faturáveis.',
   'Só projetos em que a pessoa é GP; filtros de projeto e participante listam apenas o que está no vínculo. Administrador vê todos os projetos.','Menu Projetos.','Comparar os totais de um projeto com Detalhamento do Projeto no mesmo período.','Estados: sem permissão, sem projetos vinculados e sem dados no período. Liberação para outros perfis é por exceção; sem projetos como GP a página abre vazia.'),
  WR('PESS-021','Desempenho por Pessoa: só o próprio','ok','Pessoas e capacidade',
@@ -13868,7 +13871,7 @@ WP('aud-log','3.11','Log de Alterações','Auditoria de criações, alterações
 WP('exp-geral','3.12','Exportações, filtros e ordenação','O que pode ser exportado e como.',[
  WR('EXP-001','Exportação Excel','ok','Exportações','Gerada no navegador com ExcelJS (carregado só no clique): Calendário de Projetos, Relatório de Projetos e Equipes, Gestão de Horas Apontadas e modelo de Feriados. Calendário e Horas respeitam os filtros ativos.','<code>calCarregarExcelJS_</code>, <code>haExportar_</code>.','Dados já carregados na tela.','—','Exige acesso à página.','Páginas citadas.','Aplicar filtro e exportar.','Respeito a filtros nas demais exportações não foi confirmado.'),
  WR('EXP-002','Exportação PDF','pa','Exportações','Status Report executivo e Detalhamento do Projeto usam <code>window.print()</code> (impressão do navegador).','<code>exportarStatusReportPdf</code>, <code>pd-export-pdf</code>.','—','—','—','Status Report, Detalhamento.','—','Não é geração de arquivo no servidor.'),
- WR('EXP-003','Ordenação e paginação','ok','Exportações','Clique no cabeçalho alterna crescente, decrescente e original (motor global). Paginação existe no Log de Alterações (100 por lote); nas demais tabelas não foi identificada.','<code>SORT_STATE</code>, <code>theadOrdenavel_</code>.','—','—','—','Tabelas do portal.','—','—')],
+ WR('EXP-003','Ordenação e paginação','ok','Exportações','Clique no cabeçalho alterna crescente, decrescente e original (motor global). Colunas de data ordenam por data e hora quando o texto traz hora (ex.: Último Acesso em Pessoas e Perfis); sem hora, vale 00:00; vazios ficam sempre no fim. Paginação existe no Log de Alterações (100 por lote); nas demais tabelas não foi identificada.','<code>SORT_STATE</code>, <code>theadOrdenavel_</code>, <code>sortParseDateBR_</code>.','—','—','—','Tabelas do portal.','—','—')],
 ''),
 
 WP('trans-ids','3.13','Nomes, identificadores e duplicidades','Padrões para identificar pessoas, projetos e tarefas.',[
@@ -13880,7 +13883,7 @@ WP('trans-dados','3.13','Dados, datas, cache e erros','Comportamentos técnicos 
  WR('TRANS-010','Valores nulos e ausentes','ok','Transversal','Dado ausente não vira zero nem média: aparece como “—”, “sem dados” ou “Dados insuficientes”. Exceção: status de pessoa vazio = Ativo e Participa_Analises vazio = Sim.','—','—','—','—','—','—','—'),
  WR('TRANS-011','Datas e fuso horário','ok','Transversal','Fuso único <code>America/Sao_Paulo</code>: no servidor a constante <code>TZ_PADRAO</code> substitui <code>Session.getScriptTimeZone()</code>; no navegador, “hoje” usa <code>hojeISO_()</code> (Brasília) em vez de <code>toISOString()</code> (UTC), que adiantava o dia depois das 21h. Ver <a data-w="TRANS-025">TRANS-025</a>.','<code>TZ_PADRAO</code> · <code>hojeISO_</code> · <code>dtIsoLocal_</code>.','—','—','Cálculos de atraso, alocação, avisos e filtros por período.','Todo o portal.','Conferir após as 21h que “atrasadas” e “hoje” seguem o dia de Brasília. O projeto Apps Script e a planilha também devem estar em America/Sao_Paulo (a rotina de diagnóstico avisa).','Fuso do projeto Apps Script e da planilha são configurações do Google, fora do código.'),
  WR('TRANS-015','Formato de horas','ok','Transversal','Toda hora exibida usa o formato horas e minutos: “1.592h 48min”; hora exata “8h”; menos de uma hora “18min”; negativo com “−”. Não há mais decimal com vírgula nas telas.','<code>fHM_</code> (usada por <code>fH</code>, <code>haHm_</code>, <code>haHmz_</code>).','—','minutos = arredondamento de (horas × 60); horas com separador de milhar.','Eixos de gráficos continuam em horas decimais; tooltips e rótulos usam o formato. Exportações Excel mantêm célula numérica com formato [h]:mm. Rótulos fixos (40h/semana, 8h/dia) não mudam.','Todas as telas com horas.','Conferir 1592,8 → 1.592h 48min e 0,3 → 18min.','Cálculos e ordenação seguem em horas decimais internamente.'),
- WR('TRANS-012','Cache e atualização','ok','Transversal','O resultado do servidor fica em CacheService por 30 min (pedaços de 35 000 caracteres). Existe rotina agendada que o reaquece; gravações invalidam o cache.','<code>CACHE_TTL_SEGUNDOS</code>, <code>atualizarCacheDashboardAgendado</code>, <code>invalidarCacheDashboard_</code>.','—','—','—','Todas as telas.','—','O acionador agendado é configuração manual do Apps Script e pode não existir.'),
+ WR('TRANS-012','Cache e atualização','ok','Transversal','O resultado do servidor fica em CacheService por 30 min, comprimido (gzip + base64, pedaços de 90 000 caracteres; se a compressão falhar na gravação, grava sem comprimir, em pedaços de 35 000). Os campos internos HPEP/HAPT (horas por pessoa × projeto × data × tarefa, usados só no Acompanhamento de Horas da Equipe) ficam numa chave própria, para as demais requisições não carregá-los. O resultado positivo da verificação do token Google (só identidade) fica em cache até 10 min ou até o token expirar; perfil e permissões continuam sendo lidos da planilha a cada requisição. Existe rotina agendada que o reaquece; gravações invalidam o cache (as duas chaves). Toda nova versão usa uma chave nova: depois de republicar, rode <code>atualizarCacheDashboardAgendado</code> uma vez para não deixar o primeiro acesso pagar o recálculo.','<code>CACHE_TTL_SEGUNDOS</code>, <code>cacheSetChunked_</code>, <code>cacheGetChunked_</code>, <code>cachearDadosDashboard_</code>, <code>completarCamposInternos_</code>, <code>verifyGoogleToken_</code>, <code>atualizarCacheDashboardAgendado</code>, <code>invalidarCacheDashboard_</code>.','—','—','—','Todas as telas.','—','O acionador agendado é configuração manual do Apps Script e pode não existir.'),
  WR('TRANS-013','Carregamento sob demanda','ok','Transversal','O login traz <code>core</code>; cada página busca só os campos que precisa (<code>PAGINA_CAMPOS_NECESSARIOS</code>), uma vez por sessão, com tentativa de repetição.','<code>comCamposNecessarios_</code>.','—','—','—','Páginas pesadas.','—','—'),
  WR('TRANS-014','Tratamento de erros','pa','Transversal','Falhas de carregamento mostram faixa de erro com “Tentar novamente”; gravações devolvem mensagens específicas de validação.','<code>mostrarErroLoadingGlobal</code>.','—','—','—','—','—','Cobertura por tela não verificada.')],
 ''),
@@ -13939,6 +13942,9 @@ WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das re
 WP('rev-nov','3.15','Novidades anteriores','Cards antigos da página Novidades. A página Novidades mostra só os 6 mais recentes; os demais ficam aqui, do mais novo para o mais antigo.',[],'<div id="wk-nov"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'18/11/2026',p:'Geral · Ordenação de tabelas',desc:'Corrigida a ordenação por colunas de data: a hora passou a entrar na comparação (Último Acesso em Pessoas e Perfis seguia só o dia e misturava os horários). Datas sem hora continuam iguais; vazios seguem no fim. Só front; mesma versão v20.3.',m:'Ordem de Último Acesso não respeitava o horário.',o:'Solicitação do usuário',v:'Testado com dados simulados',ver:'v20.3'},
+ {d:'18/11/2026',p:'Sistema · Desempenho (servidor)',desc:'Auditoria de desempenho. As tabelas Pessoas_Hierarquia e Pessoas_Funcoes (2 leituras de ~250 células, contra ~1,2 milhão das demais abas) não são a causa. Otimizações sem mudar regra nem tela: cache do dashboard comprimido (menos entradas por requisição), HPEP/HAPT fora do cache principal (só a tela Horas da Equipe os carrega) e cache da verificação do token Google (identidade apenas; permissões continuam lidas a cada requisição). Corrige o aumento de cache causado pelo HAPT da v20.2. Republicar o Apps Script e rodar atualizarCacheDashboardAgendado uma vez.',m:'Lentidão percebida no carregamento das páginas.',o:'Solicitação do usuário',v:'Medido só com dados sintéticos; validar em produção',ver:'v20.3'},
+ {d:'18/11/2026',p:'Projetos · Acompanhamento de Horas da Equipe',desc:'“Ver tarefas” passou a exibir uma lista única com Data, Tarefa e Horas apontadas por dia (com total do dia e total no período), respeitando período, projeto e participante. Deixou de listar tarefas sem horas no período. Total igual às Horas apontadas da tabela. Backend: novo campo interno HAPT (tarefa de cada apontamento), não enviado ao navegador. Republicar o Apps Script.',m:'Mostrar apenas o que foi apontado e em qual tarefa.',o:'Solicitação do usuário (mockup aprovado)',v:'Pendente de validação em produção',ver:'v20.2'},
  {d:'17/11/2026',p:'Novidades · Limite de cards',desc:'A página Novidades passou a mostrar apenas os 6 cards mais recentes (considerados antes do filtro por perfil). Os cards anteriores (72) foram movidos, sem perda, para a Wiki, em 3.15 › Novidades anteriores. Regra para novos lançamentos: o card novo entra no topo de Novidades e o mais antigo dos 6 passa para o arquivo. Versão do Apps Script igualada.',m:'Deixar a página Novidades mais leve e objetiva.',o:'Solicitação do usuário',v:'Pendente de validação em produção',ver:'v20.1'},
  {d:'17/11/2026',p:'Pessoas e Perfis · Lista',desc:'A lista passou a exibir apenas Assinatura, Nome Completo, E-mail, Cargo, Área, Perfil de Acesso e Último Acesso. Saíram da lista Status, Estado, Cidade, Análises, Jornada e o botão Abrir (a linha inteira abre a pessoa). Os chips Todas/Ativas/Inativas continuam filtrando e os dados seguem no formulário. Somente interface: versão do Apps Script igualada.',ver:'v20.0'},
  {d:'17/11/2026',p:'Geral · Padrão de edição (telas de análise)',desc:'Novo visual aplicado em todas as telas de análise: título dos cartões em faixa com fundo suave e ícone (usa o emoji do próprio título; senão ícone padrão), filtros com campos arredondados, foco destacado e botão “Limpar filtros” em pílula, tabelas com moldura arredondada. Só visual: dados, gráficos, cálculos, filtros e permissões não mudaram. Versão do Apps Script igualada.',ver:'v19.9'},
@@ -14209,12 +14215,19 @@ async function eqhAbrirTarefas_(pj,em,nome){
   try{
     const r=await loadDataJSONPComRetry(feUrl_('acompanhamentoHorasEquipe','&detalhe=1&projeto='+encodeURIComponent(pj)+'&pessoa='+encodeURIComponent(em)+(ap.de?'&de='+ap.de:'')+(ap.ate?'&ate='+ap.ate:'')+(va?'&viewAs='+encodeURIComponent(va):'')),1);
     if(!r||!r.ok||!r.detalhe){ body.innerHTML=eqhVazio_('Não foi possível carregar o detalhamento.'); return; }
-    const t=r.detalhe.tarefas||[], a=r.detalhe.apontamentos||[];
-    body.innerHTML='<p style="margin:0 0 10px;color:var(--text-muted);font-size:13px">Período: '+eqhDtBr_(ap.de)+' a '+eqhDtBr_(ap.ate)+'</p>'
-      +'<h4 style="margin:0 0 6px">Tarefas ('+t.length+')</h4>'
-      +(t.length?'<div class="table-wrap"><table class="da-t"><thead><tr><th>Tarefa</th><th>Status</th><th>Vencimento</th><th>Conclusão</th></tr></thead><tbody>'+t.map(x=>'<tr><td>'+paEscHtml_(x.tarefa||'')+'</td><td>'+paEscHtml_(x.status||'—')+'</td><td>'+eqhDtAny_(x.dt_venc)+'</td><td>'+eqhDtAny_(x.dt_conc)+'</td></tr>').join('')+'</tbody></table></div>':'<p style="color:var(--text-muted)">Nenhuma tarefa.</p>')
-      +'<h4 style="margin:14px 0 6px">Apontamentos no período ('+a.length+')</h4>'
-      +(a.length?'<div class="table-wrap"><table class="da-t"><thead><tr><th>Data</th><th style="text-align:right">Horas</th></tr></thead><tbody>'+a.map(x=>'<tr><td>'+dataTxt_(x.data)+'</td><td style="text-align:right">'+eqhFmtH_(x.horas)+'</td></tr>').join('')+'</tbody></table></div>':'<p style="color:var(--text-muted)">Nenhum apontamento no período.</p>');
+    const a=r.detalhe.apontamentos||[], tot=Number(r.detalhe.total)||0;
+    const nLanc=a.reduce((n,d)=>n+(d.tarefas||[]).length,0);
+    const per='<p style="margin:0 0 10px;color:var(--text-muted);font-size:13px">Período: '+eqhDtBr_(ap.de)+' a '+eqhDtBr_(ap.ate)+'</p>';
+    if(!a.length){ body.innerHTML=per+'<p style="color:var(--text-muted);text-align:center;padding:24px 8px">Nenhuma hora apontada neste período.</p>'; return; }
+    const chip=(l,v)=>'<div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:12px;padding:8px 14px"><div style="font:600 10px var(--font-mono,monospace);letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted)">'+l+'</div><div style="font-size:17px;font-weight:700">'+v+'</div></div>';
+    const tdn='style="text-align:right;white-space:nowrap"';
+    body.innerHTML=per
+      +'<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">'+chip('Horas apontadas',eqhFmtH_(tot))+chip('Dias com apontamento',a.length)+chip('Lançamentos',nLanc)+'</div>'
+      +'<div class="table-wrap"><table class="da-t"><thead><tr><th style="width:110px">Data</th><th>Tarefa</th><th style="text-align:right">Horas</th></tr></thead><tbody>'
+      +a.map(d=>'<tr style="background:var(--surface-alt);font-weight:600"><td>'+(d.data==='sem-data'?'Sem data':dataTxt_(d.data))+'</td><td>Total do dia</td><td '+tdn+'>'+eqhFmtH_(d.horas)+'</td></tr>'
+        +(d.tarefas||[]).map(t=>'<tr><td></td><td style="color:var(--text-muted)">'+paEscHtml_(t.tarefa||'')+'</td><td '+tdn+'>'+eqhFmtH_(t.horas)+'</td></tr>').join('')).join('')
+      +'</tbody><tfoot><tr style="font-weight:700"><td colspan="2">Total no período</td><td '+tdn+'>'+eqhFmtH_(tot)+'</td></tr></tfoot></table></div>'
+      +'<p style="font-size:12px;color:var(--text-muted);margin-top:10px">Mostra somente as horas apontadas dentro do período e do filtro (projeto e participante). O total é o mesmo das “Horas apontadas” da tabela.</p>';
   }catch(e){ body.innerHTML=eqhVazio_('Não foi possível carregar o detalhamento.'); }
 }
 function eqhClique_(ev){
