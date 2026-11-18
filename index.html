@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwYOArso38MrecIKJRx7i48KySVcTuIVsXSW2vs4LCo3rsG90N6kP3i9tclCBM0t0PP0g/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycby4-UjFCG3az7NnPG8Qlqv2e2sF-qSjKXu3CbG7QFUmbZIEyIJUUiDF1IbwLo2NeZT9gQ/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1472,6 +1472,66 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .fut-kpi:before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--kpi-color,#38BDF8);box-shadow:0 0 10px var(--kpi-color,#38BDF8)}
 .fut-kpi-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:#6ba6c2;font-weight:600;margin-bottom:6px;display:block}
 
+/* ---- Central de Comando v20.4 (mantém a identidade escura) ---- */
+.cc-filtros{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cc-btn{background:rgba(8,20,36,.8);border:1px solid rgba(56,189,248,.3);color:#BAE6FD;font:600 12.5px 'Rajdhani',sans-serif;padding:6px 12px;border-radius:20px;cursor:pointer}
+.cc-btn:hover{border-color:#38BDF8;box-shadow:0 0 12px rgba(56,189,248,.35)}
+.cc-btn.pri{background:#0EA5E9;color:#031018;border-color:#0EA5E9}
+.cc-hora{font-size:11px;color:#5a8aa0;letter-spacing:.04em}
+.cc-bloco{margin-bottom:26px}
+.cc-bloco>h2{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:.1em;color:var(--fut-bright);margin:0 0 4px;text-transform:uppercase}
+.cc-bloco>.cc-leg{font-size:11.5px;color:#5a8aa0;margin:0 0 12px}
+.cc-decisoes{border:1px solid rgba(255,77,109,.35);background:linear-gradient(160deg,rgba(80,12,30,.35),rgba(4,11,22,.85));border-radius:14px;padding:14px 18px;margin-bottom:26px}
+.cc-decisoes h2{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:.1em;color:#ff8fa3;margin:0 0 10px;text-transform:uppercase}
+.cc-dec{display:grid;grid-template-columns:90px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid rgba(255,255,255,.06);font-size:14px}
+.cc-dec:first-of-type{border-top:0}
+.cc-dec small{display:block;color:#7fb3cc;font-size:12px}
+.cc-crit{display:inline-block;font:700 10.5px 'Rajdhani',sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px;border:1px solid currentColor;white-space:nowrap}
+.cc-crit.c0{color:#ff4d6d}.cc-crit.c1{color:#ffb300}.cc-crit.c2{color:#38BDF8}.cc-crit.c3{color:#7fb3cc}
+.cc-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+.cc-kpi{background:rgba(8,20,36,.85);border:1px solid rgba(56,189,248,.2);border-radius:12px;padding:14px 18px;position:relative;cursor:pointer;text-align:left;color:inherit;font-family:inherit}
+.cc-kpi:hover{border-color:#38BDF8;box-shadow:0 0 18px -4px rgba(56,189,248,.5)}
+.cc-kpi:before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--kc,#38BDF8)}
+.cc-kpi .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:#6ba6c2;font-weight:600}
+.cc-kpi .v{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:700;color:#fff;margin:4px 0 2px}
+.cc-kpi .v.ins{font-family:'Rajdhani',sans-serif;font-size:15px;color:#ffb300;font-weight:600;line-height:1.4;margin:10px 0 4px}
+.cc-kpi .t{font-size:12px;color:#7fb3cc}.cc-kpi .t.up{color:#4ade80}.cc-kpi .t.dn{color:#ff8fa3}
+.cc-kpi .n{font-size:11px;color:#5a8aa0;margin-top:2px}
+.cc-sub{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px}
+.cc-mini{background:rgba(8,20,36,.7);border:1px solid rgba(56,189,248,.16);border-radius:10px;padding:10px 14px}
+.cc-mini .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:#6ba6c2}.cc-mini .v{font-family:'Orbitron',sans-serif;font-size:19px;color:#fff;margin-top:2px}
+.cc-grid2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}
+@media(max-width:900px){.cc-grid2{grid-template-columns:1fr}.cc-dec{grid-template-columns:1fr}}
+.cc-panel{background:rgba(8,20,36,.8);border:1px solid rgba(56,189,248,.18);border-radius:12px;padding:14px 16px}
+.cc-panel h3{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--fut-c3);margin:0 0 10px}
+.cc-tw{overflow-x:auto;border-radius:10px;border:1px solid rgba(56,189,248,.16)}
+.cc-t{width:100%;border-collapse:collapse;font-size:13px;color:#d4ecfa}
+.cc-t th{font:600 10.5px 'Rajdhani',sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#6ba6c2;text-align:left;padding:8px 10px;background:rgba(12,74,110,.35);white-space:nowrap}
+.cc-t td{padding:8px 10px;border-top:1px solid rgba(255,255,255,.06);vertical-align:top}
+.cc-t tr.clk{cursor:pointer}.cc-t tr.clk:hover td{background:rgba(56,189,248,.08)}
+.cc-t td.n,.cc-t th.n{text-align:right;white-space:nowrap}
+.cc-bar{height:8px;background:rgba(255,255,255,.08);border-radius:5px;min-width:90px;overflow:hidden}.cc-bar i{display:block;height:100%;background:#38BDF8}
+.cc-bar i.o{background:#ff4d6d}.cc-bar i.w{background:#ffb300}
+.cc-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.cc-chip{background:rgba(8,20,36,.8);border:1px solid rgba(56,189,248,.25);color:#BAE6FD;font:600 12px 'Rajdhani',sans-serif;padding:4px 12px;border-radius:20px;cursor:pointer}
+.cc-chip.on{background:#0EA5E9;color:#031018;border-color:#0EA5E9}
+.cc-vazio{padding:22px;text-align:center;color:#7fb3cc;font-size:13.5px}
+.cc-ov{position:fixed;inset:0;background:rgba(2,8,16,.72);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px}
+.cc-md{background:#07121f;border:1px solid rgba(56,189,248,.35);border-radius:16px;width:min(980px,100%);max-height:88vh;display:flex;flex-direction:column;color:#d4ecfa;font-family:'Rajdhani',sans-serif}
+.cc-md header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid rgba(56,189,248,.2)}
+.cc-md header h3{margin:0;font-size:16px;color:#BAE6FD}.cc-md .x{background:none;border:0;color:#7fb3cc;font-size:22px;cursor:pointer}
+.cc-md .bd{padding:16px 20px;overflow:auto}
+.cc-md label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#6ba6c2;margin:10px 0 4px}
+.cc-md input,.cc-md select,.cc-md textarea{width:100%;background:#050c18;border:1px solid rgba(56,189,248,.3);color:#d4ecfa;border-radius:8px;padding:8px 10px;font:500 14px 'Rajdhani',sans-serif}
+.cc-md .form-ac{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.cc-def{font-size:12px;color:#7fb3cc;margin:0 0 12px}
+.cc-msg{font-size:12.5px;color:#ff8fa3;margin-top:8px}
+#page-futuristic .cc-t td,.cc-md .cc-t td{color:#d4ecfa;background:transparent;border-bottom:0}
+#page-futuristic .cc-t th,.cc-md .cc-t th{color:#6ba6c2;border-bottom:0}
+#page-futuristic .cc-t td:nth-child(7),#cc-radar-tab .cc-t td:nth-child(7){min-width:240px}
+#page-futuristic .cc-t td:nth-child(10),#cc-radar-tab .cc-t td:nth-child(10){min-width:160px}
+#cc-radar-tab .cc-t td:nth-child(3){min-width:130px}
+.cc-t td small{color:#6ba6c2}
 /* Indicação visual de que o item é clicável (abre modal de detalhamento) */
 .fut-clickable{cursor:pointer;}
 .fut-kpi.fut-clickable:hover{transform:translateY(-2px);box-shadow:0 8px 24px -6px rgba(56,189,248,.35);}
@@ -2968,28 +3028,24 @@ html[data-theme="dark"] .ux-bd.ok{color:#4ade80}html[data-theme="dark"] .ux-bd.i
 
     <!-- PAGE PAINEL EXECUTIVO FUTURISTA -->
     <section class="page" id="page-futuristic">
-      <div class="fut-particles" id="fut-particles"></div>
       <div class="fut-wrap">
         <div class="fut-header">
           <div>
             <div class="fut-title">CENTRAL DE COMANDO</div>
-            <div class="fut-sub">Be Solution · Central de Comando em Tempo Real</div>
+            <div class="fut-sub" id="cc-sub">Be Solution · Inteligência executiva</div>
           </div>
-          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-            <select id="fut-month-sel" class="fut-month-sel"></select>
-            <span class="fut-clock" id="fut-clock">--:--:--</span><span class="fut-live"><span class="fut-live-dot"></span>AO VIVO</span>
+          <div class="cc-filtros">
+            <select id="cc-mes" class="fut-month-sel" aria-label="Mês"></select>
+            <select id="cc-f-cliente" class="fut-month-sel" aria-label="Cliente"><option value="">Todos os clientes</option></select>
+            <select id="cc-f-projeto" class="fut-month-sel" aria-label="Projeto"><option value="">Todos os projetos</option></select>
+            <select id="cc-f-area" class="fut-month-sel" aria-label="Área"><option value="">Todas as áreas</option></select>
+            <button class="cc-btn" id="cc-atualizar" type="button" title="Recalcular com os dados atuais">⟳ Atualizar</button>
+            <span class="cc-hora" id="cc-hora"></span>
           </div>
         </div>
-        <div class="fut-scope-note" id="fut-scope-note"></div>
-        <div class="fut-gauges" id="fut-gauges"></div>
-        <div class="fut-kpi-row" id="fut-kpis"></div>
-        <div class="fut-grid2">
-          <div class="fut-panel"><h3><span class="fut-radar-icon"></span>Horas Executadas por Mês</h3><div class="fut-chart-wrap"><canvas id="fut-linechart"></canvas></div></div>
-          <div class="fut-panel"><h3><span class="fut-radar-icon"></span>Radar de Alertas</h3><div class="fut-alert-list" id="fut-alerts"></div></div>
-        </div>
-        <div class="fut-panel" style="margin-bottom:20px"><h3><span class="fut-radar-icon"></span>Horas por Área</h3><div id="fut-bars"></div></div>
-        <div class="fut-panel" style="margin-bottom:20px"><h3><span class="fut-radar-icon"></span>Tendência de Ociosidade Semanal do Time</h3><div class="fut-chart-wrap"><canvas id="fut-ociosidade-chart"></canvas></div></div>
-        <div class="fut-footer-note">DADOS SINCRONIZADOS · ZOHO SPRINTS + PORTIFOLIO · BE SOLUTION DATA INTELLIGENCE</div>
+        <div class="fut-scope-note" id="cc-escopo"></div>
+        <div id="cc-corpo"></div>
+        <div class="fut-footer-note">DADOS SINCRONIZADOS · ZOHO SPRINTS + PORTIFOLIO · CÁLCULO NO SERVIDOR, RECORTADO PELO SEU ESCOPO</div>
       </div>
     </section>
 
@@ -3225,7 +3281,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v20.3';
+const APP_VERSION='v20.5';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -3466,17 +3522,19 @@ function novidadesUltimaAtualizacao_(){
   return mx?mx.slice(8,10)+'/'+mx.slice(5,7)+'/'+mx.slice(0,4):NOVIDADES_ATUALIZADO_EM;
 }
 const NOVIDADES=[
+  {icone:'⏱️', bg:'#eff6ff', cor:'#2563eb', titulo:'Horas sempre em horas e minutos', descricao:'No Acompanhamento de Horas da Equipe (cartões, tabela e Ver tarefas) e nos alertas da Central de Comando, as horas decimais (ex.: 4,7 h) passaram a aparecer em horas e minutos (4h 42min), igual às demais telas. Só muda a forma de exibir; os valores são os mesmos.'},
+  {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Central de Comando executiva', descricao:'A Central de Comando foi reconstruída: decisões que exigem atenção, 8 indicadores com tendência, performance e entregas, capacidade por área e um Radar de alertas com próxima ação, prazo e situação. Heads e Gestores agora também acessam, vendo só a sua área e a sua equipe. Onde não há dados suficientes aparece “Dados insuficientes”, nunca 0.'},
   {icone:'⚡', bg:'#fff7ed', cor:'#ea580c', titulo:'Carregamento mais rápido nos bastidores', descricao:'Otimizamos o cache do servidor e a verificação de login para reduzir o tempo de resposta das páginas. Nada muda na tela, nos dados ou nas permissões.', paginas:[], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🕒', bg:'#eff6ff', cor:'#2563eb', titulo:'Ver tarefas mostra só as horas apontadas', descricao:'No Acompanhamento de Horas da Equipe, “Ver tarefas” agora lista Data, Tarefa e Horas apontadas por dia, dentro do período, projeto e participante filtrados. O total bate com as Horas apontadas da tabela.', paginas:['equipehoras'], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🗂️', bg:'#eff6ff', cor:'#2563eb', titulo:'Novidades mais enxuta: só os 6 últimos cards', descricao:'Esta página agora mostra apenas as 6 novidades mais recentes. As anteriores continuam disponíveis na Wiki/Documentação, em Histórico › Novidades anteriores.', paginas:[], data:'2026-11-17', tag:'Mudança', tagCor:'mudanca'},
   {icone:'👥', bg:'#eff6ff', cor:'#2563eb', titulo:'Lista de Pessoas e Perfis mais enxuta', descricao:'A lista agora mostra só Assinatura, Nome Completo, E-mail, Cargo, Área, Perfil de Acesso e Último Acesso. Clique na linha para abrir a pessoa; os demais dados continuam no formulário.', paginas:['pessoasadmin'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
-  {icone:'🎨', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo visual em todas as telas de análise', descricao:'Cartões com título em faixa e ícone, filtros com campos arredondados e foco destacado, botão Limpar filtros em pílula e tabelas com moldura. Os dados e gráficos continuam os mesmos. Claro e escuro.', paginas:['cliente','area','setorial','analisehoras','topexec','equipehoras'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
-  {icone:'🎨', bg:'#eff6ff', cor:'#2563eb', titulo:'Formulários com visual renovado', descricao:'Pessoas e Perfis agora tem cabeçalho com iniciais e selos, seções em cartões com ícone e descrição, menu de etapas em cartão e campos com destaque amarelo quando alterados. Status Report e Edição de Portfólio seguem o mesmo visual.', paginas:['pessoasadmin','statusreport','portfolioedit'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
 ];
 // v20.1: a página Novidades exibe só os 6 cards mais recentes (os 6 primeiros acima, tomados ANTES do filtro por perfil).
 // Os anteriores ficam aqui e são exibidos na Wiki (3.15 · Novidades anteriores). Ao lançar uma novidade nova, inclua-a no topo de
 // NOVIDADES e mova o 7º card (o mais antigo) para o topo de NOVIDADES_ARQUIVO.
 const NOVIDADES_ARQUIVO=[
+  {icone:'🎨', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo visual em todas as telas de análise', descricao:'Cartões com título em faixa e ícone, filtros com campos arredondados e foco destacado, botão Limpar filtros em pílula e tabelas com moldura. Os dados e gráficos continuam os mesmos. Claro e escuro.', paginas:['cliente','area','setorial','analisehoras','topexec','equipehoras'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
+  {icone:'🎨', bg:'#eff6ff', cor:'#2563eb', titulo:'Formulários com visual renovado', descricao:'Pessoas e Perfis agora tem cabeçalho com iniciais e selos, seções em cartões com ícone e descrição, menu de etapas em cartão e campos com destaque amarelo quando alterados. Status Report e Edição de Portfólio seguem o mesmo visual.', paginas:['pessoasadmin','statusreport','portfolioedit'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
   {icone:'📝', bg:'#eff6ff', cor:'#2563eb', titulo:'Status Report com barra de ações e aviso de alterações', descricao:'O Status Report ganhou menu lateral de etapas e uma barra fixa que mostra quando há alterações não salvas. Salvar Rascunho só habilita quando algo mudou, os campos obrigatórios aparecem destacados ao finalizar e o sistema avisa antes de trocar de projeto ou semana com alterações pendentes.', paginas:['statusreport'], data:'2026-11-17', tag:'Novo', tagCor:'nova'},
   {icone:'✨', bg:'#eff6ff', cor:'#2563eb', titulo:'Novo padrão de edição nas telas de cadastro', descricao:'Barra fixa no rodapé mostra quando há alterações não salvas (com a quantidade de campos) e o botão Salvar só habilita quando algo mudou. Avisos de sucesso e erro agora aparecem como toast. Em Feriados, é só clicar na linha para editar. Vale para tema claro e escuro.', paginas:['pessoasadmin','feriados','avisos','manutencao','portfolioedit'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
   {icone:'🔒', bg:'#eff6ff', cor:'#2563eb', titulo:'Head e Gestor no cadastro de pessoa seguem a Hierarquia', descricao:'No formulário de pessoa, Head e Gestor aparecem somente para leitura quando a pessoa já está na aba Hierarquia, com atalho para editar lá. Assim existe uma única fonte de verdade e nenhuma alteração é ignorada.', paginas:['pessoasadmin'], data:'2026-11-16', tag:'Novo', tagCor:'nova'},
@@ -4887,12 +4945,12 @@ const PERM_MENU = {
   'Administrador':  ['cliente','calendario','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','statusreport','statusreportpainel','logalteracoes','andamento','relatorioprojetos','permissoes','pessoasadmin','feriados','manutencao','avisos','notificacoes','novidades','wiki'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
-  // executivas (Destaques/Central de Comando), exclusivas do Administrador.
+  // executivas (Destaques); a Central de Comando (v20.4) é liberada, com dados recortados no servidor.
   // Também vê Gestão da Área (a sua).
-  'Head':           ['cliente','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','statusreport'],
+  'Head':           ['cliente','inteligencia','futuristic','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','statusreport'],
   // Gestor: vê ele mesmo + liderados diretos (coluna Gestor de Pessoas_Area) e os
   // projetos deles — mesmo menu do Head (o recorte de dados vem do backend).
-  'Gestor':         ['cliente','inteligencia','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','statusreport'],
+  'Gestor':         ['cliente','inteligencia','futuristic','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','statusreport'],
   // Tech Lead / PO / SM: veem o(s) projeto(s) onde atuam por completo, junto com a equipe.
   'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail','statusreport'],
   'PO':             ['cliente','pessoa','gerente','pend','projdetail','statusreport'],
@@ -11078,12 +11136,6 @@ async function renderTopExec(){
 }
 
 // === PAINEL EXECUTIVO FUTURISTA ===
-let FUT_CLOCK_TIMER=null;
-function startFutClock(){
-  if(FUT_CLOCK_TIMER) clearInterval(FUT_CLOCK_TIMER);
-  const tick=()=>{ const el=document.getElementById('fut-clock'); if(el) el.textContent=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:TZ_PADRAO}); };
-  tick(); FUT_CLOCK_TIMER=setInterval(tick,1000);
-}
 let FUT_ALL_TASKS=null;
 function getFutAllTasks(){
   if(FUT_ALL_TASKS) return FUT_ALL_TASKS;
@@ -11103,490 +11155,164 @@ function brToIso(br){
   const p=br.split('/'); if(p.length!==3) return null;
   return p[2]+'-'+p[1]+'-'+p[0];
 }
-function getFutAvailableMonths(){
-  const months=new Set();
-  Object.values(HM).forEach(pm=>{ Object.keys(pm).forEach(d=>{ if(d!=='sem-data') months.add(d.slice(0,7)); }); });
-  getFutAllTasks().forEach(t=>{ if(t.dt_venc_iso) months.add(t.dt_venc_iso.slice(0,7)); });
-  return [...months].sort();
+// === CENTRAL DE COMANDO (v20.4) — inteligência executiva ===
+// Todo o cálculo (KPIs, capacidade, Radar) é feito no servidor, já recortado pelo escopo do perfil; aqui só se desenha.
+const CC={dados:null,seq:0,crit:'',iniciado:false};
+function ccE(v){return paEscHtml_(v);}
+function ccData(iso){ if(!iso) return '—'; const p=String(iso).slice(0,10).split('-'); return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:ccE(iso); }
+function ccN(v){ return (+v||0).toLocaleString('pt-BR',{maximumFractionDigits:1}); }
+function ccPct(v){ return v==null?'—':v+'%'; }
+function ccVa_(){ return (VIEW_AS_STATE&&VIEW_AS_STATE.email)||''; }
+function ccUrl_(action,extra){
+  const g=id=>(document.getElementById(id)||{}).value||'';
+  let q='&mes='+encodeURIComponent(g('cc-mes'));
+  [['cliente','cc-f-cliente'],['projeto','cc-f-projeto'],['area','cc-f-area']].forEach(([k,id])=>{ if(g(id)) q+='&'+k+'='+encodeURIComponent(g(id)); });
+  if(ccVa_()) q+='&viewAs='+encodeURIComponent(ccVa_());
+  return feUrl_(action,q+(extra||''));
 }
-let FUT_MONTH=null;
-function initFutMonthSel(){
-  const months=getFutAvailableMonths();
-  const sel=document.getElementById('fut-month-sel');
-  const now=new Date(); const curMonth=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-  if(!months.includes(curMonth)) months.push(curMonth);
-  const sortedDesc=[...new Set(months)].sort().reverse();
-  sel.innerHTML=sortedDesc.map(m=>{
-    const p=m.split('-'); const label=ML[p[1]]+'/'+p[0];
-    return '<option value="'+m+'"'+(m===curMonth?' selected':'')+'>'+(m===curMonth?'📍 ':'')+label+'</option>';
-  }).join('');
-  FUT_MONTH = sortedDesc.includes(curMonth)?curMonth:sortedDesc[0];
-  sel.value=FUT_MONTH;
-  sel.onchange=()=>{ FUT_MONTH=sel.value; renderFuturistic(false); };
+function ccIniciar_(){
+  if(CC.iniciado) return; CC.iniciado=true;
+  const sel=document.getElementById('cc-mes'), now=new Date(), meses=[];
+  for(let i=0;i<12;i++){ const d=new Date(now.getFullYear(),now.getMonth()-i,1); meses.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')); }
+  sel.innerHTML=meses.map((m,i)=>'<option value="'+m+'">'+(i===0?'📍 ':'')+ML[m.split('-')[1]]+'/'+m.split('-')[0]+'</option>').join('');
+  ['cc-mes','cc-f-cliente','cc-f-projeto','cc-f-area'].forEach(id=>document.getElementById(id).addEventListener('change',()=>ccCarregar_()));
+  document.getElementById('cc-atualizar').addEventListener('click',()=>ccCarregar_());
+  document.getElementById('page-futuristic').addEventListener('click',ccClique_);
 }
-// F7 — Memoização: horas executadas por mês (full-scan de HM), usada no
-// gráfico de linha "Horas Executadas por Mês" da Central de Comando. NÃO
-// depende do mês selecionado no filtro (mostra a série completa, com o mês
-// selecionado só destacado visualmente) — então não precisa ser recalculada
-// a cada troca de mês, só quando os dados globais mudam (ver
-// invalidarCachesDeDadosGlobais). Resultado idêntico ao cálculo anterior.
-function getFutHorasPorMes(){
-  if(_futHorasMesCache) return _futHorasMesCache;
-  const monthTotals={};
-  Object.values(HM).forEach(personMonths=>{
-    Object.entries(personMonths).forEach(([d,h])=>{
-      if(d==='sem-data')return; const m=d.slice(0,7); monthTotals[m]=(monthTotals[m]||0)+h;
-    });
-  });
-  const monthsSorted=Object.keys(monthTotals).sort();
-  const lineLabels=monthsSorted.map(m=>ML[m.split('-')[1]]+'/'+m.slice(2,4));
-  const lineData=monthsSorted.map(m=>Math.round(monthTotals[m]*10)/10);
-  _futHorasMesCache={monthTotals,monthsSorted,lineLabels,lineData};
-  return _futHorasMesCache;
+function renderFuturistic(){ ccIniciar_(); ccCarregar_(); }
+async function ccCarregar_(){
+  const corpo=document.getElementById('cc-corpo'), seq=++CC.seq;
+  corpo.innerHTML=loadingInlineHtml('Calculando a Central de Comando…');
+  try{
+    const r=await loadDataJSONPComRetry(ccUrl_('centralComando'),1);
+    if(seq!==CC.seq) return;
+    if(!r||r.ok===false){ corpo.innerHTML='<div class="cc-vazio">'+(r&&r.semPermissao?'Seu perfil não tem acesso a esta página.':ccE((r&&r.message)||'Não foi possível carregar.'))+'</div>'; return; }
+    CC.dados=r; ccPopularFiltros_(r); ccDesenhar_(r);
+  }catch(err){ if(seq===CC.seq) corpo.innerHTML='<div class="cc-vazio">Erro ao carregar a Central de Comando. Tente novamente.</div>'; }
 }
-// F7 — Memoização: tendência de ociosidade semanal média do time (últimas 10
-// semanas), usada no 2º gráfico de linha da Central de Comando. Full-scan de
-// PPREVISTO/PM, e NÃO depende do mês selecionado no filtro (é sempre "últimas
-// 10 semanas a partir de hoje") — recalculada só quando os dados globais
-// mudam, não a cada render/troca de mês. Resultado idêntico ao cálculo anterior.
-function getFutTendenciaOciosidade(){
-  if(_futTendenciaCache) return _futTendenciaCache;
-  function segundaFeira(d){ const dt=new Date(d); const day=dt.getDay(); const diff=day===0?-6:1-day; dt.setDate(dt.getDate()+diff); dt.setHours(0,0,0,0); return dt; }
-  function isoLocal(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
-  const NUM_SEMANAS=10;
-  const semanasRef=[];
-  let cursor=segundaFeira(new Date());
-  for(let i=0;i<NUM_SEMANAS;i++){
-    const mon=new Date(cursor); const sun=new Date(cursor); sun.setDate(sun.getDate()+6);
-    semanasRef.unshift({mon:isoLocal(mon),sun:isoLocal(sun),label:String(mon.getDate()).padStart(2,'0')+'/'+String(mon.getMonth()+1).padStart(2,'0')});
-    cursor.setDate(cursor.getDate()-7);
-  }
-  const ociosidadeSemanalData=semanasRef.map(sem=>{
-    let totPrev=0,totExec=0;
-    Object.entries(PPREVISTO).forEach(([email,dias])=>{
-      Object.entries(dias).forEach(([d,v])=>{ if(d>=sem.mon&&d<=sem.sun) totPrev+=v; });
-    });
-    Object.entries(PM).forEach(([email,dias])=>{
-      Object.entries(dias).forEach(([d,v])=>{ if(d!=='sem-data'&&d>=sem.mon&&d<=sem.sun) totExec+=v[0]; });
-    });
-    return totPrev>0?Math.max(0,Math.round((1-totExec/totPrev)*100)):null;
+function ccPopularFiltros_(r){
+  [['cc-f-cliente','cliente','Todos os clientes'],['cc-f-projeto','projeto','Todos os projetos'],['cc-f-area','area','Todas as áreas']].forEach(([id,k,rot])=>{
+    const s=document.getElementById(id), v=s.value, l=(r.filtros||{})[k]||[];
+    s.innerHTML='<option value="">'+rot+'</option>'+l.map(x=>'<option value="'+ccE(x)+'">'+ccE(x)+'</option>').join('');
+    if(l.includes(v)) s.value=v;
   });
-  _futTendenciaCache={semanasRef,ociosidadeSemanalData};
-  return _futTendenciaCache;
+  const h=new Date(); document.getElementById('cc-hora').textContent='Atualizado às '+h.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+' (dados em cache, até 30 min)';
+  document.getElementById('cc-sub').textContent='Be Solution · Visão '+(r.visao==='Executiva'?'Executiva':'Head / Gestor');
+  document.getElementById('cc-escopo').textContent=r.escopo==='total'?'Escopo: toda a carteira':'Escopo: somente a sua área e a sua equipe (recorte feito no servidor)';
 }
-function renderFuturistic(firstLoad){
-  if(firstLoad!==false){ startFutClock(); spawnFutParticles(); initFutMonthSel(); }
-  const mes=FUT_MONTH;
-  const mesLabel = mes ? (ML[mes.split('-')[1]]+'/'+mes.split('-')[0]) : '—';
-  document.getElementById('fut-scope-note').innerHTML =
-    '📅 Horas, área e conclusão de tarefas referentes a <b style="color:#7DD3FC">'+mesLabel+'</b> · Atrasos, bloqueios e ocupação são sempre em tempo real (estado atual)';
-
-  const ativos=D.pj.filter(p=>p.st==='Em Andamento'||p.st==='Sustentação');
-  let atrasadosCount=0,bloqueadasCount=0;
-  const clientesSet=new Set();
-  ativos.forEach(p=>{
-    clientesSet.add(p.cl);
-    if(p.dd && String(p.dd).toLowerCase().includes('atraso')) atrasadosCount++;
-    Object.entries(p.tar_status||{}).forEach(([s,c])=>{ if(s.toLowerCase().includes('block')) bloqueadasCount+=c; });
-  });
-
-  // === MÉTRICAS DO MÊS SELECIONADO ===
-  let horasMes=0;
-  Object.values(HM).forEach(pm=>{ Object.entries(pm).forEach(([d,h])=>{ if(d.slice(0,7)===mes) horasMes+=h; }); });
-
-  const allTasks=getFutAllTasks();
-  let tarefasVencemMes=0, tarefasConcluidasMes=0;
-  allTasks.forEach(t=>{
-    if(t.dt_venc_iso && t.dt_venc_iso.slice(0,7)===mes){
-      tarefasVencemMes++;
-      // Concluída = mesma definição usada em outras partes do dashboard (tem
-      // data de conclusão OU status "Done") — sempre dentro do MESMO conjunto
-      // de tarefas que venceram no mês (nunca um conjunto filtrado por outra
-      // data), pra essa % nunca poder passar de 100%.
-      const concluida = t.dt_conc || (t.status||'').toLowerCase()==='done';
-      if(concluida) tarefasConcluidasMes++;
-    }
-  });
-  const pctConclusaoMes = tarefasVencemMes>0?Math.round(tarefasConcluidasMes/tarefasVencemMes*100):0;
-
-  const totalHestGlobal = ativos.reduce((s,p)=>s+p.horas_est,0);
-  const pctConsumoMes = totalHestGlobal>0?Math.round(horasMes/totalHestGlobal*100):0;
-
-  const pctPrazo = ativos.length>0?Math.round((ativos.length-atrasadosCount)/ativos.length*100):0;
-  const pessoasAtivas = PESA_().filter(p=>p.a).length - SEM_ALOC.length;
-  const totalPessoas = PESA_().filter(p=>p.a).length;
-  const pctOcupacao = totalPessoas>0?Math.round(pessoasAtivas/totalPessoas*100):0;
-
-  // Ritmo do portfólio (% de projetos ativos classificados "No ritmo")
-  const ritmosAtivos=ativos.map(p=>computeRitmoProjeto(p)).filter(Boolean);
-  const noRitmoCount=ritmosAtivos.filter(r=>r.status==='No ritmo').length;
-  const pctPortfolioNoRitmo=ritmosAtivos.length>0?Math.round(noRitmoCount/ritmosAtivos.length*100):0;
-
-  // Guarda o contexto deste render (mês selecionado + listas já filtradas) pra
-  // os modais de detalhamento (item 15) usarem exatamente os mesmos dados e
-  // filtro de mês já aplicados na tela — sem recalcular nada em separado.
-  FUT_STATE={ mes, mesLabel, ativos, atrasadosCount, bloqueadasCount, allTasks, pessoasAtivas, totalPessoas, ritmosAtivos };
-
-  // KPIs
-  const kpis=[
-    {label:'Projetos Ativos (atual)',val:ativos.length,color:'#38BDF8',foot:clientesSet.size+' clientes',cu:true,tipo:'projetos-ativos'},
-    {label:'Horas Executadas (mês)',val:Math.round(horasMes),color:'#0EA5E9',foot:mesLabel,cu:true,suffix:'h',tipo:'horas-mes'},
-    {label:'Pessoas Alocadas (atual)',val:pessoasAtivas,color:'#7DD3FC',foot:'de '+totalPessoas+' colaboradores',cu:true,tip:'Colaboradores com alguma alocação registrada — exclui quem está em "Disponibilidade Confirmada" (Página Disponibilidade).',tipo:'pessoas-alocadas'},
-    {label:'Projetos Atrasados (atual)',val:atrasadosCount,color: atrasadosCount>0?'#ff2d55':'#38BDF8',foot:'de '+ativos.length+' ativos',cu:true,tip:'Projetos ativos cuja data de entrega prevista já passou, sem terem sido concluídos.',tipo:'projetos-atrasados'},
-    {label:'Tarefas Bloqueadas (atual)',val:bloqueadasCount,color: bloqueadasCount>0?'#ffb300':'#38BDF8',foot:'em toda a carteira',cu:true,tip:'Tarefas com status "Blocked" em qualquer projeto do portfólio, no momento atual.',tipo:'tarefas-bloqueadas'},
-    {label:'Alertas Críticos (atual)',val:(EXECTOP.negativos.cli_risco.length+EXECTOP.negativos.zumbi.length),color:'#ff2d55',foot:'clientes em risco + projetos zumbi',cu:true,tip:'Soma de clientes classificados como "em risco" (múltiplos projetos com problema) e projetos "zumbi" (sem atividade recente, mas ainda ativos).',tipo:'alertas-criticos'},
-  ];
-  document.getElementById('fut-kpis').innerHTML = kpis.map((k,ki)=>
-    '<div class="fut-kpi fut-clickable" data-fut-detail="'+k.tipo+'" style="--kpi-color:'+k.color+';--kpi-delay:'+(ki*0.3)+'s" title="'+(k.tip||'Clique para ver os detalhes').replace(/"/g,'&quot;')+'"><span class="fut-kpi-label">'+k.label+'</span><div class="fut-kpi-val" data-countup="'+k.val+'" data-suffix="'+(k.suffix||'')+'">0</div><div class="fut-kpi-foot">'+k.foot+'</div></div>'
-  ).join('');
-  setTimeout(()=>{ countUpAll('#fut-kpis .fut-kpi-val'); }, 100);
-  const gauges=[
-    {label:'Conclusão de Tarefas (mês)',val:pctConclusaoMes,color:'#38BDF8',glow:'rgba(56,189,248,.7)',tip:'Percentual de tarefas concluídas ("Done") entre as tarefas com vencimento no mês selecionado.',tipo:'conclusao-mes'},
-    {label:'Entregas no Prazo (atual)',val:pctPrazo,color: pctPrazo>=80?'#38BDF8':pctPrazo>=50?'#ffb300':'#ff2d55',glow:pctPrazo>=80?'rgba(56,189,248,.7)':pctPrazo>=50?'rgba(255,179,0,.7)':'rgba(255,45,85,.7)',tip:'Percentual de projetos ativos que não estão em atraso, em relação ao total de projetos ativos.',tipo:'entregas-prazo'},
-    {label:'Consumo de Horas (mês)',val:Math.min(pctConsumoMes,999),color: pctConsumoMes>15?'#0EA5E9':'#0EA5E9',glow:'rgba(14,165,233,.7)',tip:'Horas apontadas no mês selecionado em relação às horas estimadas dos projetos ativos.',tipo:'horas-mes'},
-    {label:'Ocupação do Time (atual)',val:pctOcupacao,color:'#7DD3FC',glow:'rgba(125,211,252,.7)',tip:'Percentual de colaboradores com alguma alocação registrada (Portifolio ou Zoho), excluindo quem está em "Disponibilidade Confirmada" (sem nenhuma alocação).',tipo:'pessoas-alocadas'},
-    {label:'Portfólio no Ritmo (atual)',val:pctPortfolioNoRitmo,color: pctPortfolioNoRitmo>=60?'#38BDF8':pctPortfolioNoRitmo>=35?'#ffb300':'#ff2d55',glow:pctPortfolioNoRitmo>=60?'rgba(56,189,248,.7)':pctPortfolioNoRitmo>=35?'rgba(255,179,0,.7)':'rgba(255,45,85,.7)',tip:TIP_RITMO_PROJETO+' Aqui: % de projetos ativos classificados como "No ritmo".',tipo:'portfolio-ritmo'},
-  ];
-  document.getElementById('fut-gauges').innerHTML = gauges.map((g,gi)=>{
-    const displayVal = g.label.indexOf('Consumo')===0 ? pctConsumoMes : g.val;
-    const ringPct = Math.min(g.val,100);
-    return '<div class="fut-gauge-card fut-clickable" data-fut-detail="'+g.tipo+'"><div class="fut-ring" style="--ring-pct:0;--ring-color:'+g.color+';--ring-glow:'+g.glow+'" data-target="'+ringPct+'"><span class="fut-ring-val" data-countup="'+displayVal+'" data-suffix="%">0%</span></div><div class="fut-gauge-label" title="'+(g.tip||'').replace(/"/g,'&quot;')+'">'+g.label+'</div></div>';
-  }).join('');
-  setTimeout(()=>{
-    document.querySelectorAll('#fut-gauges .fut-ring').forEach(el=>{
-      el.style.setProperty('--ring-pct', el.dataset.target);
-    });
-    countUpAll('#fut-gauges .fut-ring-val');
-  }, 100);
-
-  // BARRAS: Horas por área NO MÊS selecionado
-  const areaEntries=Object.entries(AREAS).map(([n,d])=>{
-    let h=0;
-    Object.entries(d.ad||{}).forEach(([dt,v])=>{ if(dt.slice(0,7)===mes) h+=v[0]; });
-    return {n,h};
-  }).sort((a,b)=>b.h-a.h).slice(0,8);
-  const maxH=Math.max(...areaEntries.map(a=>a.h),1);
-  document.getElementById('fut-bars').innerHTML = areaEntries.map(a=>
-    '<div class="fut-bar-row fut-clickable" data-fut-detail="area-mes" data-fut-area="'+a.n.replace(/"/g,'&quot;')+'"><div class="fut-bar-label">'+a.n+'</div><div class="fut-bar-track"><div class="fut-bar-fill" data-w="'+Math.round(a.h/maxH*100)+'"></div></div><div class="fut-bar-val">'+fH(a.h)+'</div></div>'
-  ).join('');
-  setTimeout(()=>{
-    document.querySelectorAll('#fut-bars .fut-bar-fill').forEach(el=>{ el.style.width=el.dataset.w+'%'; });
-  }, 150);
-
-  // GRÁFICO DE LINHA: Horas Executadas por Mês (tendência completa, mês selecionado destacado)
-  // F7: série completa memoizada (não depende do mês selecionado) — só o
-  // destaque do mês atual (pointColors/pointRadii) é recalculado a cada render.
-  const {monthTotals,monthsSorted,lineLabels,lineData}=getFutHorasPorMes();
-  const pointColors=monthsSorted.map(m=>m===mes?'#7DD3FC':'#0a1a2c');
-  const pointRadii=monthsSorted.map(m=>m===mes?7:4);
-  if(ch.futLine){ try{ch.futLine.destroy();}catch(e){} }
-  if(COK && lineData.length>0){
-    ch.futLine=new Chart(document.getElementById('fut-linechart'),{
-      type:'line',
-      data:{labels:lineLabels,datasets:[{
-        data:lineData, borderColor:'#38BDF8', borderWidth:2.5,
-        backgroundColor:(ctx)=>{ const g=ctx.chart.ctx.createLinearGradient(0,0,0,180); g.addColorStop(0,'rgba(56,189,248,.45)'); g.addColorStop(1,'rgba(56,189,248,0)'); return g; },
-        fill:true, tension:.35, pointRadius:pointRadii, pointBackgroundColor:pointColors, pointBorderColor:'#7DD3FC', pointBorderWidth:2,
-        pointHoverRadius:8, pointHoverBackgroundColor:'#38BDF8'
-      }]},
-      options:{responsive:true,maintainAspectRatio:false,
-        animation:{duration:1400,easing:'easeOutQuart'},
-        onClick:(evt,elems)=>{
-          if(!elems.length) return;
-          const mesClicado=monthsSorted[elems[0].index];
-          const totalMes=monthTotals[mesClicado]||0;
-          const linhas=Object.entries(AREAS).map(([n,d])=>{
-            let h=0; Object.entries(d.ad||{}).forEach(([dt,v])=>{ if(dt.slice(0,7)===mesClicado) h+=v[0]; });
-            return {n,h};
-          }).filter(a=>a.h>0).sort((a,b)=>b.h-a.h);
-          const colunasFutAreaMes=[{key:'area',label:'Área',tipo:'texto',get:a=>a.n},{key:'horas',label:'Horas',tipo:'horas',get:a=>a.h}];
-          const renderFutAreaMesModal=()=>{
-            const stFutAreaMes=SORT_STATE['fut-modal-area-mes']||{col:null,dir:0};
-            const linhasOrd=stFutAreaMes.col?ordenarLinhas_(linhas,colunasFutAreaMes.find(c=>c.key===stFutAreaMes.col),stFutAreaMes.dir):linhas;
-            document.getElementById('task-modal-title').textContent='Horas Executadas — '+(ML[mesClicado.split('-')[1]]+'/'+mesClicado.split('-')[0]);
-            document.getElementById('task-modal-body').innerHTML='<div style="margin-bottom:10px;font-size:13px;color:var(--text-faint)">Total do mês: <strong>'+fH(totalMes)+'</strong></div>'+
-              (linhas.length===0?'<div class="empty-state" style="padding:20px"><p>Sem detalhamento por área.</p></div>':'<div class="table-wrap"><table>'+theadOrdenavel_('fut-modal-area-mes',colunasFutAreaMes)+'<tbody>'+linhasOrd.map(a=>'<tr><td>'+a.n+'</td><td>'+fH(a.h)+'</td></tr>').join('')+'</tbody></table></div>');
-          };
-          SORT_RERENDER['fut-modal-area-mes']=renderFutAreaMesModal;
-          renderFutAreaMesModal();
-          document.getElementById('task-modal-overlay').classList.add('show');
-        },
-        plugins:{legend:{display:false},tooltip:{backgroundColor:'#0a1a2c',borderColor:'#38BDF8',borderWidth:1,titleColor:'#BAE6FD',bodyColor:'#fff',
-          callbacks:{label:(ctx)=>fH(ctx.raw)}}},
-        scales:{
-          x:{grid:{color:'rgba(56,189,248,.08)'},ticks:{color:'#6ba6c2',font:{size:11}}},
-          y:{grid:{color:'rgba(56,189,248,.08)'},ticks:{color:'#6ba6c2',font:{size:11},callback:v=>v+'h'},beginAtZero:true}
-        }}
-    });
-  }
-
-  // GRÁFICO: Tendência de Ociosidade Semanal Média do Time (últimas 10 semanas, dados já existentes)
-  // F7: memoizado — não depende do mês selecionado no filtro (é sempre
-  // "últimas 10 semanas a partir de hoje"), então não recalcula a cada render.
-  const {semanasRef,ociosidadeSemanalData}=getFutTendenciaOciosidade();
-  if(ch.futOciosidade){ try{ch.futOciosidade.destroy();}catch(e){} }
-  if(COK && document.getElementById('fut-ociosidade-chart')){
-    ch.futOciosidade=new Chart(document.getElementById('fut-ociosidade-chart'),{
-      type:'line',
-      data:{labels:semanasRef.map(s=>s.label),datasets:[{
-        data:ociosidadeSemanalData, borderColor:'#ffb300', borderWidth:2.5,
-        backgroundColor:(ctx)=>{ const g=ctx.chart.ctx.createLinearGradient(0,0,0,180); g.addColorStop(0,'rgba(255,179,0,.35)'); g.addColorStop(1,'rgba(255,179,0,0)'); return g; },
-        fill:true, tension:.35, spanGaps:true, pointRadius:4, pointBackgroundColor:'#0a1a2c', pointBorderColor:'#ffb300', pointBorderWidth:2,
-        pointHoverRadius:7, pointHoverBackgroundColor:'#ffb300'
-      }]},
-      options:{responsive:true,maintainAspectRatio:false,
-        animation:{duration:1400,easing:'easeOutQuart'},
-        onClick:(evt,elems)=>{
-          if(!elems.length) return;
-          const sem=semanasRef[elems[0].index];
-          const linhas=PESA_().filter(p=>p.a).map(p=>{
-            const ek=(p.email||'').toLowerCase();
-            const hPrev=Object.entries(PPREVISTO[ek]||{}).filter(([d])=>d>=sem.mon&&d<=sem.sun).reduce((s,[,v])=>s+v,0);
-            const hExec=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&d>=sem.mon&&d<=sem.sun).reduce((s,[,v])=>s+v[0],0);
-            const pct=hPrev>0?Math.max(0,Math.round((1-hExec/hPrev)*100)):null;
-            return {p,pct,hPrev,hExec};
-          }).filter(x=>x.pct!==null).sort((a,b)=>b.pct-a.pct);
-          const colunasFutOciosSemana=[
-            {key:'nome',label:'Nome',tipo:'texto',get:x=>x.p.a},
-            {key:'ociosidade',label:'% Ociosidade',tipo:'percentual',get:x=>x.pct},
-            {key:'previsto',label:'Previsto',tipo:'horas',get:x=>x.hPrev},
-            {key:'executado',label:'Executado',tipo:'horas',get:x=>x.hExec}
-          ];
-          const renderFutOciosSemanaModal=()=>{
-            const stFutOcios=SORT_STATE['fut-modal-ocios-semana']||{col:null,dir:0};
-            const linhasOrd=stFutOcios.col?ordenarLinhas_(linhas,colunasFutOciosSemana.find(c=>c.key===stFutOcios.col),stFutOcios.dir):linhas;
-            document.getElementById('task-modal-title').textContent='Ociosidade da Semana — '+sem.label;
-            document.getElementById('task-modal-body').innerHTML=linhas.length===0?'<div class="empty-state" style="padding:20px"><p>Nenhuma tarefa vencendo nesta semana.</p></div>':
-              '<div class="table-wrap"><table>'+theadOrdenavel_('fut-modal-ocios-semana',colunasFutOciosSemana)+'<tbody>'+
-              linhasOrd.map(x=>'<tr><td>'+personLinkHtml(x.p.a)+'</td><td>'+x.pct+'%</td><td>'+fH(x.hPrev)+'</td><td>'+fH(x.hExec)+'</td></tr>').join('')+'</tbody></table></div>';
-          };
-          SORT_RERENDER['fut-modal-ocios-semana']=renderFutOciosSemanaModal;
-          renderFutOciosSemanaModal();
-          document.getElementById('task-modal-overlay').classList.add('show');
-        },
-        plugins:{legend:{display:false},tooltip:{backgroundColor:'#0a1a2c',borderColor:'#ffb300',borderWidth:1,titleColor:'#BAE6FD',bodyColor:'#fff',
-          callbacks:{label:(ctx)=>ctx.raw===null?'sem dados':ctx.raw+'% de ociosidade'}}},
-        scales:{
-          x:{grid:{color:'rgba(56,189,248,.08)'},ticks:{color:'#6ba6c2',font:{size:11}}},
-          y:{grid:{color:'rgba(56,189,248,.08)'},ticks:{color:'#6ba6c2',font:{size:11},callback:v=>v+'%'},beginAtZero:true,suggestedMax:100}
-        }}
-    });
-  }
-
-  // RADAR DE ALERTAS (sempre em tempo real, independente do mês)
-  let alertsHtml='';
-  EXECTOP.negativos.atrasados.slice(0,3).forEach(x=>{
-    alertsHtml+='<div class="fut-alert fut-clickable" data-fut-detail="projeto-single" data-fut-pj="'+x.pj.replace(/"/g,'&quot;')+'"><span class="fut-alert-icon">⏰</span><div class="fut-alert-txt"><b>'+x.pj+'</b> — '+x.dias+' dias de atraso<span>'+x.cl+' · GP: '+personLinkHtml(x.gp)+'</span></div></div>';
-  });
-  EXECTOP.negativos.cli_risco.slice(0,2).forEach(x=>{
-    alertsHtml+='<div class="fut-alert fut-clickable" data-fut-detail="cliente-single" data-fut-cl="'+x.n.replace(/"/g,'&quot;')+'"><span class="fut-alert-icon">⚠️</span><div class="fut-alert-txt"><b>'+x.n+'</b> — cliente em risco<span>'+x.atraso_count+' projeto(s) atrasado(s) · '+x.avg_pct+'% conclusão média</span></div></div>';
-  });
-  EXECTOP.negativos.zumbi.slice(0,2).forEach(x=>{
-    alertsHtml+='<div class="fut-alert fut-clickable" data-fut-detail="projeto-single" data-fut-pj="'+x.pj.replace(/"/g,'&quot;')+'"><span class="fut-alert-icon">🧟</span><div class="fut-alert-txt"><b>'+x.pj+'</b> — projeto zumbi<span>'+(x.nunca?'Nunca apontado':x.dias_sem+' dias sem apontamento')+' · '+x.cl+'</span></div></div>';
-  });
-  if(EXECTOP.positivos.saude.length>0){
-    const s=EXECTOP.positivos.saude[0];
-    alertsHtml+='<div class="fut-alert ok fut-clickable" data-fut-detail="projeto-single" data-fut-pj="'+s.pj.replace(/"/g,'&quot;')+'"><span class="fut-alert-icon">✅</span><div class="fut-alert-txt"><b>'+s.pj+'</b> — melhor saúde de entrega<span>'+s.pct+'% concluído · '+s.cl+'</span></div></div>';
-  }
-  if(!alertsHtml) alertsHtml='<div class="fut-alert ok"><span class="fut-alert-icon">✅</span><div class="fut-alert-txt"><b>Nenhum alerta crítico</b><span>Portfólio operando dentro do esperado</span></div></div>';
-  document.getElementById('fut-alerts').innerHTML=alertsHtml;
-  document.querySelectorAll('#fut-alerts .fut-alert').forEach((el,i)=>{ el.style.animationDelay=(i*0.08)+'s'; });
+const CC_COR={'Crítico':'c0','Alto':'c1','Atenção':'c2','Informativo':'c3'};
+function ccCritHtml(c){ return '<span class="cc-crit '+(CC_COR[c]||'c3')+'">'+ccE(c)+'</span>'; }
+function ccKpiHtml(k){
+  let v, cls='';
+  if(k.valor==null){ v='Dados insuficientes'; cls=' ins'; } else v=k.fmt==='pct'?k.valor+'%':ccN(k.valor);
+  let t='';
+  if(k.tend&&k.tend.dir!=='sem'){
+    const un=k.id==='concluidos'?'%':' p.p.', bom=['concluidos','noPrazo','conclTarefas'].includes(k.id), d=k.tend.delta;
+    const seta=k.tend.dir==='estavel'?'●':(k.tend.dir==='sobe'?'▲':'▼');
+    const c=k.tend.dir==='estavel'?'':(bom?(k.tend.dir==='sobe'?' up':' dn'):'');
+    t='<div class="t'+c+'">'+seta+' '+(k.tend.dir==='estavel'?'estável':(d>0?'+':'')+ccN(d)+un)+' vs mês anterior'+(k.ant!=null?' ('+(k.fmt==='pct'?k.ant+'%':k.ant)+')':'')+'</div>';
+  } else t='<div class="t">'+ccE(k.comp||'sem comparação')+'</div>';
+  const cor={atrasados:'#ff4d6d',emRisco:'#ffb300',alertas:'#ff4d6d'}[k.id]||'#38BDF8';
+  return '<button type="button" class="cc-kpi" style="--kc:'+cor+'" data-kpi="'+k.id+'" title="'+ccE(k.formula||'')+'"><div class="l">'+ccE(k.rot)+' ⓘ</div><div class="v'+cls+'">'+v+'</div>'+t+(k.nota?'<div class="n">'+ccE(k.nota)+'</div>':'')+'</button>';
 }
-
-// ============================================================
-// CENTRAL DE COMANDO — detalhamento em modal (item 15). Reaproveita o mesmo
-// modal já usado pro detalhamento de tarefa/Status Report (task-modal-overlay).
-// Todo builder usa FUT_STATE (capturado no último render da própria Central de
-// Comando) — ou seja, sempre reflete o MESMO mês/filtro que está na tela, nunca
-// recalcula com outro contexto. Nenhum dado novo é gerado: são sempre listas
-// dos registros reais já existentes que compõem o indicador clicado.
-// ============================================================
-function buildListaProjetosModal(lista){
-  SORT_RERENDER['fut-modal-projetos']=()=>{ const el=document.getElementById('task-modal-body'); if(el) el.innerHTML=buildListaProjetosModal(lista); };
-  if(lista.length===0) return '<div class="empty-state" style="padding:30px 10px"><p>Nenhum projeto encontrado.</p></div>';
-  const colunasFutProj=[
-    {key:'projeto',label:'Projeto',tipo:'texto',get:p=>p.pj},
-    {key:'cliente',label:'Cliente',tipo:'texto',get:p=>p.cl},
-    {key:'gp',label:'GP',tipo:'texto',get:p=>p.gp},
-    {key:'status',label:'Status',tipo:'texto',get:p=>p.st},
-    {label:'Ritmo'}
-  ];
-  const stFutProj=SORT_STATE['fut-modal-projetos']||{col:null,dir:0};
-  const listaOrd=stFutProj.col?ordenarLinhas_(lista,colunasFutProj.find(c=>c.key===stFutProj.col),stFutProj.dir):lista;
-  let h='<div class="table-wrap" style="max-height:420px"><table>'+theadOrdenavel_('fut-modal-projetos',colunasFutProj)+'<tbody>';
-  listaOrd.forEach(p=>{
-    h+='<tr><td><strong>'+projetoLinkHtml(p.pj)+'</strong></td><td>'+p.cl+'</td><td>'+personLinkHtml(p.gp)+'</td><td>'+statusChipHtml(p.st)+'</td><td>'+(ritmoBadgeHtml(p)||'—')+'</td></tr>';
+function ccSerieSvg_(serie){
+  const W=560,H=190,pl=40,pb=24,pt=10,mx=Math.max(1,...serie.map(s=>Math.max(s.est,s.apo)));
+  const bw=(W-pl)/serie.length, h=v=>(H-pb-pt)*v/mx;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Horas estimadas e apontadas por mês">';
+  [0,.5,1].forEach(f=>{ const y=H-pb-(H-pb-pt)*f; s+='<line x1="'+pl+'" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="rgba(255,255,255,.08)"/><text x="'+(pl-4)+'" y="'+(y+3)+'" font-size="9" fill="#6ba6c2" text-anchor="end">'+Math.round(mx*f)+'</text>'; });
+  serie.forEach((p,i)=>{
+    const x=pl+i*bw+bw*.15, w=bw*.33, [a,b]=p.mes.split('-');
+    s+='<rect x="'+x+'" y="'+(H-pb-h(p.est))+'" width="'+w+'" height="'+h(p.est)+'" rx="2" fill="#6ba6c2"><title>Estimadas '+fHM_(p.est)+'</title></rect>';
+    s+='<rect x="'+(x+w+2)+'" y="'+(H-pb-h(p.apo))+'" width="'+w+'" height="'+h(p.apo)+'" rx="2" fill="#38BDF8"><title>Apontadas '+fHM_(p.apo)+'</title></rect>';
+    s+='<text x="'+(x+w)+'" y="'+(H-8)+'" font-size="10" fill="#9cc4d8" text-anchor="middle">'+ML[b]+'/'+a.slice(2)+'</text>';
   });
-  h+='</tbody></table></div>';
-  return h;
+  return s+'</svg><div style="font-size:11px;color:#7fb3cc;margin-top:4px"><span style="color:#6ba6c2">■</span> Estimadas &nbsp; <span style="color:#38BDF8">■</span> Apontadas</div>';
 }
-function buildListaTarefasModal(lista){
-  SORT_RERENDER['fut-modal-tarefas']=()=>{ const el=document.getElementById('task-modal-body'); if(el) el.innerHTML=buildListaTarefasModal(lista); };
-  if(lista.length===0) return '<div class="empty-state" style="padding:30px 10px"><p>Nenhuma tarefa encontrada.</p></div>';
-  const colunasFutTarefas=[
-    {key:'tarefa',label:'Tarefa',tipo:'texto',get:t=>t.tarefa},
-    {key:'projeto',label:'Projeto',tipo:'texto',get:t=>t.pj},
-    {key:'status',label:'Status',tipo:'texto',get:t=>t.status},
-    {key:'resp',label:'Responsável',tipo:'texto',get:t=>t.resp},
-    {key:'venc',label:'Vencimento',tipo:'data',get:t=>t.dt_venc}
-  ];
-  const stFutTarefas=SORT_STATE['fut-modal-tarefas']||{col:null,dir:0};
-  const listaOrd=stFutTarefas.col?ordenarLinhas_(lista,colunasFutTarefas.find(c=>c.key===stFutTarefas.col),stFutTarefas.dir):lista;
-  let h='<div class="table-wrap" style="max-height:420px"><table>'+theadOrdenavel_('fut-modal-tarefas',colunasFutTarefas)+'<tbody>';
-  listaOrd.forEach(t=>{
-    const idx=tarefaIndicePorRef(t.pj,t);
-    h+='<tr><td>'+taskLinkHtml(t.pj,idx,t.tarefa)+'</td><td>'+projetoLinkHtml(t.pj)+'</td><td><span class="status-pill">'+(t.status||'—')+'</span></td><td>'+taskRespCellHtml(t)+'</td><td>'+(t.dt_venc||'—')+'</td></tr>';
-  });
-  h+='</tbody></table></div>';
-  return h;
+function ccDesenhar_(r){
+  const P=r.performance||{}, C=r.capacidade||{}, R=r.radar||{}, T=P.tarefas||{};
+  let h='';
+  h+='<div class="cc-decisoes"><h2>⚑ Decisões que exigem atenção</h2>'+((r.decisoes||[]).length?(r.decisoes.map(d=>'<div class="cc-dec"><div>'+ccCritHtml(d.crit)+'</div><div>'+ccE(d.titulo)+'<small>'+ccE(d.ocorrencia)+' — '+ccE(d.sugestao)+'</small></div><button class="cc-btn" type="button" data-trat="'+ccE(d.chave)+'">Tratar</button></div>').join('')):'<div class="cc-vazio">Nenhuma ocorrência que exija decisão agora.</div>')+'</div>';
+  h+='<div class="cc-bloco"><h2>1 · Visão executiva</h2><p class="cc-leg">Clique em um indicador para ver os itens por trás do número. Passe o mouse no ⓘ para ver a fórmula.</p><div class="cc-kpis">'+(r.kpis||[]).map(ccKpiHtml).join('')+'</div></div>';
+  const ex=P.execPct, exA=P.execPctAnt;
+  h+='<div class="cc-bloco"><h2>2 · Performance e entregas</h2><p class="cc-leg">Mês selecionado. Horas estimadas e apontadas no mesmo recorte (sem duplicar responsáveis; só quem participa das análises).</p>'
+    +'<div class="cc-sub">'
+    +'<div class="cc-mini"><div class="l">Horas estimadas</div><div class="v">'+fH(P.est||0)+'</div></div>'
+    +'<div class="cc-mini"><div class="l">Horas apontadas</div><div class="v">'+fH(P.apo||0)+'</div></div>'
+    +'<div class="cc-mini"><div class="l">Diferença</div><div class="v" style="color:'+((P.dif||0)>0?'#ff8fa3':'#4ade80')+'">'+((P.dif||0)>0?'+':'')+fH(P.dif||0)+'</div></div>'
+    +'<div class="cc-mini"><div class="l">% de execução</div><div class="v" style="'+(ex==null?'font-family:Rajdhani;font-size:14px;color:#ffb300':'')+'">'+(ex==null?'Dados insuficientes':ex+'%')+'</div>'+(exA!=null?'<div style="font-size:11px;color:#7fb3cc">mês anterior: '+exA+'%</div>':'')+'</div>'
+    +'<div class="cc-mini"><div class="l">Tarefas concluídas</div><div class="v">'+(T.concl||0)+'</div></div>'
+    +'<div class="cc-mini"><div class="l">Em andamento</div><div class="v">'+(T.and||0)+'</div></div>'
+    +'<div class="cc-mini"><div class="l">Bloqueadas</div><div class="v" style="color:'+((T.bloq||0)?'#ffb300':'#fff')+'">'+(T.bloq||0)+'</div></div></div>'
+    +'<div class="cc-grid2"><div class="cc-panel"><h3>Estimadas × apontadas — últimos 6 meses</h3>'+ccSerieSvg_(P.serie||[])+'</div>'
+    +'<div class="cc-panel"><h3>Projetos com tendência de atraso</h3>'+((P.projetosTendencia||[]).length?'<div class="cc-tw"><table class="cc-t"><thead><tr><th>Projeto</th><th>GP</th><th>Ritmo</th></tr></thead><tbody>'+P.projetosTendencia.map(p=>'<tr><td>'+ccE(p.pj)+'<small style="display:block;color:#6ba6c2">'+ccE(p.cl)+'</small></td><td>'+ccE(p.gp||'—')+'</td><td>'+ccE(p.ritmo)+'</td></tr>').join('')+'</tbody></table></div>':'<div class="cc-vazio">Nenhum projeto ativo com ritmo abaixo do esperado.</div>')+'</div></div></div>';
+  h+='<div class="cc-bloco"><h2>3 · Capacidade e alocação</h2><p class="cc-leg">Capacidade mensal cadastrada em Pessoas_Area. Comprometida = apontadas no mês + horas restantes de tarefas abertas (mês corrente). Contrato integral sem carga cadastrada = 160 h; pessoas sem capacidade definida ficam fora do percentual.</p>'
+    +'<div class="cc-sub"><div class="cc-mini"><div class="l">Capacidade comprometida</div><div class="v">'+ccPct(C.ocupPct)+'</div></div><div class="cc-mini"><div class="l">Em sobrecarga (&gt;100%)</div><div class="v" style="color:'+(C.sobrecarga?'#ff8fa3':'#fff')+'">'+(C.sobrecarga||0)+'</div></div><div class="cc-mini"><div class="l">Baixa alocação (&lt;50%)</div><div class="v">'+(C.baixaAlocacao||0)+'</div></div><div class="cc-mini"><div class="l">Capacidade não definida</div><div class="v" style="color:'+(C.semCapacidade?'#ffb300':'#fff')+'">'+(C.semCapacidade||0)+'</div></div></div>'
+    +((C.areas||[]).length?'<div class="cc-tw"><table class="cc-t"><thead><tr><th>Área</th><th>Head</th><th class="n">Pessoas</th><th class="n">Capacidade</th><th class="n">Apontadas</th><th class="n">Comprometida</th><th>Uso</th><th class="n">Disponível</th><th class="n">Sobrecarga</th><th class="n">Baixa</th></tr></thead><tbody>'
+      +C.areas.map(a=>'<tr class="clk" data-area="'+ccE(a.area)+'"><td>'+ccE(a.area)+'</td><td>'+ccE(a.head||'—')+'</td><td class="n">'+a.pessoas+(a.semDef?' <small title="sem capacidade definida">('+a.semDef+' s/ cap.)</small>':'')+'</td><td class="n">'+(a.cap?fH(a.cap):'—')+'</td><td class="n">'+fH(a.apo)+'</td><td class="n">'+(a.cap?fH(a.comp):'—')+'</td><td>'+(a.pct==null?'<small>Dados insuficientes</small>':'<div class="cc-bar" title="'+a.pct+'%"><i class="'+(a.pct>100?'o':(a.pct<50?'w':''))+'" style="width:'+Math.min(100,a.pct)+'%"></i></div><small>'+a.pct+'%</small>')+'</td><td class="n">'+(a.disp==null?'—':fH(a.disp))+'</td><td class="n">'+a.sobre+'</td><td class="n">'+a.baixa+'</td></tr>').join('')+'</tbody></table></div>':'<div class="cc-vazio">Sem pessoas no recorte selecionado.</div>')+'</div>';
+  h+='<div class="cc-bloco" id="cc-radar"><h2>4 · Radar de decisões e alertas</h2><p class="cc-leg">Regras objetivas (R1–R8); nenhum alerta sem regra. Limiares: '+R.limiares.semApontDias+' dias sem apontamento · bloqueio &gt;'+R.limiares.bloqueioDias+' dias · desvio &gt;'+R.limiares.desvioPct+'% · sobrecarga &gt;'+R.limiares.sobrecargaPct+'% · baixa &lt;'+R.limiares.baixaPct+'% · Status Report &gt;'+R.limiares.srDias+' dias.</p>'
+    +'<div class="cc-chips" id="cc-chips"></div><div id="cc-radar-tab"></div></div>';
+  document.getElementById('cc-corpo').innerHTML=h; ccRadar_();
 }
-function abrirDetalheFuturista(tipo, el){
-  let titulo='Detalhamento', corpo='';
-  const S=FUT_STATE;
-  if(tipo==='conclusao-mes'){
-    titulo='Tarefas com Vencimento em '+S.mesLabel;
-    const lista=S.allTasks.filter(t=>t.dt_venc_iso && t.dt_venc_iso.slice(0,7)===S.mes);
-    corpo=buildListaTarefasModal(lista);
-  }else if(tipo==='entregas-prazo'){
-    titulo='Projetos Ativos — Entregas no Prazo';
-    corpo=buildListaProjetosModal(S.ativos);
-  }else if(tipo==='horas-mes'){
-    titulo='Horas Executadas por Área — '+S.mesLabel;
-    const linhas=Object.entries(AREAS).map(([n,d])=>{
-      let h=0; Object.entries(d.ad||{}).forEach(([dt,v])=>{ if(dt.slice(0,7)===S.mes) h+=v[0]; });
-      return {n,h};
-    }).filter(a=>a.h>0).sort((a,b)=>b.h-a.h);
-    const colunasFutHorasMes=[{key:'area',label:'Área',tipo:'texto',get:a=>a.n},{key:'horas',label:'Horas',tipo:'horas',get:a=>a.h}];
-    SORT_RERENDER['fut-modal-horas-mes']=()=>abrirDetalheFuturista(tipo,el);
-    const stFutHorasMes=SORT_STATE['fut-modal-horas-mes']||{col:null,dir:0};
-    const linhasOrd=stFutHorasMes.col?ordenarLinhas_(linhas,colunasFutHorasMes.find(c=>c.key===stFutHorasMes.col),stFutHorasMes.dir):linhas;
-    corpo=linhas.length===0?'<div class="empty-state" style="padding:30px 10px"><p>Nenhuma hora registrada neste mês.</p></div>':
-      '<div class="table-wrap"><table>'+theadOrdenavel_('fut-modal-horas-mes',colunasFutHorasMes)+'<tbody>'+linhasOrd.map(a=>'<tr><td>'+a.n+'</td><td>'+fH(a.h)+'</td></tr>').join('')+'</tbody></table></div>';
-  }else if(tipo==='pessoas-alocadas'){
-    titulo='Pessoas Alocadas x Sem Alocação (atual)';
-    const semAlocSet=new Set(SEM_ALOC.map(o=>o.a));
-    const alocadas=PESA_().filter(p=>p.a && !semAlocSet.has(p.a));
-    const colunasFutPessoas=[{key:'nome',label:'Nome',tipo:'texto',get:p=>p.a},{key:'area',label:'Área',tipo:'texto',get:p=>p.area}];
-    SORT_RERENDER['fut-modal-alocadas']=()=>abrirDetalheFuturista(tipo,el);
-    SORT_RERENDER['fut-modal-semaloc']=()=>abrirDetalheFuturista(tipo,el);
-    const stFutAlocadas=SORT_STATE['fut-modal-alocadas']||{col:null,dir:0};
-    const alocadasOrd=stFutAlocadas.col?ordenarLinhas_(alocadas,colunasFutPessoas.find(c=>c.key===stFutAlocadas.col),stFutAlocadas.dir):alocadas;
-    const stFutSemAloc=SORT_STATE['fut-modal-semaloc']||{col:null,dir:0};
-    const semAlocOrd=stFutSemAloc.col?ordenarLinhas_(SEM_ALOC,colunasFutPessoas.find(c=>c.key===stFutSemAloc.col),stFutSemAloc.dir):SEM_ALOC;
-    corpo='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'+
-      '<div><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--st-feito)">✓ Alocadas ('+alocadas.length+')</div><div class="table-wrap" style="max-height:380px"><table>'+theadOrdenavel_('fut-modal-alocadas',colunasFutPessoas)+'<tbody>'+alocadasOrd.map(p=>'<tr><td>'+personLinkHtml(p.a)+'</td><td>'+(p.area||'—')+'</td></tr>').join('')+'</tbody></table></div></div>'+
-      '<div><div style="font-weight:700;font-size:13px;margin-bottom:8px;color:var(--st-bloqueado)">✗ Sem Alocação ('+SEM_ALOC.length+')</div><div class="table-wrap" style="max-height:380px"><table>'+theadOrdenavel_('fut-modal-semaloc',colunasFutPessoas)+'<tbody>'+semAlocOrd.map(o=>'<tr><td>'+personLinkHtml(o.a)+'</td><td>'+(o.area||'—')+'</td></tr>').join('')+'</tbody></table></div></div>'+
-    '</div>';
-  }else if(tipo==='portfolio-ritmo'){
-    titulo='Ritmo dos Projetos Ativos';
-    corpo=buildListaProjetosModal(S.ativos);
-  }else if(tipo==='projetos-ativos'){
-    titulo='Projetos Ativos (atual)';
-    corpo=buildListaProjetosModal(S.ativos);
-  }else if(tipo==='projetos-atrasados'){
-    titulo='Projetos Atrasados (atual)';
-    const lista=S.ativos.filter(p=>p.dd && String(p.dd).toLowerCase().includes('atraso'));
-    corpo=buildListaProjetosModal(lista);
-  }else if(tipo==='tarefas-bloqueadas'){
-    titulo='Tarefas Bloqueadas (toda a carteira)';
-    const lista=S.allTasks.filter(t=>(t.status||'').toLowerCase().includes('block'));
-    corpo=buildListaTarefasModal(lista);
-  }else if(tipo==='alertas-criticos'){
-    titulo='Alertas Críticos — Clientes em Risco e Projetos Zumbi';
-    let h='';
-    if(EXECTOP.negativos.cli_risco.length>0){
-      const colunasFutCliRisco=[{key:'cliente',label:'Cliente',tipo:'texto',get:x=>x.n},{key:'atrasados',label:'Projetos Atrasados',tipo:'numero',get:x=>x.atraso_count},{key:'conclusao',label:'Conclusão Média',tipo:'percentual',get:x=>x.avg_pct}];
-      SORT_RERENDER['fut-modal-clirisco']=()=>abrirDetalheFuturista(tipo,el);
-      const stFutCliRisco=SORT_STATE['fut-modal-clirisco']||{col:null,dir:0};
-      const cliRiscoOrd=stFutCliRisco.col?ordenarLinhas_(EXECTOP.negativos.cli_risco,colunasFutCliRisco.find(c=>c.key===stFutCliRisco.col),stFutCliRisco.dir):EXECTOP.negativos.cli_risco;
-      h+='<div style="font-weight:700;font-size:13px;margin-bottom:8px">⚠️ Clientes em Risco</div><div class="table-wrap" style="margin-bottom:16px"><table>'+theadOrdenavel_('fut-modal-clirisco',colunasFutCliRisco)+'<tbody>'+
-        cliRiscoOrd.map(x=>'<tr><td>'+x.n+'</td><td>'+x.atraso_count+'</td><td>'+x.avg_pct+'%</td></tr>').join('')+'</tbody></table></div>';
-    }
-    if(EXECTOP.negativos.zumbi.length>0){
-      const colunasFutZumbi=[{key:'projeto',label:'Projeto',tipo:'texto',get:x=>x.pj},{key:'cliente',label:'Cliente',tipo:'texto',get:x=>x.cl},{label:'Situação'}];
-      SORT_RERENDER['fut-modal-zumbi']=()=>abrirDetalheFuturista(tipo,el);
-      const stFutZumbi=SORT_STATE['fut-modal-zumbi']||{col:null,dir:0};
-      const zumbiOrd=stFutZumbi.col?ordenarLinhas_(EXECTOP.negativos.zumbi,colunasFutZumbi.find(c=>c.key===stFutZumbi.col),stFutZumbi.dir):EXECTOP.negativos.zumbi;
-      h+='<div style="font-weight:700;font-size:13px;margin-bottom:8px">🧟 Projetos Zumbi</div><div class="table-wrap"><table>'+theadOrdenavel_('fut-modal-zumbi',colunasFutZumbi)+'<tbody>'+
-        zumbiOrd.map(x=>'<tr><td>'+x.pj+'</td><td>'+x.cl+'</td><td>'+(x.nunca?'Nunca apontado':x.dias_sem+' dias sem apontamento')+'</td></tr>').join('')+'</tbody></table></div>';
-    }
-    corpo=h||'<div class="empty-state" style="padding:30px 10px"><p>Nenhum alerta crítico no momento.</p></div>';
-  }else if(tipo==='area-mes'){
-    const area=el.dataset.futArea;
-    titulo='Área: '+area+' — '+S.mesLabel;
-    const pessoasArea=PESA_().filter(p=>p.area===area && p.a);
-    const linhas=pessoasArea.map(p=>{
-      const ek=(p.email||'').toLowerCase();
-      let h=0; Object.entries(HM[ek]||{}).forEach(([d,v])=>{ if(d.slice(0,7)===S.mes) h+=v; });
-      return {p,h};
-    }).filter(x=>x.h>0).sort((a,b)=>b.h-a.h);
-    const colunasFutAreaMesModal=[{key:'nome',label:'Nome',tipo:'texto',get:x=>x.p.a},{key:'horas',label:'Horas no mês',tipo:'horas',get:x=>x.h}];
-    SORT_RERENDER['fut-modal-area-mes-2']=()=>abrirDetalheFuturista(tipo,el);
-    const stFutAreaMes2=SORT_STATE['fut-modal-area-mes-2']||{col:null,dir:0};
-    const linhasOrd=stFutAreaMes2.col?ordenarLinhas_(linhas,colunasFutAreaMesModal.find(c=>c.key===stFutAreaMes2.col),stFutAreaMes2.dir):linhas;
-    corpo=linhas.length===0?'<div class="empty-state" style="padding:30px 10px"><p>Nenhuma hora registrada nesta área neste mês.</p></div>':
-      '<div class="table-wrap"><table>'+theadOrdenavel_('fut-modal-area-mes-2',colunasFutAreaMesModal)+'<tbody>'+linhasOrd.map(x=>'<tr><td>'+personLinkHtml(x.p.a)+'</td><td>'+fH(x.h)+'</td></tr>').join('')+'</tbody></table></div>';
-  }else if(tipo==='projeto-single'){
-    const pj=el.dataset.futPj;
-    const p=D.pj.find(x=>x.pj===pj);
-    titulo='Projeto: '+pj;
-    corpo=p?buildListaProjetosModal([p]):'<div class="empty-state" style="padding:30px 10px"><p>Projeto não encontrado.</p></div>';
-  }else if(tipo==='cliente-single'){
-    const cl=el.dataset.futCl;
-    titulo='Cliente: '+cl+' — Projetos';
-    const lista=D.pj.filter(p=>p.cl===cl);
-    corpo=buildListaProjetosModal(lista);
-  }
-  document.getElementById('task-modal-title').textContent=titulo;
-  document.getElementById('task-modal-body').innerHTML=corpo;
-  document.getElementById('task-modal-overlay').classList.add('show');
+function ccRadar_(){
+  const R=(CC.dados||{}).radar||{}, pc=R.porCriticidade||{}, tab=document.getElementById('cc-radar-tab'); if(!tab) return;
+  document.getElementById('cc-chips').innerHTML='<button class="cc-chip'+(CC.crit?'':' on')+'" data-crit="">Todos ('+(R.total||0)+')</button>'+['Crítico','Alto','Atenção','Informativo'].filter(c=>pc[c]).map(c=>'<button class="cc-chip'+(CC.crit===c?' on':'')+'" data-crit="'+c+'">'+c+' ('+pc[c]+')</button>').join('');
+  const l=(R.alertas||[]).filter(a=>!CC.crit||a.crit===CC.crit);
+  if(!l.length){ tab.innerHTML='<div class="cc-vazio">Nenhum alerta aberto neste recorte.</div>'; return; }
+  tab.innerHTML='<div class="cc-tw"><table class="cc-t"><thead><tr><th>Criticidade</th><th>Cliente</th><th>Projeto / Pessoa</th><th>Área</th><th>GP</th><th>Head</th><th>Ocorrência</th><th>Identificado</th><th class="n">Dias em aberto</th><th>Próxima ação</th><th>Prazo</th><th>Situação</th><th></th></tr></thead><tbody>'
+    +l.map(a=>'<tr><td>'+ccCritHtml(a.crit)+'</td><td>'+ccE(a.cliente||'—')+'</td><td>'+ccE(a.pessoa||a.projeto)+'</td><td>'+ccE(a.area||'—')+'</td><td>'+ccE(a.gp||'—')+'</td><td>'+ccE(a.head||'—')+'</td><td title="'+ccE(a.rotulo)+'"><b>'+ccE(a.regra)+'</b> · '+ccE(a.ocorrencia)+'</td><td>'+ccData(a.ident)+'</td><td class="n">'+(a.dias==null?'—':a.dias)+'</td><td>'+ccE(a.proxAcao||'—')+'</td><td>'+ccData(a.prazo)+'</td><td>'+ccE(a.situacao)+'</td><td><button class="cc-btn" type="button" data-trat="'+ccE(a.chave)+'">Tratar</button></td></tr>').join('')+'</tbody></table></div>'+((R.total||0)>l.length&&!CC.crit?'<p class="cc-leg">Mostrando os '+l.length+' primeiros de '+R.total+' alertas, por criticidade.</p>':'');
 }
-document.addEventListener('click',(e)=>{
-  const el=e.target.closest('[data-fut-detail]');
-  if(el) abrirDetalheFuturista(el.dataset.futDetail, el);
-  // Fecha o popover de legenda da Criticidade ao clicar fora dele (e fora do
-  // próprio botão "?", que já tem seu próprio toggle com stopPropagation)
-  const critPop=document.getElementById('sr-crit-popover');
-  if(critPop && critPop.classList.contains('show') && !e.target.closest('#sr-crit-popover') && !e.target.closest('#sr-crit-help-btn')){
-    critPop.classList.remove('show');
-  }
-});
-
-function spawnFutParticles(){
-  const box=document.getElementById('fut-particles');
-  if(!box || box.dataset.spawned) return;
-  box.dataset.spawned='1';
-  const n=18;
-  for(let i=0;i<n;i++){
-    const p=document.createElement('div');
-    p.className='fut-particle';
-    const size=(Math.random()*3+1.5).toFixed(1);
-    p.style.width=size+'px'; p.style.height=size+'px';
-    p.style.left=(Math.random()*100)+'%';
-    p.style.setProperty('--drift',(Math.random()*60-30)+'px');
-    const dur=(Math.random()*10+10).toFixed(1);
-    p.style.animationDuration=dur+'s';
-    p.style.animationDelay=(Math.random()*dur).toFixed(1)+'s';
-    box.appendChild(p);
-  }
+function ccModal_(titulo,corpo){
+  ccFechar_();
+  const o=document.createElement('div'); o.className='cc-ov'; o.id='cc-ov';
+  o.innerHTML='<div class="cc-md" role="dialog" aria-modal="true"><header><h3>'+titulo+'</h3><button class="x" type="button" data-fechar="1" aria-label="Fechar">×</button></header><div class="bd">'+corpo+'</div></div>';
+  o.addEventListener('click',e=>{ if(e.target===o||e.target.dataset.fechar) ccFechar_(); });
+  document.body.appendChild(o);
 }
-
-function countUpAll(selector){
-  document.querySelectorAll(selector).forEach(el=>{
-    const target=parseFloat(el.dataset.countup);
-    const suffix=el.dataset.suffix||'';
-    if(isNaN(target)) return;
-    const dur=1100; const start=performance.now();
-    const isInt=Number.isInteger(target);
-    function step(now){
-      const p=Math.min((now-start)/dur,1);
-      const eased=1-Math.pow(1-p,3);
-      const cur=target*eased;
-      el.textContent=(isInt?Math.round(cur):cur.toFixed(1).replace('.',','))+suffix;
-      if(p<1) requestAnimationFrame(step);
-      else el.textContent=(isInt?target:target.toFixed(1).replace('.',','))+suffix;
-    }
-    requestAnimationFrame(step);
+function ccFechar_(){ const o=document.getElementById('cc-ov'); if(o) o.remove(); }
+function ccClique_(e){
+  const t=e.target.closest('[data-kpi],[data-area],[data-crit],[data-trat]'); if(!t) return;
+  if(t.dataset.crit!==undefined&&t.classList.contains('cc-chip')){ CC.crit=t.dataset.crit; ccRadar_(); return; }
+  if(t.dataset.trat){ ccTratar_(t.dataset.trat); return; }
+  if(t.dataset.kpi){ if(t.dataset.kpi==='alertas'){ document.getElementById('cc-radar').scrollIntoView({behavior:'smooth'}); return; } ccDetalhe_('kpi:'+t.dataset.kpi,(CC.dados.kpis.find(k=>k.id===t.dataset.kpi)||{}).rot); return; }
+  if(t.dataset.area) ccDetalhe_('area:'+t.dataset.area,'Área — '+t.dataset.area);
+}
+async function ccDetalhe_(tipo,titulo){
+  ccModal_(ccE(titulo||'Detalhe'),loadingInlineHtml('Carregando detalhe…'));
+  try{
+    const r=await loadDataJSONPComRetry(ccUrl_('centralComandoDetalhe','&tipo='+encodeURIComponent(tipo)),1);
+    const bd=document.querySelector('#cc-ov .bd'); if(!bd) return;
+    if(!r||r.ok===false){ bd.innerHTML='<div class="cc-vazio">'+ccE((r&&r.message)||'Não foi possível carregar o detalhe.')+'</div>'; return; }
+    const def=tipo.startsWith('kpi:')?(CC.dados.kpis.find(k=>k.id===tipo.slice(4))||{}).formula:'';
+    bd.innerHTML=(def?'<p class="cc-def">'+ccE(def)+'</p>':'')+ccDetalheHtml_(r);
+  }catch(err){ const bd=document.querySelector('#cc-ov .bd'); if(bd) bd.innerHTML='<div class="cc-vazio">Erro ao carregar o detalhe.</div>'; }
+}
+function ccDetalheHtml_(r){
+  const L=r.linhas||[]; if(!L.length) return '<div class="cc-vazio">Nenhum item.</div>';
+  const tb=(cab,fn,clk)=>'<div class="cc-tw"><table class="cc-t"><thead><tr>'+cab.map(c=>'<th'+(c[1]?' class="n"':'')+'>'+c[0]+'</th>').join('')+'</tr></thead><tbody>'+L.map(fn).join('')+'</tbody></table></div>';
+  if(r.tipo==='projetos') return tb([['Cliente'],['Projeto'],['Status'],['GP'],['Área'],['Prazo / previsto']],p=>'<tr><td>'+ccE(p.cliente)+'</td><td>'+ccE(p.projeto)+'</td><td>'+ccE(p.status)+(p.ritmo?' · '+ccE(p.ritmo):'')+'</td><td>'+ccE(p.gp||'—')+'</td><td>'+ccE(p.area||'—')+'</td><td>'+(p.previsto?ccData(p.previsto)+' → '+ccData(p.entrega)+(p.noPrazo?' ✓ no prazo':' ✗ fora do prazo'):ccE(p.prazo||'—'))+'</td></tr>');
+  if(r.tipo==='projetosTarefas') return tb([['Cliente'],['Projeto'],['Concluídas',1],['Total',1]],p=>'<tr><td>'+ccE(p.cliente)+'</td><td>'+ccE(p.projeto)+'</td><td class="n">'+p.concl+'</td><td class="n">'+p.total+'</td></tr>');
+  if(r.tipo==='pessoas') return tb([['Pessoa'],['Área'],['Modelo'],['Capacidade',1],['Apontadas',1],['Restante',1],['Comprometida',1],['%',1],['Situação']],o=>'<tr class="clk" data-pes="'+ccE(o.email)+'"><td>'+ccE(o.nome)+'</td><td>'+ccE(o.area||'—')+'</td><td>'+ccE(o.modelo||'—')+(o.origem==='integral-padrao'?' <small title="Contrato integral sem carga cadastrada: 160 h">(160 h padrão)</small>':'')+'</td><td class="n">'+(o.capacidade?fH(o.capacidade):'—')+'</td><td class="n">'+fH(o.apontadas)+'</td><td class="n">'+fH(o.restante)+'</td><td class="n">'+fH(o.comprometida)+'</td><td class="n">'+(o.pct==null?'—':o.pct+'%')+'</td><td>'+ccE(o.status)+'</td></tr>');
+  if(r.tipo==='pessoaProjetos') return '<p class="cc-def">'+ccE(r.titulo)+' · apontadas e estimadas por projeto no mês.</p>'+tb([['Projeto'],['Estimadas',1],['Apontadas',1]],p=>'<tr><td>'+ccE(p.projeto)+'</td><td class="n">'+fH(p.est)+'</td><td class="n">'+fH(p.apo)+'</td></tr>');
+  if(r.tipo==='alertas') return '<p class="cc-def">Veja o Radar abaixo.</p>';
+  return '';
+}
+document.addEventListener('click',e=>{ const t=e.target.closest('#cc-ov [data-pes]'); if(t) ccDetalhe_('pessoa:'+t.dataset.pes,'Pessoa — '+t.querySelector('td').textContent); });
+function ccTratar_(chave){
+  const a=((CC.dados||{}).radar||{}).alertas.find(x=>x.chave===chave); if(!a){ return; }
+  const sit=CC.dados.radar.situacoes||[];
+  ccModal_('Tratativa — '+ccE(a.rotulo),'<p class="cc-def">'+ccCritHtml(a.crit)+' &nbsp;'+ccE(a.pessoa||a.projeto)+' · '+ccE(a.ocorrencia)+'<br>Ação sugerida: '+ccE(a.sugestao)+'</p>'
+    +'<label for="cc-t-acao">Próxima ação</label><textarea id="cc-t-acao" rows="3" maxlength="500">'+ccE(a.proxAcao)+'</textarea>'
+    +'<label for="cc-t-resp">Responsável</label><input id="cc-t-resp" maxlength="120" value="'+ccE(a.responsavel)+'">'
+    +'<label for="cc-t-prazo">Prazo</label><input id="cc-t-prazo" type="date" value="'+ccE(a.prazo)+'">'
+    +'<label for="cc-t-sit">Situação</label><select id="cc-t-sit">'+sit.map(s=>'<option'+(s===a.situacao?' selected':'')+'>'+ccE(s)+'</option>').join('')+'</select>'
+    +'<div class="cc-msg" id="cc-t-msg"></div><div class="form-ac"><button class="cc-btn" type="button" data-fechar="1">Cancelar</button><button class="cc-btn pri" type="button" id="cc-t-salvar">Salvar</button></div>');
+  document.getElementById('cc-t-salvar').addEventListener('click',async()=>{
+    const g=id=>document.getElementById(id).value, btn=document.getElementById('cc-t-salvar'), msg=document.getElementById('cc-t-msg');
+    btn.disabled=true; msg.textContent='';
+    try{
+      const r=await loadDataJSONPComRetry(feUrl_('centralTratativaSalvar','&chave='+encodeURIComponent(chave)+'&proxAcao='+encodeURIComponent(g('cc-t-acao'))+'&responsavel='+encodeURIComponent(g('cc-t-resp'))+'&prazo='+encodeURIComponent(g('cc-t-prazo'))+'&situacao='+encodeURIComponent(g('cc-t-sit'))+(ccVa_()?'&viewAs='+encodeURIComponent(ccVa_()):'')),0);
+      if(r&&r.ok){ ccFechar_(); ccCarregar_(); } else { msg.textContent=(r&&r.message)||'Não foi possível salvar.'; btn.disabled=false; }
+    }catch(err){ msg.textContent='Erro ao salvar. Tente novamente.'; btn.disabled=false; }
   });
 }
 
@@ -13284,7 +13010,7 @@ const PAGINA_CAMPOS_NECESSARIOS={
   // no carregamento sob demanda isso deixou de ser garantido.
   pend:['PEND','PROJ_TASKS'],
   ociosos:['SEM_ALOC','ALOC_SEM_APONT','PPREVISTO','PM','PVENC'],
-  futuristic:['PROJ_TASKS','HM','PPREVISTO','PM','EXECTOP','SEM_ALOC'],
+  futuristic:[], // v20.4: a Central de Comando calcula no servidor (ação centralComando) — não precisa de campos pesados
   equipe:['PM','PPREVISTO','PHAP','PHEST','PSTAT','SEM_ALOC','ALOC_SEM_APONT','PVENC'],
   setorial:['SEM_ALOC','ALOC_SEM_APONT','PPREVISTO','PM'],
   andamento:['PROJ_TASKS']
@@ -13321,7 +13047,7 @@ const WIKI_CATS=[
  ['3.5','Gestão de pessoas e equipes'],['3.6','Inteligência de Alocação e Carga e Risco'],['3.7','Projetos, tarefas e horas'],['3.8','Desempenho e capacidade'],
  ['3.9','Status Report'],['3.10','Cadastros auxiliares e fontes de dados'],['3.11','Notificações e auditoria'],['3.12','Relatórios, exportações e filtros'],
  ['3.13','Regras transversais e padrões técnicos'],['3.14','Glossário e perguntas frequentes'],['3.15','Histórico, divergências e revisão']];
-const WIKI_VER='v20.3', WIKI_DATA='18/11/2026';
+const WIKI_VER='v20.5', WIKI_DATA='18/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -13530,17 +13256,31 @@ WP('zoho-sync','3.3','Sincronização Projetos (Zoho) → Portifolio','Como a ab
 
 /* ---------------- 3.4 ---------------- */
 WP('cmd-kpis','3.4','Central de Comando: cartões e medidores','Fórmulas dos indicadores da página inicial executiva.',[
- WR('CMD-001','Cartões (KPIs)','ok','Central de Comando',
-  'Seis cartões: Projetos Ativos, Horas Executadas (mês), Pessoas Alocadas, Projetos Atrasados, Tarefas Bloqueadas e Alertas Críticos.',
-  '<code>renderFuturistic</code> (<code>index.html</code>).','D.pj, HM (horas por mês), SEM_ALOC, EXECTOP.',
-  `<ul><li><b>Ativos</b> = projetos em Em Andamento ou Sustentação.</li><li><b>Horas do mês</b> = soma das horas apontadas cuja data pertence ao mês selecionado.</li><li><b>Pessoas alocadas</b> = pessoas analisáveis − pessoas sem alocação (SEM_ALOC).</li><li><b>Atrasados</b> = ativos cujo texto de prazo contém “atraso”.</li><li><b>Bloqueadas</b> = tarefas cujo status contém “block”, em projetos ativos.</li><li><b>Alertas críticos</b> = clientes em risco + projetos “zumbi”.</li></ul>`,
-  'Pessoas com Participa_Analises = Não ficam fora. “Atual” = estado em tempo real; “mês” = mês selecionado.','Central de Comando.','Clicar no cartão abre o detalhamento.','Tarefas bloqueadas são contadas por correspondência de texto; um status novo contendo “block” também entraria.'),
- WR('CMD-002','Medidores (percentuais)','pa','Central de Comando',
-  `<ul><li><b>Conclusão de Tarefas (mês)</b> = concluídas ÷ tarefas com vencimento no mês (concluída = tem data de conclusão ou status Done).</li><li><b>Entregas no Prazo</b> = (ativos − atrasados) ÷ ativos.</li><li><b>Consumo de Horas (mês)</b> = horas apontadas no mês ÷ soma das horas estimadas de todos os projetos ativos.</li><li><b>Ocupação do Time</b> = pessoas alocadas ÷ total de pessoas.</li><li><b>Portfólio no Ritmo</b> = projetos “No ritmo” ÷ projetos com ritmo calculável.</li></ul>`,
-  '<code>renderFuturistic</code>.','HM, horas_est, SEM_ALOC.','—','Divisão por zero retorna 0.','Central de Comando.','—','O “Consumo de Horas (mês)” compara as horas de um mês com a estimativa total dos projetos; ele não mede quanto cada projeto consumiu da sua própria estimativa. Interpretar como relação, não como saldo.'),
+ WR('CMD-001','Visão executiva (8 indicadores)','ok','Central de Comando',
+  'Oito cartões com valor, comparação com o mês anterior, tendência (▲ sobe · ▼ desce · ● estável) e detalhamento por clique: Projetos ativos, Concluídos no mês, Entregas no prazo, Projetos em risco, Projetos atrasados, Conclusão de tarefas, Capacidade comprometida e Alertas abertos. O cálculo é feito no servidor (<code>centralComando_</code>), já recortado pelo escopo de quem está logado.',
+  '<code>centralComando_</code>, <code>ccCalcular_</code>, <code>centralComandoDetalhe_</code> (servidor) · <code>renderFuturistic</code>, <code>ccDesenhar_</code> (tela).','Portifolio (<code>D.pj</code>), Tarefas (<code>PROJ_TASKS</code>), horas estimadas/apontadas por pessoa × projeto × dia (<code>HPEP</code>), Pessoas_Area, Status_Report, Alertas_Tratativas.',
+  `<ul><li><b>Projetos ativos</b> = Em Andamento ou Sustentação (exclui “Projetos - Da Venda ao Faturamento”).</li><li><b>Concluídos no mês</b> = status Concluído com data de entrega real no mês.</li><li><b>Entregas no prazo</b> = concluídos no mês com entrega ≤ data prevista ÷ concluídos no mês. Só aparece com <b>3 ou mais</b> entregas no mês; senão “Dados insuficientes”.</li><li><b>Em risco</b> = ativos não atrasados com ritmo “Abaixo do ritmo” ou “Represado” (CMD-003).</li><li><b>Atrasados</b> = ativos com data prevista vencida e não concluídos; Pausado fica fora.</li><li><b>Conclusão de tarefas</b> = tarefas concluídas ÷ tarefas com vencimento no mês, sem Backlog, Reuniões e Cancelado, só as cadastradas desde 01/06/2026; cada tarefa conta uma vez, mesmo com vários responsáveis.</li><li><b>Capacidade comprometida</b> = CMD-005.</li><li><b>Alertas abertos</b> = Radar (CMD-004).</li><li><b>Tendência</b>: variação menor que 2% (ou 2 p.p.) = “estável”. Sem base no mês anterior = “sem comparação” (Projetos ativos, Em risco, Atrasados, Capacidade e Alertas são estado atual e não têm histórico guardado).</li></ul>`,
+  'Nunca mostra 0% por falta de dado: sem base aparece “Dados insuficientes”. Pessoas com Participa_Analises = Não ficam fora das horas. Horas de tarefas com vários responsáveis não são duplicadas. Status do Zoho e status local não são misturados.','Central de Comando.','Clicar no cartão abre a lista de projetos, tarefas ou pessoas por trás do número.','Não há meta cadastrada, por isso nenhum indicador mostra meta. Os cartões “Em risco”, “Atrasados” e “Alertas” não têm comparação histórica.'),
+ WR('CMD-002','Performance e entregas (bloco 2)','ok','Central de Comando',
+  `<ul><li><b>Horas estimadas</b> = soma das estimativas no mês, divididas entre os responsáveis (sem duplicar).</li><li><b>Horas apontadas</b> = apontamentos do mês de quem participa das análises.</li><li><b>Diferença</b> = apontadas − estimadas. <b>% de execução</b> = apontadas ÷ estimadas no mesmo recorte (“Dados insuficientes” sem estimativa).</li><li><b>Tarefas</b> do mês: concluídas, em andamento e bloqueadas (mesmas regras de CMD-001).</li><li>Gráfico: estimadas × apontadas dos últimos 6 meses. Lista: projetos ativos não atrasados com ritmo abaixo do esperado.</li><li>Filtros: mês, cliente, projeto e área (aplicados no servidor, sempre dentro do seu escopo).</li></ul>`,
+  '<code>ccCalcular_</code>.','HPEP (horas por pessoa × projeto × dia), PROJ_TASKS.','—','Sem estimativa = “Dados insuficientes”, nunca 0.','Central de Comando.','—','Substitui “Consumo de Horas (mês)”, que comparava horas de um mês com a estimativa total do projeto, e “Entregas no Prazo (ativos não atrasados)”, que não media entregas.'),
  WR('CMD-003','Ritmo do projeto','ok','Central de Comando',
   'Compara o % do cronograma decorrido (início → previsão de entrega) com o % das horas estimadas já apontadas. Diferença = consumo − cronograma: ≤ −20 Represado; entre −20 e −8 Abaixo do ritmo; −8 a +15 No ritmo; acima de +15 Ritmo acelerado.',
-  '<code>computeRitmoProjeto</code>.','Datas di/pei, horas_est, horas_apo.','—','Sem data de início, sem previsão, previsão ≤ início ou sem horas estimadas: não calculado (“sem dados”).','Portfólio, Meus Projetos, Central de Comando.','Projeto com 50% do prazo e 20% das horas: diferença −30 → Represado.','Usa a Previsão de Entrega Inicial (<code>pei</code>), não a atual.')],
+  '<code>computeRitmoProjeto</code>.','Datas di/pei, horas_est, horas_apo.','—','Sem data de início, sem previsão, previsão ≤ início ou sem horas estimadas: não calculado (“sem dados”).','Portfólio, Meus Projetos, Central de Comando.','Projeto com 50% do prazo e 20% das horas: diferença −30 → Represado.','Usa a Previsão de Entrega Inicial (<code>pei</code>), não a atual.'),
+ WR('CMD-004','Radar de decisões e alertas','ok','Central de Comando',
+  'Alertas por regra objetiva; nenhum alerta é criado sem regra. Cada linha mostra cliente, projeto ou pessoa, área, GP, Head, ocorrência, data de identificação, dias em aberto, próxima ação, prazo e situação. “Decisões que exigem atenção” são os 5 mais graves.',
+  '<code>ccCalcular_</code>, <code>centralTratativaSalvar_</code>, <code>lerAlertasTratativas_</code>.','Portifolio, Tarefas, Tarefas_Horas_Apontadas, Status_Report, Pessoas_Area, aba <b>Alertas_Tratativas</b>.',
+  `<ul><li><b>R1</b> projeto atrasado (>30 d Crítico, >14 d Alto, senão Atenção).</li><li><b>R2</b> ritmo abaixo do esperado (Represado = Alto; Abaixo = Atenção), só em projetos não atrasados.</li><li><b>R3</b> sem apontamento há mais de 14 dias (>30 d ou nunca = Alto).</li><li><b>R4</b> tarefa Blocked com vencimento vencido há mais de 5 dias (>15 d Crítico, senão Alto).</li><li><b>R5</b> horas apontadas acima do estimado em mais de 20% (>50% Alto), com mais de 5 h estimadas.</li><li><b>R6</b> pessoa com capacidade comprometida acima de 100% (>120% Crítico).</li><li><b>R7</b> Status Report ausente há mais de 14 dias.</li><li><b>R8</b> projeto sem GP.</li></ul>`,
+  'Data de identificação: R1, R3, R4 e R7 usam a data do próprio fato; R2, R5, R6 e R8 guardam a data da primeira detecção na aba Alertas_Tratativas (criada no primeiro uso). “Tratar” grava próxima ação, prazo, responsável e situação (Aberto, Em tratativa, Resolvido, Descartado); Resolvido e Descartado saem do Radar. Cada gravação vai para o Log de Alterações.','Central de Comando.','Projeto sem apontamento há 48 dias → R3, Alto, 48 dias em aberto.','Não existe data de bloqueio no Zoho: R4 usa o vencimento vencido da tarefa Blocked. R8 só verifica GP (não existe campo de plano de ação). Os limiares (14, 5, 20%, 100%, 50%) são constantes do código (<code>CC_LIMIARES</code>).'),
+ WR('CMD-005','Capacidade e alocação (bloco 3)','ok','Central de Comando',
+  'Por área: capacidade mensal × horas apontadas × horas comprometidas, com sobrecarga e baixa alocação. Clique na área para ver as pessoas e na pessoa para ver os projetos.',
+  '<code>ccCapacidadeMensal_</code>, <code>ccCalcular_</code>.','Pessoas_Area (modelo, carga mensal/semanal, capacidade definida), HPEP, PALOC (horas restantes de tarefas abertas).',
+  `<ul><li><b>Capacidade mensal</b> = carga mensal cadastrada (ou semanal × 4). Contrato integral (CLT / PJ Full Time) sem carga cadastrada = <b>160 h</b>. Sem modelo e sem carga = “Capacidade não definida”, fora de todos os percentuais.</li><li><b>Comprometida</b> = apontadas no mês + horas restantes de tarefas abertas (só no mês corrente). <b>% = comprometida ÷ capacidade</b>. <b>Disponível</b> = capacidade − comprometida (mínimo 0).</li><li><b>Sobrecarga</b> &gt; 100% · <b>Baixa alocação</b> &lt; 50%.</li></ul>`,
+  'Só pessoas ativas e com Participa_Analises. Head e Gestor veem apenas a sua área/equipe; não há comparativo entre áreas.','Central de Comando.','Pessoa com 200 h apontadas e 160 h de capacidade → 125% (Sobrecarga).','As horas restantes em tarefas abertas são de qualquer data de término (não há recorte por mês); em meses passados só contam as apontadas.'),
+ WR('CMD-006','Acesso e escopo da Central de Comando','ok','Central de Comando',
+  'Administrador vê toda a carteira (Visão Executiva). Head e Gestor passaram a ver a página, com o recorte feito no servidor: eles mesmos, a equipe direta (Pessoas_Hierarquia / colunas Head e Gestor) e os projetos desses grupos. Os demais perfis não veem a página, e o servidor nega as ações.',
+  '<code>exigirPagina_</code>, <code>computeScope_</code>, <code>PAGINAS_POR_PERFIL</code>.','Pessoas_Area, Pessoas_Hierarquia.','—','O front só desenha; filtros enviados apenas restringem dentro do escopo. “Visualizar como” é somente leitura (não grava tratativa). Detalhes são buscados sob demanda com a mesma checagem.','Central de Comando.','—','O Head enxerga as áreas que lidera segundo <code>AREAS[área].head</code>; áreas com dois Heads devem ser conferidas na planilha real.')],
+
 ''),
 
 WP('cmd-destaques','3.4','Destaques (ranking executivo)','Como cada lista Top 5 do Destaques é calculada.',[
@@ -13942,6 +13682,8 @@ WP('rev-hist','3.15','Histórico de revisão da documentação','Registro das re
 WP('rev-nov','3.15','Novidades anteriores','Cards antigos da página Novidades. A página Novidades mostra só os 6 mais recentes; os demais ficam aqui, do mais novo para o mais antigo.',[],'<div id="wk-nov"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'18/11/2026',p:'Geral · Formato de horas',desc:'Varredura de horas decimais: o Acompanhamento de Horas da Equipe (cartões, tabela por projeto/participante, diferença e Ver tarefas) mostrava “76,1 h”; passou a mostrar horas e minutos (76h 6min), pelo mesmo formatador do restante do sistema (fHM_). Também corrigidos o texto do alerta R5 da Central de Comando (servidor) e as dicas do gráfico de horas. Capacidades cadastradas (ex.: 160 h/mês) e eixos de gráficos seguem como valores inteiros de configuração. Exige republicar o Apps Script (versão e texto R5).',ver:'v20.5'},
+ {d:'18/11/2026',p:'Central de Comando · Inteligência executiva',desc:'Central de Comando reconstruída em 4 blocos (Visão executiva com 8 indicadores e tendência; Performance e entregas; Capacidade e alocação; Radar de decisões e alertas R1–R8) mais “Decisões que exigem atenção”. Cálculo no servidor, recortado pelo escopo (Administrador: tudo; Head e Gestor: sua área/equipe, agora com acesso). Corrigidas regras antigas: conclusão de tarefas passou a excluir Backlog/Reuniões/Cancelado e tarefas anteriores a 01/06/2026; “Entregas no prazo” agora mede entregas concluídas no prazo (mínimo de 3 no mês); “Consumo de horas” e “Ocupação por headcount” substituídos por % de execução e capacidade comprometida (contrato integral sem carga = 160 h); sem dado aparece “Dados insuficientes”. Nova aba Alertas_Tratativas (criada no primeiro uso) guarda primeira detecção, próxima ação, prazo e situação; gravações vão ao Log de Alterações. Exige republicar o Apps Script.',ver:'v20.4'},
  {d:'18/11/2026',p:'Geral · Ordenação de tabelas',desc:'Corrigida a ordenação por colunas de data: a hora passou a entrar na comparação (Último Acesso em Pessoas e Perfis seguia só o dia e misturava os horários). Datas sem hora continuam iguais; vazios seguem no fim. Só front; mesma versão v20.3.',m:'Ordem de Último Acesso não respeitava o horário.',o:'Solicitação do usuário',v:'Testado com dados simulados',ver:'v20.3'},
  {d:'18/11/2026',p:'Sistema · Desempenho (servidor)',desc:'Auditoria de desempenho. As tabelas Pessoas_Hierarquia e Pessoas_Funcoes (2 leituras de ~250 células, contra ~1,2 milhão das demais abas) não são a causa. Otimizações sem mudar regra nem tela: cache do dashboard comprimido (menos entradas por requisição), HPEP/HAPT fora do cache principal (só a tela Horas da Equipe os carrega) e cache da verificação do token Google (identidade apenas; permissões continuam lidas a cada requisição). Corrige o aumento de cache causado pelo HAPT da v20.2. Republicar o Apps Script e rodar atualizarCacheDashboardAgendado uma vez.',m:'Lentidão percebida no carregamento das páginas.',o:'Solicitação do usuário',v:'Medido só com dados sintéticos; validar em produção',ver:'v20.3'},
  {d:'18/11/2026',p:'Projetos · Acompanhamento de Horas da Equipe',desc:'“Ver tarefas” passou a exibir uma lista única com Data, Tarefa e Horas apontadas por dia (com total do dia e total no período), respeitando período, projeto e participante. Deixou de listar tarefas sem horas no período. Total igual às Horas apontadas da tabela. Backend: novo campo interno HAPT (tarefa de cada apontamento), não enviado ao navegador. Republicar o Apps Script.',m:'Mostrar apenas o que foi apontado e em qual tarefa.',o:'Solicitação do usuário (mockup aprovado)',v:'Pendente de validação em produção',ver:'v20.2'},
@@ -14097,7 +13839,7 @@ const PAGE_INIT_MAP={
 // ============================================================
 const EH={dados:null,seq:0,abertos:{},listas:null,aplic:null,seqL:0};
 function eqhVa_(){ return (VIEW_AS_STATE&&VIEW_AS_STATE.email)||''; }
-function eqhFmtH_(v){ return (Math.round((+v||0)*10)/10).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1})+' h'; }
+function eqhFmtH_(v){ return fHM_(v); } // v20.5: horas e minutos (Xh Ymin), igual ao resto do sistema
 function eqhPct_(a,p){ return p>0?(a/p*100):null; }
 function eqhBarra_(v){
   if(v==null) return '—';
