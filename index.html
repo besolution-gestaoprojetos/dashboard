@@ -1569,6 +1569,14 @@ html[data-theme=dark] .cc-md{--c-tx:#e2e8f0;--c-mut:#94a3b8;--c-bd:#1e293b;--c-c
 .cc-md .cc-b-ro{color:var(--c-ro);background:rgba(244,63,94,.12);border-color:rgba(244,63,94,.35)}.cc-md .cc-b-am{color:var(--c-am);background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.35)}.cc-md .cc-b-cy{color:var(--c-cy);background:rgba(34,211,238,.1);border-color:rgba(34,211,238,.3)}
 .cc-md .cc-ro{color:var(--c-ro)}.cc-md .cc-am{color:var(--c-am)}.cc-md .cc-em{color:var(--c-em)}.cc-md .cc-cy{color:var(--c-cy)}
 .cc-msg{font-size:12.5px;color:var(--c-ro);margin-top:8px}
+/* v20.9 — Radar de alertas: todas as colunas visíveis, sem rolagem horizontal (modal largo + tabela fixa; cartões abaixo de 1100px) */
+.cc-md.cc-wide{width:min(1560px,98vw)}
+.cc-md .cc-t.cc-fx{table-layout:fixed}.cc-md .cc-t.cc-fx th{letter-spacing:0;font-size:9.5px;padding:7px 6px;overflow:hidden;text-overflow:ellipsis}.cc-md .cc-t.cc-fx td{padding:7px 6px;overflow-wrap:anywhere;vertical-align:top;line-height:1.35}
+.cc-md .cc-t.cc-fx td .cc-btn{white-space:nowrap;padding:4px 8px}.cc-md .cc-wide-tw .cc-tw{overflow:hidden}
+.cc-md .cc-rcards{display:none}.cc-md .cc-rcard{border:1px solid var(--c-bd);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:var(--c-row)}
+.cc-md .cc-rcard .ct{display:flex;gap:8px;align-items:center;margin-bottom:4px}.cc-md .cc-rcard .oc{font-size:12.5px;margin-bottom:6px}
+.cc-md .cc-rcard dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:0 0 8px;font-size:12px}.cc-md .cc-rcard dt{color:var(--c-mut)}.cc-md .cc-rcard dd{margin:0}
+@media(max-width:1100px){.cc-md.cc-wide{width:100%}.cc-md .cc-wide-tw{display:none}.cc-md .cc-rcards{display:block}}
 /* ---- Edição do Portfólio v20.7 — resumo, menu lateral e seções numeradas ---- */
 #pe-form-view .pe-crumb{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--text-muted);margin-bottom:12px}
 #pe-form-view .pe-crumb b{color:var(--primary)}
@@ -3317,7 +3325,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v20.8';
+const APP_VERSION='v20.9';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -11192,17 +11200,17 @@ function ccDesenhar_(r){
   document.getElementById('cc-corpo').innerHTML=h;
 }
 /* ---------- modais ---------- */
-function ccModal_(titulo,corpo,rodape,drawer){
+function ccModal_(titulo,corpo,rodape,drawer,cls){
   ccFechar_();
   const o=document.createElement('div'); o.className='cc-ov'+(drawer?' dr':''); o.id='cc-ov';
-  o.innerHTML='<div class="cc-md" role="dialog" aria-modal="true"><header><h3>'+titulo+'</h3><button class="x" type="button" data-fechar="1" aria-label="Fechar">×</button></header><div class="bd">'+corpo+'</div>'+(rodape?'<div class="ft">'+rodape+'</div>':'')+'</div>';
+  o.innerHTML='<div class="cc-md'+(cls?' '+cls:'')+'" role="dialog" aria-modal="true"><header><h3>'+titulo+'</h3><button class="x" type="button" data-fechar="1" aria-label="Fechar">×</button></header><div class="bd">'+corpo+'</div>'+(rodape?'<div class="ft">'+rodape+'</div>':'')+'</div>';
   document.body.appendChild(o);
 }
 function ccFechar_(){ const o=document.getElementById('cc-ov'); if(o) o.remove(); }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') ccFechar_(); });
 const ccBd_=()=>document.querySelector('#cc-ov .bd');
 function ccMini_(l){ return '<div class="cc-mini">'+l.map(x=>'<div><small>'+x[0]+'</small><b'+(x[2]?' class="'+x[2]+'"':'')+(x[3]?' style="font-size:'+x[3]+'"':'')+'>'+x[1]+'</b></div>').join('')+'</div>'; }
-function ccTab_(cab,fn,L,clk){ return '<div class="cc-tw"><table class="cc-t"><thead><tr>'+cab.map(c=>'<th'+(c[1]?' class="n"':'')+'>'+c[0]+'</th>').join('')+'</tr></thead><tbody>'+L.map(fn).join('')+'</tbody></table></div>'; }
+function ccTab_(cab,fn,L,clk,larg){ return '<div class="cc-tw"><table class="cc-t'+(larg?' cc-fx':'')+'">'+(larg?'<colgroup>'+larg.map(w=>'<col style="width:'+w+'%">').join('')+'</colgroup>':'')+'<thead><tr>'+cab.map(c=>'<th'+(c[1]?' class="n"':'')+'>'+c[0]+'</th>').join('')+'</tr></thead><tbody>'+L.map(fn).join('')+'</tbody></table></div>'; }
 function ccClique_(e){
   const el=e.target;
   if(el.closest('#cc-ov')){
@@ -11272,7 +11280,10 @@ function ccAlertaModal_(chave){
 function ccRadarModal_(){
   const R=CC.dados.radar||{}, pc=R.porCriticidade||{}, L=(R.alertas||[]).filter(a=>!CC.crit||a.crit===CC.crit);
   ccModal_('Radar de alertas (R1–R8) — '+(R.total||0)+' abertos','<div class="cc-chips"><button class="cc-chip'+(CC.crit?'':' on')+'" data-critf="">Todos ('+(R.total||0)+')</button>'+['Crítico','Alto','Atenção','Informativo'].filter(c=>pc[c]).map(c=>'<button class="cc-chip'+(CC.crit===c?' on':'')+'" data-critf="'+c+'">'+c+' ('+pc[c]+')</button>').join('')+'</div><p class="cc-def">Limiares: '+R.limiares.semApontDias+' dias sem apontamento · bloqueio &gt;'+R.limiares.bloqueioDias+' dias · desvio &gt;'+R.limiares.desvioPct+'% · sobrecarga &gt;'+R.limiares.sobrecargaPct+'% · baixa &lt;'+R.limiares.baixaPct+'% · Status Report &gt;'+R.limiares.srDias+' dias.</p>'
-    +(L.length?ccTab_([['Criticidade'],['Cliente'],['Projeto / Pessoa'],['Área'],['GP'],['Head'],['Ocorrência'],['Identificado'],['Dias',1],['Próxima ação'],['Prazo'],['Situação'],['']],a=>'<tr><td><span class="cc-badge '+ccCritCls(a.crit)+'">'+ccE(a.crit)+'</span></td><td>'+ccE(a.cliente||'—')+'</td><td>'+ccE(a.pessoa||a.projeto)+'</td><td>'+ccE(a.area||'—')+'</td><td>'+ccE(a.gp||'—')+'</td><td>'+ccE(a.head||'—')+'</td><td style="min-width:220px"><b>'+ccE(a.regra)+'</b> · '+ccE(a.ocorrencia)+'</td><td>'+ccData(a.ident)+'</td><td class="n">'+(a.dias==null?'—':a.dias)+'</td><td style="min-width:140px">'+ccE(a.proxAcao||'—')+'</td><td>'+ccData(a.prazo)+'</td><td>'+ccE(a.situacao)+'</td><td><button class="cc-btn" type="button" data-trat="'+ccE(a.chave)+'">Tratar</button></td></tr>',L):'<div class="cc-vazio">Nenhum alerta aberto neste recorte.</div>')+((R.total||0)>(R.alertas||[]).length?'<p class="cc-def">Mostrando os '+(R.alertas||[]).length+' primeiros de '+R.total+', por criticidade.</p>':''));
+    +(L.length?'<div class="cc-wide-tw">'+ccTab_([['Criticidade'],['Cliente'],['Projeto / Pessoa'],['Área'],['GP'],['Head'],['Ocorrência'],['Identificado'],['Dias',1],['Próxima ação'],['Prazo'],['Situação'],['']],a=>'<tr><td><span class="cc-badge '+ccCritCls(a.crit)+'">'+ccE(a.crit)+'</span></td><td>'+ccE(a.cliente||'—')+'</td><td>'+ccE(a.pessoa||a.projeto)+'</td><td>'+ccE(a.area||'—')+'</td><td>'+ccE(a.gp||'—')+'</td><td>'+ccE(a.head||'—')+'</td><td style="min-width:220px"><b>'+ccE(a.regra)+'</b> · '+ccE(a.ocorrencia)+'</td><td>'+ccData(a.ident)+'</td><td class="n">'+(a.dias==null?'—':a.dias)+'</td><td style="min-width:140px">'+ccE(a.proxAcao||'—')+'</td><td>'+ccData(a.prazo)+'</td><td>'+ccE(a.situacao)+'</td><td><button class="cc-btn" type="button" data-trat="'+ccE(a.chave)+'">Tratar</button></td></tr>',L,null,[7,5.5,11,7,7,6.5,17,7.5,3.5,9,6,6,6.5])+'</div><div class="cc-rcards">'+L.map(ccRadarCard_).join('')+'</div>':'<div class="cc-vazio">Nenhum alerta aberto neste recorte.</div>')+((R.total||0)>(R.alertas||[]).length?'<p class="cc-def">Mostrando os '+(R.alertas||[]).length+' primeiros de '+R.total+', por criticidade.</p>':''),'',false,'cc-wide');
+}
+function ccRadarCard_(a){
+  return '<div class="cc-rcard"><div class="ct"><span class="cc-badge '+ccCritCls(a.crit)+'">'+ccE(a.crit)+'</span><b>'+ccE(a.pessoa||a.projeto)+'</b></div><div class="oc"><b>'+ccE(a.regra)+'</b> · '+ccE(a.ocorrencia)+'</div><dl><dt>Cliente</dt><dd>'+ccE(a.cliente||'—')+'</dd><dt>Área</dt><dd>'+ccE(a.area||'—')+'</dd><dt>GP</dt><dd>'+ccE(a.gp||'—')+'</dd><dt>Head</dt><dd>'+ccE(a.head||'—')+'</dd><dt>Identificado</dt><dd>'+ccData(a.ident)+' · '+(a.dias==null?'—':a.dias)+' dia(s)</dd><dt>Próxima ação</dt><dd>'+ccE(a.proxAcao||'—')+'</dd><dt>Prazo</dt><dd>'+ccData(a.prazo)+'</dd><dt>Situação</dt><dd>'+ccE(a.situacao)+'</dd></dl><button class="cc-btn" type="button" data-trat="'+ccE(a.chave)+'">Tratar</button></div>';
 }
 function ccTratar_(chave){
   const a=((CC.dados||{}).radar||{}).alertas.find(x=>x.chave===chave); if(!a) return;
@@ -12920,7 +12931,7 @@ const WIKI_CATS=[
  ['1.5','Gestão de pessoas e equipes'],['1.6','Inteligência de Alocação e Carga e Risco'],['1.7','Projetos, tarefas e horas'],['1.8','Desempenho e capacidade'],
  ['1.9','Status Report'],['1.10','Cadastros auxiliares e fontes de dados'],['1.11','Notificações e auditoria'],['1.12','Relatórios, exportações e filtros'],
  ['1.13','Regras transversais e padrões técnicos'],['1.14','Glossário e perguntas frequentes'],['1.15','Histórico, divergências e revisão']];
-const WIKI_VER='v20.8', WIKI_DATA='19/11/2026';
+const WIKI_VER='v20.9', WIKI_DATA='19/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -13148,7 +13159,7 @@ WP('cmd-kpis','1.4','Central de Comando: cartões e medidores','Fórmulas dos in
   'Compara o % do cronograma decorrido (início → previsão de entrega) com o % das horas estimadas já apontadas. Diferença = consumo − cronograma: ≤ −20 Represado; entre −20 e −8 Abaixo do ritmo; −8 a +15 No ritmo; acima de +15 Ritmo acelerado.',
   '<code>computeRitmoProjeto</code>.','Datas di/pei, horas_est, horas_apo.','—','Sem data de início, sem previsão, previsão ≤ início ou sem horas estimadas: não calculado (“sem dados”).','Portfólio, Meus Projetos, Central de Comando.','Projeto com 50% do prazo e 20% das horas: diferença −30 → Represado.','Usa a Previsão de Entrega Inicial (<code>pei</code>), não a atual.'),
  WR('CMD-004','Radar de decisões e alertas','ok','Central de Comando',
-  'Alertas por regra objetiva; nenhum alerta é criado sem regra. Cada linha mostra cliente, projeto ou pessoa, área, GP, Head, ocorrência, data de identificação, dias em aberto, próxima ação, prazo e situação. “Decisões que exigem atenção” são os 5 mais graves. O Radar é uma rosca (Críticos, Altos, Atenção); clicar abre o modal com todos os alertas e filtro por criticidade, e “Tratar” abre um painel lateral.',
+  'Alertas por regra objetiva; nenhum alerta é criado sem regra. Cada linha mostra cliente, projeto ou pessoa, área, GP, Head, ocorrência, data de identificação, dias em aberto, próxima ação, prazo e situação. “Decisões que exigem atenção” são os 5 mais graves. O Radar é uma rosca (Críticos, Altos, Atenção); clicar abre o modal (largo, com as 13 colunas visíveis e sem rolagem horizontal; em telas abaixo de 1100 px as linhas viram cartões) com todos os alertas e filtro por criticidade, e “Tratar” abre um painel lateral.',
   '<code>ccCalcular_</code>, <code>centralTratativaSalvar_</code>, <code>lerAlertasTratativas_</code>.','Portifolio, Tarefas, Tarefas_Horas_Apontadas, Status_Report, Pessoas_Area, aba <b>Alertas_Tratativas</b>.',
   `<ul><li><b>R1</b> projeto atrasado (>30 d Crítico, >14 d Alto, senão Atenção).</li><li><b>R2</b> ritmo abaixo do esperado (Represado = Alto; Abaixo = Atenção), só em projetos não atrasados.</li><li><b>R3</b> sem apontamento há mais de 14 dias (>30 d ou nunca = Alto).</li><li><b>R4</b> tarefa Blocked com vencimento vencido há mais de 5 dias (>15 d Crítico, senão Alto).</li><li><b>R5</b> horas apontadas acima do estimado em mais de 20% (>50% Alto), com mais de 5 h estimadas.</li><li><b>R6</b> pessoa com capacidade comprometida acima de 100% (>120% Crítico).</li><li><b>R7</b> Status Report ausente há mais de 14 dias.</li><li><b>R8</b> projeto sem GP.</li></ul>`,
   'Data de identificação: R1, R3, R4 e R7 usam a data do próprio fato; R2, R5, R6 e R8 guardam a data da primeira detecção na aba Alertas_Tratativas (criada no primeiro uso). “Tratar” grava próxima ação, prazo, responsável e situação (Aberto, Em tratativa, Resolvido, Descartado); Resolvido e Descartado saem do Radar. Cada gravação vai para o Log de Alterações.','Central de Comando.','Projeto sem apontamento há 48 dias → R3, Alto, 48 dias em aberto.','Não existe data de bloqueio no Zoho: R4 usa o vencimento vencido da tarefa Blocked. R8 só verifica GP (não existe campo de plano de ação). Os limiares (14, 5, 20%, 100%, 50%) são constantes do código (<code>CC_LIMIARES</code>).'),
@@ -13571,6 +13582,7 @@ WP('rev-hist','1.15','Histórico de revisão da documentação','Registro das re
 WP('rev-nov','1.15','Novidades anteriores','Cards antigos da página Novidades. A página Novidades mostra só os 6 mais recentes; os demais ficam aqui, do mais novo para o mais antigo.',[],'<div id="wk-nov"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'19/11/2026',p:'Central de Comando · Radar de alertas',desc:'O modal do Radar de alertas ficou mais largo (até 98% da tela) e exibe as 13 colunas (Criticidade, Cliente, Projeto/Pessoa, Área, GP, Head, Ocorrência, Identificado, Dias, Próxima ação, Prazo, Situação e Tratar) sem barra de rolagem horizontal; o texto longo quebra em linhas. Em telas abaixo de 1100 px as linhas viram cartões. Dados, filtros e o botão Tratar não mudaram.',m:'Solicitação do gestor (mockup aprovado).',o:'Implementação v20.9',ver:'v20.9',v:'Testado em 1280, 1344 e 1920 px (sem rolagem horizontal, cabeçalhos e botão sem corte) e em 390 px (cartões)'},
  {d:'19/11/2026',p:'Portfólio · Sincronização Zoho',desc:'Vínculo por ID passa a ser validado pelo nome do projeto (Vínculo suspeito não grava nada); novas colunas Cliente, Projeto, Gerente e E-mail Gerente Zoho no Portifolio (o nome do Portfólio continua mandando); rotinas de reparo zsReparoSimular/zsReparoAplicar com backup, aprovação linha a linha e log. Base para o Portifolio ser a tabela única.',m:'Consolidação Portifolio × Projetos solicitada pelo gestor (de-para aprovado).',o:'Implementação v20.8',ver:'v20.8',v:'Testado com os dados reais da planilha em ambiente simulado: 70 vínculos suspeitos detectados, equipes intactas, IDs únicos'},
  {d:'19/11/2026',p:'Carga e Risco · Minha Equipe · Decisão de Alocação · Central de Comando · Inativos',desc:'Ociosidade e horas previstas passam a seguir a regra oficial: Total Workhours (rateado por responsável) distribuído em dias úteis entre início e término da tarefa, com feriados; capacidade = carga diária × dias úteis; confiança por pessoa e “Dados insuficientes” abaixo de 50%; faixa de qualidade com vencidas, sem data e Backlog; horas apontadas nunca substituem previstas. Pessoas Inativas saem de todas as estatísticas atuais (critério único), sem apagar histórico.',m:'Auditoria e correção solicitadas pelo gestor (recomendação aprovada).',o:'Implementação v20.7',ver:'v20.7',v:'Testes de regra (27 front + 39 backend), regressão das telas e dados reais analisados'},
  {d:'19/11/2026',p:'Navegação · Ordem alfabética',desc:'Páginas do menu lateral em ordem alfabética dentro de cada categoria; a lista da tela Permissões também. Regra permanente: página nova entra na posição alfabética e deve aparecer em Permissões.',m:'Solicitação do gestor (mockup aprovado).',o:'Implementação v20.7',ver:'v20.7',v:'Testado: ordem de todas as categorias e lista de Permissões'},
