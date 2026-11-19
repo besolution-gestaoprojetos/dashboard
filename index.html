@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyzSCz3pYA8XHNF9Bo_Uqcd9PTBVabORzOnqFVor_1kq2AbuKmbVPeDpbIX3sE8WxEpUg/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbwHVedA19wUbdI_ABwPtC7T6YZ1YwTWRkufrPDS6HU6fmETYz8DQp-xA0qSUYIWwIgdgA/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1087,6 +1087,9 @@ body .dt-wrap input.dt-native{position:absolute!important;left:0;bottom:0;width:
 
 /* Inteligência de Alocação */
 .ia-oc{display:flex;align-items:center;gap:7px;min-width:200px}.ia-oc-trk{flex:1;min-width:60px;height:8px;border-radius:99px;background:var(--surface-alt);overflow:hidden}.ia-oc-trk i{display:block;height:100%;border-radius:99px}.ia-oc-pc{font-weight:800;min-width:38px;text-align:right}
+.oc-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:14px}.oc-q-t{font-weight:700;font-size:13px;margin-bottom:8px}.oc-q-t span{font-weight:500;color:var(--text-muted);font-size:12px}
+.oc-q-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}.oc-kp{background:var(--surface-alt);border:1px solid var(--border);border-radius:12px;padding:9px 12px}.oc-kp[data-oc-q]{cursor:pointer}.oc-kp b{display:block;font-size:17px}.oc-kp span{color:var(--text-muted);font-size:11.5px}.oc-kp.w1{border-color:#ca8a04}.oc-kp.w2{border-color:#dc2626}
+.oc-cf{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);white-space:nowrap}.oc-cf i{display:inline-block;width:46px;height:6px;border-radius:99px;background:var(--border);overflow:hidden}.oc-cf u{display:block;height:100%}.oc-cf.ok u{background:#16a34a}.oc-cf.md u{background:#ca8a04}.oc-cf.bx u{background:#dc2626}
 .ia-oc-tg{display:inline-block;border-radius:99px;padding:2px 9px;font-size:11px;font-weight:700;white-space:nowrap}.ia-oc0{background:rgba(37,99,235,.14);color:#1d4ed8}.ia-oc1{background:rgba(22,163,74,.14);color:#15803d}.ia-oc2{background:rgba(202,138,4,.16);color:#a16207}.ia-oc3{background:rgba(220,38,38,.14);color:#b91c1c}.ia-ocn{background:var(--surface-alt);color:var(--text-muted);border:1px dashed var(--border)}
 .ia-oc-f0{background:#2563eb}.ia-oc-f1{background:#16a34a}.ia-oc-f2{background:#ca8a04}.ia-oc-f3{background:#dc2626}
 .ia-score-bar-track{display:inline-block; width:60px; height:6px; border-radius:999px; background:var(--surface-alt); overflow:hidden; vertical-align:middle; margin-right:6px;}
@@ -3171,7 +3174,7 @@ html[data-theme="dark"] .ux-bd.ok{color:#4ade80}html[data-theme="dark"] .ux-bd.i
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
 (function(){
-let D,HM,PM,PM_PROJ,CD,AREAS,TOP5,PSTAT,PHEST,PHAP,PVENC,PPREVISTO,PALOC={},PEND,PROJ_TASKS,SEM_ALOC,ALOC_SEM_APONT,CTOK,AREA_CL,EXECTOP;
+let D,HM,PM,PM_PROJ,CD,AREAS,TOP5,PSTAT,PHEST,PHAP,PVENC,PPREVISTO,PALOC={},PCARGA={},FER={},PEND,PROJ_TASKS,SEM_ALOC,ALOC_SEM_APONT,CTOK,AREA_CL,EXECTOP;
 // F7/F8/F9 — Caches derivados dos dados globais (D/PM/HM/PPREVISTO/PROJ_TASKS).
 // Cada um guarda um resultado calculado a partir desses dados; são invalidados
 // (zerados) sempre que os dados globais são recarregados/substituídos (ver
@@ -3314,7 +3317,7 @@ async function loadDataJSONPComRetry(url, tentativas=1){
 // PRÓXIMA versão vira o número inteiro seguinte com .0 (ex: v6.1, v6.2, ...,
 // v6.9, v7.0, v7.1, ...) — nunca v6.10. Precisa ficar sincronizada com
 // DASHBOARD_VERSION no AppsScript_Code.gs (mesma regra lá).
-const APP_VERSION='v20.7';
+const APP_VERSION='v20.8';
 // Nome oficial da plataforma, definido pelo usuário em 2026-09-24.
 const PLATFORM_NAME='Central de Projetos Be Solution';
 function updateFooter(dataDateStr,backendVersion){
@@ -3555,17 +3558,18 @@ function novidadesUltimaAtualizacao_(){
   return mx?mx.slice(8,10)+'/'+mx.slice(5,7)+'/'+mx.slice(0,4):NOVIDADES_ATUALIZADO_EM;
 }
 const NOVIDADES=[
+  {icone:'🗓️', bg:'#ecfdf5', cor:'#059669', titulo:'Ociosidade em dias úteis, com confiança dos dados', descricao:'A ociosidade agora distribui as horas previstas de cada tarefa apenas em dias úteis (descontando feriados) entre o início e o término, e a capacidade também usa dias úteis. Cada pessoa mostra a Confiança do cálculo; com poucos dados aparece “Dados insuficientes”. Tarefas vencidas, sem data e Backlog ficam sinalizadas à parte. Pessoas inativas saem de todas as estatísticas. Vale para Carga e Risco, Minha Equipe, Decisão de Alocação e Central de Comando.', paginas:['inteligencia','equipe'], data:'2026-11-19', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🔤', bg:'#eff6ff', cor:'#2563eb', titulo:'Menu em ordem alfabética', descricao:'As páginas de cada categoria do menu lateral agora aparecem em ordem alfabética, e a lista de páginas em Permissões segue a mesma ordem. Fica mais fácil encontrar o que você procura.', paginas:[], data:'2026-11-19', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'👥', bg:'#eff6ff', cor:'#2563eb', titulo:'Minha Equipe com novo visual e Ociosidade', descricao:'A página ganhou cards compactos, busca por pessoa, cargo ou área, indicadores clicáveis e filtros rápidos. O selo de status foi trocado pela Ociosidade da pessoa no período selecionado (Ocupação alta, Baixa, Moderada ou Elevada) e o percentil saiu dos cards.', paginas:['equipe'], data:'2026-11-19', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🔋', bg:'#ecfdf5', cor:'#059669', titulo:'Ociosidade na Carga e Risco de Alocação', descricao:'A listagem Análise por Pessoa ganhou Área, Capacidade mensal, Horas alocadas, Horas disponíveis e a Ociosidade (%) com barra e classificação: Ocupação alta, Baixa, Moderada ou Elevada. Dá para ordenar pela maior ociosidade e ver o cálculo no tooltip. Sem capacidade cadastrada aparece “Não calculado”.', paginas:['inteligencia'], data:'2026-11-19', tag:'Novo', tagCor:'nova'},
   {icone:'🧹', bg:'#f1f5f9', cor:'#475569', titulo:'Páginas Visão por Área, Gestão da Área e Pessoas Disponíveis removidas', descricao:'As três páginas saíram do menu e das permissões. Os dados continuam nas planilhas e a análise de capacidade está em Carga e Risco de Alocação.', paginas:[], data:'2026-11-19', tag:'Mudança', tagCor:'mudanca'},
   {icone:'🎯', bg:'#eff6ff', cor:'#2563eb', titulo:'Decisão de Alocação com filtros em cascata', descricao:'A aba ganhou os filtros Head, Gestor, Pessoa, Área, Cliente, Projeto, Senioridade e Período (7, 15, 30 dias ou De–Até). Cada filtro só mostra opções que existem na combinação escolhida e nada é carregado até clicar em Filtrar.', paginas:['inteligencia'], data:'2026-11-19', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'📊', bg:'#eff6ff', cor:'#2563eb', titulo:'Carga e Risco com filtros por Head e Período', descricao:'Novos filtros Head e Período (7, 15, 30 dias, Todo o período ou De–Até), na ordem Head, Gestor, Pessoa, Período, Qtd. de Projetos e Situação, com efeito cascata entre eles. A página só carrega ao clicar em Aplicar filtro. Saem os filtros de Complexidade, Prioridade e Status da Tarefa.', paginas:['inteligencia'], data:'2026-11-19', tag:'Melhoria', tagCor:'melhoria'},
 ];
 // v20.1: a página Novidades exibe só os 6 cards mais recentes (os 6 primeiros acima, tomados ANTES do filtro por perfil).
 // Os anteriores ficam aqui e são exibidos na Wiki (1.15 · Novidades anteriores). Ao lançar uma novidade nova, inclua-a no topo de
 // NOVIDADES e mova o 7º card (o mais antigo) para o topo de NOVIDADES_ARQUIVO.
 const NOVIDADES_ARQUIVO=[
+  {icone:'📊', bg:'#eff6ff', cor:'#2563eb', titulo:'Carga e Risco com filtros por Head e Período', descricao:'Novos filtros Head e Período (7, 15, 30 dias, Todo o período ou De–Até), na ordem Head, Gestor, Pessoa, Período, Qtd. de Projetos e Situação, com efeito cascata entre eles. A página só carrega ao clicar em Aplicar filtro. Saem os filtros de Complexidade, Prioridade e Status da Tarefa.', paginas:['inteligencia'], data:'2026-11-19', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🗂️', bg:'#eff6ff', cor:'#2563eb', titulo:'Edição do Portfólio com novo visual', descricao:'A tela de edição de projeto agora tem um resumo do projeto no topo, menu lateral com as etapas e seções numeradas (Identificação, Cronograma, Requisitos, Equipe por frente, Outras Informações e Zoho). A barra fixa mostra as alterações pendentes e traz Excluir e Salvar. Os campos e o salvamento continuam os mesmos.', paginas:['portfolioedit'], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Central de Comando em painel único', descricao:'A Central de Comando agora cabe numa tela só, sem rolagem da página: 4 cartões-resumo, decisões que exigem atenção, gráfico de horas dos últimos 6 meses, capacidade por área, Radar de alertas e projetos com tendência de atraso. Tudo que tem detalhe abre em janela (modal), e “Tratar” abre um painel lateral para registrar a decisão.', paginas:['futuristic'], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'⏱️', bg:'#eff6ff', cor:'#2563eb', titulo:'Horas sempre em horas e minutos', descricao:'No Acompanhamento de Horas da Equipe (cartões, tabela e Ver tarefas) e nos alertas da Central de Comando, as horas decimais (ex.: 4,7 h) passaram a aparecer em horas e minutos (4h 42min), igual às demais telas. Só muda a forma de exibir; os valores são os mesmos.'},
@@ -3770,7 +3774,7 @@ const CAMPOS_EM_VOO = new Map();     // campo -> Promise em andamento (dedupe de
 // não mandar um campo que foi pedido.
 const CAMPOS_DEFAULT_VAZIO = {
   HM:{}, PM:{}, PM_PROJ:{}, CD:{}, CTOK:{}, EXECTOP:{positivos:{saude:[],ger_prazo:[],aderencia:[],area_prod:[],cli_saude:[]},negativos:{atrasados:[],estouro:[],zumbi:[],overload:[],ger_atraso:[],bloqueados:[],cli_risco:[]}},
-  PSTAT:{}, PHEST:{}, PHAP:{}, PVENC:{}, PPREVISTO:{}, PALOC:{}, PEND:[], PROJ_TASKS:{}, SEM_ALOC:[], ALOC_SEM_APONT:[]
+  PSTAT:{}, PHEST:{}, PHAP:{}, PVENC:{}, PPREVISTO:{}, PALOC:{}, PCARGA:{}, FER:{}, PEND:[], PROJ_TASKS:{}, SEM_ALOC:[], ALOC_SEM_APONT:[]
 };
 // Mesma associação campo→variável global já usada em carregarDadosCompletos —
 // centralizada aqui pra não duplicar essa lista em cada chamador novo.
@@ -3789,6 +3793,8 @@ function atribuirCampoGlobal_(campo, valor){
     case 'PVENC': PVENC=v; break;
     case 'PPREVISTO': PPREVISTO=v; break;
     case 'PALOC': PALOC=v; break;
+    case 'PCARGA': PCARGA=v; break;
+    case 'FER': FER=v; break;
     case 'PEND': PEND=v; break;
     case 'PROJ_TASKS': PROJ_TASKS=v; break;
     case 'SEM_ALOC': SEM_ALOC=v; break;
@@ -3897,7 +3903,7 @@ async function carregarDadosCore(token){
       marcarCamposDoCoreComoCarregados_();
       D=j.D; AREAS=j.AREAS; AREA_CL=j.AREA_CL||{}; STATUS_REPORTS=j.STATUS_REPORTS||[];
       HM={}; PM={}; PM_PROJ={}; CD={}; CTOK={}; EXECTOP=CAMPOS_DEFAULT_VAZIO.EXECTOP; PSTAT={}; PHEST={}; PHAP={};
-      PVENC={}; PPREVISTO={}; PALOC={}; PEND=[]; PROJ_TASKS={}; SEM_ALOC=[]; ALOC_SEM_APONT=[];
+      PVENC={}; PPREVISTO={}; PALOC={}; PCARGA={}; FER={}; PEND=[]; PROJ_TASKS={}; SEM_ALOC=[]; ALOC_SEM_APONT=[];
       invalidarCachesDeDadosGlobais();
       CURRENT_USER_NOME=j._usuarioNome||j._usuario; CURRENT_USER_EMAIL=j._usuario;
       showDataBadge('live');
@@ -3926,7 +3932,7 @@ async function carregarDadosCore(token){
     // carregado (CAMPOS_CARREGADOS) quando realmente buscado sob demanda.
     marcarCamposDoCoreComoCarregados_();
     HM={}; PM={}; PM_PROJ={}; CD={}; CTOK={}; EXECTOP=CAMPOS_DEFAULT_VAZIO.EXECTOP; PSTAT={}; PHEST={}; PHAP={};
-    PVENC={}; PPREVISTO={}; PALOC={}; PEND=[]; PROJ_TASKS={}; SEM_ALOC=[]; ALOC_SEM_APONT=[];
+    PVENC={}; PPREVISTO={}; PALOC={}; PCARGA={}; FER={}; PEND=[]; PROJ_TASKS={}; SEM_ALOC=[]; ALOC_SEM_APONT=[];
     invalidarCachesDeDadosGlobais();
     CURRENT_USER_NOME=j._usuarioNome||j._usuario; CURRENT_USER_EMAIL=j._usuario;
     showDataBadge('live');
@@ -3987,7 +3993,7 @@ async function carregarDadosPesadosEmSegundoPlano(token){
       return;
     }
     D=j.D; HM=j.HM; PM=j.PM; PM_PROJ=j.PM_PROJ||{}; CD=j.CD; CTOK=j.CTOK; AREAS=j.AREAS; AREA_CL=j.AREA_CL;
-    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PALOC=j.PALOC||{}; PEND=j.PEND;
+    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PALOC=j.PALOC||{}; PCARGA=j.PCARGA||{}; FER=j.FER||{}; PEND=j.PEND;
     PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
     invalidarCachesDeDadosGlobais();
     STATUS_REPORTS=j.STATUS_REPORTS||[];
@@ -4043,7 +4049,7 @@ async function carregarDadosCompletos(token, semBannerTopo){
       return;
     }
     D=j.D; HM=j.HM; PM=j.PM; PM_PROJ=j.PM_PROJ||{}; CD=j.CD; CTOK=j.CTOK; AREAS=j.AREAS; AREA_CL=j.AREA_CL;
-    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PALOC=j.PALOC||{}; PEND=j.PEND;
+    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PALOC=j.PALOC||{}; PCARGA=j.PCARGA||{}; FER=j.FER||{}; PEND=j.PEND;
     PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
     invalidarCachesDeDadosGlobais();
     STATUS_REPORTS=j.STATUS_REPORTS||[];
@@ -4126,7 +4132,7 @@ async function attemptLoadWithTokenClassico(token, viewAsEmail){
       return;
     }
     D=j.D; HM=j.HM; PM=j.PM; PM_PROJ=j.PM_PROJ||{}; CD=j.CD; CTOK=j.CTOK; AREAS=j.AREAS; AREA_CL=j.AREA_CL;
-    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PALOC=j.PALOC||{}; PEND=j.PEND;
+    EXECTOP=j.EXECTOP; PSTAT=j.PSTAT; PHEST=j.PHEST; PHAP=j.PHAP; PVENC=j.PVENC; PPREVISTO=j.PPREVISTO||{}; PALOC=j.PALOC||{}; PCARGA=j.PCARGA||{}; FER=j.FER||{}; PEND=j.PEND;
     PROJ_TASKS=j.PROJ_TASKS; SEM_ALOC=j.SEM_ALOC; ALOC_SEM_APONT=j.ALOC_SEM_APONT;
     invalidarCachesDeDadosGlobais();
     STATUS_REPORTS=j.STATUS_REPORTS||[];
@@ -5900,7 +5906,10 @@ function daBase_(p){
     const pr=iaPrazoInfoProjeto_(proj), dias=pr.diasRestantes;
     const semData=dias==null||dias===undefined;
     const diasEf=semData?DA_PARAM.semanasSemData*7:Math.max(7,dias);
-    rows.push({proj,pa,dias:semData?null:dias,semData,vencido:!semData&&dias<0,diasEf,taxa:pa.h/(diasEf/7)});
+    // v20.8 — carga real por dias úteis (PCARGA): horas previstas das tarefas desta pessoa neste projeto nos próximos Hx dias
+    const lsP=((ocDadosCarga_(p)||{}).l||[]).filter(l=>l[0]===proj.pj), ferP=ocFerSet_(p);
+    const cAte=Hx=>{ const fim=ocAddDias_(hojeISO,Hx-1); return lsP.reduce((s,l)=>s+ocHorasPrev_(l[3],l[4],l[5],hojeISO,fim,ferP),0); };
+    rows.push({proj,pa,dias:semData?null:dias,semData,vencido:!semData&&dias<0,diasEf,cAte,taxa:cAte(28)/4});
     nTot+=pa.n; sTot+=pa.s; pond+=daCxN_(proj.cx)||2;
     (PROJ_TASKS[proj.pj]||[]).forEach(t=>{
       const meu=(t.responsaveis||[]).some(r=>r.email===ek)||t.email===ek; if(!meu||daFechada_(t)) return;
@@ -5932,14 +5941,15 @@ function daCalc_(b,H,extra){
   b.rows.forEach(r=>{ if(r.dias!==null&&r.dias<=7) ent7++; if(r.dias!==null&&r.dias<=15) ent15++; });
   // Carga média por semana numa janela de Hx dias. A pressão usa a PIOR janela entre os
   // próximos 7 dias e o período escolhido — senão um aperto de curto prazo some na média.
-  const plAt=Hx=>{ let v=0; b.rows.forEach(r=>{ v+=r.taxa*Math.min(Hx,r.diasEf)/Hx; }); if(extra) v+=extra.h*Math.min(Hx,extra.sem*7)/Hx; return v; };
+  const plAt=Hx=>{ let v=0; b.rows.forEach(r=>{ v+=r.cAte(Hx)/(Hx/7); }); if(extra) v+=extra.h*Math.min(Hx,extra.sem*7)/Hx; return v; };
   const plH=plAt(H), pl7=plAt(7), pl=Math.max(plH,pl7);
   const util=pl/cap*100, free=cap-pl, why=[];
   const sem=b.rows.length===0;
-  const insuf=!sem && (b.nTot===0 || (b.cov!==null&&b.cov<DA_PARAM.coberturaMin));
+  const ocJ=iaOciosidade_(b.p,ocJanelaPeriodo_(H)), insufConf=ocJ.nc==='Dados insuficientes';
+  const insuf=!sem && (b.nTot===0 || insufConf);
   let lvl=util<=DA_PARAM.pressao.disp?0:util<=DA_PARAM.pressao.aten?1:util<=DA_PARAM.pressao.alta?2:3;
   if(sem) why.push('Sem projetos ativos vinculados');
-  else if(insuf) why.push(b.nTot===0?'Projetos ativos sem tarefas abertas registradas':'Só '+b.cov+'% das tarefas abertas têm horas estimadas (mínimo '+DA_PARAM.coberturaMin+'%)');
+  else if(insuf) why.push(b.nTot===0?'Projetos ativos sem tarefas abertas registradas':'Só '+ocJ.conf+'% das tarefas em execução do período têm horas e datas (mínimo '+DA_PARAM.coberturaMin+'%)');
   else why.push(pl7>plH+0.5?'Pico nos próximos 7 dias: '+Math.round(util)+'% ('+fHM_(pl)+' de '+cap+'h/sem); média de '+H+' dias: '+Math.round(plH/cap*100)+'%':'Utilização planejada '+Math.round(util)+'% ('+fHM_(pl)+' de '+cap+'h/sem nos próximos '+H+' dias)');
   let esc=false;
   if(b.late>=DA_PARAM.escalonar.atrasadas){esc=true; why.push(b.late+' tarefas atrasadas (≥'+DA_PARAM.escalonar.atrasadas+') → sobe 1 nível');}
@@ -6509,7 +6519,7 @@ function daVInd_(f,d){
   DA.sel=daId_(x.p);
   const r=daAvaliar_(x,d,H), c=x.c, b=x.b;
   const apH=daApont_(b,H), capP=c.cap*H/7;
-  const wk=[1,2,3,4].map(w=>b.rows.reduce((s,rr)=>s+(rr.diasEf>(w-1)*7?rr.taxa*Math.min(1,(rr.diasEf-(w-1)*7)/7):0),0));
+  const wk=[1,2,3,4].map(w=>b.rows.reduce((s,rr)=>s+rr.cAte(7*w)-(w>1?rr.cAte(7*(w-1)):0),0));
   const rf=daReforco_(x,H), sd=c.util>DA_PARAM.pressao.aten?daSaida_(x):null;
   return '<div class="card"><div class="da-top"><div>'+daAv_(x.p.a)+'<b style="font-size:16px">'+daE_(x.p.a)+'</b> '+daChip_(c.lvl)+capSelo_(capPessoa_(x.p))+'<div class="da-note">'+daE_(x.p.cargo||'sem cargo')+' · '+daE_(x.p.area||'sem área')+' · Senioridade: '+daNvRotulo_(x.p)+'</div></div><div><select data-dasel="ind">'+lista.map(o=>daOpt_(daId_(o.p),o.p.a,daId_(x.p))).join('')+'</select> <button class="da-btn p" data-da="cmp|'+daId_(x.p)+'">Comparar</button> <button class="da-btn p" data-da="sim|'+daId_(x.p)+'">Simular alocação</button> <button class="da-btn p" data-da="rel|'+daId_(x.p)+'">Sugerir realocação</button></div></div></div>'
   +'<div class="da-kpis">'+daKpi_(b.rows.length,'Projetos ativos (carga ponderada '+b.pond+')')+daKpi_(c.insuf?'—':fHM_(c.pl)+'','Planejadas/sem ('+H+'d) · capacidade '+c.cap+'h')+daKpi_(apH===null?'—':fHM_(apH)+'','Horas apontadas — últimos '+H+' dias',apH===null?'apontamento diário indisponível':Math.round(apH/capP*100)+'% da jornada de referência ('+fHM_(capP)+')')+daKpi_(c.insuf?'—':fHM_(Math.max(0,c.free))+'','Capacidade teórica livre/sem')+daKpi_(b.nTot,'Tarefas abertas',daVencN_(b.vencTodas,H)+' com vencimento em '+H+' dias')+daKpi_(b.late,'Atrasadas')+daKpi_(b.blocked,'Bloqueadas (≠ atrasadas)')+daKpi_(daVencN_(b.vencNB,H),'Vencendo em '+H+' dias')+'</div>'
@@ -6675,7 +6685,7 @@ function initInteligenciaAlocacao(){
   const pessoas=[...new Set(pessoasSemHead.filter(pessoaEstaAtiva).map(p=>p.a))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
   document.getElementById('f-ia-pessoa').innerHTML='<option value="">Todas</option>'+pessoas.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">'+n+'</option>').join('');
 
-  const gestores=[...new Set(D.p.map(p=>p.gestor).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const gestores=[...new Set(PESA_().map(p=>p.gestor).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
   document.getElementById('f-ia-gestor').innerHTML='<option value="">Todos</option>'+gestores.map(g=>'<option value="'+g.replace(/"/g,'&quot;')+'">'+g+'</option>').join('');
   const headsLista=[...new Set(IA_ANALISES_CACHE.map(l=>l.pessoa.head).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
   document.getElementById('f-ia-head').innerHTML='<option value="">Todos</option>'+headsLista.map(g=>'<option value="'+feEsc_(g)+'">'+feEsc_(g)+'</option>').join('');
@@ -6736,30 +6746,78 @@ function iaMarcarPendente_(){
 // v20.7 — Ociosidade: capacidade individual (Pessoas_Area) × horas alocadas (horas restantes das tarefas abertas, mesma base da Decisão de Alocação).
 const IA_OC_ROT=['Ocupação alta','Baixa ociosidade','Ociosidade moderada','Ociosidade elevada'];
 const IA_OC={ref:null,map:new WeakMap()};
-function iaOcBase_(p){
-  if(IA_OC.ref!==D){ IA_OC.ref=D; IA_OC.map=new WeakMap(); }
-  let b=IA_OC.map.get(p); if(!b){ b=daBase_(p); IA_OC.map.set(p,b); } return b;
+// v20.8 — OCIOSIDADE (regra oficial, fonte única para Carga e Risco, Minha Equipe e Decisão de Alocação).
+// Total Workhours (já rateado por responsável no servidor) distribuído SÓ em dias úteis (seg–sex, sem os feriados da pessoa)
+// entre início e término da tarefa; conta a parcela que cai na janela. Backlog, vencidas abertas e sem data ficam fora (sinalizadas).
+const OC_FER_C={ref:null,m:{}};
+function ocFerSet_(p){ const k=(p&&p.hk)||''; if(OC_FER_C.ref!==FER){ OC_FER_C.ref=FER; OC_FER_C.m={}; } let s=OC_FER_C.m[k]; if(!s){ s=new Set((FER&&(FER[k]||FER['']))||[]); OC_FER_C.m[k]=s; } return s; }
+function ocDiasUteis_(ini,fim,fer){
+  const a=Date.parse(ini+'T00:00:00Z'), b=Date.parse(fim+'T00:00:00Z'); if(isNaN(a)||isNaN(b)||b<a) return 0;
+  let n=0; for(let t=a;t<=b;t+=864e5){ const d=new Date(t), w=d.getUTCDay(); if(w===0||w===6) continue; if(fer&&fer.has(d.toISOString().slice(0,10))) continue; n++; } return n;
 }
-function iaOcDias_(F,PER){
-  if(PER&&PER.custom) return Math.max(1,Math.round((new Date(F.ate+'T12:00:00')-new Date(F.de+'T12:00:00'))/864e5)+1);
-  return PER&&PER.N?PER.N:30; // "Todo o período" = 30 dias (mês de referência)
+function ocHorasPrev_(h,di,df,ini,fim,fer){
+  const tot=ocDiasUteis_(di,df,fer); if(!(h>0)||tot<=0) return 0;
+  const a=di>ini?di:ini, b=df<fim?df:fim; if(b<a) return 0;
+  return h*ocDiasUteis_(a,b,fer)/tot;
 }
-function iaOciosidade_(p,N){
+function ocAddDias_(iso,n){ const d=new Date(Date.parse(iso+'T00:00:00Z')+n*864e5); return d.toISOString().slice(0,10); }
+// Janelas: sempre a partir de hoje (não existe histórico de alocação); De–Até no passado é recortado em hoje.
+function ocJanelaPeriodo_(dias){ const h=hojeISO_(); return {ini:h,fim:ocAddDias_(h,Math.max(1,dias)-1)}; }
+function ocJanelaCustom_(de,ate){ const h=hojeISO_(); let a=de||ate, b=ate||de; if(!a||!b) return ocJanelaPeriodo_(30); if(b<a){ const t=a; a=b; b=t; }
+  if(b<h) return {ini:h,fim:h,antes:true}; return {ini:a<h?h:a,fim:b,recortado:a<h}; }
+function ocDadosCarga_(p){ return (PCARGA&&PCARGA[(p.email||'').toLowerCase()])||null; }
+function iaOcBase_(p){ return ocDadosCarga_(p); }
+function iaOcDias_(F,PER){ // janela do período selecionado em Carga e Risco
+  if(PER&&PER.custom) return ocJanelaCustom_(F.de,F.ate);
+  return ocJanelaPeriodo_(PER&&PER.N?PER.N:30); // "Todo o período" = 30 dias
+}
+function iaOciosidade_(p,W){
   const cap=capPessoa_(p);
-  if(!cap.def||!(cap.mes>0)) return {nc:'Sem capacidade cadastrada',cap:null};
-  const b=iaOcBase_(p), capP=cap.mes*N/30;
-  let al=0;
-  if(b.rows.length){
-    if(b.nTot===0||(b.cov!==null&&b.cov<DA_PARAM.coberturaMin)) return {nc:'Dados insuficientes',cap:cap.mes};
-    al=b.rows.reduce((s,r)=>s+r.pa.h*Math.min(N,r.diasEf)/r.diasEf,0);
-  }
+  if(!cap.def||!(cap.mes>0)) return {nc:'Sem capacidade cadastrada',cap:null,W};
+  if(!PCARGA||!Object.keys(PCARGA).length) return {nc:'Dados de carga ainda não carregados',cap:cap.mes,W};
+  if(W.antes) return {nc:'Período anterior a hoje (não há histórico de alocação)',cap:cap.mes,W};
+  const fer=ocFerSet_(p), du=ocDiasUteis_(W.ini,W.fim,fer), dia=cap.dia>0?cap.dia:cap.mes/20;
+  if(du===0) return {nc:'Período sem dias úteis',cap:cap.mes,W};
+  const capP=dia*du, pc0=ocDadosCarga_(p)||{l:[],sd:{n:0,h:0,t:[]},ve:{n:0,h:0,t:[]},bk:{n:0,h:0}};
+  const cr=pc0.l.filter(l=>l[5]>=W.ini&&l[4]<=W.fim), den=cr.length+pc0.sd.n, num=cr.filter(l=>l[3]>0).length;
+  const conf=den?Math.round(num/den*100):null;
+  const base={cap:cap.mes,dia,capP,du,W,conf,den,num,ve:pc0.ve,sd:pc0.sd,bk:pc0.bk,nFer:ocDiasUteis_(W.ini,W.fim,null)-du};
+  if(den>0&&conf<DA_PARAM.coberturaMin) return Object.assign(base,{nc:'Dados insuficientes'});
+  const al=cr.reduce((s,l)=>s+ocHorasPrev_(l[3],l[4],l[5],W.ini,W.fim,fer),0);
   const disp=Math.max(0,capP-al), over=Math.max(0,al-capP), pc=disp/capP*100;
-  return {cap:cap.mes,capP,al,disp,over,pc,c:pc<=10?0:pc<=25?1:pc<=40?2:3,N,sem:b.rows.length===0};
+  return Object.assign(base,{al,disp,over,pc,c:pc<=10?0:pc<=25?1:pc<=40?2:3,sem:den===0});
 }
+function ocConfHtml_(o){ if(o.conf==null) return o.den===0?'<span class="oc-cf ok" title="Pessoa sem tarefas em execução no período"><i><u style="width:100%"></u></i>sem tarefas</span>':'—'; const k=o.conf>=80?'ok':o.conf>=DA_PARAM.coberturaMin?'md':'bx'; return '<span class="oc-cf '+k+'" title="Tarefas em execução no período com horas e datas: '+o.num+' de '+o.den+'"><i><u style="width:'+o.conf+'%"></u></i>'+o.conf+'%</span>'; }
+function ocJanTxt_(W){ return feBr_(W.ini)+(W.fim!==W.ini?' a '+feBr_(W.fim):''); }
 function iaOcTip_(o){
+  if(o.nc==='Dados insuficientes') return 'Dados insuficientes: só '+o.conf+'% das tarefas em execução da pessoa no período ('+o.num+' de '+o.den+') têm horas estimadas e datas (mínimo '+DA_PARAM.coberturaMin+'%). '+(o.ve.n?o.ve.n+' tarefa(s) vencida(s) e abertas ('+fHM_(o.ve.h)+') e ':'')+(o.sd.n?o.sd.n+' sem data':'')+' ficaram fora. Não assumimos 0% nem capacidade padrão.';
   if(o.nc) return 'Não calculado: '+o.nc+'. Não assumimos capacidade padrão nem 0%.';
-  return 'Ociosidade = (capacidade do período '+fHM_(o.capP)+' − horas alocadas '+fHM_(o.al)+') ÷ capacidade do período = '+Math.round(o.pc)+'%. Capacidade do período = capacidade mensal × '+o.N+'/30 (Pessoas_Area). Horas alocadas = horas restantes das tarefas abertas da pessoa (já divididas entre responsáveis), distribuídas até a entrega de cada projeto ativo, nos próximos '+o.N+' dias. Horas apontadas não entram.'+(o.sem?' Sem projetos ativos vinculados.':'');
+  return 'Ociosidade = (capacidade do período '+fHM_(o.capP)+' − horas alocadas '+fHM_(o.al)+') ÷ capacidade do período = '+Math.round(o.pc)+'%. Capacidade = '+fHM_(o.dia)+' por dia útil × '+o.du+' dias úteis'+(o.nFer?' ('+o.nFer+' feriado(s) descontado(s))':'')+' ('+ocJanTxt_(o.W)+'). Horas alocadas = Total Workhours de cada tarefa em execução ÷ dias úteis entre início e término, só os dias do período e só a parte de cada responsável (conforme o Zoho). Backlog, tarefas vencidas e tarefas sem data ficam fora'+(o.conf!==null?' · confiança '+o.conf+'%':' · pessoa sem tarefas em execução no período')+'. Horas apontadas não entram.';
 }
+// Resumo de qualidade dos dados de um conjunto de pessoas (faixa "Qualidade dos dados").
+function ocQualidade_(oc){
+  const q={cob:{num:0,den:0},ve:{n:0,h:0,t:[]},sd:{n:0,h:0,t:[]},bk:{n:0,h:0}};
+  oc.forEach(x=>{ const o=x.o, p=x.p; if(!o||o.den===undefined) return; q.cob.num+=o.num; q.cob.den+=o.den;
+    q.ve.n+=o.ve.n; q.ve.h+=o.ve.h; q.sd.n+=o.sd.n; q.sd.h+=o.sd.h; q.bk.n+=o.bk.n; q.bk.h+=o.bk.h;
+    o.ve.t.forEach(t=>q.ve.t.push([p.a].concat(t))); o.sd.t.forEach(t=>q.sd.t.push([p.a].concat(t))); });
+  q.pct=q.cob.den?Math.round(q.cob.num/q.cob.den*100):null; return q;
+}
+const OC_Q_LISTA={};
+function ocQualidadeHtml_(q,idEl){
+  OC_Q_LISTA[idEl]=q;
+  const card=(k,b,t,cls)=>'<div class="oc-kp '+cls+'"'+(k?' data-oc-q="'+k+'" data-oc-el="'+idEl+'" role="button" tabindex="0"':'')+'><b>'+b+'</b><span>'+t+'</span></div>';
+  return '<div class="oc-q"><div class="oc-q-t">Qualidade dos dados do período <span>— o que ficou fora do cálculo da ociosidade</span></div><div class="oc-q-g">'+
+    card('', q.pct===null?'—':q.pct+'%','das tarefas em execução do período têm horas e datas','')+
+    card('ve',q.ve.n+' tarefas · '+fHM_(q.ve.h),'vencidas e ainda abertas (não distribuídas)',q.ve.n?'w2':'')+
+    card('sd',q.sd.n+' tarefas · '+fHM_(q.sd.h),'sem data de início/término (ou sem dia útil)',q.sd.n?'w1':'')+
+    card('', fHM_(q.bk.h),'em Backlog (demanda não comprometida)','')+'</div></div>';
+}
+document.addEventListener('click',e=>{ const c=e.target.closest&&e.target.closest('[data-oc-q]'); if(!c) return;
+  const q=OC_Q_LISTA[c.dataset.ocEl]; if(!q) return; const k=c.dataset.ocQ, L=q[k].t.slice().sort((a,b)=>b[4]-a[4]);
+  ccModal_(k==='ve'?'Tarefas vencidas e ainda abertas':'Tarefas sem data de início/término',
+    '<p class="cc-def">'+(k==='ve'?'Término anterior a hoje e status diferente de Done/Cancelado. Não são distribuídas na ociosidade; revise o status ou as datas no Zoho.':'Têm horas, mas faltam datas válidas (ou todos os dias do intervalo são feriados/fim de semana). Não são distribuídas.')+'</p>'+
+    ccTab_([['Pessoa'],['Projeto'],['Tarefa'],['Status'],['Horas',1]].concat(k==='ve'?[['Término']]:[]),x=>'<tr><td>'+feEsc_(x[0])+'</td><td>'+feEsc_(x[1])+'</td><td>'+feEsc_(x[2])+'</td><td>'+feEsc_(x[3])+'</td><td class="n">'+fHM_(x[4])+'</td>'+(k==='ve'?'<td>'+feBr_(x[5])+'</td>':'')+'</tr>',L));
+});
 function iaPeriodo_(F){
   if(!F||F.per==='0') return null;
   if(F.per==='x'){ if(!F.de||!F.ate||F.ate<F.de) return {erro:true}; return {ini:F.de,fim:F.ate,rot:'período',custom:true}; }
@@ -6804,7 +6862,7 @@ function renderInteligenciaAlocacao(){
   const semPM=!!PER&&!(PM&&Object.keys(PM).length);
   if(PER) linhas=linhas.map(l=>{ const v=iaVals_(l,PER); return Object.assign({},l,{horasApontadas:v.ap,qtdTarefasAbertas:v.nt,_semPM:v.ap===null}); });
 
-  { const Noc=iaOcDias_(F,PER); linhas=linhas.map(l=>Object.assign({},l,{_oc:iaOciosidade_(l.pessoa,Noc)})); }
+  { const Woc=iaOcDias_(F,PER); linhas=linhas.map(l=>Object.assign({},l,{_oc:iaOciosidade_(l.pessoa,Woc)})); }
   const colunasIA=[
     {key:'pessoa',label:'Pessoa',tipo:'texto',get:l=>l.pessoa.a},
     {key:'area',label:'Área',tipo:'texto',get:l=>l.pessoa.area||''},
@@ -6821,7 +6879,8 @@ function renderInteligenciaAlocacao(){
     {key:'capMensal',label:'Cap. mensal',tipo:'horas',get:l=>l._oc.cap},
     {key:'hAlocadas',label:'H. alocadas',tipo:'horas',get:l=>l._oc.nc?null:l._oc.al},
     {key:'hDisp',label:'H. disponíveis',tipo:'horas',get:l=>l._oc.nc?null:l._oc.disp},
-    {key:'ociosidade',label:'Ociosidade',tipo:'percentual',get:l=>l._oc.nc?null:l._oc.pc}
+    {key:'ociosidade',label:'Ociosidade',tipo:'percentual',get:l=>l._oc.nc?null:l._oc.pc},
+    {key:'confianca',label:'Confiança',tipo:'percentual',get:l=>l._oc.conf==null?null:l._oc.conf}
   ];
   const stIA=SORT_STATE['ia']||{col:null,dir:0};
   linhas=stIA.col?ordenarLinhas_(linhas,colunasIA.find(c=>c.key===stIA.col),stIA.dir):linhas;
@@ -6835,12 +6894,12 @@ function renderInteligenciaAlocacao(){
     ${kpiHtml({label:'H. Apontadas'+(PER?' ('+PER.rot+')':''),value:semPM?'—':fHM_(totApont)})}`;
 
   const sufixoModoIA=modoStatusIA!=='todos'?' · '+projStatusRotulo_(modoStatusIA):'';
-  let h='<div class="card"><div class="card-title"><h3>Análise por Pessoa'+(sufixoModoIA?'<span class="sub">'+sufixoModoIA+'</span>':'')+'</h3><span class="sub">'+linhas.length+'</span><button type="button" class="filter-clear" id="ia-xl" style="margin-left:auto"'+(linhas.length?'':' disabled')+'>⬇ Exportar Excel</button></div>'+
+  let h=ocQualidadeHtml_(ocQualidade_(linhas.map(l=>({p:l.pessoa,o:l._oc}))),'ia')+'<div class="card"><div class="card-title"><h3>Análise por Pessoa'+(sufixoModoIA?'<span class="sub">'+sufixoModoIA+'</span>':'')+'</h3><span class="sub">'+linhas.length+'</span><button type="button" class="filter-clear" id="ia-xl" style="margin-left:auto"'+(linhas.length?'':' disabled')+'>⬇ Exportar Excel</button></div>'+
     (modoStatusIA!=='todos'?'<div class="ia-nota-previstas">Filtro de projetos ativo ('+projStatusRotulo_(modoStatusIA)+'): Projetos, Tarefas em aberto, Próxima Entrega, H. Apontadas, Score e Situação consideram só esses projetos. H. Previstas = total da pessoa (não há quebra por projeto).</div>':'')+
     '<div class="table-wrap" style="max-height:620px"><table>'+
     theadOrdenavel_('ia',colunasIA)+'<tbody>';
   if(linhas.length===0){
-    h+='<tr><td colspan="15" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
+    h+='<tr><td colspan="16" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
   }else{
     linhas.forEach(l=>{
       const pt=l.proxTarefa, o=l._oc;
@@ -6860,8 +6919,8 @@ function renderInteligenciaAlocacao(){
         '<td>'+(l.horasApontadas===null?'—':fH(l.horasApontadas))+'</td>'+
         '<td><div class="ia-score-bar-track"><div class="ia-score-bar-fill" style="width:'+l.score+'%;background:'+iaCorFaixa_(l.faixa)+'"></div></div><span style="font-weight:700;font-size:12px">'+l.score+'</span></td>'+
         '<td>'+iaBadgeSituacaoHtml(l.faixa)+'</td>'+
-        (o.nc?'<td style="text-align:right">'+(o.cap?fHM_(o.cap):'—')+'</td><td style="text-align:right">—</td><td style="text-align:right">—</td><td title="'+iaOcTip_(o)+'"><span class="ia-oc-tg ia-ocn">Não calculado</span> <span style="color:var(--text-muted);font-size:11px">'+o.nc+'</span></td>'
-        :'<td style="text-align:right">'+fHM_(o.cap)+'</td><td style="text-align:right">'+fHM_(o.al)+'</td><td style="text-align:right">'+fHM_(o.disp)+(o.over>0.05?'<div style="font-size:10px;color:var(--st-bloqueado)">+'+fHM_(o.over)+' acima</div>':'')+'</td><td title="'+iaOcTip_(o)+'"><div class="ia-oc"><div class="ia-oc-trk"><i class="ia-oc-f'+o.c+'" style="width:'+Math.min(100,o.pc)+'%"></i></div><span class="ia-oc-pc">'+Math.round(o.pc)+'%</span><span class="ia-oc-tg ia-oc'+o.c+'">'+IA_OC_ROT[o.c]+'</span></div></td>')+
+        (o.nc?'<td style="text-align:right">'+(o.cap?fHM_(o.cap):'—')+'</td><td style="text-align:right">—</td><td style="text-align:right">—</td><td title="'+iaOcTip_(o)+'"><span class="ia-oc-tg ia-ocn">'+(o.nc==='Dados insuficientes'?'Dados insuficientes':'Não calculado')+'</span> <span style="color:var(--text-muted);font-size:11px">'+(o.nc==='Dados insuficientes'?'':o.nc)+'</span></td><td>'+ocConfHtml_(o)+'</td>'
+        :'<td style="text-align:right">'+fHM_(o.cap)+'</td><td style="text-align:right">'+fHM_(o.al)+'</td><td style="text-align:right">'+fHM_(o.disp)+(o.over>0.05?'<div style="font-size:10px;color:var(--st-bloqueado)">+'+fHM_(o.over)+' acima</div>':'')+'</td><td title="'+iaOcTip_(o)+'"><div class="ia-oc"><div class="ia-oc-trk"><i class="ia-oc-f'+o.c+'" style="width:'+Math.min(100,o.pc)+'%"></i></div><span class="ia-oc-pc">'+Math.round(o.pc)+'%</span><span class="ia-oc-tg ia-oc'+o.c+'">'+IA_OC_ROT[o.c]+'</span></div></td><td>'+ocConfHtml_(o)+'</td>')+
       '</tr>';
     });
   }
@@ -6887,12 +6946,12 @@ async function iaExportarExcel_(btn){
   try{
     const ExcelJS=await calCarregarExcelJS_(), wb=new ExcelJS.Workbook(), HMM='[h]:mm', hojeISO=hojeISO_();
     const ws=wb.addWorksheet('Análise por Pessoa');
-    const cols=[['Pessoa',28],['Cargo',22],['Head',22],['Nível',18],['Projetos',10],['Clientes / Projetos',44],['Próxima Entrega (tarefa)',24],[E.per?(E.per.custom?'Tarefas vencendo no período':'Tarefas vencendo em '+E.per.N+'d'):'Tarefas em aberto',22],['H. Previstas',13],[E.per?'H. Apontadas ('+E.per.rot+')':'H. Apontadas',20],['Score',9],['Situação',16],['Área',20],['Cap. mensal',13],['H. alocadas',13],['H. disponíveis',14],['Ociosidade (%)',14],['Classificação da ociosidade',26]];
+    const cols=[['Pessoa',28],['Cargo',22],['Head',22],['Nível',18],['Projetos',10],['Clientes / Projetos',44],['Próxima Entrega (tarefa)',24],[E.per?(E.per.custom?'Tarefas vencendo no período':'Tarefas vencendo em '+E.per.N+'d'):'Tarefas em aberto',22],['H. Previstas',13],[E.per?'H. Apontadas ('+E.per.rot+')':'H. Apontadas',20],['Score',9],['Situação',16],['Área',20],['Cap. mensal',13],['H. alocadas',13],['H. disponíveis',14],['Ociosidade (%)',14],['Classificação da ociosidade',26],['Confiança (%)',14]];
     ws.columns=cols.map(c=>({header:c[0],width:c[1]}));
     E.linhas.forEach(l=>{
       const cp=iaClientesProjetos_(l), pt=l.proxTarefa;
       const r=ws.addRow([l.pessoa.a||'',l.pessoa.cargo||'',l.pessoa.head||'',l.pessoa.nv||'',l.qtdProjetos,cp.join('\n'),
-        pt?haIsoParaDate_(pt.iso):'sem data',l.qtdTarefasAbertas,(l.horasPrevistas||0)/24,l.horasApontadas===null?'—':(l.horasApontadas||0)/24,l.score,l.faixa.label,l.pessoa.area||'',l._oc.cap==null?'—':l._oc.cap/24,l._oc.nc?'Não calculado':l._oc.al/24,l._oc.nc?'Não calculado':l._oc.disp/24,l._oc.nc?'Não calculado':Math.round(l._oc.pc*10)/10,l._oc.nc?'Não calculado ('+l._oc.nc+')':IA_OC_ROT[l._oc.c]]);
+        pt?haIsoParaDate_(pt.iso):'sem data',l.qtdTarefasAbertas,(l.horasPrevistas||0)/24,l.horasApontadas===null?'—':(l.horasApontadas||0)/24,l.score,l.faixa.label,l.pessoa.area||'',l._oc.cap==null?'—':l._oc.cap/24,l._oc.nc?'Não calculado':l._oc.al/24,l._oc.nc?'Não calculado':l._oc.disp/24,l._oc.nc?'Não calculado':Math.round(l._oc.pc*10)/10,l._oc.nc?'Não calculado ('+l._oc.nc+')':IA_OC_ROT[l._oc.c],l._oc.conf==null?'—':l._oc.conf]);
       r.getCell(6).alignment={wrapText:true,vertical:'top'}; r.height=Math.max(15,15*Math.max(1,cp.length));
       r.eachCell(c=>{ if(c.col!==6) c.alignment={vertical:'top'}; });
       const c7=r.getCell(7); if(pt){ c7.numFmt='dd/mm/yyyy'; c7.alignment={horizontal:'right',vertical:'top'}; if(pt.vencida) c7.font={bold:true,color:{argb:'FFB91C1C'}}; } else c7.font={color:{argb:'FF64748B'}};
@@ -7016,7 +7075,7 @@ function pessoaEstaAtiva(p){ return peNormalizarHeader(p&&p.status)!=='inativo';
 // nunca permissão, login, vínculos nem histórico. D.p continua completo para consultas por nome/e-mail.
 function pessoaParticipaAnalises_(p){ return !p || p.participa!==false; }
 let PESA_CACHE=null, PESA_REF=null;
-function PESA_(){ const L=(D&&D.p)||[]; if(PESA_REF!==L||!PESA_CACHE){ PESA_REF=L; PESA_CACHE=L.filter(pessoaParticipaAnalises_); } return PESA_CACHE; }
+function PESA_(){ const L=(D&&D.p)||[]; if(PESA_REF!==L||!PESA_CACHE){ PESA_REF=L; PESA_CACHE=L.filter(p=>pessoaParticipaAnalises_(p)&&pessoaEstaAtiva(p)); } return PESA_CACHE; }
 function peMostrarView(modo){
   PE_MODO=modo;
   document.getElementById('pe-lista-view').style.display=modo==='lista'?'':'none';
@@ -11410,13 +11469,12 @@ function renderGerente(){
 //   Disponível      = nenhuma das duas condições acima
 // Ordem de prioridade de exibição: Carga Elevada → Disponível → Baixa Utilização
 const EQ={pill:'TODOS',kpi:null};
-// v20.7 — dias do período selecionado para a Ociosidade: Hoje = 1, Esta semana = 7, Este mês e Todos = 30, De–Até = nº de dias (1 a 90).
+// v20.8 — janela da Ociosidade a partir do período selecionado: Hoje = hoje, Esta semana = 7 dias, Este mês e Todos = 30 dias a partir de hoje; De–Até = as datas informadas (recortadas em hoje).
 function eqDias_(de,ate){
   const act=document.querySelector('#equipe-periodo-seg .seg-btn.active'), v=act?act.dataset.val:'todos';
-  if(v==='hoje') return 1; if(v==='semana') return 7; if(v==='mes') return 30; // janelas cheias (os atalhos vão só até hoje)
-  if(!de&&!ate) return 30;
-  const a=de||ate, b=ate||de; const n=Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/864e5)+1;
-  return Math.max(1,Math.min(90,n||30));
+  if(v==='hoje') return ocJanelaPeriodo_(1); if(v==='semana') return ocJanelaPeriodo_(7); if(v==='mes') return ocJanelaPeriodo_(30);
+  if(!de&&!ate) return ocJanelaPeriodo_(30);
+  return ocJanelaCustom_(de,ate);
 }
 const EQ_OC_COR=['#2563eb','#16a34a','#ca8a04','#dc2626'];
 function eqOcKey_(o){ return o.nc?'nc':String(o.c); }
@@ -11433,7 +11491,7 @@ function initEquipe(){
   // Head e Gestor são colunas distintas em Pessoas_Area (p.head e p.gestor) — os
   // valores de cada filtro vêm diretamente dessas colunas, sem misturar as duas.
   const PLACEHOLDERS=['#N/T','#N/A','Pendente'];
-  const heads=[...new Set(D.p.map(p=>p.head).filter(Boolean).filter(g=>PLACEHOLDERS.indexOf(g)===-1))].sort();
+  const heads=[...new Set(PESA_().map(p=>p.head).filter(Boolean).filter(g=>PLACEHOLDERS.indexOf(g)===-1))].sort();
   const selHead=document.getElementById('f-equipe');
   selHead.innerHTML='<option value="">— Todos —</option>'+heads.map(g=>'<option value="'+g.replace(/"/g,'&quot;')+'">'+g+'</option>').join('');
   selHead.onchange=()=>{ document.getElementById('f-equipe-gestor').value=''; document.getElementById('f-equipe-pessoa').value=''; populateEquipeGestorFilter(); populateEquipePessoaFilter(); renderEquipe(); };
@@ -11580,7 +11638,7 @@ function renderEquipe(){
     kpi('claude','🤖','Usam Claude Code',usamClaude,'de '+time.length+' liderados','Clique para filtrar quem usa Claude Code.');
   document.getElementById('kpi-equipe').className='eq-kpis';
   const pill=(k,rot)=>'<button type="button" class="eq-pill'+(EQ.pill===k?' on':'')+'" data-eqp="'+k+'">'+rot+' ('+contOc[k]+')</button>';
-  document.getElementById('equipe-pills').innerHTML='<span style="font-size:11px;color:var(--text-faint);font-weight:700;margin-right:2px" title="Ociosidade = (capacidade do período − horas alocadas) ÷ capacidade do período, na janela de '+Neq+' dia(s) do período selecionado.">OCIOSIDADE ('+Neq+'d):</span>'+pill('TODOS','Todos')+pill('0','Ocupação alta')+pill('1','Baixa ociosidade')+pill('2','Ociosidade moderada')+pill('3','Ociosidade elevada')+pill('nc','Não calculado');
+  document.getElementById('equipe-pills').innerHTML='<span style="font-size:11px;color:var(--text-faint);font-weight:700;margin-right:2px" title="Ociosidade = (capacidade do período − horas alocadas) ÷ capacidade do período, na janela de '+ocJanTxt_(Neq)+' (dias úteis, feriados descontados).">OCIOSIDADE ('+ocJanTxt_(Neq)+'):</span>'+pill('TODOS','Todos')+pill('0','Ocupação alta')+pill('1','Baixa ociosidade')+pill('2','Ociosidade moderada')+pill('3','Ociosidade elevada')+pill('nc','Não calculado');
   document.getElementById('equipe-count').innerHTML='<span>Exibindo <strong>'+rowsFiltradas.length+'</strong> de <strong>'+time.length+'</strong> colaboradores</span><span>Clique em qualquer card para abrir o Desempenho da pessoa</span>';
 
   if(rowsFiltradas.length===0){
@@ -11588,17 +11646,17 @@ function renderEquipe(){
     return;
   }
 
-  let h='<div class="eq-grid">';
+  let h=ocQualidadeHtml_(ocQualidade_(rowsFiltradas.map(r=>({p:r.p,o:r.oc}))),'eq')+'<div class="eq-grid">';
   rowsFiltradas.forEach(r=>{
     const p=r.p, o=r.oc, ck=eqOcKey_(o), cor=o.nc?'#64748b':EQ_OC_COR[o.c];
     const maxH=Math.max(r.hEst,r.horas,1), ratio=r.horas===0?0:Math.min(100,Math.round(r.horas/maxH*100));
     const barCor=r.hExecutadoSemana>r.capSem?'var(--st-bloqueado)':(r.horas>r.hEst&&r.hEst>0?'#0ea5e9':'#10b981');
-    const badge=o.nc?'<span class="ia-oc-tg ia-ocn" title="'+iaOcTip_(o)+'">Não calculado</span>'
+    const badge=o.nc?'<span class="ia-oc-tg ia-ocn" title="'+iaOcTip_(o)+'">'+(o.nc==='Dados insuficientes'?'Dados insuficientes':'Não calculado')+'</span>'
       :'<span class="ia-oc-tg ia-oc'+o.c+'" title="'+iaOcTip_(o)+'"><b>'+Math.round(o.pc)+'%</b> · '+IA_OC_ROT[o.c]+'</span>';
     const nota=r.ociosidadeSemanaPct!==null?fH(r.hExecutadoSemana)+' de '+fH(r.hPrevistoSemana)+' previstas ('+r.ociosidadeSemanaPct+'% abaixo do previsto)':'Sem vencimentos na semana';
     h+=`<article class="eq-card" data-nome="${p.a.replace(/"/g,'&quot;')}" style="${o.nc?'':'border-color:'+cor+'55'}">
       <div class="eq-top"><div class="eq-who"><div class="eq-av" style="background:${cor}">${iniciais(p.a)}</div><div style="min-width:0"><div class="eq-nm">${p.a}${r.usaClaude?'<span title="Usa Claude Code">AI</span>':''}</div><div class="eq-rl">${p.cargo||'Cargo não informado'}</div></div></div></div>
-      <div class="eq-oc">${badge}<span>${o.nc?o.nc:fHM_(o.disp)+' livres de '+fHM_(o.capP)}</span></div>
+      <div class="eq-oc">${badge}<span>${o.nc?(o.nc==='Dados insuficientes'?'confiança '+o.conf+'%':o.nc):fHM_(o.disp)+' livres de '+fHM_(o.capP)+(o.conf!==null?' · confiança '+o.conf+'%':'')}</span></div>
       <div class="eq-ar"><span>${p.area||'—'}</span>${r.venceSemana>0?'<b>'+r.venceSemana+' vence(m) sem.</b>':''}</div>
       <div class="eq-strip"><div><small>Projetos</small><b>${r.projetos}</b></div><div><small>Tarefas</small><b>${r.tarefas}</b></div><div><small>Vence/Sem.</small><b style="${r.venceSemana>0?'color:var(--st-bloqueado)':''}">${r.venceSemana}</b></div></div>
       <div><div class="eq-hr"><div><small>Estimado${periodoAtivo?' (período)':''}</small><b>${fH(r.hEst)}</b></div><div class="r"><small>Executado</small><b style="color:var(--primary)">${fH(r.horas)}</b></div></div><div class="eq-bar"><i style="width:${ratio}%;background:${barCor}"></i></div></div>
@@ -12810,7 +12868,7 @@ async function excluirStatusReportPainel_(id,btn){
 // este mapa (ver comentário lá).
 const PAGINA_CAMPOS_NECESSARIOS={
   cliente:['PROJ_TASKS'],
-  inteligencia:['PROJ_TASKS','PSTAT','PHEST','PHAP','PALOC','PM'],
+  inteligencia:['PROJ_TASKS','PSTAT','PHEST','PHAP','PALOC','PCARGA','FER','PM'],
   pessoa:['PM','PM_PROJ','PROJ_TASKS','CD','CTOK','PSTAT','PPREVISTO','PHEST','PHAP','HM','PVENC'],
   area:['PPREVISTO','PM'],
   // DESVIO da lista original (achado ao auditar chamadas fora das páginas
@@ -12826,7 +12884,7 @@ const PAGINA_CAMPOS_NECESSARIOS={
   pend:['PEND','PROJ_TASKS'],
 
   futuristic:[], // v20.4: a Central de Comando calcula no servidor (ação centralComando) — não precisa de campos pesados
-  equipe:['PM','PPREVISTO','PHAP','PHEST','PSTAT','SEM_ALOC','ALOC_SEM_APONT','PVENC','PROJ_TASKS','PALOC'],
+  equipe:['PM','PPREVISTO','PHAP','PHEST','PSTAT','SEM_ALOC','ALOC_SEM_APONT','PVENC','PROJ_TASKS','PALOC','PCARGA','FER'],
 
   andamento:['PROJ_TASKS']
 };
@@ -12862,7 +12920,7 @@ const WIKI_CATS=[
  ['1.5','Gestão de pessoas e equipes'],['1.6','Inteligência de Alocação e Carga e Risco'],['1.7','Projetos, tarefas e horas'],['1.8','Desempenho e capacidade'],
  ['1.9','Status Report'],['1.10','Cadastros auxiliares e fontes de dados'],['1.11','Notificações e auditoria'],['1.12','Relatórios, exportações e filtros'],
  ['1.13','Regras transversais e padrões técnicos'],['1.14','Glossário e perguntas frequentes'],['1.15','Histórico, divergências e revisão']];
-const WIKI_VER='v20.7', WIKI_DATA='19/11/2026';
+const WIKI_VER='v20.8', WIKI_DATA='19/11/2026';
 const WR=(id,n,st,mod,d,f,dados,c,ex,im,t,lim)=>({id,n,st,mod,d,f,dados,c,ex,im,t,lim});
 const WP=(id,cat,t,resumo,regras,corpo)=>({id,cat,t,resumo,regras:regras||[],corpo:corpo||'',upd:WIKI_DATA,ver:WIKI_VER});
 const WIKI_PAGINAS=[
@@ -13054,9 +13112,13 @@ WP('port-equipe','1.3','Equipe do projeto e requisitos de equipe','Papéis, requ
 
 WP('zoho-sync','1.3','Sincronização Projetos (Zoho) → Portifolio','Como a aba Projetos, alimentada pelo Zoho, atualiza datas e colunas do Portifolio.',[
  WR('ZOHO-001','Vínculo Projetos × Portifolio','ok','Portfólio',
-  'Se o Portifolio já tem <b>ID Projeto Zoho</b>, o vínculo é por esse ID. Senão, por Cliente + Projeto normalizados (sem acento, caixa e pontuação). 1 candidato = vincula; nenhum = <i>Sem correspondência</i>; 2 ou mais = <i>Ambíguo</i> (nada é gravado; o Administrador resolve em “Associar…”). Projetos só no Zoho viram pendência e nunca são criados automaticamente; nomes com BKP/backup são ignorados.',
+  'Se o Portifolio já tem <b>ID Projeto Zoho</b>, o vínculo é por esse ID — desde que o nome do projeto seja compatível com o do Zoho (<i>Vínculo suspeito</i> quando o ID aponta para um projeto de nome muito diferente: nada é gravado e vira pendência). Senão, por Cliente + Projeto normalizados (sem acento, caixa e pontuação). 1 candidato = vincula; nenhum = <i>Sem correspondência</i>; 2 ou mais = <i>Ambíguo</i> (nada é gravado; o Administrador resolve em “Associar…”). Projetos só no Zoho viram pendência e nunca são criados automaticamente; nomes com BKP/backup são ignorados.',
   '<code>zsPlanejar_</code>, <code>zsAssociar_</code>.','Projetos (id_projeto, cliente, projeto…), Portifolio, Zoho_Sync_Pendencias.',
   'Nunca escolhe um duplicado arbitrariamente.','Projeto ambíguo/sem correspondência segue editável normalmente.','Edição do Portfólio › Sincronização Zoho.','Associar manualmente um projeto ambíguo.','Nomes muito diferentes entre Zoho e Portifolio exigem associação manual (a tela sugere os mais parecidos).'),
+ WR('ZOHO-005','Portifolio como tabela única, colunas Zoho e reparo de vínculos','ok','Portfólio',
+  'O Portifolio é a tabela mestre: o <b>nome do Portfólio manda nas telas</b> e o que vem do Zoho fica só nas colunas Zoho (ID, Código, Status, Estágio, Início, Fim, Situação, Última Sincronização e, novas, <b>Cliente Zoho, Projeto Zoho, Gerente Zoho e E-mail Gerente Zoho</b>). Equipes e demais campos preenchidos à mão nunca são alterados pela sincronização, e a Edição do Portfólio não altera campos Zoho. A aba Projetos continua como entrada técnica da carga diária do Zoho. Para corrigir IDs trocados: no editor do Apps Script rode <code>zsReparoSimular()</code> (gera a aba Zoho_Reparo_Vinculos; coluna aprovar: Sim, Manter ou Limpar), revise e rode <code>zsReparoAplicar()</code> (faz backup BKP_Portifolio_*, troca só o ID e limpa os campos Zoho da linha, registra no Log_Alteracoes); depois rode a simulação e a sincronização real.',
+  '<code>zsVinculoPlausivel_</code>, <code>zsReparoSimular</code>, <code>zsReparoAplicar</code>, <code>zsPlanejar_</code>.','Projetos, Portifolio, Zoho_Reparo_Vinculos, Log_Alteracoes.',
+  'Só o administrador, pelo editor do Apps Script; nada é gravado sem aprovar na aba de reparo; faz backup antes; ID nunca fica em duas linhas.','Vínculo com nome incompatível não é sincronizado até ser reparado ou confirmado (Manter).','Edição do Portfólio › Sincronização Zoho (pendência “Vínculo suspeito”).','Rodar zsReparoSimular, aprovar uma linha e conferir o ID e o backup.','Projetos de nome repetido em clientes diferentes exigem escolha manual do ID; nomes com BKP continuam ignorados.'),
  WR('ZOHO-002','Regras de data','ok','Portfólio',
   'Só em projeto vinculado: <b>dt_inicio</b> → Data de Inicio (sempre que vier preenchida e diferente); <b>dt_fim</b> → Prev Entrega Inicial (só se estiver vazia, uma única vez); <b>dt_fim</b> → Prev Entrega Atual (quando dt_fim mudar em relação ao último valor recebido); <b>dt_fim</b> → Data Entrega (só quando Estágio Zoho = Concluído; nunca é apagada). Data vazia no Zoho nunca apaga data do Portifolio. Datas em dd/mm/aaaa, sem conversão de fuso.',
   '<code>zsPlanejar_</code>, <code>zsAplicar_</code>.','Colunas Data Início Zoho e Data Fim Zoho guardam o último valor recebido.',
@@ -13093,7 +13155,7 @@ WP('cmd-kpis','1.4','Central de Comando: cartões e medidores','Fórmulas dos in
  WR('CMD-005','Capacidade e alocação (bloco 3)','ok','Central de Comando',
   'Por área: capacidade mensal × horas apontadas × horas comprometidas, com sobrecarga e baixa alocação. Na tela, as áreas ficam abaixo do gráfico de 6 meses; clique na área para abrir o modal com as pessoas e na pessoa para ver os projetos.',
   '<code>ccCapacidadeMensal_</code>, <code>ccCalcular_</code>.','Pessoas_Area (modelo, carga mensal/semanal, capacidade definida), HPEP, PALOC (horas restantes de tarefas abertas).',
-  `<ul><li><b>Capacidade mensal</b> = carga mensal cadastrada (ou semanal × 4). Contrato integral (CLT / PJ Full Time) sem carga cadastrada = <b>160 h</b>. Sem modelo e sem carga = “Capacidade não definida”, fora de todos os percentuais.</li><li><b>Comprometida</b> = apontadas no mês + horas restantes de tarefas abertas (só no mês corrente). <b>% = comprometida ÷ capacidade</b>. <b>Disponível</b> = capacidade − comprometida (mínimo 0).</li><li><b>Sobrecarga</b> &gt; 100% · <b>Baixa alocação</b> &lt; 50%.</li></ul>`,
+  `<ul><li><b>Capacidade mensal</b> = carga mensal cadastrada (ou semanal × 4). Contrato integral (CLT / PJ Full Time) sem carga cadastrada = <b>160 h</b>. A parcela comprometida segue a regra de <a data-w="ALOC-008">ALOC-008</a> (horas previstas em dias úteis até o fim do mês). Sem modelo e sem carga = “Capacidade não definida”, fora de todos os percentuais.</li><li><b>Comprometida</b> = apontadas no mês + horas restantes de tarefas abertas (só no mês corrente). <b>% = comprometida ÷ capacidade</b>. <b>Disponível</b> = capacidade − comprometida (mínimo 0).</li><li><b>Sobrecarga</b> &gt; 100% · <b>Baixa alocação</b> &lt; 50%.</li></ul>`,
   'Só pessoas ativas e com Participa_Analises. Head e Gestor veem apenas a sua área/equipe; não há comparativo entre áreas.','Central de Comando.','Pessoa com 200 h apontadas e 160 h de capacidade → 125% (Sobrecarga).','As horas restantes em tarefas abertas são de qualquer data de término (não há recorte por mês); em meses passados só contam as apontadas.'),
  WR('CMD-006','Acesso e escopo da Central de Comando','ok','Central de Comando',
   'Administrador vê toda a carteira (Visão Executiva); a página cabe em uma tela, sem rolagem, e no celular os blocos empilham. Head e Gestor passaram a ver a página, com o recorte feito no servidor: eles mesmos, a equipe direta (Pessoas_Hierarquia / colunas Head e Gestor) e os projetos desses grupos. Os demais perfis não veem a página, e o servidor nega as ações.',
@@ -13124,7 +13186,7 @@ WP('pess-cadastro','1.5','Cadastro de pessoas','Campos, status e participação 
   '<code>lerColunasAcessoPessoasArea_</code>.','Pessoas_Area.','—','Colunas Estado, Cidade e Participa_Analises são criadas automaticamente no primeiro uso.','Todas as páginas de pessoas, login, avisos.','—','—'),
  WR('PESS-002','Status Ativo/Inativo','ok','Pessoas',
   'Célula vazia (ou coluna inexistente) conta como Ativo. A coluna de status com cabeçalho em branco também é reconhecida.',
-  '<code>resolverStatusPessoa_</code>, <code>idxColunaStatusSemCabecalho_</code>.','Pessoas_Area.','—','Pessoas inativas saem de listas de análise (por exemplo, <code>pessoaEstaAtiva</code> na Alocação).','Login, listas, Alocação.','—','—'),
+  '<code>resolverStatusPessoa_</code>, <code>idxColunaStatusSemCabecalho_</code>.','Pessoas_Area.','—','Pessoa Inativa sai de <b>todas</b> as estatísticas atuais (totais, médias, rankings, cabeçalhos de área/Head, ociosidade e alocação) por um único critério de elegibilidade (<code>pessoaElegivel_</code> no servidor e <code>PESA_()</code> na página). Histórico e tarefas não são apagados.','Login, listas, Alocação.','—','—'),
  WR('PESS-003','Participa_Analises','ok','Pessoas',
   'Valor Sim/Não; vazio conta como Sim. Pessoa com Não sai de totais, médias, rankings e listas de pessoas das análises, mas seus projetos e tarefas não são excluídos e o campo não altera permissões nem login.',
   '<code>participaAnalisesValor_</code>, <code>foraAnalise_</code>, <code>PESA_()</code>.','Pessoas_Area.','—','Em projetos com vários responsáveis só a contagem dela sai. Ela continua vendo as próprias horas.','Central de Comando, Destaques, Disponibilidade, Carga e Risco, Minha Equipe, Desempenho, Pendências, Gestão de Horas, Relatório de Equipes.','Marcar uma pessoa como Não e conferir que ela some da Carga e Risco.','O alcance foi conferido nas telas citadas nas Novidades de 16/10; telas criadas depois precisam seguir a mesma regra.'),
@@ -13160,7 +13222,7 @@ WP('pess-equipe','1.5','Disponibilidade e equipe','Quem aparece como sem alocaç
   '<b>Sem alocação</b>: pessoa analisável sem apontamento/tarefas (Zoho) e sem projeto ativo no Portifolio. <b>Alocada sem apontamento</b>: sem Zoho mas presente em projeto Em Andamento/Sustentação do Portifolio.',
   '<code>buildDashboardData_</code> (<code>semAlocacao</code>, <code>alocSemApontamento</code>).','Portifolio, Tarefas, Tarefas_Horas_Apontadas.','—','Pessoas com Participa_Analises = Não ficam fora.','Central de Comando (Ocupação).','—','Depende da equipe estar preenchida no Portifolio.'),
  WR('PESS-011','Ociosidade e indicadores em Minha Equipe','ok','Pessoas',
-  'Cada card mostra a <b>Ociosidade</b> da pessoa no período selecionado (mesma regra de <a data-w="ALOC-008">ALOC-008</a>: capacidade individual × horas alocadas), com as faixas Ocupação alta, Baixa, Moderada e Elevada, ou “Não calculado”. Janela: Hoje = 1 dia, Esta semana = 7, Este mês e Todos = 30, De–Até = nº de dias. Os cards ficam em ordem de maior ociosidade e dá para filtrar pelas faixas, pela busca (pessoa, cargo, área) e pelos KPIs clicáveis. <b>Carga Elevada</b> (KPI) = mais horas executadas na semana que a capacidade semanal cadastrada; <b>Baixa Utilização</b> (KPI) = está em SEM_ALOC ou ALOC_SEM_APONT. O antigo selo de status (Disponível/Carga Elevada/Baixa Utilização) e o percentil de horas foram removidos do card.',
+  'Cada card mostra a <b>Ociosidade</b> da pessoa no período selecionado (mesma regra de <a data-w="ALOC-008">ALOC-008</a>: capacidade em dias úteis × horas previstas em dias úteis), com as faixas Ocupação alta, Baixa, Moderada e Elevada, ou “Não calculado”. Janela: a partir de hoje, 1, 7 ou 30 dias corridos (dias úteis dentro dela), ou De–Até; o intervalo aparece no título da coluna. Com poucos dados, “Dados insuficientes”. Os cards ficam em ordem de maior ociosidade e dá para filtrar pelas faixas, pela busca (pessoa, cargo, área) e pelos KPIs clicáveis. <b>Carga Elevada</b> (KPI) = mais horas executadas na semana que a capacidade semanal cadastrada; <b>Baixa Utilização</b> (KPI) = está em SEM_ALOC ou ALOC_SEM_APONT. O antigo selo de status (Disponível/Carga Elevada/Baixa Utilização) e o percentil de horas foram removidos do card.',
   '<code>renderEquipe</code>, <code>eqDias_</code>, <code>iaOciosidade_</code>.','Pessoas_Area, PALOC, PROJ_TASKS, PHAP/PM, SEM_ALOC.','—','A janela de alocação é futura (tarefas abertas), mesmo em períodos que terminam hoje.','Minha Equipe.','Capacidade 160 h e 120 h alocadas em 30 dias: 25% (Baixa ociosidade).','—'),
  WR('PESS-012','Pessoas sem cadastro completo','pa','Pessoas',
   'Tarefas de pessoas sem linha em Pessoas_Area entram nos cálculos por e-mail, mas não têm área, nível ou gestor; nas telas aparecem como “Nome não cadastrado” quando não casam com a Assinatura.',
@@ -13190,7 +13252,7 @@ WP('aloc-param','1.6','Parâmetros, capacidade e pressão','Constantes e limites
  WR('ALOC-002','Utilização e nível de pressão','ok','Carga e Risco',
   'Utilização = carga planejada por semana ÷ 40 × 100. A carga usa a PIOR janela entre os próximos 7 dias e o período escolhido. Níveis: até 70 % Disponível; até 90 % Atenção; até 105 % Alta pressão; acima Crítico. Sobe 1 nível com 3+ tarefas atrasadas ou 2+ entregas em 7 dias.',
   '<code>daCalc_</code>.','PALOC (horas restantes por pessoa e projeto), PROJ_TASKS.',
-  'Taxa semanal de cada projeto = horas restantes ÷ (dias efetivos ÷ 7); dias efetivos = máx(7, dias até a entrega); sem previsão = 4 semanas; entrega vencida = 7 dias. Carga numa janela = soma das taxas ponderada pela fração da janela.',
+  'Carga da pessoa numa janela = horas previstas em dias úteis (ver <a data-w="ALOC-008">ALOC-008</a>); capacidade livre = capacidade em dias úteis − carga. Pessoas com “Dados insuficientes” não recebem sugestão automática.',
   'Pessoa sem projeto ativo: “Sem projetos ativos vinculados”. Tarefa bloqueada é informativa e não conta como atraso.','Carga e Risco, Decisão de Alocação.','Pessoa com 36 h planejadas por semana → 90 % (Atenção).','Horas restantes dependem de estimativas registradas; ver <a data-w="ALOC-003">ALOC-003</a>.'),
  WR('ALOC-003','Cobertura de estimativas','ok','Carga e Risco',
   'Se menos de 50 % das tarefas abertas da pessoa têm horas estimadas (ou não há tarefas abertas), o resultado fica “Dados insuficientes” (nível −1): o sistema não classifica a pessoa em vez de assumir carga zero.',
@@ -13201,9 +13263,9 @@ WP('aloc-param','1.6','Parâmetros, capacidade e pressão','Constantes e limites
  WR('ALOC-005','Listagem Análise por Pessoa: colunas e regras','ok','Carga e Risco',
   'Colunas: Pessoa, <b>Área</b>, Cargo, <b>Head</b> (Pessoas_Area), Nível, Projetos, <b>Próxima Entrega (tarefa)</b>, <b>Tarefas em aberto</b>, H. Previstas, H. Apontadas, Score e Situação. <b>Tarefas em aberto</b> = tarefas da pessoa que não estão concluídas nem canceladas (Done, Cancelado, Concluído ou com data de conclusão ficam de fora; Bloqueadas e Backlog contam) — mesma definição de “fechada” da Decisão de Alocação. <b>Próxima Entrega (tarefa)</b> = menor data de vencimento entre as tarefas em aberto da pessoa, a partir de hoje (mostra “hoje” ou “Nd”); se só houver vencidas, mostra a mais antiga em vermelho (“vencida há Nd”); sem data: “— sem data”. As colunas Complexidade e Prioridade saíram da listagem, mas continuam no Score e nos filtros. Com o filtro de Status do Projeto, valem só os projetos filtrados. <b>Exportar Excel</b> (botão no card): respeita filtros e ordenação, mesmas colunas da tela mais <b>Clientes / Projetos</b> (“Cliente — Projeto”, um por linha, após Projetos), datas e horas como valores do Excel, aba “Filtros” com o resumo.',
   '<code>iaCalcularAnalisePessoa_</code> (qtdTarefasAbertas, proxTarefa), <code>colunasIA</code>, <code>iaExportarExcel_</code>.','PROJ_TASKS, PSTAT, Pessoas_Area.','—','Carga e Risco de Alocação › Análise por Pessoa.','Pessoa com tarefa Done vencendo amanhã: ela não pode ser a Próxima Entrega nem contar em Tarefas em aberto.','—'),
- WR('ALOC-008','Ociosidade (capacidade × horas alocadas)','ok','Carga e Risco',
-  'Colunas: Cap. mensal, H. alocadas, H. disponíveis e Ociosidade (%). <b>Capacidade</b> = capacidade individual de Pessoas_Area (Modelo_Contratacao + Carga_Horaria; Part-time fixo e variável usam a carga cadastrada); nunca 160 h por padrão. <b>Capacidade do período</b> = capacidade mensal × dias ÷ 30 (7, 15, 30 dias ou De–Até pelo nº de dias; “Todo o período” = 30 dias). <b>Horas alocadas</b> = horas restantes (estimadas − apontadas) das tarefas ainda abertas da pessoa, já divididas entre os responsáveis, distribuídas até a entrega de cada projeto ativo e somadas na janela do período (mesma base de H. Previstas e da Decisão de Alocação; apontamento não entra). <b>H. disponíveis</b> = capacidade do período − alocadas (mínimo 0; excesso aparece como “+Xh acima”). <b>Ociosidade</b> = disponíveis ÷ capacidade do período × 100. Classes: 0–10% Ocupação alta; &gt;10–25% Baixa ociosidade; &gt;25–40% Ociosidade moderada; &gt;40% Ociosidade elevada. Pessoa sem projetos ativos = 100%. <b>Não calculado</b>: sem capacidade cadastrada/zero, ou menos de 50% das tarefas abertas com horas estimadas.',
-  '<code>iaOciosidade_</code>, <code>iaOcDias_</code>, <code>capPessoa_</code>, <code>daBase_</code>.','Pessoas_Area, PALOC (Horas Estimadas, Tarefas, Portifolio).','—','Não usa 160 h como padrão; não trata ausência de apontamento como ociosidade; a janela é futura (carga das tarefas abertas), porque não há histórico de alocação.','Carga e Risco de Alocação (tela e Excel).','Capacidade 160 h, alocadas 120 h em 30 dias: disponíveis 40 h, ociosidade 25% (Baixa ociosidade).','—'),
+ WR('ALOC-008','Ociosidade (capacidade × horas previstas em dias úteis)','ok','Carga e Risco',
+  '<b>Regra oficial (fonte única de Carga e Risco, Minha Equipe, Decisão de Alocação e Central de Comando).</b> <b>Horas previstas</b> = Total Workhours da tarefa (rateado entre os responsáveis pela coluna “Work hours per owner” do Zoho, proporcional ao Total; sem rateio, divisão igual) distribuído <b>somente em dias úteis</b> (seg–sex, sem feriados nacionais e da localidade da pessoa) entre a data de início e a de término da tarefa; entra no cálculo apenas a parcela que cai na janela do período. Horas “hrs/day” são tratadas como diárias. <b>Capacidade do período</b> = carga diária cadastrada × dias úteis da janela (mesmos feriados); nunca 160 h por padrão e sem capacidade = “Não calculado”. <b>Ociosidade</b> = (capacidade − previstas) ÷ capacidade × 100; excesso aparece como “+Xh acima” e a ociosidade fica 0%. Pessoa sem tarefas = 100%. Classes: 0–10% Ocupação alta; &gt;10–25% Baixa; &gt;25–40% Moderada; &gt;40% Elevada. <b>Entram</b>: tarefas abertas com horas e datas, incluindo Blocked e Reuniões com data; <b>ficam fora</b>: Backlog (informado à parte), concluídas/canceladas, tarefas vencidas ainda abertas e tarefas sem data (ambas apenas sinalizadas na faixa de qualidade, nunca distribuídas). <b>Confiança</b> = % das tarefas em execução da pessoa na janela que têm horas e datas; abaixo de 50% mostra “Dados insuficientes” em vez de um percentual enganoso. Horas apontadas nunca substituem as previstas. A janela começa hoje (não há histórico de alocação).',
+  '<code>iaOciosidade_</code>, <code>ocDiasUteis_</code>, <code>ocHorasPrev_</code>, <code>ocConstruirCarga_</code> (backend), <code>capPessoa_</code>.','Pessoas_Area, Tarefas_Horas_Estimadas (colunas Status, Data de início/término, Total Workhours, Work hours per owner, tipo), aba Feriados, PCARGA/FER.','—','Vigência contratual (entrada/distrato) não aplicada; nomes do Zoho que não casam com Pessoas_Area ficam sem alocação; status comerciais seguem as regras gerais; datas formatadas como texto fora do padrão são lidas só se reconhecíveis.','Carga e Risco (tela, faixa de qualidade e Excel), Minha Equipe, Decisão de Alocação, Central de Comando.','Janela 19/11–18/12 (22 dias úteis), CLT 8 h/dia: capacidade 176 h; tarefa de 123,2 h no período → 30% (Ociosidade moderada). Tarefa de 80 h de 16/11 a 15/12 (22 dias úteis) = 40 h em novembro e 40 h em dezembro.','—'),
  WR('ALOC-006','Carga e Risco: filtros e botão Aplicar','ok','Carga e Risco',
   'Ordem: Head, Gestor, Pessoa, Período, Qtd. de Projetos, Situação. Nada é carregado até clicar em <b>Aplicar filtro</b>; mudar um filtro só destaca o botão. Período: 7/15/30 dias (apontadas = últimos N dias até hoje; tarefas vencendo = em aberto até hoje+N, atrasadas incluídas), Todo o período ou De–Até (apontadas e tarefas em aberto entre as duas datas; “Até” deve ser ≥ “De”). <b>Efeito cascata</b>: as opções de Head, Gestor, Pessoa, Qtd. de Projetos e Situação mostram só o que existe na combinação dos outros filtros; seleção que deixa de existir é limpa com aviso. Os KPIs são calculados sobre as linhas filtradas. Complexidade, Prioridade e Status da Tarefa foram removidos; o Score não muda.',
   '<code>iaLerFiltros_</code>, <code>iaCascata_</code>, <code>iaPeriodo_</code>, <code>iaVals_</code>.','PM, PROJ_TASKS, Pessoas_Area (Head).','—','Sem Head cadastrado, o filtro Head fica sem opções.','Carga e Risco de Alocação.','Período De–Até com “Até” anterior a “De” mostra erro e não carrega.','—'),
@@ -13509,6 +13571,8 @@ WP('rev-hist','1.15','Histórico de revisão da documentação','Registro das re
 WP('rev-nov','1.15','Novidades anteriores','Cards antigos da página Novidades. A página Novidades mostra só os 6 mais recentes; os demais ficam aqui, do mais novo para o mais antigo.',[],'<div id="wk-nov"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'19/11/2026',p:'Portfólio · Sincronização Zoho',desc:'Vínculo por ID passa a ser validado pelo nome do projeto (Vínculo suspeito não grava nada); novas colunas Cliente, Projeto, Gerente e E-mail Gerente Zoho no Portifolio (o nome do Portfólio continua mandando); rotinas de reparo zsReparoSimular/zsReparoAplicar com backup, aprovação linha a linha e log. Base para o Portifolio ser a tabela única.',m:'Consolidação Portifolio × Projetos solicitada pelo gestor (de-para aprovado).',o:'Implementação v20.8',ver:'v20.8',v:'Testado com os dados reais da planilha em ambiente simulado: 70 vínculos suspeitos detectados, equipes intactas, IDs únicos'},
+ {d:'19/11/2026',p:'Carga e Risco · Minha Equipe · Decisão de Alocação · Central de Comando · Inativos',desc:'Ociosidade e horas previstas passam a seguir a regra oficial: Total Workhours (rateado por responsável) distribuído em dias úteis entre início e término da tarefa, com feriados; capacidade = carga diária × dias úteis; confiança por pessoa e “Dados insuficientes” abaixo de 50%; faixa de qualidade com vencidas, sem data e Backlog; horas apontadas nunca substituem previstas. Pessoas Inativas saem de todas as estatísticas atuais (critério único), sem apagar histórico.',m:'Auditoria e correção solicitadas pelo gestor (recomendação aprovada).',o:'Implementação v20.7',ver:'v20.7',v:'Testes de regra (27 front + 39 backend), regressão das telas e dados reais analisados'},
  {d:'19/11/2026',p:'Navegação · Ordem alfabética',desc:'Páginas do menu lateral em ordem alfabética dentro de cada categoria; a lista da tela Permissões também. Regra permanente: página nova entra na posição alfabética e deve aparecer em Permissões.',m:'Solicitação do gestor (mockup aprovado).',o:'Implementação v20.7',ver:'v20.7',v:'Testado: ordem de todas as categorias e lista de Permissões'},
  {d:'19/11/2026',p:'Pessoas · Minha Equipe',desc:'Página redesenhada conforme o modelo aprovado: cards compactos, busca, KPIs clicáveis, filtros rápidos por faixa e contador. O selo de status foi substituído pela Ociosidade no período selecionado (Hoje 1d, Semana 7d, Mês/Todos 30d, De–Até pelo nº de dias); percentil de horas removido. Clique no card continua abrindo o Desempenho da pessoa.',m:'Solicitação do gestor.',o:'Implementação v20.7',ver:'v20.7',v:'Testado com dados simulados'},
  {d:'19/11/2026',p:'Carga e Risco · Ociosidade',desc:'Novas colunas na Análise por Pessoa: Área, Cap. mensal, H. alocadas, H. disponíveis e Ociosidade (%) com barra e classificação (0–10% Ocupação alta; >10–25% Baixa; >25–40% Moderada; >40% Elevada). Capacidade individual de Pessoas_Area; horas alocadas = horas restantes das tarefas abertas até a entrega dos projetos. Ordenável; “Não calculado” sem capacidade ou com dados insuficientes. Exportação Excel inclui as colunas.',m:'Solicitação do gestor.',o:'Implementação v20.7',ver:'v20.7',v:'Testado com dados simulados'},
