@@ -8,7 +8,7 @@
 // → Nova versão → Implantar. Copie a URL "/exec" gerada e cole abaixo, no
 // lugar da URL atual (mantenha as aspas).
 // ============================================================
-var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbzM8qgm-FCilk828K2BkjJX43Ui3Ch9TP4spV3-80yCkNEtQSgyVWvRkZHgwb8Sy2gKNw/exec';
+var DASHBOARD_API_URL='https://script.google.com/macros/s/AKfycbyzSCz3pYA8XHNF9Bo_Uqcd9PTBVabORzOnqFVor_1kq2AbuKmbVPeDpbIX3sE8WxEpUg/exec';
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1086,6 +1086,9 @@ body .dt-wrap input.dt-native{position:absolute!important;left:0;bottom:0;width:
 .aloc-proj-tag strong{color:var(--text);}
 
 /* Inteligência de Alocação */
+.ia-oc{display:flex;align-items:center;gap:7px;min-width:200px}.ia-oc-trk{flex:1;min-width:60px;height:8px;border-radius:99px;background:var(--surface-alt);overflow:hidden}.ia-oc-trk i{display:block;height:100%;border-radius:99px}.ia-oc-pc{font-weight:800;min-width:38px;text-align:right}
+.ia-oc-tg{display:inline-block;border-radius:99px;padding:2px 9px;font-size:11px;font-weight:700;white-space:nowrap}.ia-oc0{background:rgba(37,99,235,.14);color:#1d4ed8}.ia-oc1{background:rgba(22,163,74,.14);color:#15803d}.ia-oc2{background:rgba(202,138,4,.16);color:#a16207}.ia-oc3{background:rgba(220,38,38,.14);color:#b91c1c}.ia-ocn{background:var(--surface-alt);color:var(--text-muted);border:1px dashed var(--border)}
+.ia-oc-f0{background:#2563eb}.ia-oc-f1{background:#16a34a}.ia-oc-f2{background:#ca8a04}.ia-oc-f3{background:#dc2626}
 .ia-score-bar-track{display:inline-block; width:60px; height:6px; border-radius:999px; background:var(--surface-alt); overflow:hidden; vertical-align:middle; margin-right:6px;}
 .ia-score-bar-fill{height:100%; border-radius:999px;}
 .ia-badge-situacao{display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:999px; font-size:14px; font-weight:700; white-space:nowrap; cursor:default;}
@@ -1297,6 +1300,24 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 .proj-card-cta{font-size:12px;font-weight:700;color:var(--primary);text-align:right}
 
 /* ============ MINHA EQUIPE — CARDS DE PESSOA (redesign UX/UI) ============ */
+.eq-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}.eq-head .page-header{margin:0}
+.eq-search{position:relative;width:260px;max-width:100%}.eq-search input{width:100%;padding:8px 12px 8px 32px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:12.5px}.eq-search:before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.6}
+.eq-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}
+.eq-kpi{text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;font:inherit;color:var(--text);box-shadow:var(--shadow-sm)}button.eq-kpi{cursor:pointer}button.eq-kpi:hover{border-color:var(--primary)}.eq-kpi.on{box-shadow:0 0 0 2px var(--primary)}
+.eq-kpi .ic{width:36px;height:36px;border-radius:11px;background:var(--surface-alt);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.eq-kpi small{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-faint);font-weight:700}.eq-kpi b{font-size:20px;font-weight:800;line-height:1.15}.eq-kpi em{font-style:normal;font-size:10.5px;color:var(--text-faint);margin-left:6px}
+.eq-pills{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;align-items:center}.eq-pill{border-radius:999px;padding:3px 11px;font-size:11px;font-weight:700;border:1px solid var(--border);background:var(--surface);cursor:pointer;color:var(--text)}.eq-pill.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.eq-count{font-size:12px;color:var(--text-muted);margin:0 2px 10px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.eq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:14px;padding-bottom:30px}
+.eq-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:11px;box-shadow:var(--shadow-sm);transition:box-shadow .15s,border-color .15s}.eq-card:hover{box-shadow:0 10px 24px -6px rgba(0,0,0,.14);border-color:var(--primary)}
+.eq-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.eq-who{display:flex;gap:9px;min-width:0}.eq-av{width:36px;height:36px;border-radius:11px;color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.eq-nm{font-size:13px;font-weight:800;line-height:1.25}.eq-nm span{font-size:9px;background:rgba(14,165,233,.15);color:#0369a1;border-radius:5px;padding:1px 5px;margin-left:5px;font-weight:800}.eq-rl{font-size:11px;color:var(--text-muted);line-height:1.3}
+.eq-oc{display:flex;flex-direction:column;align-items:flex-start;gap:3px;font-size:10.5px;color:var(--text-faint)}
+.eq-ar{display:flex;justify-content:space-between;gap:8px;font-size:10.5px;color:var(--text-faint)}.eq-ar b{color:var(--st-bloqueado)}
+.eq-strip{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface-alt);border-radius:11px;padding:7px 0;text-align:center}.eq-strip div+div{border-left:1px solid var(--border)}.eq-strip small{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-faint);font-weight:700}.eq-strip b{font-size:13px;font-weight:800}
+.eq-hr{display:flex;justify-content:space-between;font-size:11.5px}.eq-hr small{display:block;font-size:9px;text-transform:uppercase;color:var(--text-faint);font-weight:700}.eq-hr .r{text-align:right}.eq-bar{height:6px;border-radius:99px;background:var(--surface-alt);overflow:hidden;margin-top:6px}.eq-bar i{display:block;height:100%;border-radius:99px}
+.eq-ft{display:flex;justify-content:space-between;gap:8px;align-items:center;border-top:1px solid var(--border);padding-top:9px;font-size:11px;color:var(--text-faint)}.eq-ft b{color:var(--primary);white-space:nowrap}
+@media(max-width:1000px){.eq-kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:600px){.eq-kpis{grid-template-columns:repeat(2,1fr)}.eq-search{width:100%}}
 .team-summary-bar{
   display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; padding:16px 18px;
   background:var(--surface); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow-sm);
@@ -1477,7 +1498,12 @@ body.imprimindo-sr-exec #loading-global{display:none !important;}
 #page-futuristic{--c-tx:#0f172a;--c-mut:#64748b;--c-fa:#94a3b8;--c-card:rgba(255,255,255,.92);--c-bd:#dbe3ee;--c-ctl:#fff;--c-row:#f8fafc;--c-cy:#0891b2;--c-ro:#e11d48;--c-am:#d97706;--c-em:#059669}
 html[data-theme=dark] #page-futuristic{--c-tx:#e2e8f0;--c-mut:#94a3b8;--c-fa:#64748b;--c-card:rgba(10,16,34,.9);--c-bd:#1e293b;--c-ctl:#0F172E;--c-row:#0E162E;--c-cy:#22d3ee;--c-ro:#fb7185;--c-am:#fbbf24;--c-em:#34d399}
 .cc-lnk{white-space:nowrap}.cc-hd h2{min-width:0}
-#page-futuristic{min-height:0}
+#page-futuristic{min-height:0;background:#eef3f9;color:var(--c-tx)}
+#page-futuristic::before{background-image:linear-gradient(rgba(14,116,144,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(14,116,144,.06) 1px,transparent 1px)}
+#page-futuristic::after{background:radial-gradient(circle,rgba(56,189,248,.16) 0%,rgba(14,165,233,.05) 40%,transparent 70%)}
+html[data-theme=dark] #page-futuristic{background:#040b16;color:#d4ecfa}
+html[data-theme=dark] #page-futuristic::before{background-image:linear-gradient(rgba(56,189,248,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.07) 1px,transparent 1px)}
+html[data-theme=dark] #page-futuristic::after{background:radial-gradient(circle,rgba(56,189,248,.14) 0%,rgba(14,165,233,.06) 40%,transparent 70%)}
 .cc-root{display:flex;flex-direction:column;gap:10px;color:var(--c-tx);height:calc(100vh - 280px);min-height:520px;font-size:13px}
 .cc-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;flex:none}
 .cc-ttl{font-family:'Orbitron',sans-serif;font-weight:800;font-size:15px;letter-spacing:.07em;background:linear-gradient(90deg,#22d3ee,#38bdf8,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -1520,7 +1546,7 @@ html[data-theme=dark] #page-futuristic{--c-tx:#e2e8f0;--c-mut:#94a3b8;--c-fa:#64
 @media(max-width:1100px){.cc-root{height:auto}.cc-kpis{grid-template-columns:repeat(2,1fr)}.cc-grid{display:flex;flex-direction:column}.cc-list,.cc-chart{max-height:340px}}
 @media(max-width:560px){.cc-kpis{grid-template-columns:1fr}}
 /* modais (fora da página: seguem o tema do app) */
-.cc-ov{position:fixed;inset:0;background:rgba(2,8,16,.65);z-index:9000;display:flex;align-items:center;justify-content:center;padding:18px}
+.cc-ov{position:fixed;inset:0;background:rgba(2,8,16,.65);z-index:99990;display:flex;align-items:center;justify-content:center;padding:18px}
 .cc-ov.dr{justify-content:flex-end;padding:0}.cc-ov.dr .cc-md{height:100%;max-height:none;border-radius:0;width:min(440px,100%)}
 .cc-md{--c-tx:#0f172a;--c-mut:#64748b;--c-bd:#dbe3ee;--c-ctl:#fff;--c-row:#f8fafc;--c-cy:#0891b2;--c-ro:#e11d48;--c-am:#d97706;--c-em:#059669;background:#fff;color:var(--c-tx);border:1px solid rgba(34,211,238,.4);border-radius:16px;width:min(940px,100%);max-height:88vh;display:flex;flex-direction:column;font-family:'Rajdhani',system-ui,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.5);font-size:13px}
 html[data-theme=dark] .cc-md{--c-tx:#e2e8f0;--c-mut:#94a3b8;--c-bd:#1e293b;--c-ctl:#0F172E;--c-row:#0E162E;--c-cy:#22d3ee;--c-ro:#fb7185;--c-am:#fbbf24;--c-em:#34d399;background:#07121f}
@@ -2397,60 +2423,57 @@ html[data-theme="dark"] .ux-bd.ok{color:#4ade80}html[data-theme="dark"] .ux-bd.i
       <div class="nav-cat" data-cat="exec">
         <button class="nav-cat-trigger" type="button" title="Visão Executiva"><span class="nav-cat-ic" aria-hidden="true">◉</span><span class="nav-cat-lbl">Visão Executiva</span><svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-cat-panel">
+          <button class="nav-tab" data-page="andamento">Andamento dos Projetos</button>
           <button class="nav-tab" data-page="futuristic">Central de Comando</button>
           <button class="nav-tab" data-page="topexec">Destaques</button>
-          <button class="nav-tab" data-page="andamento">Andamento dos Projetos</button>
         </div>
       </div>
       <div class="nav-cat cat-active" data-cat="portfolio">
         <button class="nav-cat-trigger" type="button" title="Portfólio"><span class="nav-cat-ic" aria-hidden="true">▤</span><span class="nav-cat-lbl">Portfólio</span><svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-cat-panel">
-          <button class="nav-tab active" data-page="cliente">Portfólio Geral</button>
           <button class="nav-tab" data-page="calendario">Calendário de Projetos</button>
           <button class="nav-tab" data-page="portfolioedit">Edição do Portfólio</button>
+          <button class="nav-tab active" data-page="cliente">Portfólio Geral</button>
         </div>
       </div>
       <div class="nav-cat" data-cat="projetos">
         <button class="nav-cat-trigger" type="button" title="Projetos"><span class="nav-cat-ic" aria-hidden="true">◫</span><span class="nav-cat-lbl">Projetos</span><svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-cat-panel">
-          <button class="nav-tab" data-page="gerente">Meus Projetos</button>
           <button class="nav-tab" data-page="equipehoras">Acompanhamento de Horas da Equipe</button>
+          <button class="nav-tab" data-page="gerente">Meus Projetos</button>
+          <button class="nav-tab" data-page="statusreportpainel">Painel de Status Report</button>
+          <button class="nav-tab" data-page="pend">Pendências de Tarefas</button>
           <button class="nav-tab" data-page="lider">Projetos por Líder</button>
           <button class="nav-tab" data-page="relatorioprojetos">Relatório de Projetos e Equipes</button>
           <button class="nav-tab" data-page="statusreport">Status Report</button>
-          <button class="nav-tab" data-page="statusreportpainel">Painel de Status Report</button>
-          <button class="nav-tab" data-page="pend">Pendências de Tarefas</button>
         </div>
       </div>
       <div class="nav-cat" data-cat="pessoas">
         <button class="nav-cat-trigger" type="button" title="Pessoas e Capacidade"><span class="nav-cat-ic" aria-hidden="true">☺</span><span class="nav-cat-lbl">Pessoas e Capacidade</span><svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-cat-panel">
-          <button class="nav-tab" data-page="equipe">Minha Equipe</button>
-          <button class="nav-tab" data-page="pessoa">Desempenho por Pessoa</button>
           <button class="nav-tab" data-page="inteligencia">Carga e Risco de Alocação</button>
-          <button class="nav-tab" data-page="ociosos">Pessoas Disponíveis</button>
-          <button class="nav-tab" data-page="area">Visão por Área</button>
-          <button class="nav-tab" data-page="setorial">Gestão da Área</button>
+          <button class="nav-tab" data-page="pessoa">Desempenho por Pessoa</button>
+          <button class="nav-tab" data-page="equipe">Minha Equipe</button>
         </div>
       </div>
       <div class="nav-cat" data-cat="gestao">
         <button class="nav-cat-trigger" type="button" title="Gestão"><span class="nav-cat-ic" aria-hidden="true">◔</span><span class="nav-cat-lbl">Gestão</span><svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-cat-panel">
-          <button class="nav-tab" data-page="horasapontadas">Gestão de Horas Apontadas</button>
           <button class="nav-tab" data-page="analisehoras">Análise de Horas</button>
           <button class="nav-tab" data-page="comparativohoras">Comparativo de Horas</button>
+          <button class="nav-tab" data-page="horasapontadas">Gestão de Horas Apontadas</button>
         </div>
       </div>
       <div class="nav-cat" data-cat="admin">
         <button class="nav-cat-trigger" type="button" title="Administração"><span class="nav-cat-ic" aria-hidden="true">⚙</span><span class="nav-cat-lbl">Administração</span><svg class="nav-cat-caret" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav-cat-panel">
-          <button class="nav-tab" data-page="pessoasadmin">Pessoas e Perfis</button>
-          <button class="nav-tab" data-page="permissoes">Permissões</button>
           <button class="nav-tab" data-page="feriados">Feriados</button>
-          <button class="nav-tab" data-page="avisos">Gestão de Avisos</button>
           <button class="nav-tab" data-page="notificacoes">Gerenciador de Notificações</button>
-          <button class="nav-tab" data-page="manutencao">Modo Manutenção</button>
+          <button class="nav-tab" data-page="avisos">Gestão de Avisos</button>
           <button class="nav-tab" data-page="logalteracoes">Log de Alterações</button>
+          <button class="nav-tab" data-page="manutencao">Modo Manutenção</button>
+          <button class="nav-tab" data-page="permissoes">Permissões</button>
+          <button class="nav-tab" data-page="pessoasadmin">Pessoas e Perfis</button>
           <button class="nav-tab" data-page="wiki">Wiki / Documentação</button>
         </div>
       </div>
@@ -2747,34 +2770,6 @@ html[data-theme="dark"] .ux-bd.ok{color:#4ade80}html[data-theme="dark"] .ux-bd.i
       <div id="pes-content"></div>
     </section>
 
-    <!-- PAGE AREA -->
-    <section class="page" id="page-area">
-      <div class="page-header"><div><h1>Visão por Área</h1><p>Headcount, head, projetos, horas e insights por área de atuação.</p></div></div>
-      <div class="filter-bar"><div class="filter-field"><label>Área</label><select id="f-area"></select></div></div>
-      <div class="filter-bar">
-        <div class="filter-field"><label>Selecione o Período</label>
-          <div class="seg-control" id="area-periodo-seg">
-            <button type="button" class="seg-btn active" data-val="todos">Todos</button><button type="button" class="seg-btn" data-val="hoje">Hoje</button><button type="button" class="seg-btn" data-val="semana">Esta semana</button><button type="button" class="seg-btn" data-val="mes">Este mês</button><button type="button" class="seg-btn" data-val="mes_passado">Mês passado</button>
-          </div>
-        </div>
-        <div class="filter-field"><label>De</label><input type="date" id="f-area-de"></div>
-        <div class="filter-field"><label>Até</label><input type="date" id="f-area-ate"></div>
-      </div>
-      <div class="grid grid-kpi" id="kpi-area"></div>
-      <div id="area-content"></div>
-    </section>
-
-    <!-- PAGE GESTÃO SETORIAL -->
-    <section class="page" id="page-setorial">
-      <div class="page-header"><div><h1>Gestão da Área</h1><p>Visão do Head: pessoas, capacidade e alocação da área — pré-venda, desenvolvimento de carreira e contratação/demissão ainda não são rastreados no dashboard (ver nota na página).</p></div></div>
-      <div class="filter-bar">
-        <div class="filter-field"><label>Área</label><select id="f-setorial"></select></div>
-        <button class="filter-clear" id="f-setorial-clear">Limpar filtros</button>
-      </div>
-      <div class="grid grid-kpi" id="kpi-setorial"></div>
-      <div id="setorial-content"></div>
-    </section>
-
     <!-- PAGE STATUS REPORT -->
     <section class="page" id="page-statusreport">
       <div class="page-header"><div><h1>Status Report</h1><p>Acompanhamento semanal do projeto, preenchido pelo Gerente de Projeto. Campos baseados nos modelos de status report usados hoje.</p></div></div>
@@ -3011,21 +3006,6 @@ html[data-theme="dark"] .ux-bd.ok{color:#4ade80}html[data-theme="dark"] .ux-bd.i
       <div class="grid grid-kpi" id="kpi-eqh"></div>
       <div id="eqh-content"></div>
     </section>
-    <section class="page" id="page-ociosos">
-      <div class="page-header"><div><h1>Pessoas Disponíveis</h1><p>Colaboradores sem tarefas/horas no Zoho, validado contra a equipe de projetos ativos na aba Portifolio.</p></div></div>
-      <div class="filter-bar">
-        <div class="filter-field"><label>Selecione o Período</label>
-          <div class="seg-control" id="ociosos-periodo-seg">
-            <button type="button" class="seg-btn active" data-val="todos">Todos</button><button type="button" class="seg-btn" data-val="hoje">Hoje</button><button type="button" class="seg-btn" data-val="semana">Esta semana</button><button type="button" class="seg-btn" data-val="mes">Este mês</button><button type="button" class="seg-btn" data-val="mes_passado">Mês passado</button>
-          </div>
-        </div>
-        <div class="filter-field"><label>De</label><input type="date" id="f-ociosos-de"></div>
-        <div class="filter-field"><label>Até</label><input type="date" id="f-ociosos-ate"></div>
-      </div>
-      <div class="grid grid-kpi" id="kpi-ociosos"></div>
-      <div id="ociosos-content"></div>
-    </section>
-
     <!-- PAGE VISÃO POR LÍDER -->
     <section class="page" id="page-lider">
       <div class="page-header"><div><h1>Projetos por Líder</h1><p>Projetos, status e equipes por Líder Responsável.</p></div></div>
@@ -3054,7 +3034,8 @@ html[data-theme="dark"] .ux-bd.ok{color:#4ade80}html[data-theme="dark"] .ux-bd.i
 
     <!-- PAGE MINHA EQUIPE -->
     <section class="page" id="page-equipe">
-      <div class="page-header"><div><h1>Minha Equipe</h1><p>Liderados diretos por Head e/ou Gestor, com alertas automáticos de sobrecarga e ociosidade.</p></div></div>
+      <div class="eq-head"><div class="page-header"><div><h1>Minha Equipe</h1><p>Liderados diretos por Head e/ou Gestor, com alertas automáticos de sobrecarga, ociosidade e prazos semanais.</p></div></div>
+        <div class="eq-search"><input id="f-equipe-busca" type="search" placeholder="Buscar pessoa, cargo ou área..." autocomplete="off"></div></div>
       <div class="filter-bar">
         <div class="filter-field"><label>Head</label><select id="f-equipe"><option value="">— Todos —</option></select></div>
         <div class="filter-field"><label>Gestor</label><select id="f-equipe-gestor"><option value="">— Todos —</option></select></div>
@@ -3077,6 +3058,8 @@ html[data-theme="dark"] .ux-bd.ok{color:#4ade80}html[data-theme="dark"] .ux-bd.i
         <button class="filter-clear" id="f-equipe-clear">Limpar filtros</button>
       </div>
       <div class="grid grid-kpi" id="kpi-equipe"></div>
+      <div class="eq-pills" id="equipe-pills"></div>
+      <div class="eq-count" id="equipe-count"></div>
       <div id="equipe-content"></div>
     </section>
 
@@ -3572,17 +3555,21 @@ function novidadesUltimaAtualizacao_(){
   return mx?mx.slice(8,10)+'/'+mx.slice(5,7)+'/'+mx.slice(0,4):NOVIDADES_ATUALIZADO_EM;
 }
 const NOVIDADES=[
+  {icone:'🔤', bg:'#eff6ff', cor:'#2563eb', titulo:'Menu em ordem alfabética', descricao:'As páginas de cada categoria do menu lateral agora aparecem em ordem alfabética, e a lista de páginas em Permissões segue a mesma ordem. Fica mais fácil encontrar o que você procura.', paginas:[], data:'2026-11-19', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'👥', bg:'#eff6ff', cor:'#2563eb', titulo:'Minha Equipe com novo visual e Ociosidade', descricao:'A página ganhou cards compactos, busca por pessoa, cargo ou área, indicadores clicáveis e filtros rápidos. O selo de status foi trocado pela Ociosidade da pessoa no período selecionado (Ocupação alta, Baixa, Moderada ou Elevada) e o percentil saiu dos cards.', paginas:['equipe'], data:'2026-11-19', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🔋', bg:'#ecfdf5', cor:'#059669', titulo:'Ociosidade na Carga e Risco de Alocação', descricao:'A listagem Análise por Pessoa ganhou Área, Capacidade mensal, Horas alocadas, Horas disponíveis e a Ociosidade (%) com barra e classificação: Ocupação alta, Baixa, Moderada ou Elevada. Dá para ordenar pela maior ociosidade e ver o cálculo no tooltip. Sem capacidade cadastrada aparece “Não calculado”.', paginas:['inteligencia'], data:'2026-11-19', tag:'Novo', tagCor:'nova'},
+  {icone:'🧹', bg:'#f1f5f9', cor:'#475569', titulo:'Páginas Visão por Área, Gestão da Área e Pessoas Disponíveis removidas', descricao:'As três páginas saíram do menu e das permissões. Os dados continuam nas planilhas e a análise de capacidade está em Carga e Risco de Alocação.', paginas:[], data:'2026-11-19', tag:'Mudança', tagCor:'mudanca'},
   {icone:'🎯', bg:'#eff6ff', cor:'#2563eb', titulo:'Decisão de Alocação com filtros em cascata', descricao:'A aba ganhou os filtros Head, Gestor, Pessoa, Área, Cliente, Projeto, Senioridade e Período (7, 15, 30 dias ou De–Até). Cada filtro só mostra opções que existem na combinação escolhida e nada é carregado até clicar em Filtrar.', paginas:['inteligencia'], data:'2026-11-19', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'📊', bg:'#eff6ff', cor:'#2563eb', titulo:'Carga e Risco com filtros por Head e Período', descricao:'Novos filtros Head e Período (7, 15, 30 dias, Todo o período ou De–Até), na ordem Head, Gestor, Pessoa, Período, Qtd. de Projetos e Situação, com efeito cascata entre eles. A página só carrega ao clicar em Aplicar filtro. Saem os filtros de Complexidade, Prioridade e Status da Tarefa.', paginas:['inteligencia'], data:'2026-11-19', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'🗂️', bg:'#eff6ff', cor:'#2563eb', titulo:'Edição do Portfólio com novo visual', descricao:'A tela de edição de projeto agora tem um resumo do projeto no topo, menu lateral com as etapas e seções numeradas (Identificação, Cronograma, Requisitos, Equipe por frente, Outras Informações e Zoho). A barra fixa mostra as alterações pendentes e traz Excluir e Salvar. Os campos e o salvamento continuam os mesmos.', paginas:['portfolioedit'], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Central de Comando em painel único', descricao:'A Central de Comando agora cabe numa tela só, sem rolagem da página: 4 cartões-resumo, decisões que exigem atenção, gráfico de horas dos últimos 6 meses, capacidade por área, Radar de alertas e projetos com tendência de atraso. Tudo que tem detalhe abre em janela (modal), e “Tratar” abre um painel lateral para registrar a decisão.', paginas:['futuristic'], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'⏱️', bg:'#eff6ff', cor:'#2563eb', titulo:'Horas sempre em horas e minutos', descricao:'No Acompanhamento de Horas da Equipe (cartões, tabela e Ver tarefas) e nos alertas da Central de Comando, as horas decimais (ex.: 4,7 h) passaram a aparecer em horas e minutos (4h 42min), igual às demais telas. Só muda a forma de exibir; os valores são os mesmos.'},
-  {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Central de Comando executiva', descricao:'A Central de Comando foi reconstruída: decisões que exigem atenção, 8 indicadores com tendência, performance e entregas, capacidade por área e um Radar de alertas com próxima ação, prazo e situação. Heads e Gestores agora também acessam, vendo só a sua área e a sua equipe. Onde não há dados suficientes aparece “Dados insuficientes”, nunca 0.'},
 ];
 // v20.1: a página Novidades exibe só os 6 cards mais recentes (os 6 primeiros acima, tomados ANTES do filtro por perfil).
 // Os anteriores ficam aqui e são exibidos na Wiki (1.15 · Novidades anteriores). Ao lançar uma novidade nova, inclua-a no topo de
 // NOVIDADES e mova o 7º card (o mais antigo) para o topo de NOVIDADES_ARQUIVO.
 const NOVIDADES_ARQUIVO=[
+  {icone:'🗂️', bg:'#eff6ff', cor:'#2563eb', titulo:'Edição do Portfólio com novo visual', descricao:'A tela de edição de projeto agora tem um resumo do projeto no topo, menu lateral com as etapas e seções numeradas (Identificação, Cronograma, Requisitos, Equipe por frente, Outras Informações e Zoho). A barra fixa mostra as alterações pendentes e traz Excluir e Salvar. Os campos e o salvamento continuam os mesmos.', paginas:['portfolioedit'], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Central de Comando em painel único', descricao:'A Central de Comando agora cabe numa tela só, sem rolagem da página: 4 cartões-resumo, decisões que exigem atenção, gráfico de horas dos últimos 6 meses, capacidade por área, Radar de alertas e projetos com tendência de atraso. Tudo que tem detalhe abre em janela (modal), e “Tratar” abre um painel lateral para registrar a decisão.', paginas:['futuristic'], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
+  {icone:'⏱️', bg:'#eff6ff', cor:'#2563eb', titulo:'Horas sempre em horas e minutos', descricao:'No Acompanhamento de Horas da Equipe (cartões, tabela e Ver tarefas) e nos alertas da Central de Comando, as horas decimais (ex.: 4,7 h) passaram a aparecer em horas e minutos (4h 42min), igual às demais telas. Só muda a forma de exibir; os valores são os mesmos.'},
+  {icone:'🧭', bg:'#eff6ff', cor:'#2563eb', titulo:'Central de Comando executiva', descricao:'A Central de Comando foi reconstruída: decisões que exigem atenção, 8 indicadores com tendência, performance e entregas, capacidade por área e um Radar de alertas com próxima ação, prazo e situação. Heads e Gestores agora também acessam, vendo só a sua área e a sua equipe. Onde não há dados suficientes aparece “Dados insuficientes”, nunca 0.'},
   {icone:'⚡', bg:'#fff7ed', cor:'#ea580c', titulo:'Carregamento mais rápido nos bastidores', descricao:'Otimizamos o cache do servidor e a verificação de login para reduzir o tempo de resposta das páginas. Nada muda na tela, nos dados ou nas permissões.', paginas:[], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🕒', bg:'#eff6ff', cor:'#2563eb', titulo:'Ver tarefas mostra só as horas apontadas', descricao:'No Acompanhamento de Horas da Equipe, “Ver tarefas” agora lista Data, Tarefa e Horas apontadas por dia, dentro do período, projeto e participante filtrados. O total bate com as Horas apontadas da tabela.', paginas:['equipehoras'], data:'2026-11-18', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🗂️', bg:'#eff6ff', cor:'#2563eb', titulo:'Novidades mais enxuta: só os 6 últimos cards', descricao:'Esta página agora mostra apenas as 6 novidades mais recentes. As anteriores continuam disponíveis na Wiki/Documentação, em Histórico › Novidades anteriores.', paginas:[], data:'2026-11-17', tag:'Mudança', tagCor:'mudanca'},
@@ -3628,7 +3615,7 @@ const NOVIDADES_ARQUIVO=[
   {icone:'🧹', bg:'#f1f5f9', cor:'#475569', titulo:'Páginas Alocações e Entrega e Produtividade removidas', descricao:'As páginas Alocações e Entrega e Produtividade não fazem mais parte do Portal e saíram do menu. Os dados continuam disponíveis nas demais páginas (por exemplo, Carga e Risco de Alocação, Gestão da Área e Detalhamento do Projeto).', paginas:[], data:'2026-10-16', tag:'Mudança', tagCor:'mudanca'},
   {icone:'📊', bg:'#ecfdf5', cor:'#059669', titulo:'Participa das Análises também em Pendências, Horas Apontadas e Relatório de Equipes', descricao:'A regra do campo Participa_Analises agora vale também para Pendências de Tarefas (responsável fora das análises não é contado; a tarefa permanece se houver outro responsável ou nenhum), Gestão de Horas Apontadas (a pessoa sai da lista, dos totais e dos gráficos — você continua vendo as suas próprias horas) e Relatório de Projetos e Equipes (equipe, contagem e organograma). Projetos, tarefas e lançamentos não são excluídos.', paginas:['pend','horasapontadas','relatorioprojetos'], data:'2026-10-16', tag:'Melhoria', tagCor:'melhoria'},
   {icone:'🧑‍💼', bg:'#e0f2fe', cor:'#0284c7', titulo:'Cadastro de pessoas modernizado — Estado e Cidade', descricao:'A tela de Pessoas e Perfis agora organiza os campos em blocos (identificação, estrutura organizacional, localização, acesso e análises), valida os campos perto de onde você digita e salva sem recarregar a página. O antigo campo Localidade foi substituído por Estado e Cidade (a lista de cidades vem do IBGE e muda conforme o estado; se o serviço estiver fora do ar, a digitação é livre). O botão “Migrar Localidade” separa os valores antigos com pré-visualização, sem apagar nada. Os feriados estaduais e municipais da jornada continuam funcionando.', paginas:['pessoasadmin','horasapontadas','pessoa'], data:'2026-10-16', tag:'Melhoria', tagCor:'melhoria'},
-  {icone:'📊', bg:'#ecfdf5', cor:'#059669', titulo:'Participa das Análises?', descricao:'Novo campo no cadastro de pessoas (Participa_Analises: Sim/Não; vazio conta como Sim). Pessoas marcadas como Não deixam de entrar nos totais, médias, rankings e listas de pessoas das análises — Central de Comando, Destaques, Disponibilidade, Carga e Risco, Gestão da Área, Minha Equipe e Desempenho. Projetos e tarefas dela não são excluídos; em projetos com vários responsáveis, só a contagem dela sai. O campo não altera permissões nem login.', paginas:['pessoasadmin','futuristic','topexec','ociosos','inteligencia','setorial','equipe','pessoa'], data:'2026-10-16', tag:'Nova', tagCor:'nova'},
+  {icone:'📊', bg:'#ecfdf5', cor:'#059669', titulo:'Participa das Análises?', descricao:'Novo campo no cadastro de pessoas (Participa_Analises: Sim/Não; vazio conta como Sim). Pessoas marcadas como Não deixam de entrar nos totais, médias, rankings e listas de pessoas das análises — Central de Comando, Destaques, Disponibilidade, Carga e Risco, Minha Equipe e Desempenho. Projetos e tarefas dela não são excluídos; em projetos com vários responsáveis, só a contagem dela sai. O campo não altera permissões nem login.', paginas:['pessoasadmin','futuristic','topexec','ociosos','inteligencia','setorial','equipe','pessoa'], data:'2026-10-16', tag:'Nova', tagCor:'nova'},
   {icone:'🏢', bg:'#e0f2fe', cor:'#0284c7', titulo:'Relatório de Projetos e Equipes', descricao:'Nova página no menu Projetos (somente Administrador): cliente, projeto, status, previsão de entrega inicial e atual lado a lado com a variação em dias e a equipe atuante com cargo. Filtros por cliente, projeto, status, área e cargo. Ao clicar no projeto abre o organograma, por papel no projeto ou pela hierarquia da empresa (gestor). Exporta para Excel com uma linha por projeto.', paginas:['relatorioprojetos'], data:'2026-10-15', tag:'Nova página', tagCor:'nova'},
   {icone:'🛠️', bg:'#fee2e2', cor:'#b91c1c', titulo:'Modo Manutenção', descricao:'Nova página em Administração, visível só para as contas autorizadas (tiago.ferreira@ e gestaoprojetos@): liga e desliga o bloqueio de acesso do sistema, com confirmação e motivo. Quando ativo, todos os outros usuários — inclusive outros Administradores — são bloqueados imediatamente e veem uma tela de manutenção com a mensagem e a previsão de retorno. Também há aviso prévio em faixa amarela, histórico de quem ativou/desativou e um teste de e-mail.', paginas:['manutencao'], data:'2026-10-15', tag:'Nova página', tagCor:'nova'},
   {icone:'👤', bg:'#e0f2fe', cor:'#0284c7', titulo:'Desempenho por Pessoa com as regras de Horas Apontadas', descricao:'A comparação semanal deixou de usar 40h fixas e passou a usar a jornada real da semana (8h por dia útil, descontando fins de semana e feriados conforme a Localidade da pessoa em Pessoas_Area). Novos cards: horas em tarefas, em reuniões, excedente diário e semanal, fins de semana, feriados e ociosidade vs. jornada. A tabela semanal ganhou Tarefas, Reunião, Jornada prevista, Excedente (com detalhamento dos lançamentos) e Ociosidade, além de dias expansíveis; há o novo bloco “Horas fora da jornada padrão”, o filtro Tipo de apontamento e “só semanas com excedente”. Tudo o que já existia na tela foi mantido. A jornada é só uma referência de controle, não hora extra legal.', paginas:['pessoa'], data:'2026-10-13', tag:'Melhoria', tagCor:'melhoria'},
@@ -4996,15 +4983,14 @@ function initTheme(){const t=localStorage.getItem('theme')||(matchMedia('(prefer
 // selecionada em "Visualizar como" (ver VIEW_AS_STATE mais abaixo).
 // ============================================================
 const PERM_MENU = {
-  'Administrador':  ['cliente','calendario','inteligencia','portfolioedit','pessoa','area','lider','gerente','equipe','topexec','pend','ociosos','futuristic','projdetail','setorial','statusreport','statusreportpainel','logalteracoes','andamento','relatorioprojetos','permissoes','pessoasadmin','feriados','manutencao','avisos','notificacoes','novidades','wiki'],
+  'Administrador':  ['cliente','calendario','inteligencia','portfolioedit','pessoa','lider','gerente','equipe','topexec','pend','futuristic','projdetail','statusreport','statusreportpainel','logalteracoes','andamento','relatorioprojetos','permissoes','pessoasadmin','feriados','manutencao','avisos','notificacoes','novidades','wiki'],
   // Head: vê a área inteira que lidera (Portfólio, Desempenho, Áreas, Liderança,
   // Gerência, Minha Equipe, Pendências, Disponibilidade) — sem as páginas
   // executivas (Destaques); a Central de Comando (v20.4) é liberada, com dados recortados no servidor.
-  // Também vê Gestão da Área (a sua).
-  'Head':           ['cliente','inteligencia','futuristic','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','statusreport'],
+  'Head':           ['cliente','inteligencia','futuristic','pessoa','lider','gerente','equipe','pend','projdetail','statusreport'],
   // Gestor: vê ele mesmo + liderados diretos (coluna Gestor de Pessoas_Area) e os
   // projetos deles — mesmo menu do Head (o recorte de dados vem do backend).
-  'Gestor':         ['cliente','inteligencia','futuristic','pessoa','area','lider','gerente','equipe','pend','ociosos','projdetail','setorial','statusreport'],
+  'Gestor':         ['cliente','inteligencia','futuristic','pessoa','lider','gerente','equipe','pend','projdetail','statusreport'],
   // Tech Lead / PO / SM: veem o(s) projeto(s) onde atuam por completo, junto com a equipe.
   'Tech Lead':      ['cliente','pessoa','gerente','pend','projdetail','statusreport'],
   'PO':             ['cliente','pessoa','gerente','pend','projdetail','statusreport'],
@@ -5044,7 +5030,7 @@ if(PERM_MENU['Head']) PERM_MENU['Head'].push('comparativohoras');
 // drill-down, aberta ao clicar num card de projeto em Portfólio/Liderança/Gerência.
 // Por isso está liberada em todo perfil que tenha acesso a algum desses (o projeto
 // já era visível antes de clicar; o detalhe não expõe nada novo fora do escopo).
-const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',area:'Visão por Área',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',ociosos:'Pessoas Disponíveis',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',setorial:'Gestão da Área',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',notificacoes:'Gerenciador de Notificações',horasapontadas:'Gestão de Horas Apontadas',analisehoras:'Análise de Horas',comparativohoras:'Comparativo de Horas',equipehoras:'Acompanhamento de Horas da Equipe',manutencao:'Modo Manutenção',relatorioprojetos:'Relatório de Projetos e Equipes',novidades:'Novidades',wiki:'Wiki / Documentação'};
+const PAGE_LABELS = {cliente:'Portfólio Geral',calendario:'Calendário de Projetos',inteligencia:'Carga e Risco de Alocação',portfolioedit:'Edição do Portfólio',pessoa:'Desempenho por Pessoa',lider:'Projetos por Líder',gerente:'Meus Projetos',equipe:'Minha Equipe',topexec:'Destaques',pend:'Pendências de Tarefas',futuristic:'Central de Comando',projdetail:'Detalhamento do Projeto',statusreport:'Status Report',statusreportpainel:'Painel de Status Report',logalteracoes:'Log de Alterações',andamento:'Andamento dos Projetos',permissoes:'Permissões',pessoasadmin:'Pessoas e Perfis',feriados:'Feriados',avisos:'Gestão de Avisos',notificacoes:'Gerenciador de Notificações',horasapontadas:'Gestão de Horas Apontadas',analisehoras:'Análise de Horas',comparativohoras:'Comparativo de Horas',equipehoras:'Acompanhamento de Horas da Equipe',manutencao:'Modo Manutenção',relatorioprojetos:'Relatório de Projetos e Equipes',novidades:'Novidades',wiki:'Wiki / Documentação'};
 let EFFECTIVE_PERFIL='Sem Perfil Definido'; // atualizado após o login (perfil real, ou perfil do "Visualizar como" quando ativo)
 // EXCEÇÕES DE PERMISSÃO POR USUÁRIO (Opção B) — camada opcional sobre o
 // PERM_MENU do perfil. O perfil continua sendo a base padrão; isto só
@@ -6747,6 +6733,33 @@ function iaMarcarPendente_(){
   const b=document.getElementById('f-ia-aplicar'); if(b) b.classList.toggle('ia-pend',!IA_APLICADO||JSON.stringify(iaLerFiltros_())!==JSON.stringify(IA_APLICADO));
 }
 // Período: H. Apontadas (apontamento diário PM) e tarefas em aberto com vencimento no período. Score/Previstas não mudam.
+// v20.7 — Ociosidade: capacidade individual (Pessoas_Area) × horas alocadas (horas restantes das tarefas abertas, mesma base da Decisão de Alocação).
+const IA_OC_ROT=['Ocupação alta','Baixa ociosidade','Ociosidade moderada','Ociosidade elevada'];
+const IA_OC={ref:null,map:new WeakMap()};
+function iaOcBase_(p){
+  if(IA_OC.ref!==D){ IA_OC.ref=D; IA_OC.map=new WeakMap(); }
+  let b=IA_OC.map.get(p); if(!b){ b=daBase_(p); IA_OC.map.set(p,b); } return b;
+}
+function iaOcDias_(F,PER){
+  if(PER&&PER.custom) return Math.max(1,Math.round((new Date(F.ate+'T12:00:00')-new Date(F.de+'T12:00:00'))/864e5)+1);
+  return PER&&PER.N?PER.N:30; // "Todo o período" = 30 dias (mês de referência)
+}
+function iaOciosidade_(p,N){
+  const cap=capPessoa_(p);
+  if(!cap.def||!(cap.mes>0)) return {nc:'Sem capacidade cadastrada',cap:null};
+  const b=iaOcBase_(p), capP=cap.mes*N/30;
+  let al=0;
+  if(b.rows.length){
+    if(b.nTot===0||(b.cov!==null&&b.cov<DA_PARAM.coberturaMin)) return {nc:'Dados insuficientes',cap:cap.mes};
+    al=b.rows.reduce((s,r)=>s+r.pa.h*Math.min(N,r.diasEf)/r.diasEf,0);
+  }
+  const disp=Math.max(0,capP-al), over=Math.max(0,al-capP), pc=disp/capP*100;
+  return {cap:cap.mes,capP,al,disp,over,pc,c:pc<=10?0:pc<=25?1:pc<=40?2:3,N,sem:b.rows.length===0};
+}
+function iaOcTip_(o){
+  if(o.nc) return 'Não calculado: '+o.nc+'. Não assumimos capacidade padrão nem 0%.';
+  return 'Ociosidade = (capacidade do período '+fHM_(o.capP)+' − horas alocadas '+fHM_(o.al)+') ÷ capacidade do período = '+Math.round(o.pc)+'%. Capacidade do período = capacidade mensal × '+o.N+'/30 (Pessoas_Area). Horas alocadas = horas restantes das tarefas abertas da pessoa (já divididas entre responsáveis), distribuídas até a entrega de cada projeto ativo, nos próximos '+o.N+' dias. Horas apontadas não entram.'+(o.sem?' Sem projetos ativos vinculados.':'');
+}
 function iaPeriodo_(F){
   if(!F||F.per==='0') return null;
   if(F.per==='x'){ if(!F.de||!F.ate||F.ate<F.de) return {erro:true}; return {ini:F.de,fim:F.ate,rot:'período',custom:true}; }
@@ -6791,8 +6804,10 @@ function renderInteligenciaAlocacao(){
   const semPM=!!PER&&!(PM&&Object.keys(PM).length);
   if(PER) linhas=linhas.map(l=>{ const v=iaVals_(l,PER); return Object.assign({},l,{horasApontadas:v.ap,qtdTarefasAbertas:v.nt,_semPM:v.ap===null}); });
 
+  { const Noc=iaOcDias_(F,PER); linhas=linhas.map(l=>Object.assign({},l,{_oc:iaOciosidade_(l.pessoa,Noc)})); }
   const colunasIA=[
     {key:'pessoa',label:'Pessoa',tipo:'texto',get:l=>l.pessoa.a},
+    {key:'area',label:'Área',tipo:'texto',get:l=>l.pessoa.area||''},
     {key:'cargo',label:'Cargo',tipo:'texto',get:l=>l.pessoa.cargo},
     {key:'head',label:'Head',tipo:'texto',get:l=>l.pessoa.head||''},
     {key:'nivel',label:'Nível',tipo:'texto',get:l=>l.pessoa.nv},
@@ -6802,7 +6817,11 @@ function renderInteligenciaAlocacao(){
     {key:'horasPrevistas',label:'H. Previstas',tipo:'horas',get:l=>l.horasPrevistas},
     {key:'horasApontadas',label:PER?'H. Apontadas ('+PER.rot+')':'H. Apontadas',tipo:'horas',get:l=>l.horasApontadas||0},
     {key:'score',label:'Score',tipo:'numero',get:l=>l.score},
-    {key:'situacao',label:'Situação',tipo:'texto',get:l=>l.faixa.label}
+    {key:'situacao',label:'Situação',tipo:'texto',get:l=>l.faixa.label},
+    {key:'capMensal',label:'Cap. mensal',tipo:'horas',get:l=>l._oc.cap},
+    {key:'hAlocadas',label:'H. alocadas',tipo:'horas',get:l=>l._oc.nc?null:l._oc.al},
+    {key:'hDisp',label:'H. disponíveis',tipo:'horas',get:l=>l._oc.nc?null:l._oc.disp},
+    {key:'ociosidade',label:'Ociosidade',tipo:'percentual',get:l=>l._oc.nc?null:l._oc.pc}
   ];
   const stIA=SORT_STATE['ia']||{col:null,dir:0};
   linhas=stIA.col?ordenarLinhas_(linhas,colunasIA.find(c=>c.key===stIA.col),stIA.dir):linhas;
@@ -6821,15 +6840,16 @@ function renderInteligenciaAlocacao(){
     '<div class="table-wrap" style="max-height:620px"><table>'+
     theadOrdenavel_('ia',colunasIA)+'<tbody>';
   if(linhas.length===0){
-    h+='<tr><td colspan="11" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
+    h+='<tr><td colspan="15" style="text-align:center;color:var(--text-faint);padding:30px">Nenhuma pessoa encontrada com esses filtros.</td></tr>';
   }else{
     linhas.forEach(l=>{
-      const pt=l.proxTarefa;
+      const pt=l.proxTarefa, o=l._oc;
       const entregaTxt=!pt?'<span style="color:var(--text-faint)">— sem data</span>':(pt.vencida
         ?'<span style="color:var(--st-bloqueado);font-weight:700" title="Não há tarefa em aberto a vencer; esta é a vencida mais antiga">'+feBr_(pt.iso)+' · vencida há '+Math.abs(pt.dias)+'d</span>'
         :feBr_(pt.iso)+' ('+(pt.dias===0?'hoje':pt.dias+'d')+')');
       h+='<tr class="ia-row" data-ia-pessoa="'+l.pessoa.a.replace(/"/g,'&quot;')+'" style="cursor:pointer">'+
         '<td><strong>'+personLinkHtml(l.pessoa.a)+'</strong></td>'+
+        '<td>'+(l.pessoa.area?feEsc_(l.pessoa.area):'—')+'</td>'+
         '<td>'+(l.pessoa.cargo||'—')+'</td>'+
         '<td>'+(l.pessoa.head?feEsc_(l.pessoa.head):'<span style="color:var(--text-faint)">—</span>')+'</td>'+
         '<td>'+(l.pessoa.nv||'—')+'</td>'+
@@ -6840,6 +6860,8 @@ function renderInteligenciaAlocacao(){
         '<td>'+(l.horasApontadas===null?'—':fH(l.horasApontadas))+'</td>'+
         '<td><div class="ia-score-bar-track"><div class="ia-score-bar-fill" style="width:'+l.score+'%;background:'+iaCorFaixa_(l.faixa)+'"></div></div><span style="font-weight:700;font-size:12px">'+l.score+'</span></td>'+
         '<td>'+iaBadgeSituacaoHtml(l.faixa)+'</td>'+
+        (o.nc?'<td style="text-align:right">'+(o.cap?fHM_(o.cap):'—')+'</td><td style="text-align:right">—</td><td style="text-align:right">—</td><td title="'+iaOcTip_(o)+'"><span class="ia-oc-tg ia-ocn">Não calculado</span> <span style="color:var(--text-muted);font-size:11px">'+o.nc+'</span></td>'
+        :'<td style="text-align:right">'+fHM_(o.cap)+'</td><td style="text-align:right">'+fHM_(o.al)+'</td><td style="text-align:right">'+fHM_(o.disp)+(o.over>0.05?'<div style="font-size:10px;color:var(--st-bloqueado)">+'+fHM_(o.over)+' acima</div>':'')+'</td><td title="'+iaOcTip_(o)+'"><div class="ia-oc"><div class="ia-oc-trk"><i class="ia-oc-f'+o.c+'" style="width:'+Math.min(100,o.pc)+'%"></i></div><span class="ia-oc-pc">'+Math.round(o.pc)+'%</span><span class="ia-oc-tg ia-oc'+o.c+'">'+IA_OC_ROT[o.c]+'</span></div></td>')+
       '</tr>';
     });
   }
@@ -6865,16 +6887,16 @@ async function iaExportarExcel_(btn){
   try{
     const ExcelJS=await calCarregarExcelJS_(), wb=new ExcelJS.Workbook(), HMM='[h]:mm', hojeISO=hojeISO_();
     const ws=wb.addWorksheet('Análise por Pessoa');
-    const cols=[['Pessoa',28],['Cargo',22],['Head',22],['Nível',18],['Projetos',10],['Clientes / Projetos',44],['Próxima Entrega (tarefa)',24],[E.per?(E.per.custom?'Tarefas vencendo no período':'Tarefas vencendo em '+E.per.N+'d'):'Tarefas em aberto',22],['H. Previstas',13],[E.per?'H. Apontadas ('+E.per.rot+')':'H. Apontadas',20],['Score',9],['Situação',16]];
+    const cols=[['Pessoa',28],['Cargo',22],['Head',22],['Nível',18],['Projetos',10],['Clientes / Projetos',44],['Próxima Entrega (tarefa)',24],[E.per?(E.per.custom?'Tarefas vencendo no período':'Tarefas vencendo em '+E.per.N+'d'):'Tarefas em aberto',22],['H. Previstas',13],[E.per?'H. Apontadas ('+E.per.rot+')':'H. Apontadas',20],['Score',9],['Situação',16],['Área',20],['Cap. mensal',13],['H. alocadas',13],['H. disponíveis',14],['Ociosidade (%)',14],['Classificação da ociosidade',26]];
     ws.columns=cols.map(c=>({header:c[0],width:c[1]}));
     E.linhas.forEach(l=>{
       const cp=iaClientesProjetos_(l), pt=l.proxTarefa;
       const r=ws.addRow([l.pessoa.a||'',l.pessoa.cargo||'',l.pessoa.head||'',l.pessoa.nv||'',l.qtdProjetos,cp.join('\n'),
-        pt?haIsoParaDate_(pt.iso):'sem data',l.qtdTarefasAbertas,(l.horasPrevistas||0)/24,l.horasApontadas===null?'—':(l.horasApontadas||0)/24,l.score,l.faixa.label]);
+        pt?haIsoParaDate_(pt.iso):'sem data',l.qtdTarefasAbertas,(l.horasPrevistas||0)/24,l.horasApontadas===null?'—':(l.horasApontadas||0)/24,l.score,l.faixa.label,l.pessoa.area||'',l._oc.cap==null?'—':l._oc.cap/24,l._oc.nc?'Não calculado':l._oc.al/24,l._oc.nc?'Não calculado':l._oc.disp/24,l._oc.nc?'Não calculado':Math.round(l._oc.pc*10)/10,l._oc.nc?'Não calculado ('+l._oc.nc+')':IA_OC_ROT[l._oc.c]]);
       r.getCell(6).alignment={wrapText:true,vertical:'top'}; r.height=Math.max(15,15*Math.max(1,cp.length));
       r.eachCell(c=>{ if(c.col!==6) c.alignment={vertical:'top'}; });
       const c7=r.getCell(7); if(pt){ c7.numFmt='dd/mm/yyyy'; c7.alignment={horizontal:'right',vertical:'top'}; if(pt.vencida) c7.font={bold:true,color:{argb:'FFB91C1C'}}; } else c7.font={color:{argb:'FF64748B'}};
-      r.getCell(9).numFmt=HMM; r.getCell(10).numFmt=HMM;
+      r.getCell(9).numFmt=HMM; r.getCell(10).numFmt=HMM; r.getCell(14).numFmt=HMM; r.getCell(15).numFmt=HMM; r.getCell(16).numFmt=HMM;
     });
     const h=ws.getRow(1); h.height=22; h.eachCell(c=>{c.font={bold:true,color:{argb:'FFFFFFFF'}};c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF0C4A6E'}};c.alignment={vertical:'middle',horizontal:'left',wrapText:true};});
     ws.views=[{state:'frozen',ySplit:1}]; ws.autoFilter={from:{row:1,column:1},to:{row:1,column:cols.length}};
@@ -9868,158 +9890,6 @@ function initRelatorioProjetos(){
 }
 
 
-// === AREA ===
-function initArea(){
-  document.getElementById('f-area').innerHTML='<option value="">Todas as áreas</option>'+Object.keys(AREAS).sort().map(n=>'<option value="'+n+'">'+n+'</option>').join('');
-  document.getElementById('f-area').onchange=renderArea;
-  initPeriodSeg('area-periodo-seg','f-area-de','f-area-ate',renderArea);
-  renderArea();
-}
-function getAreaClaude(area,d,de,ate){
-  const daily=AREA_CL[area]||{};
-  if(de||ate){
-    let mins=0,tokens=0;
-    for(const[dt,v] of Object.entries(daily)){if(!inRange(dt,de,ate))continue;mins+=v[0];tokens+=v[1];}
-    return{mins,tokens};
-  }
-  let tokens=0;
-  for(const v of Object.values(daily))tokens+=v[1];
-  return{mins:d.cl,tokens};
-}
-function renderArea(){
-  const fA=document.getElementById('f-area').value;
-  const[de,ate]=getDateRange('f-area-de','f-area-ate');
-  const entries=fA?[[fA,AREAS[fA]]]:Object.entries(AREAS).sort((a,b)=>b[1].ps-a[1].ps);
-  let tPs=0,tPj=0,tHrs=0,tTar=0,tClMin=0,tClTok=0;
-  entries.forEach(([area,d])=>{tPs+=d.ps;tPj+=d.pj;
-    if(de||ate){for(const[dt,v] of Object.entries(d.ad||{})){if(!inRange(dt,de,ate))continue;tHrs+=v[0];tTar+=v[1];}}
-    else{tHrs+=d.hrs;tTar+=d.tar;}
-    const cl=getAreaClaude(area,d,de,ate); tClMin+=cl.mins; tClTok+=cl.tokens;
-  });
-  const aH=tPs>0?Math.round(tHrs/tPs*10)/10:0;
-  const tClStr=tClMin>0?String(Math.floor(tClMin/60)).padStart(2,'0')+':'+String(Math.floor(tClMin%60)).padStart(2,'0'):'—';
-  document.getElementById('kpi-area').innerHTML=fA?'':
-    kpiHtml({label:'Pessoas',value:tPs,icon:'pessoas',bg:'#eff6ff',color:'#2563eb',foot:entries.length+' área'+(entries.length>1?'s':'')})+
-    kpiHtml({label:'Projetos',value:tPj,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})+
-    kpiHtml({label:'Horas',value:fH(tHrs),icon:'horas',bg:'#f0fdfa',color:'#0f766e',foot:'média '+fH(aH)+'/pessoa'})+
-    kpiHtml({label:'Tarefas',value:fN(tTar),icon:'tarefas',bg:'#ecfeff',color:'#0891b2'})+
-    kpiHtml({label:'Claude Code',value:tClStr,icon:'cpu',bg:'#faf5ff',color:'#9333ea'})+
-    kpiHtml({label:'Tokens (Claude)',value:fN(tClTok),icon:'cpu',bg:'#faf5ff',color:'#9333ea'});
-  let h='';
-  if(!fA){
-    const srtArr=Object.entries(AREAS).map(([a,d])=>{
-      let h2=0,t2=0;
-      if(de||ate){for(const[dt,v] of Object.entries(d.ad||{})){if(!inRange(dt,de,ate))continue;h2+=v[0];t2+=v[1];}}
-      else{h2=d.hrs;t2=d.tar;}
-      const cl=getAreaClaude(a,d,de,ate);
-      return{a,d,h2,t2,clMin:cl.mins,clTok:cl.tokens};
-    });
-    const srt=[...srtArr].sort((x,y)=>y.h2-x.h2);
-    const noH=srtArr.filter(x=>x.h2===0);
-    const hCl=srtArr.filter(x=>x.clMin>100).sort((x,y)=>y.clMin-x.clMin);
-    h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>Insights</h3></div><div class="insights-grid">';
-    h+='<div class="insight-card positivo"><div class="ic-icon">📊</div><p>Maior utilização: <b>'+srt[0].a+'</b> — <b>'+fH(srt[0].h2)+'</b> ('+srt[0].d.ps+' pessoas, head: '+srt[0].d.head+').</p></div>';
-    if(noH.length)h+='<div class="insight-card risco"><div class="ic-icon">⚠</div><p><b>'+noH.map(e=>e.a).join(', ')+'</b> — zero horas no período.</p></div>';
-    if(hCl.length)h+='<div class="insight-card info"><div class="ic-icon">🤖</div><p>Claude: <b>'+hCl.map(e=>e.a+' ('+Math.round(e.clMin/60)+'h, '+fN(e.clTok)+' tokens)').join(', ')+'</b>.</p></div>';
-    h+='</div></div>';
-  }
-  // Precompute percentile comparison arrays across ALL areas (regardless of fA filter)
-  const allAreaHorasArr=[], allAreaTarefasArr=[], allAreaClaudeArr=[], allAreaTokensArr=[];
-  Object.entries(AREAS).forEach(([areaName,dd])=>{
-    let h2=0,t2=0;
-    if(de||ate){for(const[dt,v] of Object.entries(dd.ad||{})){if(!inRange(dt,de,ate))continue;h2+=v[0];t2+=v[1];}}
-    else{h2=dd.hrs;t2=dd.tar;}
-    allAreaHorasArr.push(h2); allAreaTarefasArr.push(t2);
-    const cl=getAreaClaude(areaName,dd,de,ate);
-    if(cl.mins>0) allAreaClaudeArr.push(cl.mins);
-    if(cl.tokens>0) allAreaTokensArr.push(cl.tokens);
-  });
-
-  entries.forEach(([area,d])=>{
-    let aHrs=0,aTar=0;const adEntries=Object.entries(d.ad||{});
-    const bucketsA={};
-    if(de||ate){
-      adEntries.forEach(([dt,v])=>{if(!inRange(dt,de,ate))return;aHrs+=v[0];aTar+=v[1];const m=dt.slice(0,7);bucketsA[m]=(bucketsA[m]||0)+v[0];});
-    }else{
-      aHrs=d.hrs;aTar=d.tar;
-      adEntries.forEach(([dt,v])=>{const m=dt.slice(0,7);bucketsA[m]=(bucketsA[m]||0)+v[0];});
-    }
-    const monthsA=Object.keys(bucketsA).sort();
-    const avgHP=d.ps>0?Math.round(aHrs/d.ps*10)/10:0;const avgTP=d.ps>0?Math.round(aTar/d.ps):0;
-    const areaCl=getAreaClaude(area,d,de,ate);
-    const clM=areaCl.mins; const clTokArea=areaCl.tokens;
-    const clStr=clM>0?String(Math.floor(clM/60)).padStart(2,'0')+':'+String(Math.round(clM%60)).padStart(2,'0'):'—';
-    const pctAreaHoras=percentileRank(aHrs, allAreaHorasArr);
-    const pctAreaTarefas=percentileRank(aTar, allAreaTarefasArr);
-    const pctAreaClaude=clM>0?percentileRank(clM, allAreaClaudeArr):null;
-    const pctAreaTokens=clTokArea>0?percentileRank(clTokArea, allAreaTokensArr):null;
-    h+='<div style="margin-bottom:20px"><h2 style="font-size:17px;margin-bottom:4px">'+area+' <span style="font-size:13px;color:var(--text-faint);font-weight:400">'+d.ps+' pessoas</span></h2>';
-    h+='<div style="font-size:12.5px;color:var(--text-muted);margin-bottom:12px">Head da área: <strong style="color:var(--text)">'+d.head+'</strong></div>';
-    h+='<div class="grid grid-kpi" style="margin-bottom:12px">'+
-      kpiHtml({label:'Pessoas',value:d.ps,icon:'pessoas',bg:'#eff6ff',color:'#2563eb'})+
-      kpiHtml({label:'Projetos',value:d.pj,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})+
-      kpiHtml({label:'Horas',value:fH(aHrs),icon:'horas',bg:'#f0fdfa',color:'#0f766e',foot:fH(avgHP)+'/pessoa'})+
-      kpiHtml({label:'Tarefas',value:aTar,icon:'tarefas',bg:'#ecfeff',color:'#0891b2',foot:avgTP+'/pessoa'})+
-      (clM>0?kpiHtml({label:'Claude',value:clStr,icon:'cpu',bg:'#faf5ff',color:'#9333ea'}):'')+
-      (clTokArea>0?kpiHtml({label:'Tokens (Claude)',value:fN(clTokArea),icon:'cpu',bg:'#faf5ff',color:'#9333ea'}):'')+'</div>';
-    h+='<div class="pd-section" style="margin-bottom:12px"><h3>📊 Comparativo com outras Áreas (percentil)</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">';
-    (()=>{const l=percentileLabel(pctAreaHoras);h+='<div class="insight-card '+l.cls+'" style="margin:0"><div class="ic-icon">⏱</div><p><b>Horas Registradas</b><br>'+l.txt+'</p></div>';})();
-    (()=>{const l=percentileLabel(pctAreaTarefas);h+='<div class="insight-card '+l.cls+'" style="margin:0"><div class="ic-icon">📋</div><p><b>Volume de Tarefas</b><br>'+l.txt+'</p></div>';})();
-    if(pctAreaClaude!==null){const l=percentileLabel(pctAreaClaude);h+='<div class="insight-card '+l.cls+'" style="margin:0"><div class="ic-icon">🤖</div><p><b>Uso de Claude Code</b><br>'+l.txt+'</p></div>';}
-    if(pctAreaTokens!==null){const l=percentileLabel(pctAreaTokens);h+='<div class="insight-card '+l.cls+'" style="margin:0"><div class="ic-icon">🔢</div><p><b>Tokens (Claude)</b><br>'+l.txt+'</p></div>';}
-    h+='</div><div style="font-size:11px;color:var(--text-faint);margin-top:10px">Comparado com '+Object.keys(AREAS).length+' áreas do portfólio.</div></div>';
-    h+='<div class="grid grid-2b">';
-    if(monthsA.length>0)h+='<div class="card"><div class="card-title"><h3>Horas por Mês</h3><span class="sub">fonte: Data de Apontamento</span></div><div style="height:220px"><canvas id="chA_'+area.replace(/[^a-zA-Z]/g,'')+'"></canvas></div></div>';
-    const equipeTableId='equipe-'+area;
-    SORT_RERENDER[equipeTableId]=()=>renderArea();
-    const colunasEquipe=[
-      {key:'nome',label:'Nome',tipo:'texto',get:t=>t.a},
-      {key:'cargo',label:'Cargo',tipo:'texto',get:t=>t.c},
-      {key:'nivel',label:'Nível',tipo:'texto',get:t=>t.n}
-    ];
-    const stEquipe=SORT_STATE[equipeTableId]||{col:null,dir:0};
-    const teamOrd=stEquipe.col?ordenarLinhas_(d.team,colunasEquipe.find(c=>c.key===stEquipe.col),stEquipe.dir):d.team;
-    h+='<div class="card"><div class="card-title"><h3>Equipe</h3><span class="sub">'+d.ps+'</span></div><div class="table-wrap" style="max-height:220px"><table>'+theadOrdenavel_(equipeTableId,colunasEquipe)+'<tbody>';
-    teamOrd.forEach(t=>{h+='<tr><td><strong>'+t.a+'</strong></td><td>'+t.c+'</td><td>'+(t.n||'—')+'</td></tr>';});
-    h+='</tbody></table></div></div></div>';
-
-    // Ociosidade semanal agregada da área
-    const [areaMon,areaSun]=getMondaySunday(new Date());
-    let areaOciosos=0;
-    d.team.forEach(t=>{
-      const pInfo=D.p.find(pp=>pp.a===t.a);
-      const ek=pInfo&&pInfo.email?pInfo.email.toLowerCase():'';
-      if(!ek)return;
-      const hPrev=Object.entries(PPREVISTO[ek]||{}).filter(([dt])=>dt>=areaMon&&dt<=areaSun).reduce((s,[,v])=>s+v,0);
-      const hExec=Object.entries(PM[ek]||{}).filter(([dt])=>dt!=='sem-data'&&dt>=areaMon&&dt<=areaSun).reduce((s,[,v])=>s+v[0],0);
-      const pct=hPrev>0?Math.max(0,Math.round((1-hExec/hPrev)*100)):null;
-      if(pct!==null&&pct>=50)areaOciosos++;
-    });
-    // Ritmo médio dos projetos que têm gente dessa área na equipe
-    const teamNames=new Set(d.team.map(t=>t.a));
-    const projetosArea=D.pj.filter(p=>(p.st==='Em Andamento'||p.st==='Sustentação')&&(p.eq||[]).some(m=>teamNames.has(m)));
-
-    h+='<div class="pd-section" style="margin-top:12px"><h3>💤 Ociosidade e Ritmo da Área</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:12px">';
-    h+='<div class="insight-card '+(areaOciosos>0?'atencao':'positivo')+'" style="margin:0"><div class="ic-icon">'+(areaOciosos>0?'⚠':'✓')+'</div><p><b>'+areaOciosos+'</b> pessoa(s) com ociosidade ≥50% esta semana, de '+d.ps+' na área.</p></div>';
-    h+='</div>';
-    h+=ritmoResumoHtml(projetosArea)||'<div style="font-size:12px;color:var(--text-faint)">Sem projetos ativos com dados suficientes pra calcular ritmo.</div>';
-    h+='</div></div>';
-  });
-  document.getElementById('area-content').innerHTML=h;
-  if(!COK)return;Object.values(ch).forEach(c=>{try{c.destroy();}catch(e){}});ch={};
-  entries.forEach(([area,d])=>{
-    const adEntries=Object.entries(d.ad||{});
-    const bucketsA={};
-    (de||ate?adEntries.filter(([dt])=>inRange(dt,de,ate)):adEntries).forEach(([dt,v])=>{const m=dt.slice(0,7);bucketsA[m]=(bucketsA[m]||0)+v[0];});
-    const monthsA=Object.keys(bucketsA).sort();
-    if(!monthsA.length)return;
-    const id='chA_'+area.replace(/[^a-zA-Z]/g,'');const el=document.getElementById(id);if(!el)return;
-    ch[id]=new Chart(el,{type:'bar',data:{labels:monthsA.map(m=>ML[m.split('-')[1]]),datasets:[{data:monthsA.map(m=>Math.round(bucketsA[m]*10)/10),backgroundColor:'#0C4A6E',borderRadius:6}]},
-      options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:20}},plugins:{legend:{display:false},tooltip:noTooltip},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}},
-      plugins:[valueLabelPlugin(v=>fH(v),false)]});
-  });
-}
-
 // === TOP 5 ===
 // === PENDÊNCIAS DE DATAS ===
 // v17.1 — Pendências: tarefas nunca são excluídas por causa de Participa_Analises. Só a participação estatística da
@@ -10146,7 +10016,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(card) openProjDetail(card.dataset.pj);
   });
   document.getElementById('equipe-content').addEventListener('click', (e)=>{
-    const card = e.target.closest('.team-card');
+    const card = e.target.closest('.eq-card');
     if(card && card.dataset.nome){
       goToPage('pessoa');
       const claudeChk=document.getElementById('f-pes-claude-only');
@@ -10933,136 +10803,6 @@ function renderProjDetail(pjName){
   renderGanttChart(tasks);
 }
 
-// === PESSOAS SEM ALOCAÇÃO ===
-function initOciosos(){
-  initPeriodSeg('ociosos-periodo-seg','f-ociosos-de','f-ociosos-ate',renderOciosos);
-  renderOciosos();
-}
-function renderOciosos(){
-  SORT_RERENDER['ociosos-comtarefa']=()=>renderOciosos();
-  SORT_RERENDER['ociosos-semtarefa']=()=>renderOciosos();
-  SORT_RERENDER['ociosos-semana']=()=>renderOciosos();
-  SORT_RERENDER['ociosos-semapont']=()=>renderOciosos();
-  const semAlocNamesSet=new Set(SEM_ALOC.map(o=>o.a));
-  const alocSemApontNamesSet=new Set(ALOC_SEM_APONT.map(o=>o.a));
-  const [ocMon,ocSun]=getMondaySunday(new Date());
-  const ociososSemanaList=PESA_().filter(p=>p.a&&!semAlocNamesSet.has(p.a)&&!alocSemApontNamesSet.has(p.a)).map(p=>{
-    const ek=(p.email||'').toLowerCase();
-    const hPrev=Object.entries(PPREVISTO[ek]||{}).filter(([d])=>d>=ocMon&&d<=ocSun).reduce((s,[,v])=>s+v,0);
-    const hExec=Object.entries(PM[ek]||{}).filter(([d])=>d!=='sem-data'&&d>=ocMon&&d<=ocSun).reduce((s,[,v])=>s+v[0],0);
-    const pct=hPrev>0?Math.max(0,Math.round((1-hExec/hPrev)*100)):null;
-    return{p,pct,hPrev,hExec};
-  }).filter(x=>x.pct!==null&&x.pct>=50).sort((a,b)=>b.pct-a.pct);
-
-  // Filtro por período: identifica quem TEM x quem NÃO TEM tarefa atribuída (por
-  // data de vencimento) dentro do período selecionado. Sem período selecionado
-  // ("Todos"), essa seção fica oculta e o restante da página funciona exatamente
-  // como antes (comportamento preservado).
-  const [pDe,pAte]=getDateRange('f-ociosos-de','f-ociosos-ate');
-  const periodoAtivo=!!(pDe||pAte);
-  let comTarefaPeriodo=[],semTarefaPeriodo=[];
-  if(periodoAtivo){
-    PESA_().filter(p=>p.a).forEach(p=>{
-      const ek=(p.email||'').toLowerCase();
-      const vencList=PVENC[ek]||[];
-      const tem=vencList.some(d=>inRange(d,pDe,pAte));
-      (tem?comTarefaPeriodo:semTarefaPeriodo).push(p);
-    });
-    comTarefaPeriodo.sort((a,b)=>a.a.localeCompare(b.a,'pt-BR'));
-    semTarefaPeriodo.sort((a,b)=>a.a.localeCompare(b.a,'pt-BR'));
-  }
-
-  document.getElementById('kpi-ociosos').innerHTML =
-    (periodoAtivo?
-    kpiHtml({label:'Com Tarefa Atribuída no Período',value:comTarefaPeriodo.length,icon:'check',bg:'#eff6ff',color:'#2563eb',valueColor:'var(--primary)',foot:'de '+PESA_().filter(p=>p.a).length+' colaboradores'})+
-    kpiHtml({label:'Sem Tarefa Atribuída no Período',value:semTarefaPeriodo.length,icon:'usuarioX',bg:semTarefaPeriodo.length>0?'#fef2f2':'#f8fafc',color:semTarefaPeriodo.length>0?'#dc2626':'#64748b',valueColor:(semTarefaPeriodo.length>0?'var(--st-bloqueado)':'var(--text)'),foot:'nenhum vencimento no período'})
-    :
-    kpiHtml({label:'Disponibilidade (real)',value:SEM_ALOC.length,icon:'usuarioX',bg:'#fef2f2',color:'#dc2626',valueColor:'var(--st-bloqueado)',foot:'de '+PESA_().filter(p=>p.a).length+' colaboradores'})+
-    kpiHtml({label:'Alocados, sem apontamento no Zoho',value:ALOC_SEM_APONT.length,icon:'alerta',bg:'#fff7ed',color:'#f59e0b',valueColor:'#f59e0b',foot:'estão em equipe de projeto no Portifolio'})+
-    kpiHtml({label:'Ociosidade Alta Esta Semana',value:ociososSemanaList.length,icon:'bateria',bg:ociososSemanaList.length>0?'#fff7ed':'#eff6ff',color:ociososSemanaList.length>0?'#f59e0b':'var(--primary)',valueColor:(ociososSemanaList.length>0?'#f59e0b':'var(--primary)'),foot:'alocados, mas ≥50% abaixo do previsto'}));
-
-  let h='';
-
-  // Seção do filtro por período (só aparece com período selecionado) — respeita
-  // as demais seções da página, que continuam abaixo normalmente.
-  if(periodoAtivo){
-    h+='<div class="pd-section" style="margin-bottom:16px"><h3>📅 Atribuição de Tarefas no Período Selecionado</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Considera a data de vencimento das tarefas de cada pessoa dentro do período ('+(pDe||'início')+' a '+(pAte||'hoje')+').</span>';
-    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">';
-    const colunasOcNomeArea=[{key:'nome',label:'Nome',tipo:'texto',get:p=>p.a},{key:'area',label:'Área',tipo:'texto',get:p=>p.area}];
-    const stOcCom=SORT_STATE['ociosos-comtarefa']||{col:null,dir:0};
-    const comTarefaOrd=stOcCom.col?ordenarLinhas_(comTarefaPeriodo,colunasOcNomeArea.find(c=>c.key===stOcCom.col),stOcCom.dir):comTarefaPeriodo;
-    const stOcSem=SORT_STATE['ociosos-semtarefa']||{col:null,dir:0};
-    const semTarefaOrd=stOcSem.col?ordenarLinhas_(semTarefaPeriodo,colunasOcNomeArea.find(c=>c.key===stOcSem.col),stOcSem.dir):semTarefaPeriodo;
-    h+='<div><div style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--primary)">✓ Com tarefa atribuída ('+comTarefaPeriodo.length+')</div><div class="table-wrap" style="max-height:280px"><table>'+theadOrdenavel_('ociosos-comtarefa',colunasOcNomeArea)+'<tbody>';
-    comTarefaOrd.forEach(p=>{ h+='<tr><td><strong>'+personLinkHtml(p.a)+'</strong></td><td>'+(p.area||'—')+'</td></tr>'; });
-    if(comTarefaPeriodo.length===0) h+='<tr><td colspan="2" style="text-align:center;color:var(--text-faint)">Ninguém.</td></tr>';
-    h+='</tbody></table></div></div>';
-    h+='<div><div style="font-size:13px;font-weight:700;margin-bottom:6px;color:var(--st-bloqueado)">✗ Sem tarefa atribuída ('+semTarefaPeriodo.length+')</div><div class="table-wrap" style="max-height:280px"><table>'+theadOrdenavel_('ociosos-semtarefa',colunasOcNomeArea)+'<tbody>';
-    semTarefaOrd.forEach(p=>{ h+='<tr><td><strong>'+personLinkHtml(p.a)+'</strong></td><td>'+(p.area||'—')+'</td></tr>'; });
-    if(semTarefaPeriodo.length===0) h+='<tr><td colspan="2" style="text-align:center;color:var(--text-faint)">Ninguém.</td></tr>';
-    h+='</tbody></table></div></div>';
-    h+='</div></div>';
-  }
-
-
-  // Seção 0: alocados normalmente, mas com ociosidade alta NESSA semana específica
-  if(ociososSemanaList.length>0){
-    const colunasOcSemana=[
-      {key:'nome',label:'Nome',tipo:'texto',get:x=>x.p.a},
-      {key:'area',label:'Área',tipo:'texto',get:x=>x.p.area},
-      {key:'ociosidade',label:'Ociosidade',tipo:'percentual',get:x=>x.pct},
-      {key:'previstoexec',label:'Previsto x Executado',tipo:'horas',get:x=>x.hExec}
-    ];
-    const stOcSemana=SORT_STATE['ociosos-semana']||{col:null,dir:0};
-    const ociososSemanaOrd=stOcSemana.col?ordenarLinhas_(ociososSemanaList,colunasOcSemana.find(c=>c.key===stOcSemana.col),stOcSemana.dir):ociososSemanaList;
-    h+='<div class="pd-section" style="margin-bottom:16px"><h3>🟡 Alocados, mas com Ociosidade Alta Esta Semana ('+ociososSemanaList.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Têm alocação normal (tarefas/horas no Zoho), mas nesta semana específica executaram bem menos do que o previsto pelas tarefas com vencimento nesse período.</span><div class="table-wrap"><table>'+theadOrdenavel_('ociosos-semana',colunasOcSemana)+'<tbody>';
-    ociososSemanaOrd.forEach(x=>{
-      h+='<tr><td><strong>'+x.p.a+'</strong><br><span style="font-size:11px;color:var(--text-faint)">'+(x.p.cargo||'—')+'</span></td><td>'+(x.p.area||'—')+'</td><td><span style="color:'+(x.pct>=75?'var(--st-bloqueado)':'#f59e0b')+';font-weight:700">'+x.pct+'%</span></td><td>'+fH(x.hExec)+' de '+fH(x.hPrev)+'</td></tr>';
-    });
-    h+='</tbody></table></div></div>';
-  }
-
-  // Seção 1: alocados no Portifolio mas sem tarefas/horas no Zoho (validado contra Portifolio)
-  if(ALOC_SEM_APONT.length>0){
-    const colunasOcSemApont=[
-      {key:'nome',label:'Nome',tipo:'texto',get:o=>o.a},
-      {key:'area',label:'Área',tipo:'texto',get:o=>o.area},
-      {label:'Projetos (Portifolio)'}
-    ];
-    const stOcSemApont=SORT_STATE['ociosos-semapont']||{col:null,dir:0};
-    const alocSemApontOrd=stOcSemApont.col?ordenarLinhas_(ALOC_SEM_APONT,colunasOcSemApont.find(c=>c.key===stOcSemApont.col),stOcSemApont.dir):ALOC_SEM_APONT;
-    h+='<div class="pd-section" style="margin-bottom:16px"><h3>⚠️ Alocados em Projeto, mas sem Apontamento no Zoho ('+ALOC_SEM_APONT.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Estas pessoas aparecem na equipe de um projeto ativo (Portifolio), mas não têm nenhuma tarefa ou hora registrada no Zoho.</span><div class="table-wrap"><table>'+theadOrdenavel_('ociosos-semapont',colunasOcSemApont)+'<tbody>';
-    alocSemApontOrd.forEach(o=>{
-      h+='<tr><td><strong>'+personLinkHtml(o.a)+'</strong><br><span style="font-size:11px;color:var(--text-faint)">'+(o.cargo||'—')+'</span></td><td>'+(o.area||'—')+'</td><td>'+(o.projetos||[]).map(p=>'<span class="status-pill">'+p+'</span>').join(' ')+'</td></tr>';
-    });
-    h+='</tbody></table></div></div>';
-  }
-
-  // Seção 2: sem alocação de fato (não aparecem em nenhum projeto ativo do Portifolio nem no Zoho)
-  h+='<div class="pd-section"><h3>🔴 Disponibilidade Confirmada ('+SEM_ALOC.length+')</h3><span class="sub" style="display:block;margin-bottom:10px;color:var(--text-faint);font-size:12px">Validado contra a aba Portifolio: não aparecem em nenhuma equipe de projeto ativo, nem possuem tarefas/horas no Zoho.</span>';
-  const byArea = {};
-  SEM_ALOC.forEach(o=>{ const a=o.area||'Sem área'; if(!byArea[a])byArea[a]=[]; byArea[a].push(o); });
-  const colunasOcArea=[
-    {key:'nome',label:'Nome',tipo:'texto',get:o=>o.a},
-    {key:'cargo',label:'Cargo',tipo:'texto',get:o=>o.cargo},
-    {key:'gestor',label:'Gestor',tipo:'texto',get:o=>o.gestor},
-    {key:'email',label:'E-mail',tipo:'texto',get:o=>o.email}
-  ];
-  for(const [area,list] of Object.entries(byArea).sort((a,b)=>b[1].length-a[1].length)){
-    const ocAreaTableId='ociosos-'+area;
-    SORT_RERENDER[ocAreaTableId]=()=>renderOciosos();
-    const stOcArea=SORT_STATE[ocAreaTableId]||{col:null,dir:0};
-    const listOrd=stOcArea.col?ordenarLinhas_(list,colunasOcArea.find(c=>c.key===stOcArea.col),stOcArea.dir):list;
-    h+='<div style="margin-top:14px"><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">'+area+' <span style="font-weight:400;color:var(--text-faint)">('+list.length+')</span></div><div class="table-wrap"><table>'+theadOrdenavel_(ocAreaTableId,colunasOcArea)+'<tbody>';
-    listOrd.forEach(o=>{ h+='<tr><td><strong>'+personLinkHtml(o.a)+'</strong></td><td>'+(o.cargo||'—')+'</td><td>'+personLinkHtml(o.gestor)+'</td><td style="color:var(--primary)">'+(o.email||'—')+'</td></tr>'; });
-    h+='</tbody></table></div></div>';
-  }
-  h+='</div>';
-
-  if(SEM_ALOC.length===0 && ALOC_SEM_APONT.length===0 && ociososSemanaList.length===0) h='<div class="empty-state"><p>Todas as pessoas têm tarefas, horas ou alocação em projeto. 🎉</p></div>';
-  document.getElementById('ociosos-content').innerHTML=h;
-}
-
 // === TOP EXECUTIVO ===
 function rankRow(i,label,value,sub){
   return '<div class="top5-row"><div class="top5-rank">'+(i+1)+'</div><div style="flex:1"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:2px"><strong>'+label+'</strong><span>'+value+'</span></div>'+(sub?'<div style="font-size:11px;color:var(--text-faint)">'+sub+'</div>':'')+'</div></div>';
@@ -11669,6 +11409,17 @@ function renderGerente(){
 //   Baixa Utilização = está em SEM_ALOC ou ALOC_SEM_APONT (zero trabalho registrado)
 //   Disponível      = nenhuma das duas condições acima
 // Ordem de prioridade de exibição: Carga Elevada → Disponível → Baixa Utilização
+const EQ={pill:'TODOS',kpi:null};
+// v20.7 — dias do período selecionado para a Ociosidade: Hoje = 1, Esta semana = 7, Este mês e Todos = 30, De–Até = nº de dias (1 a 90).
+function eqDias_(de,ate){
+  const act=document.querySelector('#equipe-periodo-seg .seg-btn.active'), v=act?act.dataset.val:'todos';
+  if(v==='hoje') return 1; if(v==='semana') return 7; if(v==='mes') return 30; // janelas cheias (os atalhos vão só até hoje)
+  if(!de&&!ate) return 30;
+  const a=de||ate, b=ate||de; const n=Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/864e5)+1;
+  return Math.max(1,Math.min(90,n||30));
+}
+const EQ_OC_COR=['#2563eb','#16a34a','#ca8a04','#dc2626'];
+function eqOcKey_(o){ return o.nc?'nc':String(o.c); }
 function statusEquipe(r){
   if(r.hExecutadoSemana!==null && r.hExecutadoSemana>r.capSem) return{key:'elevada',order:0,label:'Carga Elevada',icon:'🔴',color:'var(--st-bloqueado)',bg:'rgba(220,38,38,.12)'};
   if(r.isOcioso) return{key:'baixa',order:2,label:'Baixa Utilização',icon:'⚪',color:'#b45309',bg:'rgba(245,158,11,.14)'};
@@ -11689,7 +11440,11 @@ function initEquipe(){
   document.getElementById('f-equipe-gestor').onchange=()=>{ document.getElementById('f-equipe-pessoa').value=''; populateEquipePessoaFilter(); renderEquipe(); };
   document.getElementById('f-equipe-pessoa').onchange=renderEquipe;
   document.getElementById('f-equipe-problema').onchange=renderEquipe;
-  document.getElementById('f-equipe-clear').onclick=()=>{selHead.value='';document.getElementById('f-equipe-gestor').value='';document.getElementById('f-equipe-pessoa').value='';document.getElementById('f-equipe-problema').checked=false;document.getElementById('f-equipe-de').value='';document.getElementById('f-equipe-ate').value='';document.querySelectorAll('#equipe-periodo-seg .seg-btn').forEach(b=>b.classList.toggle('active',b.dataset.val==='todos'));populateEquipeGestorFilter();populateEquipePessoaFilter();renderEquipe();};
+  EQ.pill='TODOS'; EQ.kpi=null;
+  document.getElementById('f-equipe-busca').oninput=debounce(renderEquipe,150);
+  document.getElementById('equipe-pills').onclick=e=>{ const b=e.target.closest('[data-eqp]'); if(!b) return; EQ.pill=b.dataset.eqp; renderEquipe(); };
+  document.getElementById('kpi-equipe').onclick=e=>{ const b=e.target.closest('[data-eqk]'); if(!b) return; EQ.kpi=(EQ.kpi===b.dataset.eqk||b.dataset.eqk==='todos')?null:b.dataset.eqk; if(b.dataset.eqk==='todos') EQ.pill='TODOS'; renderEquipe(); };
+  document.getElementById('f-equipe-clear').onclick=()=>{selHead.value='';document.getElementById('f-equipe-gestor').value='';document.getElementById('f-equipe-pessoa').value='';document.getElementById('f-equipe-problema').checked=false;document.getElementById('f-equipe-busca').value='';EQ.pill='TODOS';EQ.kpi=null;document.getElementById('f-equipe-de').value='';document.getElementById('f-equipe-ate').value='';document.querySelectorAll('#equipe-periodo-seg .seg-btn').forEach(b=>b.classList.toggle('active',b.dataset.val==='todos'));populateEquipeGestorFilter();populateEquipePessoaFilter();renderEquipe();};
   populateEquipeGestorFilter();
   populateEquipePessoaFilter();
   initPeriodSeg('equipe-periodo-seg','f-equipe-de','f-equipe-ate',renderEquipe);
@@ -11796,179 +11551,62 @@ function renderEquipe(){
     return{p,horas,hEst,tarefas,projetos,pctHoras,isOcioso,usaClaude,venceSemana,hPrevistoSemana,hExecutadoSemana,ociosidadeSemanaPct,capSem,capEq};
   });
 
-  // Ordena por PRIORIDADE DE STATUS (Carga Elevada → Disponível → Baixa Utilização),
-  // e dentro de cada grupo, por percentil de horas (desc) — quem precisa de mais atenção aparece primeiro
+  // v20.7 — Ociosidade no lugar do status: capacidade individual × horas alocadas, na janela do período selecionado.
+  const Neq=eqDias_(de,ate);
+  rows.forEach(r=>{ r.oc=iaOciosidade_(r.p,Neq); });
   rows.sort((a,b)=>{
-    const sa=statusEquipe(a).order, sb=statusEquipe(b).order;
-    if(sa!==sb) return sa-sb;
-    return (b.hExecutadoSemana||0)-(a.hExecutadoSemana||0);
+    const x=a.oc.nc?-1:a.oc.pc, y=b.oc.nc?-1:b.oc.pc;
+    if(x!==y) return y-x;
+    return a.p.a.localeCompare(b.p.a,'pt-BR');
   });
 
   const soComProblema=document.getElementById('f-equipe-problema').checked;
-  const rowsFiltradas=soComProblema?rows.filter(r=>r.isOcioso||(r.hExecutadoSemana>r.capSem)||(r.ociosidadeSemanaPct!==null&&r.ociosidadeSemanaPct>=50)):rows;
+  const q=(document.getElementById('f-equipe-busca').value||'').trim().toLowerCase();
+  let base=soComProblema?rows.filter(r=>r.isOcioso||(r.hExecutadoSemana>r.capSem)||(r.ociosidadeSemanaPct!==null&&r.ociosidadeSemanaPct>=50)):rows;
+  if(q) base=base.filter(r=>(r.p.a+' '+(r.p.cargo||'')+' '+(r.p.area||'')).toLowerCase().includes(q));
+  const contOc={TODOS:base.length,'0':0,'1':0,'2':0,'3':0,nc:0}; base.forEach(r=>{ contOc[eqOcKey_(r.oc)]++; });
+  let rowsFiltradas=base;
+  if(EQ.kpi==='elevada') rowsFiltradas=rowsFiltradas.filter(r=>r.hExecutadoSemana>r.capSem);
+  else if(EQ.kpi==='baixa') rowsFiltradas=rowsFiltradas.filter(r=>r.isOcioso);
+  else if(EQ.kpi==='claude') rowsFiltradas=rowsFiltradas.filter(r=>r.usaClaude);
+  if(EQ.pill!=='TODOS') rowsFiltradas=rowsFiltradas.filter(r=>eqOcKey_(r.oc)===EQ.pill);
 
-  document.getElementById('kpi-equipe').innerHTML=`
-    <div class="team-summary-item"><span class="team-summary-icon">👥</span><div><span class="team-summary-label">Liderados</span><span class="team-summary-val">${time.length}</span></div></div>
-    <div class="team-summary-item" title="Mais horas executadas nesta semana do que a capacidade semanal cadastrada de cada pessoa (CLT/PJ Full Time 40h, Part-time Fixo 20h, Part-time Hora conforme cadastro). Sem cadastro: referência provisória de ${CAPACIDADE_SEMANAL_HORAS}h/semana."><span class="team-summary-icon">🔴</span><div><span class="team-summary-label">Carga Elevada</span><span class="team-summary-val" style="color:${sobrecarregados>0?'var(--st-bloqueado)':'var(--text)'}">${sobrecarregados}</span><span class="team-summary-foot">acima de ${CAPACIDADE_SEMANAL_HORAS}h/semana</span></div></div>
-    <div class="team-summary-item" title="Zero alocação registrada — nem no Portifolio (equipe de projeto) nem no Zoho (tarefas/horas)."><span class="team-summary-icon">⚪</span><div><span class="team-summary-label">Baixa Utilização</span><span class="team-summary-val" style="color:${ociosos>0?'#b45309':'var(--text)'}">${ociosos}</span><span class="team-summary-foot">sem alocação registrada</span></div></div>
-    <div class="team-summary-item" title="${TIP_OCIOSIDADE_SEMANAL}"><span class="team-summary-icon">📉</span><div><span class="team-summary-label">Baixa Execução (semana)</span><span class="team-summary-val" style="color:${ociososSemana>0?'#b45309':'var(--text)'}">${ociososSemana}</span><span class="team-summary-foot">≥50% abaixo do previsto</span></div></div>
-    <div class="team-summary-item"><span class="team-summary-icon">🤖</span><div><span class="team-summary-label">Usam Claude Code</span><span class="team-summary-val">${usamClaude}</span><span class="team-summary-foot">de ${time.length} liderados</span></div></div>`;
-  document.getElementById('kpi-equipe').className='team-summary-bar';
+  const kpi=(k,ic,rot,val,foot,tip,cor)=>'<'+(k?'button type="button" data-eqk="'+k+'"':'div')+' class="eq-kpi'+(EQ.kpi===k?' on':'')+'" title="'+tip+'"><span class="ic">'+ic+'</span><span><small>'+rot+'</small><b'+(cor?' style="color:'+cor+'"':'')+'>'+val+'</b>'+(foot?'<em>'+foot+'</em>':'')+'</span></'+(k?'button':'div')+'>';
+  document.getElementById('kpi-equipe').innerHTML=
+    kpi('todos','👥','Liderados',time.length,'','Mostra todos os liderados do filtro de Head/Gestor.')+
+    kpi('elevada','🔴','Carga Elevada',sobrecarregados,'acima da jornada','Mais horas executadas nesta semana do que a capacidade semanal cadastrada de cada pessoa (CLT/PJ Full Time 40h, Part-time Fixo 20h, Part-time Hora conforme cadastro). Sem cadastro: referência provisória de '+CAPACIDADE_SEMANAL_HORAS+'h/semana. Clique para filtrar.',sobrecarregados>0?'var(--st-bloqueado)':'')+
+    kpi('baixa','⚪','Baixa Utilização',ociosos,'sem alocação','Zero alocação registrada — nem no Portifolio (equipe de projeto) nem no Zoho (tarefas/horas). Clique para filtrar.',ociosos>0?'#b45309':'')+
+    kpi('','📉','Baixa Execução',ociososSemana,'&lt;50% previsto',TIP_OCIOSIDADE_SEMANAL,ociososSemana>0?'#b45309':'')+
+    kpi('claude','🤖','Usam Claude Code',usamClaude,'de '+time.length+' liderados','Clique para filtrar quem usa Claude Code.');
+  document.getElementById('kpi-equipe').className='eq-kpis';
+  const pill=(k,rot)=>'<button type="button" class="eq-pill'+(EQ.pill===k?' on':'')+'" data-eqp="'+k+'">'+rot+' ('+contOc[k]+')</button>';
+  document.getElementById('equipe-pills').innerHTML='<span style="font-size:11px;color:var(--text-faint);font-weight:700;margin-right:2px" title="Ociosidade = (capacidade do período − horas alocadas) ÷ capacidade do período, na janela de '+Neq+' dia(s) do período selecionado.">OCIOSIDADE ('+Neq+'d):</span>'+pill('TODOS','Todos')+pill('0','Ocupação alta')+pill('1','Baixa ociosidade')+pill('2','Ociosidade moderada')+pill('3','Ociosidade elevada')+pill('nc','Não calculado');
+  document.getElementById('equipe-count').innerHTML='<span>Exibindo <strong>'+rowsFiltradas.length+'</strong> de <strong>'+time.length+'</strong> colaboradores</span><span>Clique em qualquer card para abrir o Desempenho da pessoa</span>';
 
   if(rowsFiltradas.length===0){
-    document.getElementById('equipe-content').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>Ninguém com problema no momento. 🎉</p></div>';
+    document.getElementById('equipe-content').innerHTML='<div class="empty-state" style="padding:60px 20px"><p>'+((soComProblema&&!q&&EQ.pill==='TODOS'&&!EQ.kpi)?'Ninguém com problema no momento. 🎉':'Nenhum colaborador encontrado para este filtro.')+'</p></div>';
     return;
   }
 
-  let h='<div class="team-grid">';
+  let h='<div class="eq-grid">';
   rowsFiltradas.forEach(r=>{
-    const p=r.p;
-    const st=statusEquipe(r);
-    const semanaCritica=r.ociosidadeSemanaPct!==null&&r.ociosidadeSemanaPct>=50;
-    const semanaCorFundo=r.ociosidadeSemanaPct===null?'var(--text-faint)':r.ociosidadeSemanaPct>=50?'var(--st-bloqueado)':r.ociosidadeSemanaPct>=25?'#f59e0b':'var(--st-feito)';
-
-    h+=`<div class="team-card" style="--card-accent:${st.color}" data-nome="${p.a.replace(/"/g,'&quot;')}">
-      <div class="team-card-header">
-        <div class="team-avatar">${iniciais(p.a)}</div>
-        <div class="team-identity">
-          <div class="team-name">${p.a}</div>
-          <div class="team-role">${p.cargo||'Cargo não informado'}</div>
-          <div class="team-area">🏷️ ${p.area||'—'}</div>
-        </div>
-        <span class="team-status-badge" style="background:${st.bg};color:${st.color}">${st.icon} ${st.label}</span>
-      </div>
-
-      <div>
-        <span class="team-section-title">Volume de Trabalho</span>
-        <div class="team-stats-row">
-          <div class="team-stat"><span class="team-stat-label">Projetos</span><span class="team-stat-val">${r.projetos}</span></div>
-          <div class="team-stat"><span class="team-stat-label">Tarefas</span><span class="team-stat-val">${r.tarefas}</span></div>
-          <div class="team-stat"><span class="team-stat-label">Vence/Semana</span><span class="team-stat-val" style="${r.venceSemana>0?'color:var(--st-bloqueado)':''}">${r.venceSemana}</span></div>
-        </div>
-      </div>
-
-      <div>
-        <span class="team-section-title">Horas — Estimado x Executado${infoTip(TIP_ESTIMADO_EXECUTADO)}<span class="sub">${periodoAtivo?' (no período)':' (geral)'}</span></span>
-        <div class="team-hours-row">
-          <div class="team-hours-col"><span class="team-hours-col-label">Estimado</span><span class="team-hours-col-val">${fH(r.hEst)}</span></div>
-          <div class="team-hours-divider"></div>
-          <div class="team-hours-col"><span class="team-hours-col-label">Executado</span><span class="team-hours-col-val" style="color:var(--primary)">${fH(r.horas)}</span></div>
-          ${r.usaClaude?'<div class="team-hours-divider"></div><div class="team-hours-col"><span class="team-hours-col-label">Claude</span><span class="team-hours-col-val" style="font-size:15px">🤖</span></div>':''}
-        </div>
-      </div>
-
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div class="team-progress-block">
-          <div class="team-progress-label-row">
-            <span class="lbl">📅 Execução Esta Semana${infoTip(TIP_OCIOSIDADE_SEMANAL)}</span>
-            <span class="val" style="color:${semanaCorFundo}">${r.ociosidadeSemanaPct!==null?r.ociosidadeSemanaPct+'% abaixo do previsto':'—'}</span>
-          </div>
-          ${r.ociosidadeSemanaPct!==null?'<div class="bullet-track"><div class="bullet-fill" style="width:'+r.ociosidadeSemanaPct+'%;background:'+semanaCorFundo+'"></div></div><span class="team-progress-sub">'+fH(r.hExecutadoSemana)+' de '+fH(r.hPrevistoSemana)+' previstas</span>':'<span class="team-progress-sub">Sem tarefas com vencimento nesta semana</span>'}
-        </div>
-        <div class="team-progress-block">
-          <div class="team-progress-label-row">
-            <span class="lbl">⏱ Percentil de Horas no Time${infoTip(TIP_PERCENTIL_HORAS)}</span>
-            <span class="val">${r.pctHoras!==null?'P'+r.pctHoras+'%':'—'}</span>
-          </div>
-          <div class="bullet-track"><div class="bullet-fill" style="width:${r.pctHoras||0}%;${statusEquipe(r).key==='elevada'?'background:var(--st-bloqueado)':''}"></div></div>
-        </div>
-      </div>
-
-      <div class="team-card-footer"><span>Ver perfil completo</span><span>→</span></div>
-    </div>`;
+    const p=r.p, o=r.oc, ck=eqOcKey_(o), cor=o.nc?'#64748b':EQ_OC_COR[o.c];
+    const maxH=Math.max(r.hEst,r.horas,1), ratio=r.horas===0?0:Math.min(100,Math.round(r.horas/maxH*100));
+    const barCor=r.hExecutadoSemana>r.capSem?'var(--st-bloqueado)':(r.horas>r.hEst&&r.hEst>0?'#0ea5e9':'#10b981');
+    const badge=o.nc?'<span class="ia-oc-tg ia-ocn" title="'+iaOcTip_(o)+'">Não calculado</span>'
+      :'<span class="ia-oc-tg ia-oc'+o.c+'" title="'+iaOcTip_(o)+'"><b>'+Math.round(o.pc)+'%</b> · '+IA_OC_ROT[o.c]+'</span>';
+    const nota=r.ociosidadeSemanaPct!==null?fH(r.hExecutadoSemana)+' de '+fH(r.hPrevistoSemana)+' previstas ('+r.ociosidadeSemanaPct+'% abaixo do previsto)':'Sem vencimentos na semana';
+    h+=`<article class="eq-card" data-nome="${p.a.replace(/"/g,'&quot;')}" style="${o.nc?'':'border-color:'+cor+'55'}">
+      <div class="eq-top"><div class="eq-who"><div class="eq-av" style="background:${cor}">${iniciais(p.a)}</div><div style="min-width:0"><div class="eq-nm">${p.a}${r.usaClaude?'<span title="Usa Claude Code">AI</span>':''}</div><div class="eq-rl">${p.cargo||'Cargo não informado'}</div></div></div></div>
+      <div class="eq-oc">${badge}<span>${o.nc?o.nc:fHM_(o.disp)+' livres de '+fHM_(o.capP)}</span></div>
+      <div class="eq-ar"><span>${p.area||'—'}</span>${r.venceSemana>0?'<b>'+r.venceSemana+' vence(m) sem.</b>':''}</div>
+      <div class="eq-strip"><div><small>Projetos</small><b>${r.projetos}</b></div><div><small>Tarefas</small><b>${r.tarefas}</b></div><div><small>Vence/Sem.</small><b style="${r.venceSemana>0?'color:var(--st-bloqueado)':''}">${r.venceSemana}</b></div></div>
+      <div><div class="eq-hr"><div><small>Estimado${periodoAtivo?' (período)':''}</small><b>${fH(r.hEst)}</b></div><div class="r"><small>Executado</small><b style="color:var(--primary)">${fH(r.horas)}</b></div></div><div class="eq-bar"><i style="width:${ratio}%;background:${barCor}"></i></div></div>
+      <div class="eq-ft"><span>${nota}</span><b>Perfil →</b></div>
+    </article>`;
   });
   h+='</div>';
   document.getElementById('equipe-content').innerHTML=h;
-}
-
-// ============================================================
-// GESTÃO SETORIAL — visão do Head: pessoas, capacidade e alocação da área.
-// Baseada no esquema "Gestão Setorial (HEAD)": Liderança de Pessoas + Gestão de
-// Recursos. Pré-Venda, Desenvolvimento de Carreira e Contratação/Demissão NÃO são
-// rastreados no dashboard hoje (não existe essa informação nos dados de origem) —
-// isso fica explícito na própria página, em vez de fingir que existe.
-// ============================================================
-function initSetorial(){
-  const areas=Object.keys(AREAS).sort();
-  const sel=document.getElementById('f-setorial');
-  sel.innerHTML=areas.map(a=>'<option value="'+a.replace(/"/g,'&quot;')+'">'+a+'</option>').join('');
-  if(areas.length) sel.value=areas[0]; // se o perfil só vê a própria área (Head), já vem pré-selecionada
-  sel.onchange=renderSetorial;
-  document.getElementById('f-setorial-clear').onclick=()=>{ if(areas.length) sel.value=areas[0]; renderSetorial(); };
-  renderSetorial();
-}
-function renderSetorial(){
-  SORT_RERENDER['setorial-pessoas']=()=>renderSetorial();
-  SORT_RERENDER['setorial-semaloc']=()=>renderSetorial();
-  SORT_RERENDER['setorial-semapo']=()=>renderSetorial();
-  const area=document.getElementById('f-setorial').value;
-  const kpiEl=document.getElementById('kpi-setorial');
-  const contentEl=document.getElementById('setorial-content');
-  if(!area){ kpiEl.innerHTML=''; contentEl.innerHTML='<div class="empty-state" style="padding:80px 20px"><p>Nenhuma área disponível no seu escopo.</p></div>'; return; }
-
-  const d=AREAS[area]||{ps:0,pj:0,hrs:0,tar:0,head:'—'};
-  const pessoas=PESA_().filter(p=>p.area===area).sort((a,b)=>a.a.localeCompare(b.a));
-  const semAloc=SEM_ALOC.filter(o=>(o.area||'')===area);
-  const alocSemApo=ALOC_SEM_APONT.filter(o=>(o.area||'')===area);
-
-  // Ociosidade semanal média da área (mesmo cálculo pessoa-a-pessoa usado em
-  // Desempenho/Minha Equipe, agregado por área)
-  const [monISO,sunISO]=getMondaySundayISO();
-  let somaOcio=0,nOcio=0;
-  pessoas.forEach(p=>{
-    const ek=(p.email||'').toLowerCase();
-    const hPrev=Object.entries(PPREVISTO[ek]||{}).filter(([dt])=>dt>=monISO&&dt<=sunISO).reduce((s,[,v])=>s+v,0);
-    const hExec=Object.entries(PM[ek]||{}).filter(([dt])=>dt>=monISO&&dt<=sunISO&&dt!=='sem-data').reduce((s,[,v])=>s+(v[0]||0),0);
-    if(hPrev>0){ somaOcio+=Math.max(0,Math.round((1-hExec/hPrev)*100)); nOcio++; }
-  });
-  const ocioMediaArea=nOcio>0?Math.round(somaOcio/nOcio):null;
-  const aH=d.ps>0?Math.round(d.hrs/d.ps*10)/10:0;
-
-  kpiEl.innerHTML=
-    kpiHtml({label:'Pessoas na Área',value:d.ps,icon:'pessoas',bg:'#eff6ff',color:'#2563eb',foot:'Head: '+(d.head||'—')})+
-    kpiHtml({label:'Projetos com Alocação',value:d.pj,icon:'projetos',bg:'#eff6ff',color:'#2563eb'})+
-    kpiHtml({label:'Horas (geral)',value:fH(d.hrs),icon:'horas',bg:'#f0fdfa',color:'#0f766e',foot:'média '+fH(aH)+'/pessoa'})+
-    kpiHtml({label:'Sem Alocação'+infoTip('Sem nenhuma alocação registrada — nem em equipe de projeto (Portifolio), nem tarefas/horas (Zoho).'),value:semAloc.length,icon:'usuarioX',bg:semAloc.length>0?'#fef2f2':'#f8fafc',color:semAloc.length>0?'#dc2626':'#64748b',valueColor:(semAloc.length>0?'var(--st-bloqueado)':'var(--text)')})+
-    kpiHtml({label:'Alocados sem Apontamento'+infoTip('Estão em equipe de projeto ativo, mas sem nenhuma hora/tarefa lançada no Zoho.'),value:alocSemApo.length,icon:'alerta',bg:alocSemApo.length>0?'#fff7ed':'#f8fafc',color:alocSemApo.length>0?'#f59e0b':'#64748b',valueColor:(alocSemApo.length>0?'#f59e0b':'var(--text)')})+
-    kpiHtml({label:'Ociosidade Média (semana)'+infoTip(TIP_OCIOSIDADE_SEMANAL+' Aqui: média entre as pessoas da área que têm tarefa vencendo esta semana.'),value:(ocioMediaArea===null?'—':ocioMediaArea+'%'),icon:'bateria',bg:'#fff7ed',color:'#ea580c',valueColor:(ocioMediaArea===null?'var(--text)':ocioMediaArea>=50?'var(--st-bloqueado)':ocioMediaArea>=25?'#f59e0b':'var(--text)')});
-
-  let h='';
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>⚠️ Fora do escopo atual dos dados</h3></div><div style="padding:4px 0;font-size:13px;color:var(--text-muted);line-height:1.6">'
-    +'Pré-Venda (estimativa de esforço), Desenvolvimento de Carreira (agenda/aceleração) e Contratação &amp; Demissão não têm nenhuma fonte de dado no dashboard hoje — por isso não aparecem aqui. Se quiser passar a acompanhar isso, precisamos definir de onde viria essa informação (ex: uma aba nova na planilha).'
-    +'</div></div>';
-
-  const colunasSetPessoas=[
-    {key:'nome',label:'Nome',tipo:'texto',get:p=>p.a},
-    {key:'cargo',label:'Cargo',tipo:'texto',get:p=>p.cargo},
-    {key:'nivel',label:'Nível',tipo:'texto',get:p=>p.nv},
-    {key:'gestor',label:'Gestor',tipo:'texto',get:p=>p.gestor}
-  ];
-  const stSetPessoas=SORT_STATE['setorial-pessoas']||{col:null,dir:0};
-  const pessoasOrd=stSetPessoas.col?ordenarLinhas_(pessoas,colunasSetPessoas.find(c=>c.key===stSetPessoas.col),stSetPessoas.dir):pessoas;
-  h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>👥 Gestão de Pessoas — '+area+'</h3></div><div class="table-wrap"><table>'+theadOrdenavel_('setorial-pessoas',colunasSetPessoas)+'<tbody>';
-  pessoasOrd.forEach(p=>{
-    h+='<tr><td><strong>'+personLinkHtml(p.a)+'</strong></td><td>'+(p.cargo||'—')+'</td><td>'+(p.nv||'—')+'</td><td>'+personLinkHtml(p.gestor)+'</td></tr>';
-  });
-  if(pessoas.length===0) h+='<tr><td colspan="4" style="text-align:center;color:var(--text-faint)">Nenhuma pessoa cadastrada nessa área.</td></tr>';
-  h+='</tbody></table></div></div>';
-
-  if(semAloc.length>0){
-    const colunasSetSemAloc=[{key:'nome',label:'Nome',tipo:'texto',get:o=>o.a},{key:'cargo',label:'Cargo',tipo:'texto',get:o=>o.cargo}];
-    const stSetSemAloc=SORT_STATE['setorial-semaloc']||{col:null,dir:0};
-    const semAlocOrd=stSetSemAloc.col?ordenarLinhas_(semAloc,colunasSetSemAloc.find(c=>c.key===stSetSemAloc.col),stSetSemAloc.dir):semAloc;
-    h+='<div class="card" style="margin-bottom:16px"><div class="card-title"><h3>🔴 Sem Alocação ('+semAloc.length+')</h3></div><div class="table-wrap"><table>'+theadOrdenavel_('setorial-semaloc',colunasSetSemAloc)+'<tbody>';
-    semAlocOrd.forEach(o=>{ h+='<tr><td><strong>'+personLinkHtml(o.a)+'</strong></td><td>'+(o.cargo||'—')+'</td></tr>'; });
-    h+='</tbody></table></div></div>';
-  }
-  if(alocSemApo.length>0){
-    const colunasSetSemApo=[{key:'nome',label:'Nome',tipo:'texto',get:o=>o.a},{label:'Projetos'}];
-    const stSetSemApo=SORT_STATE['setorial-semapo']||{col:null,dir:0};
-    const alocSemApoOrd=stSetSemApo.col?ordenarLinhas_(alocSemApo,colunasSetSemApo.find(c=>c.key===stSetSemApo.col),stSetSemApo.dir):alocSemApo;
-    h+='<div class="card"><div class="card-title"><h3>⚠️ Alocados, sem Apontamento no Zoho ('+alocSemApo.length+')</h3></div><div class="table-wrap"><table>'+theadOrdenavel_('setorial-semapo',colunasSetSemApo)+'<tbody>';
-    alocSemApoOrd.forEach(o=>{ h+='<tr><td><strong>'+personLinkHtml(o.a)+'</strong></td><td>'+(o.projetos||[]).map(pj=>'<span class="status-pill">'+pj+'</span>').join(' ')+'</td></tr>'; });
-    h+='</tbody></table></div></div>';
-  }
-  contentEl.innerHTML=h;
 }
 
 // ============================================================
@@ -12990,7 +12628,7 @@ function renderPermissoesUsuario(){
   let h='<div class="card"><div class="card-title"><h3>'+(usuario.nome||usuario.email)+'</h3><span class="sub">Perfil: '+usuario.perfil+'</span></div>';
   h+='<p style="font-size:12px;color:var(--text-faint);margin:-6px 0 14px">Marcado = a pessoa vê a página. Desmarque para remover o acesso, marque para liberar uma página extra. Voltar ao estado original do perfil remove a exceção automaticamente.</p>';
   h+='<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px">';
-  PAGINAS_GERENCIAVEIS_EXCECAO.forEach(p=>{
+  PAGINAS_GERENCIAVEIS_EXCECAO.slice().sort((a,b)=>(PAGE_LABELS[a]||a).localeCompare(PAGE_LABELS[b]||b,'pt-BR',{sensitivity:'base'})).forEach(p=>{
     const noPadrao=base.includes(p);
     const temExcecaoAdd=exc.add.includes(p);
     const temExcecaoRemove=exc.remove.includes(p);
@@ -13186,10 +12824,10 @@ const PAGINA_CAMPOS_NECESSARIOS={
   // qualquer navegação fora de "cliente" ser liberada (HEAVY_DATA_READY);
   // no carregamento sob demanda isso deixou de ser garantido.
   pend:['PEND','PROJ_TASKS'],
-  ociosos:['SEM_ALOC','ALOC_SEM_APONT','PPREVISTO','PM','PVENC'],
+
   futuristic:[], // v20.4: a Central de Comando calcula no servidor (ação centralComando) — não precisa de campos pesados
-  equipe:['PM','PPREVISTO','PHAP','PHEST','PSTAT','SEM_ALOC','ALOC_SEM_APONT','PVENC'],
-  setorial:['SEM_ALOC','ALOC_SEM_APONT','PPREVISTO','PM'],
+  equipe:['PM','PPREVISTO','PHAP','PHEST','PSTAT','SEM_ALOC','ALOC_SEM_APONT','PVENC','PROJ_TASKS','PALOC'],
+
   andamento:['PROJ_TASKS']
 };
 // Embrulha um init/render de página: garante os campos necessários (busca só
@@ -13240,7 +12878,7 @@ WP('sis-objetivo','1.1','Objetivo, módulos e fluxo de uso','Para que serve a Ce
 <tr><td>Visão Executiva</td><td>Central de Comando · Destaques · Andamento dos Projetos</td></tr>
 <tr><td>Portfólio</td><td>Portfólio Geral · Calendário de Projetos · Edição do Portfólio</td></tr>
 <tr><td>Projetos</td><td>Meus Projetos · Projetos por Líder · Relatório de Projetos e Equipes · Status Report · Painel de Status Report · Pendências de Tarefas</td></tr>
-<tr><td>Pessoas e Capacidade</td><td>Minha Equipe · Desempenho por Pessoa · Carga e Risco de Alocação · Pessoas Disponíveis · Visão por Área · Gestão da Área</td></tr>
+<tr><td>Pessoas e Capacidade</td><td>Minha Equipe · Desempenho por Pessoa · Carga e Risco de Alocação</td></tr>
 <tr><td>Gestão</td><td>Gestão de Horas Apontadas</td></tr>
 <tr><td>Administração</td><td>Pessoas e Perfis · Permissões · Feriados · Gestão de Avisos · Modo Manutenção · Log de Alterações</td></tr>
 <tr><td>Utilitários</td><td>Novidades · Detalhamento do Projeto (abre ao clicar em um projeto) · Wiki / Documentação</td></tr></table></div>
@@ -13298,7 +12936,7 @@ WP('perm-perfis','1.2','Perfis e páginas do menu','Quais perfis existem e quais
   '—','Não existem, no código, os perfis “Administrador Geral”, “Membro” ou “Equipe” como chaves próprias. “Equipe” aparece apenas como conceito (membros de um projeto).','—','—','—','Se esses nomes são usados fora do portal (por exemplo, em outro sistema), isso não foi verificado.')],
 `<h3>Páginas por perfil (base, antes das exceções)</h3><div class="wk-tbl"><table><tr><th>Perfil</th><th>Páginas</th></tr>
 <tr><td>Administrador</td><td>Todas (inclui Calendário, Relatório de Projetos e Equipes, Painel de Status Report, Gestão de Horas Apontadas e as de Administração)</td></tr>
-<tr><td>Head · Gestor</td><td>Portfólio Geral, Carga e Risco, Desempenho por Pessoa, Visão por Área, Projetos por Líder, Meus Projetos, Minha Equipe, Pendências, Pessoas Disponíveis, Gestão da Área, Status Report, Detalhamento (o Head também recebe o Comparativo de Horas)</td></tr>
+<tr><td>Head · Gestor</td><td>Portfólio Geral, Carga e Risco, Desempenho por Pessoa, Projetos por Líder, Meus Projetos, Minha Equipe, Pendências, Status Report, Detalhamento (o Head também recebe o Comparativo de Horas)</td></tr>
 <tr><td>Tech Lead · PO</td><td>Portfólio Geral, Desempenho por Pessoa, Meus Projetos, Pendências, Status Report, Detalhamento</td></tr>
 <tr><td>Projetos (Gerente de Projeto)</td><td>Meus Projetos, Status Report, Desempenho por Pessoa (só o próprio), Acompanhamento de Horas da Equipe, Detalhamento</td></tr>
 <tr><td>SM (Scrum Master)</td><td>Meus Projetos, Detalhamento</td></tr>
@@ -13356,7 +12994,10 @@ WP('perm-acesso','1.2','Acesso direto, gravações e ações restritas','O que a
   '<code>saveStatusReport</code>, <code>saveEntregaCronograma</code>, <code>excluirStatusReport_</code>.','—','—','—','Status Report.','Tentar salvar report de projeto fora do escopo.','O menu só oferece Status Report aos perfis listados em <a data-w="PERM-003">PERM-003</a>.'),
  WR('PERM-023','Wiki / Documentação','ok','Permissões',
   'Página <code>wiki</code> exclusiva do Administrador (menu e guarda de rota), fora das exceções individuais. Nenhuma planilha é lida por ela.',
-  '<code>PERM_MENU[\'Administrador\']</code>, <code>PAGINAS_GERENCIAVEIS_EXCECAO</code>.','—','—','—','Wiki.','Entrar como não Administrador: o item não aparece.','Decisão inicial; pode ser aberta a outros perfis no futuro.')],
+  '<code>PERM_MENU[\'Administrador\']</code>, <code>PAGINAS_GERENCIAVEIS_EXCECAO</code>.','—','—','—','Wiki.','Entrar como não Administrador: o item não aparece.','Decisão inicial; pode ser aberta a outros perfis no futuro.'),
+ WR('PERM-027','Ordem alfabética do menu e página nova em Permissões','ok','Permissões',
+  'Dentro de cada categoria do menu lateral, as páginas ficam sempre em ordem alfabética (A→Z, pt-BR, sem distinguir acentos e maiúsculas). A lista de páginas da tela Permissões segue a mesma ordem. A ordem das categorias e o item Novidades (rodapé) não mudam.',
+  '<code>index.html</code> · botões <code>.nav-tab</code> dentro de cada <code>.nav-cat-panel</code>; <code>renderPermissoesUsuario</code> (ordena por rótulo).','—','—','—','Menu, Permissões.','Abrir cada categoria e conferir A→Z; abrir Permissões e conferir a lista.','Regra permanente: toda página nova entra na posição alfabética correta e deve aparecer em Permissões (catálogo do servidor + menu + <code>PAGE_LABELS</code>; ficar em <code>PAGINAS_GERENCIAVEIS_EXCECAO</code> quando for liberável por exceção). Páginas exclusivas do Administrador aparecem no catálogo, mas não na lista de exceções individuais.')],
 ''),
 
 /* ---------------- 3.3 ---------------- */
@@ -13472,7 +13113,7 @@ WP('cmd-destaques','1.4','Destaques (ranking executivo)','Como cada lista Top 5 
 
 WP('cmd-outros','1.4','Páginas executivas ainda não detalhadas','Andamento dos Projetos e demais telas, com a lacuna declarada.',[
  WR('CMD-020','Andamento dos Projetos','pv','Andamento','Página exclusiva do Administrador que usa <code>PROJ_TASKS</code>. As fórmulas de cada coluna não foram lidas nesta revisão.','<code>initAndamento</code>.','PROJ_TASKS.','—','—','—','—','Lacuna a preencher.'),
- WR('CMD-021','Visão por Área, Projetos por Líder, Gestão da Área, Calendário, Relatório de Projetos e Equipes','pv','Páginas',
+ WR('CMD-021','Projetos por Líder, Calendário, Relatório de Projetos e Equipes','pv','Páginas',
   'Existem e respeitam permissões e escopo, mas suas fórmulas e filtros específicos ainda não foram transcritos. O Calendário tem exportação Excel que respeita os filtros ativos (<a data-w="EXP-001">EXP-001</a>).','<code>PAGE_INIT_MAP</code>.','D.pj, AREAS.','—','—','—','—','Lacuna a preencher.')],
 ''),
 
@@ -13486,7 +13127,7 @@ WP('pess-cadastro','1.5','Cadastro de pessoas','Campos, status e participação 
   '<code>resolverStatusPessoa_</code>, <code>idxColunaStatusSemCabecalho_</code>.','Pessoas_Area.','—','Pessoas inativas saem de listas de análise (por exemplo, <code>pessoaEstaAtiva</code> na Alocação).','Login, listas, Alocação.','—','—'),
  WR('PESS-003','Participa_Analises','ok','Pessoas',
   'Valor Sim/Não; vazio conta como Sim. Pessoa com Não sai de totais, médias, rankings e listas de pessoas das análises, mas seus projetos e tarefas não são excluídos e o campo não altera permissões nem login.',
-  '<code>participaAnalisesValor_</code>, <code>foraAnalise_</code>, <code>PESA_()</code>.','Pessoas_Area.','—','Em projetos com vários responsáveis só a contagem dela sai. Ela continua vendo as próprias horas.','Central de Comando, Destaques, Disponibilidade, Carga e Risco, Gestão da Área, Minha Equipe, Desempenho, Pendências, Gestão de Horas, Relatório de Equipes.','Marcar uma pessoa como Não e conferir que ela some da Carga e Risco.','O alcance foi conferido nas telas citadas nas Novidades de 16/10; telas criadas depois precisam seguir a mesma regra.'),
+  '<code>participaAnalisesValor_</code>, <code>foraAnalise_</code>, <code>PESA_()</code>.','Pessoas_Area.','—','Em projetos com vários responsáveis só a contagem dela sai. Ela continua vendo as próprias horas.','Central de Comando, Destaques, Disponibilidade, Carga e Risco, Minha Equipe, Desempenho, Pendências, Gestão de Horas, Relatório de Equipes.','Marcar uma pessoa como Não e conferir que ela some da Carga e Risco.','O alcance foi conferido nas telas citadas nas Novidades de 16/10; telas criadas depois precisam seguir a mesma regra.'),
  WR('PESS-004','Nome oficial: Pessoas_Area.Assinatura (coluna C)','pa','Pessoas',
   'A única fonte de nome de exibição de pessoa cadastrada é a Assinatura. Sem correspondência válida mostra “Nome não cadastrado”, sem substituir por tarefa ou e-mail.',
   '<code>NOME_NAO_CADASTRADO</code>, <code>displayNameForKey_</code> (v17.5).','Pessoas_Area (Assinatura).','—','—','Telas de análise e Alocação.','Cadastrar uma tarefa com um nome diferente da Assinatura.',
@@ -13517,10 +13158,10 @@ WP('pess-cadastro','1.5','Cadastro de pessoas','Campos, status e participação 
 WP('pess-equipe','1.5','Disponibilidade e equipe','Quem aparece como sem alocação, disponível ou com carga elevada.',[
  WR('PESS-010','Sem alocação e alocado sem apontamento','ok','Pessoas',
   '<b>Sem alocação</b>: pessoa analisável sem apontamento/tarefas (Zoho) e sem projeto ativo no Portifolio. <b>Alocada sem apontamento</b>: sem Zoho mas presente em projeto Em Andamento/Sustentação do Portifolio.',
-  '<code>buildDashboardData_</code> (<code>semAlocacao</code>, <code>alocSemApontamento</code>).','Portifolio, Tarefas, Tarefas_Horas_Apontadas.','—','Pessoas com Participa_Analises = Não ficam fora.','Pessoas Disponíveis, Central de Comando (Ocupação).','—','Depende da equipe estar preenchida no Portifolio.'),
- WR('PESS-011','Status em Minha Equipe','ok','Pessoas',
-  '<b>Carga Elevada</b> = mais de 40 h executadas na semana. <b>Baixa Utilização</b> = está em SEM_ALOC ou ALOC_SEM_APONT. Caso contrário <b>Disponível</b>. Ordem: Carga Elevada, Disponível, Baixa Utilização.',
-  '<code>statusEquipe</code>.','PHAP/PM, SEM_ALOC.','—','—','Minha Equipe.','—','O termo “Disponível” aqui é diferente de “disponível” na Alocação (<a data-w="ALOC-011">ALOC-011</a>).'),
+  '<code>buildDashboardData_</code> (<code>semAlocacao</code>, <code>alocSemApontamento</code>).','Portifolio, Tarefas, Tarefas_Horas_Apontadas.','—','Pessoas com Participa_Analises = Não ficam fora.','Central de Comando (Ocupação).','—','Depende da equipe estar preenchida no Portifolio.'),
+ WR('PESS-011','Ociosidade e indicadores em Minha Equipe','ok','Pessoas',
+  'Cada card mostra a <b>Ociosidade</b> da pessoa no período selecionado (mesma regra de <a data-w="ALOC-008">ALOC-008</a>: capacidade individual × horas alocadas), com as faixas Ocupação alta, Baixa, Moderada e Elevada, ou “Não calculado”. Janela: Hoje = 1 dia, Esta semana = 7, Este mês e Todos = 30, De–Até = nº de dias. Os cards ficam em ordem de maior ociosidade e dá para filtrar pelas faixas, pela busca (pessoa, cargo, área) e pelos KPIs clicáveis. <b>Carga Elevada</b> (KPI) = mais horas executadas na semana que a capacidade semanal cadastrada; <b>Baixa Utilização</b> (KPI) = está em SEM_ALOC ou ALOC_SEM_APONT. O antigo selo de status (Disponível/Carga Elevada/Baixa Utilização) e o percentil de horas foram removidos do card.',
+  '<code>renderEquipe</code>, <code>eqDias_</code>, <code>iaOciosidade_</code>.','Pessoas_Area, PALOC, PROJ_TASKS, PHAP/PM, SEM_ALOC.','—','A janela de alocação é futura (tarefas abertas), mesmo em períodos que terminam hoje.','Minha Equipe.','Capacidade 160 h e 120 h alocadas em 30 dias: 25% (Baixa ociosidade).','—'),
  WR('PESS-012','Pessoas sem cadastro completo','pa','Pessoas',
   'Tarefas de pessoas sem linha em Pessoas_Area entram nos cálculos por e-mail, mas não têm área, nível ou gestor; nas telas aparecem como “Nome não cadastrado” quando não casam com a Assinatura.',
   '<code>resolverPessoaAlocacao_</code>, <code>NOME_NAO_CADASTRADO</code>.','Pessoas_Area, Tarefas.','—','—','Telas de análise.','—','Quantidade real de casos não foi medida.')],
@@ -13558,8 +13199,11 @@ WP('aloc-param','1.6','Parâmetros, capacidade e pressão','Constantes e limites
   'O filtro Período de análise (7, 15, 30 dias ou personalizado De–Até) vale para toda a página, aplicado ao clicar em Filtrar: carga futura (janela), tarefas “vencendo em N dias”, horas apontadas (últimos N dias contados de hoje, inclusive) e jornada de referência = 40 × N ÷ 7. O total histórico de horas apontadas é mantido como linha de referência.',
   '<code>daApont_</code>, <code>daVencN_</code>.','PM (horas por dia), PALOC.','—','Se o apontamento diário não estiver carregado mostra “—”.','Carga e Risco, Visão executiva, Comparar.','Trocar 15 para 30 dias e ver o card de horas mudar.','—'),
  WR('ALOC-005','Listagem Análise por Pessoa: colunas e regras','ok','Carga e Risco',
-  'Colunas: Pessoa, Cargo, <b>Head</b> (Pessoas_Area), Nível, Projetos, <b>Próxima Entrega (tarefa)</b>, <b>Tarefas em aberto</b>, H. Previstas, H. Apontadas, Score e Situação. <b>Tarefas em aberto</b> = tarefas da pessoa que não estão concluídas nem canceladas (Done, Cancelado, Concluído ou com data de conclusão ficam de fora; Bloqueadas e Backlog contam) — mesma definição de “fechada” da Decisão de Alocação. <b>Próxima Entrega (tarefa)</b> = menor data de vencimento entre as tarefas em aberto da pessoa, a partir de hoje (mostra “hoje” ou “Nd”); se só houver vencidas, mostra a mais antiga em vermelho (“vencida há Nd”); sem data: “— sem data”. As colunas Complexidade e Prioridade saíram da listagem, mas continuam no Score e nos filtros. Com o filtro de Status do Projeto, valem só os projetos filtrados. <b>Exportar Excel</b> (botão no card): respeita filtros e ordenação, mesmas colunas da tela mais <b>Clientes / Projetos</b> (“Cliente — Projeto”, um por linha, após Projetos), datas e horas como valores do Excel, aba “Filtros” com o resumo.',
+  'Colunas: Pessoa, <b>Área</b>, Cargo, <b>Head</b> (Pessoas_Area), Nível, Projetos, <b>Próxima Entrega (tarefa)</b>, <b>Tarefas em aberto</b>, H. Previstas, H. Apontadas, Score e Situação. <b>Tarefas em aberto</b> = tarefas da pessoa que não estão concluídas nem canceladas (Done, Cancelado, Concluído ou com data de conclusão ficam de fora; Bloqueadas e Backlog contam) — mesma definição de “fechada” da Decisão de Alocação. <b>Próxima Entrega (tarefa)</b> = menor data de vencimento entre as tarefas em aberto da pessoa, a partir de hoje (mostra “hoje” ou “Nd”); se só houver vencidas, mostra a mais antiga em vermelho (“vencida há Nd”); sem data: “— sem data”. As colunas Complexidade e Prioridade saíram da listagem, mas continuam no Score e nos filtros. Com o filtro de Status do Projeto, valem só os projetos filtrados. <b>Exportar Excel</b> (botão no card): respeita filtros e ordenação, mesmas colunas da tela mais <b>Clientes / Projetos</b> (“Cliente — Projeto”, um por linha, após Projetos), datas e horas como valores do Excel, aba “Filtros” com o resumo.',
   '<code>iaCalcularAnalisePessoa_</code> (qtdTarefasAbertas, proxTarefa), <code>colunasIA</code>, <code>iaExportarExcel_</code>.','PROJ_TASKS, PSTAT, Pessoas_Area.','—','Carga e Risco de Alocação › Análise por Pessoa.','Pessoa com tarefa Done vencendo amanhã: ela não pode ser a Próxima Entrega nem contar em Tarefas em aberto.','—'),
+ WR('ALOC-008','Ociosidade (capacidade × horas alocadas)','ok','Carga e Risco',
+  'Colunas: Cap. mensal, H. alocadas, H. disponíveis e Ociosidade (%). <b>Capacidade</b> = capacidade individual de Pessoas_Area (Modelo_Contratacao + Carga_Horaria; Part-time fixo e variável usam a carga cadastrada); nunca 160 h por padrão. <b>Capacidade do período</b> = capacidade mensal × dias ÷ 30 (7, 15, 30 dias ou De–Até pelo nº de dias; “Todo o período” = 30 dias). <b>Horas alocadas</b> = horas restantes (estimadas − apontadas) das tarefas ainda abertas da pessoa, já divididas entre os responsáveis, distribuídas até a entrega de cada projeto ativo e somadas na janela do período (mesma base de H. Previstas e da Decisão de Alocação; apontamento não entra). <b>H. disponíveis</b> = capacidade do período − alocadas (mínimo 0; excesso aparece como “+Xh acima”). <b>Ociosidade</b> = disponíveis ÷ capacidade do período × 100. Classes: 0–10% Ocupação alta; &gt;10–25% Baixa ociosidade; &gt;25–40% Ociosidade moderada; &gt;40% Ociosidade elevada. Pessoa sem projetos ativos = 100%. <b>Não calculado</b>: sem capacidade cadastrada/zero, ou menos de 50% das tarefas abertas com horas estimadas.',
+  '<code>iaOciosidade_</code>, <code>iaOcDias_</code>, <code>capPessoa_</code>, <code>daBase_</code>.','Pessoas_Area, PALOC (Horas Estimadas, Tarefas, Portifolio).','—','Não usa 160 h como padrão; não trata ausência de apontamento como ociosidade; a janela é futura (carga das tarefas abertas), porque não há histórico de alocação.','Carga e Risco de Alocação (tela e Excel).','Capacidade 160 h, alocadas 120 h em 30 dias: disponíveis 40 h, ociosidade 25% (Baixa ociosidade).','—'),
  WR('ALOC-006','Carga e Risco: filtros e botão Aplicar','ok','Carga e Risco',
   'Ordem: Head, Gestor, Pessoa, Período, Qtd. de Projetos, Situação. Nada é carregado até clicar em <b>Aplicar filtro</b>; mudar um filtro só destaca o botão. Período: 7/15/30 dias (apontadas = últimos N dias até hoje; tarefas vencendo = em aberto até hoje+N, atrasadas incluídas), Todo o período ou De–Até (apontadas e tarefas em aberto entre as duas datas; “Até” deve ser ≥ “De”). <b>Efeito cascata</b>: as opções de Head, Gestor, Pessoa, Qtd. de Projetos e Situação mostram só o que existe na combinação dos outros filtros; seleção que deixa de existir é limpa com aviso. Os KPIs são calculados sobre as linhas filtradas. Complexidade, Prioridade e Status da Tarefa foram removidos; o Score não muda.',
   '<code>iaLerFiltros_</code>, <code>iaCascata_</code>, <code>iaPeriodo_</code>, <code>iaVals_</code>.','PM, PROJ_TASKS, Pessoas_Area (Head).','—','Sem Head cadastrado, o filtro Head fica sem opções.','Carga e Risco de Alocação.','Período De–Até com “Até” anterior a “De” mostra erro e não carrega.','—'),
@@ -13857,7 +13501,7 @@ WP('rev-diverg','1.15','Divergências e lacunas abertas','O que foi encontrado d
 <tr><td>D4</td><td>Requisitos múltiplos de equipe validados só com planilha simulada. <a data-w="PORT-011">PORT-011</a></td><td><span class="b pl">Validar em produção</span></td></tr>
 <tr><td>D5</td><td>Comentário do código cita aba “Acessos”; a leitura real é em Pessoas_Area. <a data-w="FONTE-004">FONTE-004</a></td><td><span class="b pv">Validar</span></td></tr>
 <tr><td>D6</td><td>Filtros do Log não listam Pessoas_Area, Status_Report_Cronograma e Portifolio_Requisitos, e os tipos Inclusão/Remoção. <a data-w="AUD-011">AUD-011</a></td><td><span class="b pa">Limitação</span></td></tr>
-<tr><td>D7</td><td>Páginas ainda sem fórmulas transcritas: Andamento, Visão por Área, Projetos por Líder, Gestão da Área, Desempenho (semanal/mensal), Relatório de Equipes, Calendário. <a data-w="CMD-020">CMD-020</a></td><td><span class="b pv">Pendente</span></td></tr>
+<tr><td>D7</td><td>Páginas ainda sem fórmulas transcritas: Andamento, Projetos por Líder, Desempenho (semanal/mensal), Relatório de Equipes, Calendário. <a data-w="CMD-020">CMD-020</a></td><td><span class="b pv">Pendente</span></td></tr>
 <tr><td>D8</td><td>“Consumo de Horas (mês)” compara horas do mês com a estimativa total dos ativos. <a data-w="CMD-002">CMD-002</a></td><td><span class="b pa">Interpretar com cuidado</span></td></tr>
 <tr><td>D9</td><td>Perfis “Administrador Geral”, “Membro” e “Equipe” não existem como chaves de perfil. <a data-w="PERM-003">PERM-003</a></td><td><span class="b pv">Validar</span></td></tr></table></div>`),
 
@@ -13865,6 +13509,10 @@ WP('rev-hist','1.15','Histórico de revisão da documentação','Registro das re
 WP('rev-nov','1.15','Novidades anteriores','Cards antigos da página Novidades. A página Novidades mostra só os 6 mais recentes; os demais ficam aqui, do mais novo para o mais antigo.',[],'<div id="wk-nov"></div>')
 );
 const WIKI_HISTORICO=[
+ {d:'19/11/2026',p:'Navegação · Ordem alfabética',desc:'Páginas do menu lateral em ordem alfabética dentro de cada categoria; a lista da tela Permissões também. Regra permanente: página nova entra na posição alfabética e deve aparecer em Permissões.',m:'Solicitação do gestor (mockup aprovado).',o:'Implementação v20.7',ver:'v20.7',v:'Testado: ordem de todas as categorias e lista de Permissões'},
+ {d:'19/11/2026',p:'Pessoas · Minha Equipe',desc:'Página redesenhada conforme o modelo aprovado: cards compactos, busca, KPIs clicáveis, filtros rápidos por faixa e contador. O selo de status foi substituído pela Ociosidade no período selecionado (Hoje 1d, Semana 7d, Mês/Todos 30d, De–Até pelo nº de dias); percentil de horas removido. Clique no card continua abrindo o Desempenho da pessoa.',m:'Solicitação do gestor.',o:'Implementação v20.7',ver:'v20.7',v:'Testado com dados simulados'},
+ {d:'19/11/2026',p:'Carga e Risco · Ociosidade',desc:'Novas colunas na Análise por Pessoa: Área, Cap. mensal, H. alocadas, H. disponíveis e Ociosidade (%) com barra e classificação (0–10% Ocupação alta; >10–25% Baixa; >25–40% Moderada; >40% Elevada). Capacidade individual de Pessoas_Area; horas alocadas = horas restantes das tarefas abertas até a entrega dos projetos. Ordenável; “Não calculado” sem capacidade ou com dados insuficientes. Exportação Excel inclui as colunas.',m:'Solicitação do gestor.',o:'Implementação v20.7',ver:'v20.7',v:'Testado com dados simulados'},
+ {d:'19/11/2026',p:'Navegação · Páginas removidas',desc:'Removidas as páginas Visão por Área, Gestão da Área e Pessoas Disponíveis (menu, rotas, permissões e funções exclusivas). Nenhuma aba ou dado das planilhas foi excluído; as funções compartilhadas foram mantidas.',m:'Ajuste organizacional.',o:'Implementação v20.7',ver:'v20.7',v:'Testado com dados simulados'},
  {d:'19/11/2026',p:'Carga e Risco · Filtros',desc:'Novos filtros Head e Período (7, 15, 30 dias, Todo o período ou personalizado De–Até) na ordem Head, Gestor, Pessoa, Período, Qtd. de Projetos e Situação, com efeito cascata (cada filtro mostra só opções compatíveis com os demais). Nada é carregado até clicar em Aplicar filtro. H. Apontadas e Tarefas vencendo passam a respeitar o período e os KPIs refletem as linhas filtradas. Removidos Complexidade, Prioridade e Status da Tarefa (o Score não mudou).',ver:'v20.7',v:'Testado com dados simulados'},
  {d:'19/11/2026',p:'Decisão de Alocação · Filtros em cascata',desc:'Filtros Head, Gestor, Pessoa, Área, Cliente, Projeto (vínculo), Senioridade e Período (7/15/30/Personalizado). Cada filtro lista só opções compatíveis com os demais; seleção que deixa de existir é limpa com aviso. A aba só carrega ao clicar em Filtrar (exige ao menos um filtro) e vale para todas as subabas. O bloco da demanda não mudou.',ver:'v20.7',v:'Testado com dados simulados'},
  {d:'18/11/2026',p:'Portfólio · Edição do Portfólio',desc:'Tela de edição de projeto redesenhada: resumo do projeto no topo (atualiza ao digitar), menu lateral com 6 etapas que acompanha a rolagem, seções numeradas (Identificação/Liderança/Classificação, Cronograma, Requisitos, Equipe por frente com vagas vazias, Outras Informações, Zoho) e barra fixa com alterações pendentes, Excluir e Salvar. “Ver histórico de sincronização” passa a aparecer só quando há histórico. Lista de projetos, campos, regras de salvamento e permissões não mudaram.',m:'Melhorar a leitura e a navegação do formulário.',o:'Solicitação do usuário (modelo aprovado em mockup)',v:'Testado com dados simulados',ver:'v20.7'},
@@ -13996,11 +13644,11 @@ function initWiki(){
 }
 
 const PAGE_INIT_MAP={
-  cliente:comCamposNecessarios_('cliente',initCliente), inteligencia:comCamposNecessarios_('inteligencia',initInteligenciaAlocacao), portfolioedit:initPortfolioEdit, pessoa:comCamposNecessarios_('pessoa',initPessoa), area:comCamposNecessarios_('area',initArea), pend:comCamposNecessarios_('pend',initPend),
-  ociosos:comCamposNecessarios_('ociosos',initOciosos), topexec:initTopExec, futuristic:comCamposNecessarios_('futuristic',renderFuturistic),
+  cliente:comCamposNecessarios_('cliente',initCliente), inteligencia:comCamposNecessarios_('inteligencia',initInteligenciaAlocacao), portfolioedit:initPortfolioEdit, pessoa:comCamposNecessarios_('pessoa',initPessoa), pend:comCamposNecessarios_('pend',initPend),
+  topexec:initTopExec, futuristic:comCamposNecessarios_('futuristic',renderFuturistic),
   calendario:initCalendarioProjetos,
   lider:initLider, gerente:initGerente, equipe:comCamposNecessarios_('equipe',initEquipe),
-  setorial:comCamposNecessarios_('setorial',initSetorial), statusreport:initStatusReport,
+  statusreport:initStatusReport,
   statusreportpainel:initStatusReportPainel,
   logalteracoes:initLogAlteracoes,
   andamento:comCamposNecessarios_('andamento',initAndamento),
